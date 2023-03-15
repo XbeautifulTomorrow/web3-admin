@@ -60,14 +60,14 @@
                   <div slot="content">
                     {{
                       key === 'poolServerIds'
-                        ? item.poolName || 'Deepool'
+                        ? item.poolName || 'Web3'
                         : listData
                     }}
                   </div>
                   <span class="ellipsis-line">
                     {{
                       key === 'poolServerIds'
-                        ? item.poolName || 'Deepool'
+                        ? item.poolName || 'Web3'
                         : listData
                     }}
                   </span>

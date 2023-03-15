@@ -2,7 +2,7 @@
   <div class="login-page">
     <div class="login-box">
       <div class="loginContent">
-        <p class="tip">Deepool OS</p>
+        <p class="tip">Web3 OS</p>
         <p class="title">
           <!-- <i class="logo"></i> -->
           <span>管理系统</span>

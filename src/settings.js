@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Deepool-Admin',
+  title: 'Web3-Admin',
 
   /**
    * @type {boolean} true | false

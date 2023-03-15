@@ -58,7 +58,7 @@ let axiosConfig = {
   baseURL: baseUrl,
   headers: {
     'Content-Type': 'application/json',
-    project: 'Deepool OS', //项目标识
+    project: 'Web3 OS', //项目标识
   },
   timeout: 30000,
 };

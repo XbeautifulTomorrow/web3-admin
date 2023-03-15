@@ -29,7 +29,7 @@ export default {
   },
   data() {
     return {
-      title: "Deepool OS",
+      title: "Web3 OS",
       logo: require("@/assets/images/logo.png"),
     };
   },
