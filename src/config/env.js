@@ -1,16 +1,15 @@
 const config = {
   dev: {
-    api: 'http://221.236.31.34:13082/operation-web-admin',
-    // api:"http://www.huobimall.com:18800/mall-cloud-admin"
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
   test: {
-    api: '/operation-web-admin',
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
   pre: {
-    api: '/operation-web-admin',
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
   pro: {
-    api: '/operation-web-admin',
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
 };
 

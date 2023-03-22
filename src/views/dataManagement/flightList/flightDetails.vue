@@ -178,7 +178,7 @@ export default {
 }
 .content-top {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   align-content: center;
   font-size: 16px;
 }
