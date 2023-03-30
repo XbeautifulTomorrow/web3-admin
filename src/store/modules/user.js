@@ -1,4 +1,5 @@
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import { setSessionStore } from '@/utils'
 import router, { resetRouter } from '@/router'
 
 const state = {
@@ -6,7 +7,9 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  accountConfig: '',
+  coinConfig: 'ETH'
 }
 
 const mutations = {
@@ -24,6 +27,14 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_ACCOUNT_CONFIG: (state, payload) => {
+    state.accountConfig = payload
+    setSessionStore("accountConfig", payload);
+  },
+  SET_COIN_CONFIG: (state, payload) => {
+    state.coinConfig = payload
+    setSessionStore("coinConfig", payload);
   }
 }
 
@@ -119,6 +130,12 @@ const actions = {
 
     // reset visited views and cached views
     dispatch('tagsView/delAllViews', null, { root: true })
+  },
+  setAccountConfig({ commit }, payload) {
+    commit('SET_ACCOUNT_CONFIG', payload)
+  },
+  coinConfig({ commit }, payload) {
+    commit('SET_COIN_CONFIG', payload)
   }
 }
 

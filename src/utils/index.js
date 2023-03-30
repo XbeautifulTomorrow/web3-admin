@@ -2,6 +2,110 @@
  * Created by PanJiaChen on 16/11/18.
  */
 
+import axios from "axios";
+
+export function openUrl(url) {
+  if (typeof window !== "object") return;
+  const tempWin = window.open("_blank");
+  if (tempWin) {
+    tempWin.opener = null;
+    tempWin.location.href = url;
+  }
+}
+
+/**
+* @description: 字符串加密
+* @param {*}
+* @return {*}
+*/
+export function encodeStr(str) {
+  if (typeof window !== "object") return str;
+  return window.btoa(window.encodeURIComponent(str));
+}
+
+/**
+* @description: 字符串解密
+* @param {*}
+* @return {*}
+*/
+export function decodeStr(str) {
+  if (typeof window !== "object") return str;
+  return window.decodeURIComponent(window.atob(str));
+}
+
+/**
+* @description:  local store set
+* @param {string} key
+* @param {string} value
+* @return {*}
+*/
+export function setLocalStore(key, value) {
+  localStorage.setItem(key, value);
+}
+
+/**
+* @description:  local store get
+* @param {string} key
+* @param {string} value
+* @return {*}
+*/
+export function getLocalStore(key) {
+  return localStorage.getItem(key) || "";
+}
+
+/**
+ * @description:  local store set
+ * @param {string} key
+ * @param {string} value
+ * @return {*}
+ */
+export function setSessionStore(key, value) {
+  sessionStorage.setItem(key, value);
+}
+
+/**
+* @description:  local store get
+* @param {string} key
+* @param {string} value
+* @return {*}
+*/
+export function getSessionStore(key) {
+  return sessionStorage.getItem(key) || "";
+}
+
+/**
+ * @description: ETH单位转化
+ * @param {string} val: 数值
+ */
+export const exportExcel = (url, params, fileName) => {
+  axios
+    .get(url, {
+      params: params,
+      headers: { certificate: sessionStorage.getItem("token") },
+      responseType: "blob",
+    })
+    .then((res) => {
+      download(res.data, fileName);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+};
+
+function download(data, fileName) {
+  if (!data) {
+    return;
+  }
+  let url = window.URL.createObjectURL(new Blob([data]));
+  let link = document.createElement("a");
+  link.style.display = "none";
+  link.href = url;
+  link.setAttribute("download", fileName + ".xlsx");
+
+  document.body.appendChild(link);
+  link.click();
+};
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -256,7 +360,7 @@ export function getTime(type) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result;
 
-  const later = function() {
+  const later = function () {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp;
 
@@ -273,7 +377,7 @@ export function debounce(func, wait, immediate) {
     }
   };
 
-  return function(...args) {
+  return function (...args) {
     context = this;
     timestamp = +new Date();
     const callNow = immediate && !timeout;
@@ -503,7 +607,7 @@ export function getImgBase64(imgUrl) {
   var base64 = '';
   var img = new Image();
   img.src = imgUrl;
-  img.onload = function() {
+  img.onload = function () {
     base64 = imageBase64(img);
   };
 }

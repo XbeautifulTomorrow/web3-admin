@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-import UserList from '@/views/dataManagement/userList/index';
+import UserList from '@/views/userList/index';
 import aside from '@/aside.vue';
 
 export const routes = [
@@ -27,81 +27,21 @@ export const routes = [
         name: 'UserList',
       },
       {
-        path: '/farmList',
-        component: () => import('@/views/dataManagement/farmList/index'),
-        name: 'MineList',
+        path: '/platformNftSeries',
+        component: () => import('@/views/platformNftSeries/index'),
+        name: 'PlatformNftSeries',
       },
       {
-        path: '/minerList',
-        component: () => import('@/views/dataManagement/minerList/index'),
-        name: 'MinerList',
+        path: '/externalNftSeries',
+        component: () => import('@/views/externalNftSeries/index'),
+        name: 'ExternalNftSeries',
       },
       {
-        path: '/graphicsCardList',
-        component: () =>
-          import('@/views/dataManagement/graphicsCardList/index'),
-        name: 'GraphicsCardList',
+        path: '/marketManagement',
+        component: () => import('@/views/marketManagement/index'),
+        name: 'MarketManagement',
       },
-      {
-        path: '/overclockList',
-        component: () => import('@/views/dataManagement/overclockList/index'),
-        name: 'OverclockList',
-      },
-      {
-        path: '/flightList',
-        component: () => import('@/views/dataManagement/flightList/index'),
-        name: 'FlightList',
-      },
-      {
-        path: '/walletsList',
-        component: () => import('@/views/dataManagement/walletsList/index'),
-        name: 'WalletsList',
-      },
-      {
-        path: '/currencyList',
-        component: () => import('@/views/systemManagement/currencyList/index'),
-        name: 'CurrencyList',
-      },
-      {
-        path: '/algorithmList',
-        component: () => import('@/views/systemManagement/algorithmList/index'),
-        name: 'AlgorithmList',
-      },
-      {
-        path: '/miningSoftwareList',
-        component: () =>
-          import('@/views/systemManagement/miningSoftwareList/index'),
-        name: 'MiningSoftwareList',
-      },
-      {
-        path: '/overclockPresetsList',
-        component: () =>
-          import('@/views/systemManagement/overclockPresetsList/index'),
-        name: 'OverclockPresetsList',
-      },
-      {
-        path: '/orePoolList',
-        component: () => import('@/views/systemManagement/orePoolList/index'),
-        name: 'OrePoolList',
-      },
-      {
-        path: '/aCardManagementList',
-        component: () =>
-          import('@/views/systemManagement/aCardManagementList/index'),
-        name: 'ACardManagementList',
-      },
-      {
-        path: '/systemVersionManagementList',
-        component: () =>
-          import('@/views/systemManagement/systemVersionManagementList/index'),
-        name: 'SystemVersionManagementList',
-      },
-      {
-        path: '/userMinerActiveList',
-        component: () =>
-          import('@/views/systemManagement/userMinerActiveList/index'),
-        name: 'UserMinerActiveList',
-      },
+
       {
         path: '/report',
         component: () => import('@/views/report/index'),
@@ -110,6 +50,7 @@ export const routes = [
     ],
   },
 ];
+
 
 const createRouter = () =>
   new VueRouter({
@@ -123,6 +64,22 @@ const createRouter = () =>
   });
 
 const router = createRouter();
+
+// 获取原型对象push函数
+const originalPush = VueRouter.prototype.push
+
+// 获取原型对象replace函数
+const originalReplace = VueRouter.prototype.replace
+
+// 修改原型对象中的push函数
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
+}
+
+// 修改原型对象中的replace函数
+VueRouter.prototype.replace = function replace(location) {
+  return originalReplace.call(this, location).catch(err => err)
+}
 
 router.beforeEach((to, from, next) => {
   let token = sessionStorage.getItem('token');

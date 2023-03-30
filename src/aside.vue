@@ -1,118 +1,92 @@
 <template>
   <el-container>
-    <el-aside
-      :width="`${asideWidth}px`"
-      style="background-color: rgb(238, 241, 246)"
-      class="width-animation nav"
-    >
-      <el-menu
-        :default-openeds="['dataManagement', 'systemManagement']"
-        :default-active="defaultActive"
-        @select="selectFun"
-        :collapse="isCollapse"
-        class="nav-ul"
-      >
+    <el-aside :width="`${asideWidth}px`" style="background-color: rgb(238, 241, 246)" class="width-animation nav">
+      <div class="logoBox" style="background-color: #304156;">
+        <div class="logo-box">
+
+        </div>
+        <div class="config-box">
+          <el-select v-model="accountType" @change="changeAccount" placeholder="展示测试账号" clearable>
+            <el-option label="展示测试账号" value="">
+            </el-option>
+            <el-option label="不展示测试账号" value="NORMAL">
+            </el-option>
+            <el-option label="只展示测试账号" value="INNER">
+            </el-option>
+          </el-select>
+          <el-select v-model="coinConfig" @change="changeConfig" placeholder="全部状态" clearable>
+            <el-option label="ETH" value="ETH">
+            </el-option>
+            <el-option label="USDT" value="USDT">
+            </el-option>
+          </el-select>
+        </div>
+      </div>
+      <el-menu :default-openeds="[]" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
+        class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">{{ $t('nav.report') }}</span>
         </el-menu-item>
-        
-        <el-submenu index="dataManagement">
-          <template slot="title">
-            <i class="el-icon-data-line"></i>
-            <span slot="title">{{ $t('nav.dataManagement') }}</span>
-          </template>
-          <el-menu-item index="userList" class="menu-list">
-            <i class="el-icon-user"></i>
-            <span>{{ $t('userList.userList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="farmList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="min" />
-            <span> {{ $t('farmList.farmList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="minerList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="miner" />
-            {{ $t('minerList.minerList') }}
-          </el-menu-item>
-          <el-menu-item index="graphicsCardList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="card" />
-            <span>{{ $t('graphicsCardList.graphicsCardList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="overclockList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="overlock" />
-            <span>{{ $t('overclock.overclockList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="walletsList">
-          <i class="el-icon-bank-card"></i>
-          <span slot="title">{{ $t('wallet.walletsList') }}</span>
+        <el-menu-item index="userList" class="menu-list">
+          <i class="el-icon-user"></i>
+          <span>用户管理</span>
         </el-menu-item>
-          <el-menu-item index="flightList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="flight" />
-            <span>{{ $t('flight.flightList') }}</span>
-          </el-menu-item>
-        </el-submenu>
-        
-        <el-submenu index="systemManagement">
-          <template slot="title">
-            <i class="el-icon-cpu"></i>
-            <span slot="title">{{ $t('nav.systemManagement') }}</span>
-          </template>
-          <el-menu-item index="currencyList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="coin" />
-            <span>{{ $t('currency.currencyList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="algorithmList" class="menu-list">
-            <svg-icon class-name="title-icon" icon-class="algorithm" />
-            <span>{{ $t('algorithm.algorithmList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="miningSoftwareList" class="menu-list">
-            <svg-icon
-              class-name="title-icon other-icon"
-              icon-class="miningSoftware"
-            />
-            <span>{{ $t('miningSoftware.miningSoftwareList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="overclockPresetsList" class="menu-list">
-            <svg-icon
-              class-name="title-icon other-icon"
-              icon-class="overclockPresets"
-            />
-            <span>{{ $t('overclockPresets.overclockPresets') }}</span>
-          </el-menu-item>
-          
-          <el-menu-item index="orePoolList" class="menu-list">
-            <svg-icon class-name="title-icon other-icon" icon-class="orePool" />
-            <span>{{ $t('orePool.orePoolList') }}</span>
-          </el-menu-item>
-          <el-menu-item index="aCardManagementList" class="menu-list">
-            <svg-icon
-              class-name="title-icon other-icon"
-              icon-class="aCardManagement"
-            />
-            <span>
-              {{ $t('aCardManagement.aCardManagementList') }}
-            </span>
-          </el-menu-item>
-        </el-submenu>
-    
-        <el-menu-item index="userMinerActiveList">
-          <i class="el-icon-tickets"></i>
-          <span slot="title">
-            {{ $t('userMinerActive.userMinerActiveList') }}
-          </span>
+        <el-menu-item index="platformNftSeries" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>平台NFT系列</span>
         </el-menu-item>
-        <el-menu-item index="systemVersionManagementList">
-          <i class="el-icon-setting"></i>
-          <span slot="title">
-            {{ $t('systemVersionManagement.systemVersionManagementList') }}
-          </span>
+        <el-menu-item index="externalNftSeries" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>外部NFT系列</span>
+        </el-menu-item>
+        <el-menu-item index="marketManagement" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>市场管理</span>
+        </el-menu-item>
+        <el-menu-item index="nftManagement" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>NFT管理</span>
+        </el-menu-item>
+        <el-menu-item index="blindBoxManagement" class="menu-list">
+          <i class="el-icon-box"></i>
+          <span>盲盒管理</span>
+        </el-menu-item>
+        <el-menu-item index="cashManagement" class="menu-list">
+          <i class="el-icon-s-finance"></i>
+          <span>金流管理</span>
+        </el-menu-item>
+        <el-menu-item index="withdrawalReview" class="menu-list">
+          <i class="el-icon-stopwatch"></i>
+          <span>提款审核</span>
+        </el-menu-item>
+        <el-menu-item index="withdrawalManagement" class="menu-list">
+          <i class="el-icon-s-tools"></i>
+          <span>提款管理</span>
+        </el-menu-item>
+        <el-menu-item index="orderManagement" class="menu-list">
+          <i class="el-icon-s-order"></i>
+          <span>订单管理</span>
+        </el-menu-item>
+        <el-menu-item index="invitationRebate" class="menu-list">
+          <i class="el-icon-coin"></i>
+          <span>邀请返佣</span>
+        </el-menu-item>
+        <el-menu-item index="rebateRecord" class="menu-list">
+          <i class="el-icon-document"></i>
+          <span>返佣记录</span>
+        </el-menu-item>
+        <el-menu-item index="integralTurnover" class="menu-list">
+          <i class="el-icon-document"></i>
+          <span>积分流水</span>
+        </el-menu-item>
+        <el-menu-item index="setting" class="menu-list">
+          <i class="el-icon-s-tools"></i>
+          <span>系统设置</span>
         </el-menu-item>
       </el-menu>
     </el-aside>
-    <el-container
-      class="width-animation"
-      :style="{ marginLeft: `${asideWidth}px` }"
-    >
+    <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
       <el-header style="text-align: left; font-size: 12px">
         <div class="header-title">
           <div class="header-title-buttons cursor">
@@ -123,16 +97,14 @@
               <svg-icon class-name="title-icon" icon-class="el-icon-s-fold" />
             </span>
           </div>
-          <span class="title">{{ $t(title) }}</span>
-          <span class="title title-middle colorNine" v-if="page">/</span>
-          <span class="title">{{ $t(page) }}</span>
+          <!-- <span class="title">{{ title }}</span>
+          <span class="title title-middle colorNine" v-if="page">/</span> -->
+          <span class="title">{{ page }}</span>
         </div>
       </el-header>
-      <el-main
-        :class="{
-          'report-main': path === '/report',
-        }"
-      >
+      <el-main :class="{
+        'report-main': path === '/report',
+      }">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -153,78 +125,68 @@ export default {
       page: '',
       isCollapse: false,
       asideWidth: 220,
+      accountType: '',
+      coinConfig: '',
       nav: [
         {
           label: 'report.report',
           page: 'report',
         },
         {
-          label: 'nav.dataManagement',
-          page: 'dataManagement',
-        },
-        {
-          label: 'nav.systemManagement',
-          page: 'systemManagement',
-        },
-        {
-          label: 'userList.userList',
+          label: '用户管理',
           page: 'userList',
         },
         {
-          label: 'farmList.farmList',
-          page: 'farmList',
+          label: '平台NFT系列',
+          page: 'platformNftSeries',
         },
         {
-          label: 'minerList.minerList',
-          page: 'minerList',
+          label: '外部NFT系列',
+          page: 'externalNftSeries',
         },
         {
-          label: 'graphicsCardList.graphicsCardList',
-          page: 'graphicsCardList',
+          label: '市场管理',
+          page: 'marketManagement',
         },
         {
-          label: 'overclock.overclockList',
-          page: 'overclockList',
+          label: 'NFT管理',
+          page: 'nftManagement',
         },
         {
-          label: 'flight.flightList',
-          page: 'flightList',
+          label: '盲盒管理',
+          page: 'blindBoxManagement',
         },
         {
-          label: 'currency.currencyList',
-          page: 'currencyList',
+          label: '金流管理',
+          page: 'cashManagement',
         },
         {
-          label: 'algorithm.algorithmList',
-          page: 'algorithmList',
+          label: '提款审核',
+          page: 'withdrawalReview',
         },
         {
-          label: 'miningSoftware.miningSoftwareList',
-          page: 'miningSoftwareList',
+          label: '提款管理',
+          page: 'withdrawalManagement',
         },
         {
-          label: 'overclockPresets.overclockPresets',
-          page: 'overclockPresetsList',
+          label: '订单管理',
+          page: 'orderManagement',
         },
         {
-          label: 'orePool.orePoolList',
-          page: 'orePoolList',
+          label: '邀请返佣',
+          page: 'invitationRebate',
         },
         {
-          label: 'aCardManagement.aCardManagementList',
-          page: 'aCardManagementList',
+          label: '返佣记录',
+          page: 'rebateRecord',
         },
         {
-          label: 'wallet.walletsList',
-          page: 'walletsList',
+          label: '积分流水',
+          page: 'integralTurnover',
         },
         {
-          label: 'userMinerActive.userMinerActiveList',
-          page: 'userMinerActiveList',
-        },
-        {
-          label: 'systemVersionManagement.systemVersionManagementList',
-          page: 'systemVersionManagementList',
+          label: '系统设置',
+          page: 'setting',
         },
       ],
     };
@@ -236,6 +198,14 @@ export default {
   },
   // 方法
   methods: {
+    changeAccount(event) {
+      // 设置当前挖矿币种
+      this.$store.dispatch("user/setAccountConfig", event);
+    },
+    changeConfig(event) {
+      // 设置当前挖矿币种
+      this.$store.dispatch("user/coinConfig", event);
+    },
     foldFun(data) {
       this.isCollapse = data;
       if (data) {
@@ -246,14 +216,14 @@ export default {
     },
     selectFun(index, indexPage) {
       const { nav } = this;
-      const _title = nav.filter((item) => item.page === indexPage[0]);
-      this.title = _title[0].label;
-      if (indexPage.length > 1) {
-        const _otherTitle = nav.filter((item) => item.page === indexPage[1]);
-        this.page = _otherTitle[0].label;
-      } else {
-        this.page = '';
-      }
+      const _title = nav.filter((item) => item.page == indexPage[0]);
+      this.page = _title[0].label;
+      // if (indexPage.length > 1) {
+      //   const _otherTitle = nav.filte   ((item) => item.page === indexPage[1]);
+      //   this.page = _otherTitle[0].la   el;
+      // } else {
+      //   this.page = '';
+      // }
       this.$router.push(`/${index}`);
     },
     pageFun() {
@@ -264,6 +234,7 @@ export default {
         'minerList',
         'graphicsCardList',
         'overclockList',
+        'walletsList',
         'flightList',
       ];
       const systemManagement = [
@@ -276,7 +247,7 @@ export default {
       ];
       if (path === '/') {
         this.title = 'nav.dataManagement';
-        this.page = 'userList.userList';
+        this.page = '用户管理';
       } else {
         nav.forEach((item) => {
           if (`/${item.page}` === path) {
@@ -289,7 +260,7 @@ export default {
               this.page = item.label;
             } else {
               this.title = item.label;
-              this.page = '';
+              this.page = item.label;
             }
           }
         });
@@ -298,16 +269,18 @@ export default {
   },
   // 创建后
   created() {
+    this.accountType = this.$store.getters.accountConfig;
+    this.coinConfig = this.$store.getters.coinConfig;
     this.pageFun();
   },
   // 挂载后
-  mounted() {},
+  mounted() { },
   // 更新后
-  updated() {},
+  updated() { },
   // 销毁
-  beforeDestroy() {},
+  beforeDestroy() { },
   watch: {
-    path: function() {
+    path: function () {
       this.pageFun();
     },
   },
@@ -318,33 +291,59 @@ export default {
 .icon {
   height: 16px;
 }
+
 .title {
   font-size: 22px;
 }
+
 .title-middle {
   margin: 0 10px;
 }
+
 .header-title {
   height: 100%;
   display: flex;
   align-items: center;
   align-content: center;
 }
+
 .header-title-buttons {
   margin-right: 20px;
 }
+
 .report-main {
   padding: 20px 0 0;
 }
+
 .width-animation {
   // transition: all 0.05s;
 }
+
 .nav,
 .nav-ul {
   min-height: 100vh;
 }
+
 .nav-ul {
   background-color: #304156;
+}
+
+
+.logoBox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.config-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &>.el-select+.el-select {
+    margin-top: 10px;
+  }
 }
 </style>
 
@@ -356,6 +355,7 @@ export default {
   transform: translateY(-50%) rotate(0);
   transform-origin: center;
   z-index: 99;
+
   //   &.icon-slip-left {
   //     transform: translateY(-50%) rotate(0);
   //   }
@@ -363,29 +363,35 @@ export default {
     padding: 8px 0;
     border-radius: 0 4px 4px 0;
   }
+
   .svg-icon {
     min-height: 30px !important;
     min-width: 20px !important;
   }
 }
+
 .title-icon {
   font-size: 22px;
 }
+
 .el-aside {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
 }
+
 .menu-list {
   display: flex;
   align-content: center;
   align-items: center;
+
   .title-icon {
     margin-right: 5px;
     width: 18px !important;
     height: 18px !important;
   }
+
   .other-icon {
     height: 16px !important;
     width: 16px !important;
