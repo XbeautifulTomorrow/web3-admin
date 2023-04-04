@@ -5,7 +5,6 @@ import S from '../utils/service';
  */
 export const sysUserLogin = (obj) => S.post('sys-user/login', obj);
 export const sysUserGetCode = (obj) => S.get('sys-user/getCode', obj, 'blob');
-
 /**
  * @description 角色列表
  */
@@ -20,3 +19,22 @@ export const accountFreeze = (obj) => S.get('/user/freeze', obj); // 封停
 export const accountThaw = (obj) => S.get('/user/thaw', obj); // 解禁
 export const importInner = (obj) => S.post('/user/importInner', obj); // 导入测试账号
 export const upAndDown = (obj) => S.post('/user/upAndDown', obj); // 上下分
+
+/**
+ * @description NFT系列
+ */
+export const getNftExternalList = (obj) => S.get('/nft-external-series/pageList', obj); // 外部nft列表
+export const getNftExternalStatistics = (obj) => S.get('/nft-external-series/headerDataTotal', obj); // 外部nft统计
+export const nftExternalAdd = (obj) => S.post('/nft-external-series/add', obj); // 外部nft新增
+export const nftExternalDel = (obj) => S.get('/nft-external-series/delete', obj); // 外部nft删除
+
+export const getNftPlatformList = (obj) => S.get('/nft-platform-series/pageList', obj); // 平台nft列表
+export const getNftplatformStatistics = (obj) => S.get('/nft-platform-series/headerDataTotal', obj); // 平台nft统计
+export const nftPlatformAdd = (obj) => S.post('/nft-platform-series/add', obj); // 外部nft新增
+export const nftPlatformUpdate = (obj) => S.post('/nft-platform-series/update', obj); // 外部nft修改
+export const nftPlatformDel = (obj) => S.get('/nft-platform-series/delete', obj); // 外部nft删除
+
+/**
+ * @description 市场管理
+ */
+export const getMarketManagerList = (obj) => S.get('/market-manager/pageList', obj); // 外部nft删除

@@ -195,13 +195,7 @@ export default {
       registrationTime: null,
       loginedTime: null,
       tableData: null,
-      aggregateQuery: {
-        "userNumberTotal": 0, //总用户数
-        "buyNumberTotal": 0, //总购买数
-        "consumeTotal": 0, //总消费
-        "assetBalanceTotal": 1000, //总余额
-        "revenueTotal": 0 //总收入
-      },
+      aggregateQuery: {},
       baseUserPage: null, //分页相关
       uploadUrl: "", //上传url
       fileExcel: [], //文件列表

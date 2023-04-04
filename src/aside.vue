@@ -14,11 +14,11 @@
             <el-option label="只展示测试账号" value="INNER">
             </el-option>
           </el-select>
-          <el-select v-model="coinConfig" @change="changeConfig" placeholder="全部状态" clearable>
+          <el-select v-model="coinConfig" @change="changeConfig" placeholder="结算币种">
             <el-option label="ETH" value="ETH">
             </el-option>
-            <el-option label="USDT" value="USDT">
-            </el-option>
+            <!-- <el-option label="USDT" value="USDT">
+            </el-option> -->
           </el-select>
         </div>
       </div>
