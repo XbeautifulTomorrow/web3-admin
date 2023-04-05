@@ -41,7 +41,16 @@ export const routes = [
         component: () => import('@/views/marketManagement/index'),
         name: 'MarketManagement',
       },
-
+      {
+        path: '/externalNftManagement',
+        component: () => import('@/views/externalNftManagement/index'),
+        name: 'ExternalNftManagement',
+      },
+      {
+        path: '/platformNftManagement',
+        component: () => import('@/views/platformNftManagement/index'),
+        name: 'PlatformNftManagement',
+      },
       {
         path: '/report',
         component: () => import('@/views/report/index'),

@@ -1,36 +1,31 @@
 <template>
   <div class="user-list-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="accountInfo" clearable />
-      <el-input class="public-input" style="width: 220px;" placeholder="输入市场名称" v-model="accountInfo" clearable />
-      <el-select v-model="userStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
+      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 220px;" placeholder="输入市场名称" v-model="marketName" clearable />
+      <el-select v-model="marketStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
         clearable>
-        <el-option label="全部状态" value="-1">
+        <el-option label="封停" value="DISABLE">
         </el-option>
-        <el-option label="封停" value="0">
-        </el-option>
-        <el-option label="正常" value="1">
+        <el-option label="正常" value="NORMAL">
         </el-option>
       </el-select>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="onSearch()">
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchMarketManagerList()">
         查询
       </el-button>
-    </div>
-    <div style="margin-bottom: 10px;">
-      <span>总市场数：000</span>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
       <el-table-column prop="id" label="市场ID" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="id" label="市场名称" align="center" key="2">
+      <el-table-column prop="marketName" label="市场名称" align="center" key="2">
       </el-table-column>
-      <el-table-column prop="id" label="所在链" align="center" key="3">
+      <el-table-column prop="chainName" label="所在链" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="id" label="合约" align="center" key="4">
+      <el-table-column prop="contractAddress" label="合约" align="center" key="4">
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="17">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor">
+          <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)">
             冻结
           </span>
         </template>
@@ -40,22 +35,11 @@
       @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
       layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
     </el-pagination>
-    <el-dialog v-if="showDialog" title="导入" :visible.sync="showDialog" width="440px" :close-on-click-modal="false"
-      :before-close="handleClose">
-      <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileExcel" :multiple="false" :limit="1"
-        accept=".xls,.xlsx" list-type="picture-card" :before-upload="handleBefore" :on-preview="handlePictureCardPreview"
-        :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader" :data="{ imageType: 'coinImage' }">
-        <i class="el-icon-plus" />
-      </el-upload>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="handleClose()">取 消</el-button>
-        <el-button type="primary" @click="submitForm()">确 定</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
 <script>
+import pagination from '@/mixins/pagination';
 export default {
   name: 'UserList',
   // 模板引入
@@ -64,69 +48,82 @@ export default {
   // 数据
   data() {
     return {
-      showDialog: false,
-      accountInfo: "",
       Id: "",
-      userStatus: "-1",
-      registrationTime: null,
-      loginedTime: null,
+      marketName: "",
+      marketStatus: "",
+      page: 1,
+      size: 20,
       tableData: null,
       baseUserPage: null,
-      uploadUrl: "",
-      fileExcel: [],
-      uploadHeader: {
-        certificate: sessionStorage.getItem("token"),
-      },
     };
   },
+  mixins: [pagination],
   // 方法
   methods: {
     onSearch() { },
-    handleClose(done) {
-      if (done) {
-        done()
-        return
+    // 加载列表
+    async fetchMarketManagerList(isSearch = true) {
+      const { size } = this;
+      let _page = this.page;
+      if (isSearch) {
+        this.page = 1;
+        _page = 1;
       }
-
-      this.showDialog = false
-    },
-    handleUpload(res) {
-      if (res.status == 200) {
-        this.fileImg.push({ url: res.data });
-        return;
+      const data = {
+        id: this.Id,
+        marketName: this.marketName,
+        marketStatus: this.marketStatus,
+        size: size,
+        page: _page,
+      };
+      const res = await this.$http.getMarketManagerList(data);
+      if (res) {
+        this.baseUserPage = res;
+        this.tableData = res.records;
       }
-      this.$message.error("上传失败");
     },
-    // 预览图片
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
-    handleBefore(file) {
-      const _this = this;
-      const is1M = file.size / 1024 / 1024 < 2; // 限制小于2M
-      if (!is1M) {
-        _this.$message.error("文件过大，文件大小小于2M");
-      }
-      return is1M;
-    },
-    handleRemove(file, fileList) {
-      this.fileImg = [];
-    },
-    handExceed(fiel) {
-      this.$message.error("文件只能上传一个");
+    // 冻结/解禁
+    operatingMarket(row) {
+      this.$confirm(`确定要${row.marketStatus == 'DISABLE' ? '解禁' : '冻结'}市场『${row.marketName || row.id}』吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          let res = null;
+          if (row.userStatus == 'DISABLE') {
+            // 解禁
+            res = await this.$http.marketThaw({
+              id: row.id
+            });
+          } else {
+            // 冻结
+            res = await this.$http.marketFreeze({
+              id: row.id
+            });
+          }
+          if (res) {
+            this.fetchMarketManagerList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     handleSizeChange(val) {
       this.size = val;
-      this.baseUserPageApi();
+      this.fetchMarketManagerList();
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.baseUserPageApi(false);
+      this.fetchMarketManagerList(false);
     },
   },
   // 创建后
-  created() { },
+  created() {
+    this.fetchMarketManagerList();
+  },
   // 挂载后
   mounted() { },
   // 更新后

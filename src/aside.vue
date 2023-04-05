@@ -40,13 +40,17 @@
           <i class="el-icon-s-management"></i>
           <span>外部NFT系列</span>
         </el-menu-item>
+        <el-menu-item index="externalNftManagement" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>外部NFT管理</span>
+        </el-menu-item>
+        <el-menu-item index="platformNftManagement" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>平台NFT管理</span>
+        </el-menu-item>
         <el-menu-item index="marketManagement" class="menu-list">
           <i class="el-icon-s-management"></i>
           <span>市场管理</span>
-        </el-menu-item>
-        <el-menu-item index="nftManagement" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>NFT管理</span>
         </el-menu-item>
         <el-menu-item index="blindBoxManagement" class="menu-list">
           <i class="el-icon-box"></i>
@@ -145,12 +149,16 @@ export default {
           page: 'externalNftSeries',
         },
         {
-          label: '市场管理',
-          page: 'marketManagement',
+          label: '外部NFT管理',
+          page: 'externalNftManagement',
         },
         {
-          label: 'NFT管理',
-          page: 'nftManagement',
+          label: '平台NFT管理',
+          page: 'platformNftManagement',
+        },
+        {
+          label: '市场管理',
+          page: 'marketManagement',
         },
         {
           label: '盲盒管理',

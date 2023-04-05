@@ -122,7 +122,9 @@
           <span class="blueColor publick-button cursor">
             详情
           </span>
-          <span class="blueColor publick-button cursor" @click="operatingAccount(scope.row)">
+          <span class="blueColor publick-button cursor"
+            :style="`color: ${scope.row.userStatus == 'DISABLE' ? '#09a9ff' : 'red'}`"
+            @click="operatingAccount(scope.row)">
             {{ scope.row.userStatus == 'DISABLE' ? '解禁' : '封停' }}
           </span>
         </template>
@@ -435,7 +437,7 @@ export default {
   }
 
   &>div {
-    min-width: 250px;
+    min-width: 200px;
   }
 }
 

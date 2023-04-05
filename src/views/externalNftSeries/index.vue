@@ -44,11 +44,12 @@
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
       <el-table-column prop="id" label="系列ID" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="seriesImg" label="系列图" align="center" key="2">
+      <el-table-column prop="seriesImg" label="系列图" width="120px" align="center" key="2">
         <template slot-scope="scope">
-          <el-image style="width: 100px; height: 100px" :src="scope.row.seriesImg"
-            :preview-src-list="[scope.row.seriesImg]">
-          </el-image>
+          <div style="width: 100px; height: 100px">
+            <el-image style="height: 100%;" :src="scope.row.seriesImg" :preview-src-list="[scope.row.seriesImg]">
+            </el-image>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="seriesName" label="系列名" align="center" key="3">
@@ -409,7 +410,7 @@ export default {
   }
 
   &>div {
-    min-width: 250px;
+    min-width: 200px;
   }
 }
 
