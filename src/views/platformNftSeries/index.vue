@@ -107,7 +107,6 @@
           </el-input>
         </el-form-item>
       </el-form>
-
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
         <el-button type="primary" @click="submitForm()">确 定</el-button>
@@ -117,7 +116,6 @@
 </template>
 
 <script>
-
 import bigNumber from "bignumber.js";
 import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';

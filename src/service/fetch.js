@@ -50,3 +50,31 @@ export const getNftPlatformManagerStatistics = (obj) => S.get('/nft-platform-man
 export const getMarketManagerList = (obj) => S.get('/market-manager/pageList', obj); // 市场管理列表
 export const marketFreeze = (obj) => S.get('/market-manager/freeze', obj); // 市场冻结
 export const marketThaw = (obj) => S.get('/market-manager/thaw', obj); // 市场解禁
+
+/**
+ * @description 盲盒管理
+ */
+export const getBoxManagerList = (obj) => S.get('/box-manager/pageList', obj); // 盲盒管理列表
+export const getBoxManagerStatistics = (obj) => S.get('/box-manager/headerDataTotal', obj); // 盲盒管理统计
+export const boxManagerAdd = (obj) => S.post('/box-manager/add', obj); // 盲盒新增
+export const boxManagerUpdate = (obj) => S.post('/box-manager/update', obj); // 盲盒新增
+export const boxManagerFreeze = (obj) => S.get('/box-manager/freeze', obj); // 盲盒管理冻结
+export const boxManagerThaw = (obj) => S.get('/box-manager/thaw', obj); // 盲盒管理解禁
+export const boxManagerDelete = (obj) => S.get('/box-manager/delete', obj); // 盲盒管理删除
+export const boxManagerWinningRevision = (obj) => S.get('/box-manager/update/adjust', obj); // 盲盒中奖修正
+export const boxManagerOpen = (obj) => S.get('/box-manager/open', obj); // 血池开启
+export const boxManagerClose = (obj) => S.get('/box-manager/close', obj); // 血池关闭
+
+
+/**
+ * @description 金流管理
+ */
+export const getAssetFlowList = (obj) => S.get('/asset-flow/pageList', obj); // 金流管理列表
+export const getAssetFlowStatistics = (obj) => S.get('/asset-flow/headerDataTotal', obj); // 金流管理统计
+
+/**
+ * @description 订单管理
+ */
+export const getOrderManagerList = (obj) => S.get('/order-manager/pageList', obj); // 订单管理列表
+export const getOrderManagerStatistics = (obj) => S.get('/order-manager/headerDataTotal', obj); // 订单管理统计
+export const getBoxLotteryList = (obj) => S.get('/box-lottery/pageList', obj); // 开奖详情

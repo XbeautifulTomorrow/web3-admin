@@ -41,7 +41,7 @@
 <script>
 import pagination from '@/mixins/pagination';
 export default {
-  name: 'UserList',
+  name: 'MarketManagement',
   // 模板引入
   components: {
   },

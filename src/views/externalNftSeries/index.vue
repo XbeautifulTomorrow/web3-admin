@@ -152,7 +152,7 @@ import pagination from '@/mixins/pagination';
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
 export default {
-  name: 'PlatformNftSeries',
+  name: 'ExternalNftSeries',
   // 模板引入
   components: {
   },

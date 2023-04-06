@@ -56,6 +56,10 @@
           <i class="el-icon-box"></i>
           <span>盲盒管理</span>
         </el-menu-item>
+        <el-menu-item index="bloodPoolManagement" class="menu-list">
+          <i class="el-icon-s-finance"></i>
+          <span>血池管理</span>
+        </el-menu-item>
         <el-menu-item index="cashManagement" class="menu-list">
           <i class="el-icon-s-finance"></i>
           <span>金流管理</span>
@@ -163,6 +167,10 @@ export default {
         {
           label: '盲盒管理',
           page: 'blindBoxManagement',
+        },
+        {
+          label: '血池管理',
+          page: 'bloodPoolManagement',
         },
         {
           label: '金流管理',

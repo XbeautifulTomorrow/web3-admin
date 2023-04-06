@@ -159,7 +159,7 @@ import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import { chainList } from "@/utils/chain";
 export default {
-  name: 'UserList',
+  name: 'ExternalNftManagement',
   // 模板引入
   components: {
   },

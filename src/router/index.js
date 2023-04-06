@@ -22,35 +22,60 @@ export const routes = [
         name: 'UserList',
       },
       {
+        /** 用户列表 */
         path: '/userList',
         component: UserList,
         name: 'UserList',
       },
       {
+        /** 平台NFT系列 */
         path: '/platformNftSeries',
         component: () => import('@/views/platformNftSeries/index'),
         name: 'PlatformNftSeries',
       },
       {
+        /** 外部NFT系列 */
         path: '/externalNftSeries',
         component: () => import('@/views/externalNftSeries/index'),
         name: 'ExternalNftSeries',
       },
       {
+        /** 市场管理 */
         path: '/marketManagement',
         component: () => import('@/views/marketManagement/index'),
         name: 'MarketManagement',
       },
       {
+        /** 外部NFT管理 */
         path: '/externalNftManagement',
         component: () => import('@/views/externalNftManagement/index'),
         name: 'ExternalNftManagement',
       },
       {
+        /** 平台NFT管理 */
         path: '/platformNftManagement',
         component: () => import('@/views/platformNftManagement/index'),
         name: 'PlatformNftManagement',
       },
+      {
+        /** 血池管理 */
+        path: '/bloodPoolManagement',
+        component: () => import('@/views/bloodPoolManagement/index'),
+        name: 'BloodPoolManagement',
+      },
+      {
+        /** 金流管理 */
+        path: '/cashManagement',
+        component: () => import('@/views/cashManagement/index'),
+        name: 'CashManagement',
+      },
+      {
+        /** 订单管理 */
+        path: '/orderManagement',
+        component: () => import('@/views/orderManagement/index'),
+        name: 'OrderManagement',
+      },
+
       {
         path: '/report',
         component: () => import('@/views/report/index'),
