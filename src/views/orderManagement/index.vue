@@ -262,9 +262,9 @@ export default {
         this.aggregateQuery = resAggregateQuery;
       }
     },
-    async handleView(evnet) {
+    async handleView(event) {
       const res = await this.$http.getBoxLotteryList({
-        orderId: evnet.id,
+        orderId: event.id,
         page: 1,
         size: 9999
       });

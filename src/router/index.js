@@ -77,6 +77,30 @@ export const routes = [
       },
 
       {
+        /** 闪兑管理 */
+        path: '/flashManagement',
+        component: () => import('@/views/flashManagement/index'),
+        name: 'FlashManagement',
+      },
+      {
+        /** 邀请返佣 */
+        path: '/invitationRebate',
+        component: () => import('@/views/invitationRebate/index'),
+        name: 'invitationRebate',
+      },
+      {
+        /** 返佣记录 */
+        path: '/rebateRecord',
+        component: () => import('@/views/rebateRecord/index'),
+        name: 'RebateRecord',
+      },
+      {
+        /** 积分流水 */
+        path: '/integralTurnover',
+        component: () => import('@/views/integralTurnover/index'),
+        name: 'IntegralTurnover',
+      },
+      {
         path: '/report',
         component: () => import('@/views/report/index'),
         name: 'Report',

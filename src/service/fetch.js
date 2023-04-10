@@ -78,3 +78,30 @@ export const getAssetFlowStatistics = (obj) => S.get('/asset-flow/headerDataTota
 export const getOrderManagerList = (obj) => S.get('/order-manager/pageList', obj); // 订单管理列表
 export const getOrderManagerStatistics = (obj) => S.get('/order-manager/headerDataTotal', obj); // 订单管理统计
 export const getBoxLotteryList = (obj) => S.get('/box-lottery/pageList', obj); // 开奖详情
+
+/**
+ * @description 邀请返佣
+ */
+export const getRebatesBaseList = (obj) => S.get('/rebates-base/pageList', obj); // 邀请返佣列表
+export const getRebatesBaseStatistics = (obj) => S.get('/rebates-base/headerDataTotal', obj); // 邀请返佣统计
+export const getRebatesBaseDownList = (obj) => S.get('/rebates-base/down/pageList', obj); // 邀请下级列表
+export const getRebatesBaseDownStatistics = (obj) => S.get('/rebates-base/down/headerDataTotal', obj); // 邀请下级统计
+
+
+/**
+ * @description 闪兑管理
+ */
+export const getFlashManagerList = (obj) => S.get('/flash-manager/pageList', obj); // 闪兑管理列表
+export const getFlashManagerStatistics = (obj) => S.get('/flash-manager/headerDataTotal', obj); // 闪兑管理统计
+
+/**
+ * @description 积分流水
+ */
+export const getAssetPointFlowList = (obj) => S.get('/asset-point-flow/pageList', obj); // 积分流水列表
+export const getAssetPointFlowStatistics = (obj) => S.get('/asset-point-flow/headerDataTotal', obj); // 积分流水统计
+
+/**
+ * @description 返佣记录
+ */
+export const getRebatesRecordList = (obj) => S.get('/rebates-record/pageList', obj); // 返佣记录列表
+export const getRebatesRecordStatistics = (obj) => S.get('/rebates-record/headerDataTotal', obj); // 返佣记录统计

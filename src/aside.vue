@@ -76,6 +76,10 @@
           <i class="el-icon-s-order"></i>
           <span>订单管理</span>
         </el-menu-item>
+        <el-menu-item index="flashManagement" class="menu-list">
+          <i class="el-icon-s-order"></i>
+          <span>闪兑管理</span>
+        </el-menu-item>
         <el-menu-item index="invitationRebate" class="menu-list">
           <i class="el-icon-coin"></i>
           <span>邀请返佣</span>
@@ -187,6 +191,10 @@ export default {
         {
           label: '订单管理',
           page: 'orderManagement',
+        },
+        {
+          label: '闪兑管理',
+          page: 'flashManagement',
         },
         {
           label: '邀请返佣',
