@@ -163,10 +163,10 @@ export default {
   // 数据
   data() {
     return {
-      obscureField: "",
-      email: "",
-      walletAddress: "",
-      lastPickUpTime: "", // 交易时间
+      obscureField: null,
+      email: null,
+      walletAddress: null,
+      lastPickUpTime: null, // 交易时间
       page: 1,
       size: 20,
       tableData: null,

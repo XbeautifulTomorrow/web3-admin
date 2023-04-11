@@ -134,12 +134,12 @@ export default {
   // 数据
   data() {
     return {
-      Id: "", // NFT Id
-      userId: "", // 系列名
-      coin: "", // 币种
-      flowType: "", // 流水状态
-      flowSource: "", // 流水来源
-      changeTime: "", // 账变时间
+      Id: null, // NFT Id
+      userId: null, // 系列名
+      coin: null, // 币种
+      flowType: null, // 流水状态
+      flowSource: null, // 流水来源
+      changeTime: null, // 账变时间
       page: 1,
       size: 20,
       tableData: null,
@@ -165,7 +165,7 @@ export default {
       }
 
       return {
-        Id: this.Id, // 流水号
+        id: this.Id, // 流水号
         userId: this.userId, // 用户Id
         coin: this.coin, // 币种
         flowType: this.flowType, // 流水状态

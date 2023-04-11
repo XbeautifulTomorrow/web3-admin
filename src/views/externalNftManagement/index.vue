@@ -166,15 +166,15 @@ export default {
   // 数据
   data() {
     return {
-      Id: "", // NFT Id
-      seriesName: "", // 系列名
-      projectParty: "", // 项目方
-      chainName: "", // 链名称
-      startPrice: "", // 开始价格
-      endPrice: "", // 结束价格
-      nftStatus: "", // NFT状态
-      enabledStatus: "", // 入池状态
-      creationTime: "", // 创建时间
+      Id: null, // NFT Id
+      seriesName: null, // 系列名
+      projectParty: null, // 项目方
+      chainName: null, // 链名称
+      startPrice: null, // 开始价格
+      endPrice: null, // 结束价格
+      nftStatus: null, // NFT状态
+      enabledStatus: null, // 入池状态
+      creationTime: null, // 创建时间
       page: 1,
       size: 20,
       tableData: null,
@@ -200,7 +200,7 @@ export default {
       }
 
       return {
-        Id: this.Id, // NFT Id
+        id: this.Id, // NFT Id
         seriesName: this.seriesName, // 系列名
         projectParty: this.projectParty, // 项目方
         chainName: this.chainName,

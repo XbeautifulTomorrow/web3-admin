@@ -175,14 +175,14 @@ export default {
   // 数据
   data() {
     return {
-      orderNumber: "",
-      boxName: "",
-      obscureField: "",
-      hash: "",
-      startPrice: "",
-      endPrice: "",
-      transactionTime: "", // 交易时间
-      transactionCompleteTime: "", // 交易完成时间
+      orderNumber: null,
+      boxName: null,
+      obscureField: null,
+      hash: null,
+      startPrice: null,
+      endPrice: null,
+      transactionTime: null, // 交易时间
+      transactionCompleteTime: null, // 交易完成时间
       page: 1,
       size: 20,
       tableData: null,

@@ -138,7 +138,7 @@ export default {
     };
     return {
       showDialog: false,
-      obscureField: "",
+      obscureField: null,
       page: 1,
       size: 20,
       tableData: null,

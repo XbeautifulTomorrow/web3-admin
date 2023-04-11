@@ -160,8 +160,8 @@ export default {
   data() {
     return {
       showDialog: false,
-      obscureField: "",
-      projectParty: "",
+      obscureField: null,
+      projectParty: null,
       addTime: null,
       page: 1,
       size: 20,

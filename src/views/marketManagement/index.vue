@@ -48,9 +48,9 @@ export default {
   // 数据
   data() {
     return {
-      Id: "",
-      marketName: "",
-      marketStatus: "",
+      Id: null,
+      marketName: null,
+      marketStatus: null,
       page: 1,
       size: 20,
       tableData: null,

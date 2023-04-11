@@ -111,11 +111,11 @@ export default {
   // 数据
   data() {
     return {
-      Id: "", // Id
-      obscureField: "", // 用户ID/昵称
-      flashPlaform: "", // 闪兑平台
-      sellCoin: "", // 卖出币种
-      changeTime: "", // 账变时间
+      Id: null, // Id
+      obscureField: null, // 用户ID/昵称
+      flashPlaform: null, // 闪兑平台
+      sellCoin: null, // 卖出币种
+      changeTime: null, // 账变时间
       page: 1,
       size: 20,
       tableData: null,
@@ -141,7 +141,7 @@ export default {
       }
 
       return {
-        Id: this.Id, // 闪兑Id
+        id: this.Id, // 闪兑Id
         obscureField: this.obscureField, // 用户ID/昵称
         sellCoin: this.sellCoin, // 币种
         flashPlaform: this.flashPlaform, // 流水状态

@@ -92,10 +92,10 @@ export default {
   // 数据
   data() {
     return {
-      Id: "", // Id
-      userId: "", // 用户ID
-      flowSource: "", // 来源
-      changeTime: "", // 账变时间
+      Id: null, // Id
+      userId: null, // 用户ID
+      flowSource: null, // 来源
+      changeTime: null, // 账变时间
       page: 1,
       size: 20,
       tableData: null,
@@ -121,7 +121,7 @@ export default {
       }
 
       return {
-        Id: this.Id, // 闪兑Id
+        id: this.Id, // 闪兑Id
         userId: this.userId, // 用户ID
         flowSource: this.flowSource, // 来源
         startTime,

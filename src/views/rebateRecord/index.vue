@@ -85,10 +85,10 @@ export default {
   // 数据
   data() {
     return {
-      flowId: "", // Id
-      userId: "", // 用户Id
-      upId: "", // 上级Id
-      changeTime: "", // 账变时间
+      flowId: null, // Id
+      userId: null, // 用户Id
+      upId: null, // 上级Id
+      changeTime: null, // 账变时间
       page: 1,
       size: 20,
       tableData: null,

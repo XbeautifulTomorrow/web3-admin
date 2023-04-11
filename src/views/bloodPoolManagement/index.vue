@@ -103,10 +103,10 @@ export default {
   // 数据
   data() {
     return {
-      Id: "", // NFT Id
-      boxName: "", // 系列名
-      externalStatus: "", // 异常状态
-      boxStatus: "", // 盲盒状态
+      Id: null, // NFT Id
+      boxName: null, // 系列名
+      externalStatus: null, // 异常状态
+      boxStatus: null, // 盲盒状态
       page: 1,
       size: 20,
       tableData: null,
@@ -129,7 +129,7 @@ export default {
     // 搜索条件
     searchFun() {
       return {
-        Id: this.Id, // 盲盒Id
+        id: this.Id, // 盲盒Id
         boxName: this.boxName, // 盲盒名
         externalStatus: this.externalStatus,
         boxStatus: this.boxStatus
