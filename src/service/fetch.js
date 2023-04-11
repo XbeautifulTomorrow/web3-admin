@@ -73,6 +73,14 @@ export const getAssetFlowList = (obj) => S.get('/asset-flow/pageList', obj); // 
 export const getAssetFlowStatistics = (obj) => S.get('/asset-flow/headerDataTotal', obj); // 金流管理统计
 
 /**
+ * @description 提款审核
+ */
+export const getAssetWithdrawalList = (obj) => S.get('/asset-withdrawal/pageList', obj); // 提款审核列表
+export const getAssetWithdrawalStatistics = (obj) => S.get('/asset-withdrawal/headerDataTotal', obj); // 提款审核统计
+export const withdrawalApproved = (obj) => S.get('/asset-withdrawal/approved', obj); // 审核通过统计
+export const withdrawalRefuse = (obj) => S.get('/asset-withdrawal/refuse', obj); // 审核拒绝统计
+
+/**
  * @description 订单管理
  */
 export const getOrderManagerList = (obj) => S.get('/order-manager/pageList', obj); // 订单管理列表
@@ -87,6 +95,11 @@ export const getRebatesBaseStatistics = (obj) => S.get('/rebates-base/headerData
 export const getRebatesBaseDownList = (obj) => S.get('/rebates-base/down/pageList', obj); // 邀请下级列表
 export const getRebatesBaseDownStatistics = (obj) => S.get('/rebates-base/down/headerDataTotal', obj); // 邀请下级统计
 
+/**
+ * @description 返佣记录
+ */
+export const getRebatesRecordList = (obj) => S.get('/rebates-record/pageList', obj); // 返佣记录列表
+export const getRebatesRecordStatistics = (obj) => S.get('/rebates-record/headerDataTotal', obj); // 返佣记录统计
 
 /**
  * @description 闪兑管理
@@ -99,9 +112,3 @@ export const getFlashManagerStatistics = (obj) => S.get('/flash-manager/headerDa
  */
 export const getAssetPointFlowList = (obj) => S.get('/asset-point-flow/pageList', obj); // 积分流水列表
 export const getAssetPointFlowStatistics = (obj) => S.get('/asset-point-flow/headerDataTotal', obj); // 积分流水统计
-
-/**
- * @description 返佣记录
- */
-export const getRebatesRecordList = (obj) => S.get('/rebates-record/pageList', obj); // 返佣记录列表
-export const getRebatesRecordStatistics = (obj) => S.get('/rebates-record/headerDataTotal', obj); // 返佣记录统计

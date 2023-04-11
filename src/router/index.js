@@ -75,7 +75,12 @@ export const routes = [
         component: () => import('@/views/orderManagement/index'),
         name: 'OrderManagement',
       },
-
+      {
+        /** 提现审核 */
+        path: '/withdrawalReview',
+        component: () => import('@/views/withdrawalReview/index'),
+        name: 'WithdrawalReview',
+      },
       {
         /** 闪兑管理 */
         path: '/flashManagement',
