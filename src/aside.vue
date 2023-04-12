@@ -68,10 +68,6 @@
           <i class="el-icon-stopwatch"></i>
           <span>提款审核</span>
         </el-menu-item>
-        <el-menu-item index="withdrawalManagement" class="menu-list">
-          <i class="el-icon-s-tools"></i>
-          <span>提款管理</span>
-        </el-menu-item>
         <el-menu-item index="orderManagement" class="menu-list">
           <i class="el-icon-s-order"></i>
           <span>订单管理</span>

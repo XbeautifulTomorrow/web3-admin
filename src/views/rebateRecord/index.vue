@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入流水号" v-model="flowId" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID" v-model="userId" clearable />
@@ -44,9 +44,9 @@
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="上级Id" align="center" key="2">
+      <el-table-column prop="userName" width="120" label="上级Id" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="rebatesType" label="行为" align="center" key="3">
+      <el-table-column prop="rebatesType" label="行为" align="center" key="4">
         <template slot-scope="scope">
           <span v-if="scope.row.rebatesType == 'CONSUME'">消费</span>
         </template>
@@ -57,9 +57,9 @@
       </el-table-column>
       <el-table-column prop="commissionRate" label="返佣比例" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="rebatesAmount" :label="`佣金(${coin})`" align="center" key="7">
+      <el-table-column prop="rebatesAmount" :label="`佣金(${coin})`" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="createTime" label="账变时间" align="center" key="8">
+      <el-table-column prop="createTime" label="账变时间" align="center" key="9">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>

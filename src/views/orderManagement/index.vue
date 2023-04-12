@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入订单号" v-model="orderNumber" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入盲盒名称" v-model="boxName" clearable />

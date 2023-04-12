@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入盲盒ID" v-model="Id" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入盲盒名称" v-model="boxName" clearable />
@@ -12,7 +12,7 @@
       </el-select>
       <el-select v-model="boxStatus" class="public-select-box" popper-class="public-select-box" placeholder="盲盒状态"
         clearable>
-        <el-option label="禁用" value="DISABLE">
+        <el-option label="冻结" value="DISABLE">
         </el-option>
         <el-option label="正常" value="NORMAL">
         </el-option>

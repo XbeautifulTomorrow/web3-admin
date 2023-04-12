@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入系列名" v-model="seriesName" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="Id" clearable />

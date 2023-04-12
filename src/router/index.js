@@ -58,6 +58,12 @@ export const routes = [
         name: 'PlatformNftManagement',
       },
       {
+        /** 盲盒管理 */
+        path: '/blindBoxManagement',
+        component: () => import('@/views/blindBoxManagement/index'),
+        name: 'BlindBoxManagement',
+      },
+      {
         /** 血池管理 */
         path: '/bloodPoolManagement',
         component: () => import('@/views/bloodPoolManagement/index'),
@@ -70,16 +76,16 @@ export const routes = [
         name: 'CashManagement',
       },
       {
-        /** 订单管理 */
-        path: '/orderManagement',
-        component: () => import('@/views/orderManagement/index'),
-        name: 'OrderManagement',
-      },
-      {
         /** 提现审核 */
         path: '/withdrawalReview',
         component: () => import('@/views/withdrawalReview/index'),
         name: 'WithdrawalReview',
+      },
+      {
+        /** 订单管理 */
+        path: '/orderManagement',
+        component: () => import('@/views/orderManagement/index'),
+        name: 'OrderManagement',
       },
       {
         /** 闪兑管理 */
@@ -105,6 +111,13 @@ export const routes = [
         component: () => import('@/views/integralTurnover/index'),
         name: 'IntegralTurnover',
       },
+      {
+        /** 系统设置 */
+        path: '/setting',
+        component: () => import('@/views/setting/index'),
+        name: 'Setting',
+      },
+
       {
         path: '/report',
         component: () => import('@/views/report/index'),

@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="email" clearable />

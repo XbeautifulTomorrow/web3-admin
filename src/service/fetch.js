@@ -57,7 +57,7 @@ export const marketThaw = (obj) => S.get('/market-manager/thaw', obj); // 市场
 export const getBoxManagerList = (obj) => S.get('/box-manager/pageList', obj); // 盲盒管理列表
 export const getBoxManagerStatistics = (obj) => S.get('/box-manager/headerDataTotal', obj); // 盲盒管理统计
 export const boxManagerAdd = (obj) => S.post('/box-manager/add', obj); // 盲盒新增
-export const boxManagerUpdate = (obj) => S.post('/box-manager/update', obj); // 盲盒新增
+export const boxManagerUpdate = (obj) => S.post('/box-manager/update', obj); // 盲盒更新
 export const boxManagerFreeze = (obj) => S.get('/box-manager/freeze', obj); // 盲盒管理冻结
 export const boxManagerThaw = (obj) => S.get('/box-manager/thaw', obj); // 盲盒管理解禁
 export const boxManagerDelete = (obj) => S.get('/box-manager/delete', obj); // 盲盒管理删除
@@ -112,3 +112,15 @@ export const getFlashManagerStatistics = (obj) => S.get('/flash-manager/headerDa
  */
 export const getAssetPointFlowList = (obj) => S.get('/asset-point-flow/pageList', obj); // 积分流水列表
 export const getAssetPointFlowStatistics = (obj) => S.get('/asset-point-flow/headerDataTotal', obj); // 积分流水统计
+
+
+/**
+ * @description 系统设置
+ */
+export const getPointConfig = (obj) => S.get('/system-setting/findPointSetting', obj); // 积分配置查询
+export const pointConfigSet = (obj) => S.post('/system-setting/pointSetting', obj); // 积分配置更改
+export const getWithdrawalConfig = (obj) => S.get('/system-setting/findWithdrawalSetting', obj); // 提现配置查询
+export const withdrawalConfigSet = (obj) => S.post('/system-setting/withdrawalSetting', obj); // 提现配置更改
+export const getRecycleConfig = (obj) => S.get('/system-setting/findReclaimSetting', obj); // NFT回收配置查询
+export const recycleConfigSet = (obj) => S.post('/system-setting/reclaimSetting', obj); // NFT回收配置更改
+

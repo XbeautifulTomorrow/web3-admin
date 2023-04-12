@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="obscureField" clearable />
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformList()">
@@ -213,9 +213,7 @@ export default {
 
       delete data.size;
       delete data.page;
-      const resAggregateQuery = await this.$http.getNftExternalStatistics({
-        obscureField: this.obscureField
-      });
+      const resAggregateQuery = await this.$http.getNftExternalStatistics(data);
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }

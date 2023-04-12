@@ -1,0 +1,442 @@
+<template>
+  <div class="page-wrapper">
+    <div class="points-settings">
+      <div class="setting-item">
+        <div class="setting-title">注册积分</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入注册积分" v-model="points.point"
+            clearable />
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">下级注册积分</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级注册积分"
+            v-model="points.downPoint" clearable />
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">下级佣金比例</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级佣金比例"
+            v-model="points.downCommissionRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">下级积分比例</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级积分比例"
+            v-model="points.downPointRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">消费积分系数</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入消费积分系数"
+            v-model="points.consumePointRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px;" size="medium" @click="submitPoints()">确认修改</el-button>
+    </div>
+    <div class="withdrawal-settings">
+      <div class="setting-item">
+        <div class="setting-title">提现手续费</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入提现手续费"
+            v-model="withdrawals.withdrawalFees" clearable>
+            <template slot="append">{{ coin }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">
+          <span>提现限制</span>
+          <el-tooltip class="item" effect="dark" content="用户提款的限制，即无、每天、每周还是每月共能提多少" placement="top-start">
+            <i class="el-icon-warning-outline"></i>
+          </el-tooltip>
+        </div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入提现总量"
+            v-model="withdrawals.withdrawalLimits" clearable>
+            <template slot="append">{{ coin }}</template>
+          </el-input>
+          <el-select style="width: 200px;" v-model="withdrawals.withdrawalDayLimits" class="public-select-box"
+            placeholder="选择时段">
+            <el-option label="每日" :value="1" />
+            <el-option label="每周" :value="7" />
+            <el-option label="每月" :value="30" />
+          </el-select>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px;" size="medium" @click="submitWithdrawal()">确认修改</el-button>
+    </div>
+    <div class="recycling-settings">
+      <div class="setting-item">
+        <div class="setting-title">外部NFT回收比例</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入回收比例" v-model="nftReclaimRate"
+            clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px;" size="medium" @click="submitRecycle()">确认修改</el-button>
+    </div>
+    <div class="wallet-settings">
+      <div class="operating-box">
+        <span>归集钱包设置</span>
+        <el-button type="primary" style="width: 160px;" @click="showDialog = true">新增钱包</el-button>
+      </div>
+      <el-table :data="tableData" style="width: 760px;min-width: 0;" class="public-table" border>
+        <el-table-column prop="flowId" width="300" label="钱包地址" align="center" key="1">
+        </el-table-column>
+        <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
+        </el-table-column>
+        <el-table-column prop="flowId" width="100" label="激活状态" align="center" key="3">
+        </el-table-column>
+        <el-table-column label="操作" align="center" key="4" fixed="right">
+          <template slot-scope="scope">
+            <span class="blueColor publick-button cursor">
+              激活
+            </span>
+            <span class="blueColor publick-button cursor">
+              删除
+            </span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
+        layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+      </el-pagination>
+    </div>
+    <el-dialog v-if="showDialog" title="新增归集钱包" :visible.sync="showDialog" width="440px" :close-on-click-modal="false"
+      :before-close="handleClose">
+      <el-form ref="ruleForm" class="add-form" label-width="80px">
+        <el-form-item label="钱包地址" prop="reclaimRate">
+          <el-input type="number" v-model.number="walletAddr" style="width: 300px" placeholder="请输入钱包地址">
+            <template slot="append">%</template>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="submitForm()">确 定</el-button>
+      </span>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import bigNumber from "bignumber.js";
+import { timeForStr, exportExcel } from '@/utils';
+import pagination from '@/mixins/pagination';
+import config from "@/config/env";
+export default {
+  name: 'Setting',
+  // 模板引入
+  components: {
+  },
+  // 数据
+  data() {
+    return {
+      /** 积分相关配置 */
+      points: {
+        point: null, //注册积分
+        downPoint: null, //下级注册积分
+        downCommissionRate: null, //下级佣金比例
+        downPointRate: null, //下级积分比例
+        consumePointRate: null //消费积分
+      },
+
+      /** 提现相关配置 */
+      withdrawals: {
+        coin: null, //币种
+        withdrawalFees: null, //提现手续费
+        withdrawalLimits: null, //提款限制
+        withdrawalDayLimits: null //限制天数
+      },
+
+      /** NFT回收相关配置 */
+      nftReclaimRate: null,
+
+      /** 钱包相关 */
+      showDialog: false,
+      walletAddr: null,
+
+      page: 1,
+      size: 20,
+      tableData: null,
+      baseUserPage: null,
+      aggregateQuery: null
+    };
+  },
+  mixins: [pagination],
+  // 方法
+  methods: {
+    bigNumber: bigNumber,
+    timeForStr: timeForStr,
+    // 加载列表
+    async fetchRebatesRecordList(isSearch = true) {
+      const { size, coin, userType } = this;
+      let _page = this.page;
+      if (isSearch) {
+        this.page = 1;
+        _page = 1;
+      }
+      const data = {
+        ...{
+          coin: coin,
+          userType: userType,
+          size: size,
+          page: _page,
+        },
+        ...search,
+      };
+      const res = await this.$http.getRebatesRecordList(data);
+      if (res) {
+        this.baseUserPage = res;
+        this.tableData = res.records;
+      }
+
+      delete data.size;
+      delete data.page;
+      const resAggregateQuery = await this.$http.getRebatesRecordStatistics(data);
+      if (resAggregateQuery) {
+        this.aggregateQuery = resAggregateQuery;
+      }
+    },
+    // 积分配置查询
+    async fetchPointConfig() {
+      const res = await this.$http.getPointConfig();
+
+      if (res) {
+        this.points = {
+          ...res,
+          downCommissionRate: new bigNumber(res.downCommissionRate).multipliedBy(100).toFixed(2), //下级佣金比例
+          downPointRate: new bigNumber(res.downPointRate).multipliedBy(100).toFixed(2), //下级积分比例
+          consumePointRate: new bigNumber(res.consumePointRate).multipliedBy(100).toFixed(2) //消费积分
+        };
+
+        this.$forceUpdate();
+      }
+    },
+    // 积分配置更新
+    async submitPoints() {
+      const {
+        point,
+        downPoint,
+        downCommissionRate,
+        downPointRate,
+        consumePointRate
+      } = this.points;
+
+      if (!point ||
+        !downPoint ||
+        !downCommissionRate ||
+        !downPointRate ||
+        !consumePointRate) {
+        this.$message.error("积分配置相关参数不完整，请补充完整后重试");
+        return
+      }
+
+      const res = await this.$http.pointConfigSet({
+        ...this.points,
+        downCommissionRate: new bigNumber(this.points.downCommissionRate).dividedBy(100).toFixed(4), //下级佣金比例
+        downPointRate: new bigNumber(this.points.downPointRate).dividedBy(100).toFixed(4), //下级积分比例
+        consumePointRate: new bigNumber(this.points.consumePointRate).dividedBy(100).toFixed(4) //消费积分
+      });
+
+      if (res) {
+        this.fetchPointConfig();
+        this.$message.success("操作成功");
+      }
+    },
+    // 提现配置查询
+    async fetchWithdrawalConfig() {
+      const res = await this.$http.getWithdrawalConfig({ coin: this.coin });
+      if (res) {
+        this.withdrawals = {
+          ...res
+        };
+
+        this.$forceUpdate();
+      }
+    },
+    // 提现配置更新
+    async submitWithdrawal() {
+      const {
+        withdrawalFees,
+        withdrawalLimits,
+        withdrawalDayLimits
+      } = this.withdrawals;
+
+      if (
+        !withdrawalFees ||
+        !withdrawalLimits ||
+        !withdrawalDayLimits) {
+        this.$message.error("提现配置相关参数不完整，请补充完整后重试");
+        return
+      }
+
+      const res = await this.$http.withdrawalConfigSet({
+        ...this.withdrawals
+      });
+
+      if (res) {
+        this.fetchWithdrawalConfig();
+        this.$message.success("操作成功");
+      }
+    },
+    // NFT回收配置查询
+    async fetchRecycleConfig() {
+      const res = await this.$http.getRecycleConfig({ coin: this.coin });
+      if (res) {
+        this.nftReclaimRate = new bigNumber(res.nftReclaimRate).multipliedBy(100).toFixed(2);
+        this.$forceUpdate();
+      }
+    },
+    // NFT回收配置更新
+    async submitRecycle() {
+      const {
+        nftReclaimRate,
+      } = this;
+
+      if (
+        !nftReclaimRate) {
+        this.$message.error("NFT回收配置相关参数不完整，请补充完整后重试");
+        return
+      }
+
+      const res = await this.$http.recycleConfigSet({
+        nftReclaimRate: new bigNumber(nftReclaimRate).dividedBy(100).toFixed(4)
+      });
+
+      if (res) {
+        this.fetchRecycleConfig();
+        this.$message.success("操作成功");
+      }
+    },
+    handleClose(done) {
+      if (done) {
+        done()
+        return
+      }
+
+      this.showDialog = false
+    },
+    handleSizeChange(val) {
+      this.size = val;
+      this.fetchRebatesRecordList();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.fetchRebatesRecordList(false);
+    },
+  },
+  // 创建后
+  created() {
+    this.fetchPointConfig();
+    this.fetchWithdrawalConfig();
+    this.fetchRecycleConfig();
+  },
+  computed: {
+    coin() {
+      return this.$store.getters.coinConfig;
+    },
+    userType() {
+      return this.$store.getters.accountConfig;
+    },
+  },
+  // 挂载后
+  mounted() { },
+  // 更新后
+  updated() { },
+  // 销毁
+  beforeDestroy() { },
+};
+</script>
+
+<style lang="scss" scoped>
+.remittance-box {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.remittance-amount {
+  padding: 20px 0;
+  border: 1px solid #666;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 16px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+
+  .val {
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
+  &>div {
+    min-width: 200px;
+  }
+}
+
+.remittance-more {
+  display: flex;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+
+  .setting-title {
+    font-size: 16px;
+    font-weight: bold;
+    width: 140px;
+
+    &>span {
+      margin-right: 8px;
+    }
+  }
+
+  .el-input {
+    margin-bottom: 0;
+  }
+
+  .el-select {
+    margin: 0;
+  }
+}
+
+.page-wrapper {
+  &>div+div {
+    margin-top: 40px;
+  }
+}
+
+.setting-item+.setting-item {
+  margin-top: 10px;
+}
+
+.setting-item+.el-button {
+  margin-top: 10px;
+}
+
+.operating-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  font-weight: bold;
+  width: 760px;
+  padding-bottom: 10px;
+}
+</style>

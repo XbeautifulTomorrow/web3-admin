@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-wrapper">
+  <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="Id" clearable />
       <el-input class="public-input" style="width: 220px;" placeholder="输入市场名称" v-model="marketName" clearable />
