@@ -46,17 +46,6 @@ module.exports = {
       warnings: false,
       errors: true
     },
-    proxy: { // 配置跨域
-      '/mystery-web-admin': {
-        target: `http://221.236.31.34:6599/mystery-web-admin`, //请求后台接口
-        ws: false, //如果要代理 websockets，配置这个参数
-        secure: false, // 如果是https接口，需要配置这个参数
-        changeOrigin: true, //是否跨域
-        pathRewrite: {
-          '^/mystery-web-admin': '' // 重写请求
-        }
-      }
-    },
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

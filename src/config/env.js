@@ -1,9 +1,9 @@
 const config = {
   dev: {
-    api: '/mystery-web-admin',
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
   test: {
-    api: '/mystery-web-admin',
+    api: 'http://221.236.31.34:6599/mystery-web-admin',
   },
   pre: {
     api: '/mystery-web-admin',

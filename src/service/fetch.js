@@ -64,7 +64,7 @@ export const boxManagerDelete = (obj) => S.get('/box-manager/delete', obj); // �
 export const boxManagerWinningRevision = (obj) => S.get('/box-manager/update/adjust', obj); // 盲盒中奖修正
 export const boxManagerOpen = (obj) => S.get('/box-manager/open', obj); // 血池开启
 export const boxManagerClose = (obj) => S.get('/box-manager/close', obj); // 血池关闭
-
+export const calculationPlatformNft = (obj) => S.post('/box-manager/calcNft', obj); // 计算内部Nft数量
 
 /**
  * @description 金流管理

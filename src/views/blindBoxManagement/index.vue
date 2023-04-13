@@ -94,17 +94,17 @@
       </el-table-column>
       <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="15">
         <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.deviseRate || 0).multipliedBy(100).toFixed(2)}%` }}
+          {{ `${new bigNumber(scope.row.deviseRate || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
       <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="16">
         <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.expectRate || 0).multipliedBy(100).toFixed(2)}%` }}
+          {{ `${new bigNumber(scope.row.expectRate || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
       <el-table-column prop="openNumber" width="120" label="抽奖返还率（以十连抽为准）" align="center" key="17">
         <template slot-scope="scope">
-          {{ `${new bigNumber(paybackRate(scope.row) || 0).multipliedBy(100).toFixed(2)}%` }}
+          {{ `${new bigNumber(paybackRate(scope.row) || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
       <el-table-column prop="externalStatus" label="外部异常" align="center" key="18">
@@ -141,14 +141,14 @@
     <el-dialog title="新增盲盒" :visible.sync="showDialog" width="1200px" :close-on-click-modal="false"
       :before-close="handleClose">
       <div class="box-setting">
-        <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
+        <el-form ref="ruleForm" style="width: 420px;" :rules="rules" :model="ruleForm" label-width="100px">
           <el-form-item label="盲盒名称" prop="boxName">
             <el-input v-model="ruleForm.boxName" style="width: 300px" placeholder="请输入盲盒名称">
             </el-input>
           </el-form-item>
           <el-form-item label="盲盒图片" prop="seriesImg">
             <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
-              accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
+              accept="image/png,image/jpg,image/jpeg,image/svg+xml" list-type="picture-card" :before-upload="handleBefore"
               :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
               <i class="el-icon-plus" />
             </el-upload>
@@ -172,19 +172,31 @@
           </el-form-item>
           <el-form-item label="传奇数量" prop="legendNum">
             <el-input type="number" v-model="ruleForm.legendNum" style="width: 300px" placeholder="请输入传奇数量">
-              <template slot="append">几率%</template></el-input>
+              <template slot="append">
+                {{ `几率${new bigNumber(legendNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item label="史诗数量" prop="epicNum">
             <el-input type="number" v-model="ruleForm.epicNum" style="width: 300px" placeholder="请输入史诗数量">
-              <template slot="append">几率%</template></el-input>
+              <template slot="append">
+                {{ `几率${new bigNumber(epicNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item label="稀有数量" prop="rareNum">
             <el-input type="number" v-model="ruleForm.rareNum" style="width: 300px" placeholder="请输入稀有数量">
-              <template slot="append">几率%</template></el-input>
+              <template slot="append">
+                {{ `几率${new bigNumber(rareNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item label="普通数量">
-            <el-input type="number" readonly="readonly" v-model="ruleForm.common" style="width: 300px" placeholder="普通数量">
-              <template slot="append">几率%</template></el-input>
+            <el-input type="number" readonly="readonly" v-model="commonNum" style="width: 300px" placeholder="普通数量">
+              <template slot="append">
+                {{ `几率${new bigNumber(commonNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+              </template>
+            </el-input>
           </el-form-item>
           <el-form-item label="盲盒描述">
             <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述"
@@ -208,9 +220,10 @@
                 <template slot-scope="scope">
                   <div class="number-box">
                     <el-input type="number" class="number" v-model.number="scope.row.number"></el-input>
-                    <el-tooltip class="item" effect="dark" content="该NFT当前最大只能设置为XX个" placement="top-start">
-                      <i v-if="scope.row.realNumber && Number(scope.row.realNumber || 0) < Number(scope.row.number || 0)"
-                        class="icon-warning el-icon-warning-outline"></i>
+                    <el-tooltip
+                      v-if="scope.row.realNumber && Number(scope.row.realNumber || 0) < Number(scope.row.number || 0)"
+                      class="item" effect="dark" :content="`该NFT当前最大只能设置为${scope.row.realNumber}个`" placement="top-start">
+                      <i class="icon-warning el-icon-warning-outline"></i>
                     </el-tooltip>
                   </div>
                 </template>
@@ -219,17 +232,17 @@
               </el-table-column>
               <el-table-column prop="boxImg" label="总价" align="center" key="5">
                 <template slot-scope="scope">
-                  {{ new bigNumber(scope.row.floorPrice).multipliedBy(scope.row.number || 0).toFixed(2) }}
+                  {{ new bigNumber(scope.row.floorPrice).multipliedBy(scope.row.number || 0).toFixed(4) }}
                 </template>
               </el-table-column>
               <el-table-column label="几率" align="center" key="6">
                 <template slot-scope="scope">
-                  {{ probability(scope.row) }}
+                  {{ probability(scope.row, 1) }}
                 </template>
               </el-table-column>
               <el-table-column prop="id" align="center" width="60" key="7" fixed="right">
                 <template slot-scope="scope">
-                  <img style="width: 24px;" @click="handleNftDel(scope.row, scope.$index, 1)"
+                  <img style="width: 24px;cursor: pointer;" @click="handleNftDel(scope.row, scope.$index, 1)"
                     src="@/assets/images/icon_delete.svg" />
                 </template>
               </el-table-column>
@@ -239,7 +252,7 @@
             <div class="operating-box">
               <div class="title">内部NFT配置</div>
               <div class="btn">
-                <img src="@/assets/images/icon_calculator.svg" />
+                <img src="@/assets/images/icon_calculator.svg" @click="calculationPlatformNft()" />
                 <div class="add" @click="addSeries(2)">添加</div>
               </div>
             </div>
@@ -259,29 +272,42 @@
               </el-table-column>
               <el-table-column prop="number" label="数量" align="center" key="5">
                 <template slot-scope="scope">
-                  {{ scope.row.number && new bigNumber(scope.row.number || 0).multipliedBy(scope.row.multipleRate ||
-                    0).toFixed(0) || "--" }}
+                  {{ ruleForm.innerBaseNumber && Math.ceil(Number(new bigNumber(ruleForm.innerBaseNumber ||
+                    0).multipliedBy(scope.row.multipleRate ||
+                      0))) || "--" }}
                 </template>
               </el-table-column>
               <el-table-column label="总价" align="center" key="6">
                 <template slot-scope="scope">
-                  {{ new bigNumber(scope.row.price).multipliedBy(scope.row.number || 1).toFixed(2) }}
+                  {{ new bigNumber(scope.row.price).multipliedBy(Math.ceil(Number(new bigNumber(ruleForm.innerBaseNumber
+                    ||
+                    1).multipliedBy(scope.row.multipleRate ||
+                      0)))).toFixed(4) }}
                 </template>
               </el-table-column>
               <el-table-column label="几率" align="center" key="7">
                 <template slot-scope="scope">
-                  {{ probability(scope.row) }}
+                  {{ probability(scope.row, 2) }}
                 </template>
               </el-table-column>
               <el-table-column prop="id" align="center" width="120" key="20" fixed="right">
                 <template slot-scope="scope">
-                  <img style="width: 24px;margin-right: 10px;" @click="ebitSeries(scope.row)"
+                  <img style="width: 24px;margin-right: 10px;cursor: pointer;" @click="ebitSeries(scope.row)"
                     src="@/assets/images/icon_ebit.svg" />
-                  <img style="width: 24px;" @click="handleNftDel(scope.row, scope.$index, 2)"
+                  <img style="width: 24px;cursor: pointer;" @click="handleNftDel(scope.row, scope.$index, 2)"
                     src="@/assets/images/icon_delete.svg" />
                 </template>
               </el-table-column>
             </el-table>
+          </div>
+          <div class="probability-box">
+            <div>
+              {{ ruleForm.expectRate && `预计返还率：${new bigNumber(ruleForm.expectRate || 0).multipliedBy(100).toFixed(4)}%`
+              }}
+            </div>
+            <div>
+              {{ ruleForm.lossRate && `赔本率：${new bigNumber(ruleForm.lossRate || 0).multipliedBy(100).toFixed(4)}%` }}
+            </div>
           </div>
         </div>
       </div>
@@ -381,7 +407,10 @@ export default {
         rareNum: null, //稀有数量
         boxDesc: null, //盲盒描述
         platformList: [],
-        externalList: []
+        externalList: [],
+        expectRate: null, // 期望返还率
+        lossRate: null, // 亏本几率
+        innerBaseNumber: null, // 基准NFT数量
       },
       chainList: chainList,
       rules: {
@@ -433,9 +462,11 @@ export default {
         floorPrice: null,
         price: null,
         multipleRate: null,
-        baseStatus: "FALSE"
+        baseStatus: "FALSE",
+        number: null
       },
-      downNft: null
+      downNft: null,
+      calculationNft: []
     };
   },
   mixins: [pagination],
@@ -577,16 +608,60 @@ export default {
     addBox() {
       this.showDialog = true;
     },
-    // 编辑中奖修正
+    // 编辑盲盒
     onEbit(row) {
-      this.ruleForm.adjust = row.adjust;
-      this.ruleForm.id = row.id;
+      this.ruleForm = {
+        ...this.ruleForm,
+        ...row,
+        deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4)
+      }
+      this.fileImg = [{ url: row.boxImg }];
+
+      const platformLists = row.platformList;
+      const externalLists = row.externalList;
+
+      for (let i = 0; i < platformLists.length; i++) {
+        if (platformLists[i].baseStatus == "TRUE") {
+          this.ruleForm.innerBaseNumber = platformLists[i].nftNum || 0;
+        }
+
+        this.platformData.forEach(element => {
+          if (platformLists[i].seriesId == element.id) {
+            this.platformList.push({
+              ...this.seriesForm,
+              ...platformLists[i],
+              ...element,
+              floorPrice: element.floorPrice || null,
+              price: element.price || null,
+              seriesName: element.seriesName || null
+            })
+          }
+        });
+      }
+
+      for (let i = 0; i < externalLists.length; i++) {
+        this.externalData.forEach(element => {
+          if (externalLists[i].seriesId == element.id) {
+            this.externalList.push({
+              ...this.seriesForm,
+              ...externalLists[i],
+              ...element,
+              floorPrice: element.floorPrice || null,
+              price: element.price || null,
+              seriesName: element.seriesName || null,
+              number: externalLists[i].nftNum || null
+            })
+          }
+        });
+      }
+
+      this.$forceUpdate();
       this.showDialog = true;
     },
     handleUpload(res) {
       if (res.code == 200) {
         this.fileImg.push({ url: res.data });
-        this.ruleForm.seriesImg = res.data;
+        this.ruleForm.boxImg = res.data;
         return;
       }
       this.$message.error("上传失败");
@@ -605,18 +680,108 @@ export default {
     handExceed(fiel) {
       this.$message.error("文件只能上传一个");
     },
-    // 提交
+    // 提交盲盒数据
     submitForm() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          let ruleForm = { ...this.ruleForm };
-          let res = await this.$http.boxManagerWinningRevision({ ...ruleForm });
+          const { ruleForm: { innerBaseNumber }, fileImg, platformList, externalList, calculationNft } = this;
+
+          if (fileImg.length == 0) {
+            this.$message.error("请上传盲盒图片！");
+            return;
+          }
+
+          if (!platformList.length > 0) {
+            this.$message.error("请选择外部NFT！");
+            return;
+          }
+
+          if (!externalList.length > 0) {
+            this.$message.error("请选择内部NFT！");
+            return;
+          }
+
+          if (!calculationNft.length > 0) {
+            this.$message.error("未计算内部NFT基准数据，请补充完整后重试");
+            return
+          };
+
+          if (!innerBaseNumber && innerBaseNumber > 0) {
+            this.$message.error("内部NFT基准数据不能为负数，请更正后重试");
+            return
+          };
+
+
+          let platformNftList = [];
+          let externalNftList = [];
+
+          try {
+            externalList.forEach(element => {
+              console.log(element)
+              console.log("111")
+              if (Number(element.realNumber) < Number(element.number)) {
+                console.log("最大数量不对")
+                throw new Error("error");
+              }
+
+              if (!element.number || Number(element.number) <= 0) {
+                console.log("空数量")
+                throw new Error("error");
+              }
+
+              externalNftList.push({
+                seriesId: element.seriesId, //系列ID
+                nftNum: element.number, //数量
+              })
+            })
+          } catch (e) {
+            this.$message.error("外部NFT系列数量不正确，请补充完整后重试");
+            return
+          };
+
+          try {
+            externalList.forEach(element => {
+              if (!element.number || Number(element.number) <= 0) {
+                throw new Error("error");
+              }
+
+              externalNftList.push({
+                seriesId: element.seriesId, //系列ID
+                nftNum: element.number, //数量
+              })
+            })
+          } catch (e) {
+            this.$message.error("有外部NFT系列未输入数量，请补充完整后重试");
+            return
+          };
+
+          platformList.forEach(element => {
+            platformNftList.push({
+              seriesId: element.seriesId, //系列ID
+              multipleRate: element.multipleRate, //倍率
+              baseStatus: element.baseStatus //是否是基准NFT(TRUE-是,FALSE-否)
+            })
+          })
+
+          let ruleForm = {
+            ...this.ruleForm,
+            coin: this.coin,
+            deviseRate: new bigNumber(this.ruleForm.deviseRate).dividedBy(100).toFixed(6),
+            platformList: platformNftList,
+            externalList: externalNftList
+          };
+
+          let res = null
+          if (!this.ruleForm.id) {
+            res = await this.$http.boxManagerAdd({ ...ruleForm });
+          } else {
+            res = await this.$http.boxManagerUpdate({ ...ruleForm });
+          }
 
           if (res) {
+            this.$message.success("操作成功");
             this.handleClose();
             this.fetchBoxManagerList();
-            this.$refs["ruleForm"].resetFields();
-            this.$message.success("操作成功！");
           }
         } else {
           console.log("error submit!!");
@@ -680,33 +845,28 @@ export default {
         if (this.isEbit) {
           const index = this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId);
           this.platformList[index] = this.seriesForm;
-          const platform = this.platformList;
-          this.platformList = [];
-
-          setTimeout(() => {
-            this.platformList = platform;
-          }, 10);
         } else {
           this.platformList.push(this.seriesForm);
-          if (this.seriesForm.baseStatus == "TRUE" && this.platformList.length > 1) {
-            for (let i = 0; i < this.platformList.length; i++) {
-              const element = this.platformList[i];
-              if (element.seriesId == this.seriesForm.seriesId) {
-                this.platformList[i].baseStatus = "TRUE";
-              } else {
-                this.platformList[i].baseStatus = "FALSE";
-              }
+        }
+
+        // 更新基准Nft系列
+        if (this.seriesForm.baseStatus == "TRUE" && this.platformList.length > 1) {
+          for (let i = 0; i < this.platformList.length; i++) {
+            const element = this.platformList[i];
+            if (element.seriesId == this.seriesForm.seriesId) {
+              this.platformList[i].baseStatus = "TRUE";
+            } else {
+              this.platformList[i].baseStatus = "FALSE";
             }
-
-            const platform = this.platformList;
-            this.platformList = [];
-
-            setTimeout(() => {
-              this.platformList = platform;
-            }, 10);
           }
         }
 
+        const platform = this.platformList;
+        this.platformList = [];
+
+        setTimeout(() => {
+          this.platformList = platform;
+        }, 10);
       }
 
       this.$forceUpdate();
@@ -715,18 +875,137 @@ export default {
     /**
      * @description 计算抽奖概率
      */
-    probability(event) {
+    probability(event, type) {
+      const { innerBaseNumber } = this.ruleForm;
       const nftData = this.platformList.concat(this.externalList);
       let nftNumber = 0;
       nftData.forEach(element => {
-        nftNumber += element.number || 0;
+        if (type == 1) {
+          nftNumber += Number(element.number || 0);
+        } else {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          nftNumber += platformNum && platformNum > 0 ? platformNum : 0;
+        }
       });
 
-      if (!event.number && !nftNumber) {
+      const platformNumber = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(event.multipleRate)));
+      const nftNun = innerBaseNumber && platformNumber > 0 ? platformNumber : 0;
+
+      if (type == 1) {
+        if (!event.number) {
+          return "--"
+        }
+      } else {
+        if (!nftNun) {
+          return "--"
+        }
+      }
+
+      if (!nftNumber) {
         return "--"
       }
 
-      return `${new bigNumber(event.number || 0).dividedBy(nftNumber || 0).multipliedBy(100).toFixed(4)}%`;
+      if (type == 1) {
+        return `${new bigNumber(event.number || 0).dividedBy(nftNumber || 0).multipliedBy(100).toFixed(4)}%`;
+      } else {
+        return `${new bigNumber(nftNun || 0).dividedBy(nftNumber || 0).multipliedBy(100).toFixed(4)}%`;
+      }
+
+    },
+    // 计算平台NFT数量
+    calculationPlatformNft() {
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (valid) {
+          const { fileImg, platformList, externalList } = this;
+          if (fileImg.length == 0) {
+            this.$message.error("请上传盲盒图片！");
+            return;
+          }
+
+          if (!platformList.length > 0) {
+            this.$message.error("请选择外部NFT！");
+            return;
+          }
+
+          if (!externalList.length > 0) {
+            this.$message.error("请选择内部NFT！");
+            return;
+          }
+
+          let platformNftList = [];
+          let externalNftList = [];
+
+          try {
+            externalList.forEach(element => {
+              if (!element.number || Number(element.number) <= 0) {
+                throw new Error("error");
+              }
+
+              externalNftList.push({
+                seriesId: element.seriesId, //系列ID
+                nftNum: element.number, //数量
+              })
+            })
+          } catch (e) {
+            this.$message.error("有外部NFT系列未输入数量，请补充完整后重试");
+            return
+          };
+
+          platformList.forEach(element => {
+            platformNftList.push({
+              seriesId: element.seriesId, //系列ID
+              multipleRate: element.multipleRate, //倍率
+              baseStatus: element.baseStatus //是否是基准NFT(TRUE-是,FALSE-否)
+            })
+          })
+
+          let ruleForm = {
+            ...this.ruleForm,
+            coin: this.coin,
+            deviseRate: new bigNumber(this.ruleForm.deviseRate).dividedBy(100).toFixed(6),
+            platformList: platformNftList,
+            externalList: externalNftList
+          };
+          let res = await this.$http.calculationPlatformNft({ ...ruleForm });
+          if (res) {
+            this.ruleForm = {
+              ...this.ruleForm,
+              expectRate: res.expectRate, // 期望返还率
+              lossRate: res.lossRate, // 亏本几率
+              innerBaseNumber: res.innerBaseNumber, // 基准NFT数量
+            }
+
+            this.calculationNft = res.seriesSort; // 合计NFT系列
+
+            for (let i = 0; i < this.platformList.length; i++) {
+              for (let j = 0; j < this.calculationNft.length; j++) {
+                if (
+                  this.calculationNft[j].nftType == "PLATFORM"
+                  && this.calculationNft[j].seriesId == this.platformList[i].seriesId
+                ) {
+                  this.platformList[i].price = this.calculationNft[j].averagePrice;
+                }
+              }
+            }
+
+            for (let i = 0; i < this.externalList.length; i++) {
+              for (let j = 0; j < this.calculationNft.length; j++) {
+                if (
+                  this.calculationNft[j].nftType == "EXTERNAL"
+                  && this.calculationNft[j].seriesId == this.externalList[i].seriesId
+                ) {
+                  this.externalList[i].realNumber = this.calculationNft[j].realNumber;
+                  this.externalList[i].number = this.calculationNft[j].number;
+                  this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
+                }
+              }
+            }
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     // 删除NFT
     handleNftDel(row, index, type) {
@@ -769,8 +1048,15 @@ export default {
         rareNum: null, //稀有数量
         boxDesc: null, //盲盒描述
         platformList: [],
-        externalList: []
+        externalList: [],
+        expectRate: null, // 期望返还率
+        lossRate: null, // 亏本几率
+        innerBaseNumber: null, // 基准NFT数量
       };
+
+      this.calculationNft = [];
+      this.platformList = [];
+      this.externalList = [];
 
       this.$forceUpdate();
 
@@ -796,6 +1082,8 @@ export default {
   // 创建后
   created() {
     this.fetchBoxManagerList();
+    this.fetchNftExternalList();
+    this.fetchNftPlatformList();
     this.uploadUrl = config.api + "/file/upload/image";
   },
   computed: {
@@ -804,6 +1092,137 @@ export default {
     },
     userType() {
       return this.$store.getters.accountConfig;
+    },
+    /**
+     * @description 计算普通NFT系列数量
+     */
+    commonNum() {
+      const { ruleForm: { legendNum, epicNum, rareNum }, externalList, platformList } = this;
+
+      const totalNum = Number(legendNum) + Number(epicNum) + Number(rareNum);
+      const nftNum = externalList.length + platformList.length;
+
+      if (totalNum >= nftNum) {
+        return 0
+      }
+
+      return nftNum - totalNum;
+    },
+    /**
+     * @description 计算NFT总数量
+     */
+    nftTotalNum() {
+      const { calculationNft, ruleForm: { innerBaseNumber } } = this;
+
+      if (!calculationNft.length > 0) return 0
+
+      let totalNum = 0;
+      calculationNft.forEach(element => {
+        if (element.nftType == "PLATFORM") {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          totalNum += platformNum && platformNum > 0 ? platformNum : 0;
+        } else {
+          totalNum += Number(element.number);
+        }
+      })
+
+      return totalNum;
+    },
+    /**
+     * @description 计算传奇NFT概率
+     */
+    legendNftProbability() {
+      const { ruleForm: { legendNum, innerBaseNumber }, calculationNft, nftTotalNum } = this;
+
+      if (!calculationNft.length > 0) return 0
+      if (!legendNum) return 0;
+
+      const nftData = calculationNft.slice(0, legendNum);
+      console.log("传奇NFT" + JSON.stringify(nftData));
+
+      let legendNftNum = 0;
+      nftData.forEach(element => {
+        if (element.nftType == "PLATFORM") {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          legendNftNum += platformNum && platformNum > 0 ? platformNum : 0;
+        } else {
+          legendNftNum += Number(element.number);
+        }
+      })
+
+      return new bigNumber(legendNftNum).dividedBy(nftTotalNum).toFixed(6);
+    },
+    /**
+     * @description 计算史诗NFT概率
+     */
+    epicNftProbability() {
+      const { ruleForm: { legendNum, epicNum, innerBaseNumber }, calculationNft, nftTotalNum } = this;
+
+      if (!calculationNft.length > 0) return 0
+      if (!epicNum) return 0;
+
+      const nftData = calculationNft.slice(legendNum, Number(legendNum) + Number(epicNum));
+      console.log("史诗NFT" + JSON.stringify(nftData));
+
+      let epicNftNum = 0;
+      nftData.forEach(element => {
+        if (element.nftType == "PLATFORM") {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          epicNftNum += platformNum && platformNum > 0 ? platformNum : 0;
+        } else {
+          epicNftNum += Number(element.number);
+        }
+      })
+
+      return new bigNumber(epicNftNum).dividedBy(nftTotalNum).toFixed(6);
+    },
+    /**
+     * @description 计算稀有NFT概率
+     */
+    rareNftProbability() {
+      const { ruleForm: { legendNum, epicNum, rareNum, innerBaseNumber }, calculationNft, nftTotalNum } = this;
+
+      if (!calculationNft.length > 0) return 0
+      if (!rareNum) return 0;
+
+      const nftData = calculationNft.slice(Number(legendNum) + Number(epicNum), Number(legendNum) + Number(epicNum) + Number(rareNum));
+      console.log("稀有NFT" + JSON.stringify(nftData));
+
+      let rareNftNum = 0;
+      nftData.forEach(element => {
+        if (element.nftType == "PLATFORM") {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          rareNftNum += platformNum && platformNum > 0 ? platformNum : 0;
+        } else {
+          rareNftNum += Number(element.number);
+        }
+      })
+
+      return new bigNumber(rareNftNum).dividedBy(nftTotalNum).toFixed(6);
+    },
+    /**
+     * @description 计算普通NFT概率
+     */
+    commonNftProbability() {
+      const { ruleForm: { legendNum, epicNum, rareNum, innerBaseNumber }, calculationNft, nftTotalNum, commonNum } = this;
+
+      if (!calculationNft.length > 0) return 0
+      if (!rareNum) return 0;
+
+      const nftData = calculationNft.slice(Number(legendNum) + Number(epicNum) + Number(rareNum), Number(legendNum) + Number(epicNum) + Number(rareNum) + commonNum);
+      console.log("普通NFT" + JSON.stringify(nftData));
+
+      let commonNftNum = 0;
+      nftData.forEach(element => {
+        if (element.nftType == "PLATFORM") {
+          const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
+          commonNftNum += platformNum && platformNum > 0 ? platformNum : 0;
+        } else {
+          commonNftNum += Number(element.number);
+        }
+      })
+
+      return new bigNumber(commonNftNum).dividedBy(nftTotalNum).toFixed(6);
     }
   },
   // 挂载后
@@ -929,6 +1348,15 @@ export default {
     width: 30px;
     cursor: pointer;
     margin-right: 10px;
+  }
+}
+
+.probability-box {
+  display: flex;
+  align-items: center;
+
+  &>div+div {
+    margin-left: 20px;
   }
 }
 </style>
