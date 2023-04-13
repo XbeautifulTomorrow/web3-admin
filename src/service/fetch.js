@@ -123,4 +123,9 @@ export const getWithdrawalConfig = (obj) => S.get('/system-setting/findWithdrawa
 export const withdrawalConfigSet = (obj) => S.post('/system-setting/withdrawalSetting', obj); // 提现配置更改
 export const getRecycleConfig = (obj) => S.get('/system-setting/findReclaimSetting', obj); // NFT回收配置查询
 export const recycleConfigSet = (obj) => S.post('/system-setting/reclaimSetting', obj); // NFT回收配置更改
+export const getSystemWalletList = (obj) => S.get('/system-wallet/pageList', obj); // 归集钱包列表
+export const systemWalletActive = (obj) => S.get('/system-wallet/activate', obj); // 归集钱包激活
+export const systemWalletAdd = (obj) => S.post('/system-wallet/add', obj); // 归集钱包新增
+export const systemWalletDel = (obj) => S.get('/system-wallet/delete', obj); // 归集钱包删除
+
 

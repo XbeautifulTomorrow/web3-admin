@@ -94,18 +94,31 @@
         <el-button type="primary" style="width: 160px;" @click="showDialog = true">新增钱包</el-button>
       </div>
       <el-table :data="tableData" style="width: 760px;min-width: 0;" class="public-table" border>
-        <el-table-column prop="flowId" width="300" label="钱包地址" align="center" key="1">
+        <el-table-column prop="walletAddress" width="300" label="钱包地址" align="center" key="1">
         </el-table-column>
         <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
+          <template slot-scope="scope">
+            <div v-for="(item, index) in scope.row.innetWalletList" :key="index">
+              {{ `${item.coin}:${item.assetBalance}` }}
+            </div>
+          </template>
         </el-table-column>
-        <el-table-column prop="flowId" width="100" label="激活状态" align="center" key="3">
+        <el-table-column prop="walletStatus" width="100" label="激活状态" align="center" key="3">
+          <template slot-scope="scope">
+            <span style="color: #04B000;" v-if="scope.row.walletStatus == 'NORMAL'">
+              已激活
+            </span>
+            <span style="color: red;" v-else>
+              未激活
+            </span>
+          </template>
         </el-table-column>
         <el-table-column label="操作" align="center" key="4" fixed="right">
           <template slot-scope="scope">
-            <span class="blueColor publick-button cursor">
+            <span class="blueColor publick-button cursor" @click="walletActive(scope.row)">
               激活
             </span>
-            <span class="blueColor publick-button cursor">
+            <span class="blueColor publick-button cursor" @click="walletDel(scope.row)">
               删除
             </span>
           </template>
@@ -120,9 +133,7 @@
       :before-close="handleClose">
       <el-form ref="ruleForm" class="add-form" label-width="80px">
         <el-form-item label="钱包地址" prop="reclaimRate">
-          <el-input type="number" v-model.number="walletAddr" style="width: 300px" placeholder="请输入钱包地址">
-            <template slot="append">%</template>
-          </el-input>
+          <el-input v-model="walletAddr" style="width: 300px" placeholder="请输入钱包地址"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -183,33 +194,22 @@ export default {
     bigNumber: bigNumber,
     timeForStr: timeForStr,
     // 加载列表
-    async fetchRebatesRecordList(isSearch = true) {
-      const { size, coin, userType } = this;
+    async fetchSystemWalletList(isSearch = true) {
+      const { size } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
         _page = 1;
       }
       const data = {
-        ...{
-          coin: coin,
-          userType: userType,
-          size: size,
-          page: _page,
-        },
-        ...search,
+        walletType: "GATHER",
+        size: size,
+        page: _page
       };
-      const res = await this.$http.getRebatesRecordList(data);
+      const res = await this.$http.getSystemWalletList(data);
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
-      }
-
-      delete data.size;
-      delete data.page;
-      const resAggregateQuery = await this.$http.getRebatesRecordStatistics(data);
-      if (resAggregateQuery) {
-        this.aggregateQuery = resAggregateQuery;
       }
     },
     // 积分配置查询
@@ -323,6 +323,64 @@ export default {
         this.$message.success("操作成功");
       }
     },
+    // 新增归集钱包
+    async submitForm() {
+      if (!this.walletAddr) {
+        this.$message.error("请输入归集钱包地址");
+        return
+      }
+
+      const res = await this.$http.systemWalletAdd({
+        walletAddress: this.walletAddr,
+        walletType: "GATHER"
+      });
+
+      if (res) {
+        this.handleClose();
+        this.fetchSystemWalletList();
+        this.$message.success("操作成功");
+      }
+    },
+    //激活钱包
+    walletActive(row) {
+      this.$confirm(`确定要激活钱包『${row.walletAddress}』吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          const res = await this.$http.systemWalletActive({
+            id: row.id
+          });
+          if (res) {
+            this.fetchSystemWalletList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    //删除钱包
+    walletDel(row) {
+      this.$confirm(`确定要删除钱包『${row.walletAddress}』吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          const res = await this.$http.systemWalletDel({
+            id: row.id
+          });
+          if (res) {
+            this.fetchSystemWalletList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
     handleClose(done) {
       if (done) {
         done()
@@ -333,15 +391,16 @@ export default {
     },
     handleSizeChange(val) {
       this.size = val;
-      this.fetchRebatesRecordList();
+      this.fetchSystemWalletList();
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.fetchRebatesRecordList(false);
+      this.fetchSystemWalletList(false);
     },
   },
   // 创建后
   created() {
+    this.fetchSystemWalletList();
     this.fetchPointConfig();
     this.fetchWithdrawalConfig();
     this.fetchRecycleConfig();
