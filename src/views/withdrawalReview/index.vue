@@ -455,21 +455,23 @@ export default {
       openUrl(chain + url)
     },
     handleClose(done) {
-      if (done) {
-        done()
-        return
-      }
 
       /** NFT提现相关 */
-      this.showNftDialog = false;
       this.withdrawNftList = null;
       this.showNftType = 1;
 
       /** 审核相关 */
-      this.showReviewDialog = false
       this.reviewType = 1
       this.reviewStatus = null
       this.reviewData = null
+
+      if (done) {
+        done()
+        return
+      }
+      
+      this.showNftDialog = false;
+      this.showReviewDialog = false;
 
     },
     handleSizeChange(val) {

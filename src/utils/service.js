@@ -91,7 +91,7 @@ var service = {
         }
       }
     }
-    let promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {
       instance
         .post(api, sendData)
         .then((response) => {
@@ -165,7 +165,7 @@ var service = {
         }
       }
     }
-    let promise = new Promise(function(resolve, reject) {
+    let promise = new Promise(function (resolve, reject) {
       instance
         .get(api, {
           params: sendData,
@@ -262,7 +262,7 @@ var service = {
         document.body.appendChild(link);
         link.click();
       })
-      .catch((error) => {});
+      .catch((error) => { });
   },
 };
 

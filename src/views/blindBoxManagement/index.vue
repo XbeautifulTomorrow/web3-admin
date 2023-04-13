@@ -142,8 +142,8 @@
       :before-close="handleClose">
       <div class="box-setting">
         <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
-          <el-form-item label="盲盒名称" prop="adjust">
-            <el-input v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入盲盒名称">
+          <el-form-item label="盲盒名称" prop="boxName">
+            <el-input v-model="ruleForm.boxName" style="width: 300px" placeholder="请输入盲盒名称">
             </el-input>
           </el-form-item>
           <el-form-item label="盲盒图片" prop="seriesImg">
@@ -153,41 +153,42 @@
               <i class="el-icon-plus" />
             </el-upload>
           </el-form-item>
-          <el-form-item label="推荐顺序" prop="adjust">
-            <el-input type="number" v-model.number="ruleForm.adjust" style="width: 300px"
+          <el-form-item label="推荐顺序" prop="boxIndex">
+            <el-input type="number" v-model.number="ruleForm.boxIndex" style="width: 300px"
               placeholder="请输入推荐顺序"></el-input>
           </el-form-item>
-          <el-form-item label="单价" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入单价"></el-input>
+          <el-form-item label="单价" prop="price">
+            <el-input type="number" v-model="ruleForm.price" style="width: 300px" placeholder="请输入单价"></el-input>
           </el-form-item>
-          <el-form-item label="五连价格" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入五连价格"></el-input>
+          <el-form-item label="五连价格" prop="fivePrice">
+            <el-input type="number" v-model="ruleForm.fivePrice" style="width: 300px" placeholder="请输入五连价格"></el-input>
           </el-form-item>
-          <el-form-item label="十连价格" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入十连价格"></el-input>
+          <el-form-item label="十连价格" prop="tenPrice">
+            <el-input type="number" v-model="ruleForm.tenPrice" style="width: 300px" placeholder="请输入十连价格"></el-input>
           </el-form-item>
-          <el-form-item label="设计返还率" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入设计返还率">
+          <el-form-item label="设计返还率" prop="deviseRate">
+            <el-input type="number" v-model="ruleForm.deviseRate" style="width: 300px" placeholder="请输入设计返还率">
               <template slot="append">%</template></el-input>
           </el-form-item>
-          <el-form-item label="传奇数量" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入传奇数量">
+          <el-form-item label="传奇数量" prop="legendNum">
+            <el-input type="number" v-model="ruleForm.legendNum" style="width: 300px" placeholder="请输入传奇数量">
               <template slot="append">几率%</template></el-input>
           </el-form-item>
-          <el-form-item label="史诗数量" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入史诗数量">
+          <el-form-item label="史诗数量" prop="epicNum">
+            <el-input type="number" v-model="ruleForm.epicNum" style="width: 300px" placeholder="请输入史诗数量">
               <template slot="append">几率%</template></el-input>
           </el-form-item>
-          <el-form-item label="稀有数量" prop="adjust">
-            <el-input type="number" v-model="ruleForm.adjust" style="width: 300px" placeholder="请输入稀有数量">
+          <el-form-item label="稀有数量" prop="rareNum">
+            <el-input type="number" v-model="ruleForm.rareNum" style="width: 300px" placeholder="请输入稀有数量">
               <template slot="append">几率%</template></el-input>
           </el-form-item>
-          <el-form-item label="普通数量" prop="adjust">
-            <el-input type="number" readonly="readonly" v-model="ruleForm.adjust" style="width: 300px" placeholder="普通数量">
+          <el-form-item label="普通数量">
+            <el-input type="number" readonly="readonly" v-model="ruleForm.common" style="width: 300px" placeholder="普通数量">
               <template slot="append">几率%</template></el-input>
           </el-form-item>
           <el-form-item label="盲盒描述">
-            <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.remark"></el-input>
+            <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述"
+              v-model="ruleForm.boxDesc"></el-input>
           </el-form-item>
         </el-form>
         <div class="nft-box">
@@ -199,7 +200,7 @@
               </div>
             </div>
             <el-table :data="externalList" style="min-width: 0;" class="public-table">
-              <el-table-column prop="seriesName" label="系列" align="center" key="1">
+              <el-table-column prop="seriesName" label="系列" align="center" key="1" show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="chain" label="链" align="center" key="2">
               </el-table-column>
@@ -289,8 +290,8 @@
         <el-button type="primary" @click="submitForm()">确 定</el-button>
       </span>
       <el-dialog width="400px" :close-on-click-modal="false" :title="seriesType == 1 ? '选择外部NFT' : '选择内部NFT'"
-        :visible.sync="showSeriesDialog" append-to-body>
-        <el-form ref="ruleForm" class="add-form" :model="ruleForm" label-width="80px">
+        :visible.sync="showSeriesDialog" append-to-body :before-close="handleSeriesClose">
+        <el-form ref="seriesForm" class="add-form" :model="seriesForm" label-width="80px">
           <div class="benchmark-obx" v-if="seriesType == 2">
             <img v-if="!platformList.length > 0" src="@/assets/images/icon_benchmark_active.svg" alt="" srcset="">
             <img v-else-if="seriesForm.baseStatus == 'TRUE'" @click="seriesForm.baseStatus = 'FALSE'"
@@ -366,12 +367,55 @@ export default {
         certificate: sessionStorage.getItem("token"),
       },
       fileImg: [],
-      ruleForm: { adjust: null },
+      ruleForm: {
+        boxName: null, //盲盒名称
+        boxImg: null, //盲盒图片
+        boxIndex: null, //推荐顺序
+        price: null, //价格
+        coin: "ETH", //币种
+        fivePrice: null, //五连价格
+        tenPrice: null, //十连价格
+        deviseRate: null, //设计返还率
+        legendNum: null, //传奇数量
+        epicNum: null, //史诗数量
+        rareNum: null, //稀有数量
+        boxDesc: null, //盲盒描述
+        platformList: [],
+        externalList: []
+      },
       chainList: chainList,
       rules: {
-        adjust: [
-          { required: true, message: "请输入中奖修正", trigger: ["blur", "change"] },
+        boxName: [
+          { required: true, message: "请输入盲盒名称", trigger: ["blur", "change"] },
         ],
+        boxImg: [
+          { required: true, message: "请选择盲盒图片", trigger: ["blur", "change"] },
+        ],
+        boxIndex: [
+          { required: true, message: "请输入推荐顺序", trigger: ["blur", "change"] },
+        ],
+        price: [
+          { required: true, message: "请输入价格", trigger: ["blur", "change"] },
+        ],
+        coin: "ETH", //币种
+        fivePrice: [
+          { required: true, message: "请输入五连价格", trigger: ["blur", "change"] },
+        ],
+        tenPrice: [
+          { required: true, message: "请输入十连价格", trigger: ["blur", "change"] },
+        ],
+        deviseRate: [
+          { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },
+        ],
+        legendNum: [
+          { required: true, message: "请输入传奇数量", trigger: ["blur", "change"] },
+        ],
+        epicNum: [
+          { required: true, message: "请输入史诗数量", trigger: ["blur", "change"] },
+        ],
+        rareNum: [
+          { required: true, message: "请输入稀有数量", trigger: ["blur", "change"] },
+        ]
       },
       externalData: [],
       platformData: [],
@@ -668,6 +712,22 @@ export default {
       this.$forceUpdate();
       this.handleSeriesClose();
     },
+    /**
+     * @description 计算抽奖概率
+     */
+    probability(event) {
+      const nftData = this.platformList.concat(this.externalList);
+      let nftNumber = 0;
+      nftData.forEach(element => {
+        nftNumber += element.number || 0;
+      });
+
+      if (!event.number && !nftNumber) {
+        return "--"
+      }
+
+      return `${new bigNumber(event.number || 0).dividedBy(nftNumber || 0).multipliedBy(100).toFixed(4)}%`;
+    },
     // 删除NFT
     handleNftDel(row, index, type) {
       if (type == 1) {
@@ -694,29 +754,35 @@ export default {
 
       this.showSeriesDialog = false
     },
-
-    /**
-     * @description 计算抽奖概率
-     */
-    probability(event) {
-      const nftData = this.platformList.concat(this.externalList);
-      let nftNumber = 0;
-      nftData.forEach(element => {
-        nftNumber += element.number || 0;
-      });
-
-      if (!event.number && !nftNumber) {
-        return "--"
-      }
-
-      return `${new bigNumber(event.number || 0).dividedBy(nftNumber || 0).multipliedBy(100).toFixed(4)}%`;
-    },
     handleClose(done) {
+      this.ruleForm = {
+        boxName: null, //盲盒名称
+        boxImg: null, //盲盒图片
+        boxIndex: null, //推荐顺序
+        price: null, //价格
+        coin: "ETH", //币种
+        fivePrice: null, //五连价格
+        tenPrice: null, //十连价格
+        deviseRate: null, //设计返还率
+        legendNum: null, //传奇数量
+        epicNum: null, //史诗数量
+        rareNum: null, //稀有数量
+        boxDesc: null, //盲盒描述
+        platformList: [],
+        externalList: []
+      };
+
+      this.$forceUpdate();
+
+      setTimeout(() => {
+        this.$refs["ruleForm"].clearValidate();
+      }, 10);
+
       if (done) {
         done()
         return
       }
-      this.showDialog = false
+      this.showDialog = false;
     },
     handleSizeChange(val) {
       this.size = val;

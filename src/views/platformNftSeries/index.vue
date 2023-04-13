@@ -248,11 +248,12 @@ export default {
         });
     },
     handleClose(done) {
+      this.operatingType = 1;
+      
       if (done) {
         done()
         return
       }
-      this.operatingType = 1;
       this.showDialog = false
     },
     handleUpload(res) {

@@ -346,17 +346,17 @@ export default {
       }
     },
     handleClose(done) {
-      if (done) {
-        done()
-        return
-      }
-
-      this.showDialog = false;
-      this.showUpDownDialog = false;
       this.uploadType = 1;
       this.score = 0;
       this.scoreId = "";
       this.testData = [];
+      if (done) {
+        done()
+        return
+      }
+      
+      this.showDialog = false;
+      this.showUpDownDialog = false;
     },
     handleUpload(res) {
       this.uploadType = 2;
