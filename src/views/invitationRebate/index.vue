@@ -276,7 +276,6 @@ export default {
       if (res) {
         this.downBaseUserPage = res;
         this.downData = res.records;
-        this.tableData = [11, 144];
       }
 
       delete data.size;
