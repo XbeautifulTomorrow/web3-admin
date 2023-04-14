@@ -70,6 +70,12 @@ export const routes = [
         name: 'BloodPoolManagement',
       },
       {
+        /** 血池管理 */
+        path: '/blindBoxTest',
+        component: () => import('@/views/blindBoxTest/index'),
+        name: 'BlindBoxTest',
+      },
+      {
         /** 金流管理 */
         path: '/cashManagement',
         component: () => import('@/views/cashManagement/index'),

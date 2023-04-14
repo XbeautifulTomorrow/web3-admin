@@ -89,6 +89,11 @@
       <el-table-column prop="remainderCollects" label="剩余藏品" align="center" width="110" key="8">
       </el-table-column>
       <el-table-column prop="assetBalance" label="余额(ETH)" align="center" width="110" key="9">
+        <template slot-scope="scope">
+          <div v-for="(item, index) in scope.row.assetBOS" :key="index">
+            {{ `${item.assetType}:${item.assetBalance}` }}
+          </div>
+        </template>
       </el-table-column>
       <el-table-column prop="withdrawalFees" label="提款手续费(ETH)" align="center" width="140" key="10">
       </el-table-column>
@@ -354,7 +359,7 @@ export default {
         done()
         return
       }
-      
+
       this.showDialog = false;
       this.showUpDownDialog = false;
     },

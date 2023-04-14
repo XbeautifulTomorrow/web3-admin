@@ -67,6 +67,12 @@ export const boxManagerClose = (obj) => S.get('/box-manager/close', obj); // 血
 export const calculationPlatformNft = (obj) => S.post('/box-manager/calcNft', obj); // 计算内部Nft数量
 
 /**
+ * @description 盲盒测试
+ */
+export const getBlindBoxTest = (obj) => S.get('/test/box', obj); // 开始测试
+export const blindBoxReset = (obj) => S.get('/test/reset', obj); // 重置
+
+/**
  * @description 金流管理
  */
 export const getAssetFlowList = (obj) => S.get('/asset-flow/pageList', obj); // 金流管理列表

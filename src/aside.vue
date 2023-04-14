@@ -26,7 +26,7 @@
         class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
-          <span slot="title">{{ $t('nav.report') }}</span>
+          <span slot="title">首页</span>
         </el-menu-item>
         <el-menu-item index="userList" class="menu-list">
           <i class="el-icon-user"></i>
@@ -59,6 +59,10 @@
         <el-menu-item index="bloodPoolManagement" class="menu-list">
           <i class="el-icon-s-finance"></i>
           <span>血池管理</span>
+        </el-menu-item>
+        <el-menu-item index="blindBoxTest" class="menu-list">
+          <i class="el-icon-box"></i>
+          <span>盲盒测试</span>
         </el-menu-item>
         <el-menu-item index="cashManagement" class="menu-list">
           <i class="el-icon-s-finance"></i>
@@ -137,7 +141,7 @@ export default {
       coinConfig: '',
       nav: [
         {
-          label: 'report.report',
+          label: '首页',
           page: 'report',
         },
         {
@@ -171,6 +175,10 @@ export default {
         {
           label: '血池管理',
           page: 'bloodPoolManagement',
+        },
+        {
+          label: '盲盒测试',
+          page: 'blindBoxTest',
         },
         {
           label: '金流管理',
