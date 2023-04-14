@@ -97,12 +97,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="价值" prop="price" v-if="operatingType == 1">
-          <el-input type="number" v-model.number="ruleForm.price" style="width: 300px" placeholder="请输入价值">
+          <el-input type="number" v-model="ruleForm.price" style="width: 300px" placeholder="请输入价值">
             <template slot="append">{{ coin }}</template>
           </el-input>
         </el-form-item>
         <el-form-item label="回收比例" prop="reclaimRate">
-          <el-input type="number" v-model.number="ruleForm.reclaimRate" style="width: 300px" placeholder="请输入回收比例">
+          <el-input type="number" v-model="ruleForm.reclaimRate" style="width: 300px" placeholder="请输入回收比例">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>

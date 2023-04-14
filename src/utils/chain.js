@@ -94,7 +94,7 @@ export const chainOptions = {
  */
 export const chainList = {
   test: [{ chainName: "Ethereum", chainId: 4 }],
-  main: { chainName: "Ethereum", chainId: 1 },
+  main: [{ chainName: "Ethereum", chainId: 1 }],
 }[config.ENV == "dev" ? "test" : "main"]
 
 
