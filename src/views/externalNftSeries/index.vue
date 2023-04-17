@@ -120,8 +120,9 @@
         </el-form-item>
         <el-form-item label="选择市场" prop="marketId">
           <el-radio-group v-model="ruleForm.marketId">
-            <el-radio-button v-for="(item, index) in markes" :label="item.id" :key="index">{{ item.marketName
-            }}</el-radio-button>
+            <el-radio-button v-for="(item, index) in markes" :label="item.id" :key="index">
+              {{ item.marketName }}
+            </el-radio-button>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="关键字" prop="keywords">
@@ -133,8 +134,8 @@
         <el-form-item label="发行总量" prop="issuanceNumber">
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
         </el-form-item>
-        <el-form-item label="抓取数量" prop="crawleNumber">
-          <el-input type="number" v-model.number="ruleForm.crawleNumber" style="width: 300px" placeholder="请输入抓取数量" />
+        <el-form-item label="可用数量" prop="crawleNumber">
+          <el-input type="number" v-model.number="ruleForm.crawleNumber" style="width: 300px" placeholder="请输入可用数量" />
         </el-form-item>
       </el-form>
 

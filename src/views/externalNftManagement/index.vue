@@ -4,8 +4,8 @@
       <el-input class="public-input" style="width: 140px;" placeholder="输入系列名" v-model="seriesName" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="Id" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入项目方" v-model="projectParty" clearable />
-      <el-select v-model="chainName" class="public-select-box" placeholder="所在链">
-        <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainName" />
+      <el-select v-model="chainName" class="public-select-box" placeholder="所在链" clearable>
+        <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">

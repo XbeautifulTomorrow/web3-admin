@@ -464,6 +464,11 @@ export function removeClass(ele, cls) {
 
 // 时间转换字符串
 export function timeForStr(time, str) {
+
+  if (!time) {
+    return "--"
+  }
+
   const date = new Date(time);
   str = str.replace(/yyyy|YYYY/, date.getFullYear());
   str = str.replace(

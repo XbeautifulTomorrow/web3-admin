@@ -47,12 +47,12 @@
           <div class="val">{{ aggregateQuery && aggregateQuery.refundsTotalNumber }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总收入次数</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.grossIncomeNumber }}</div>
+          <div class="title">总收入</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.grossIncome }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总支出数</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.totalExpenditureNumber }}</div>
+          <div class="title">总支出</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalExpenditure }}</div>
         </div>
         <div class="remittance-item">
           <div class="title">总收益</div>
@@ -456,6 +456,7 @@ export default {
       seriesType: 1,
       isEbit: false,
       seriesForm: {
+        nftType: "",
         chain: "ETH",
         seriesId: null,
         seriesName: null,
@@ -629,6 +630,7 @@ export default {
           if (platformLists[i].seriesId == element.id) {
             this.platformList.push({
               ...this.seriesForm,
+              nftType: "PLATFORM",
               ...platformLists[i],
               ...element,
               floorPrice: element.floorPrice || null,
@@ -644,6 +646,7 @@ export default {
           if (externalLists[i].seriesId == element.id) {
             this.externalList.push({
               ...this.seriesForm,
+              nftType: "EXTERNAL",
               ...externalLists[i],
               ...element,
               floorPrice: element.floorPrice || null,
@@ -797,8 +800,10 @@ export default {
       }
 
       if (this.seriesType == 1) {
+        this.searchFun.nftType = "EXTERNAL";
         this.fetchNftExternalList();
       } else {
+        this.searchFun.nftType = "PLATFORM";
         this.fetchNftPlatformList();
       }
       this.isEbit = false;
@@ -880,7 +885,7 @@ export default {
       const nftData = this.platformList.concat(this.externalList);
       let nftNumber = 0;
       nftData.forEach(element => {
-        if (type == 1) {
+        if (element.nftType == "EXTERNAL") {
           nftNumber += Number(element.number || 0);
         } else {
           const platformNum = Math.ceil(Number(new bigNumber(innerBaseNumber || 0).multipliedBy(element.multipleRate)));
@@ -983,6 +988,8 @@ export default {
                   this.calculationNft[j].nftType == "PLATFORM"
                   && this.calculationNft[j].seriesId == this.platformList[i].seriesId
                 ) {
+
+                  this.platformList[i].nftType == "PLATFORM";
                   this.platformList[i].price = this.calculationNft[j].averagePrice;
                 }
               }
@@ -994,6 +1001,7 @@ export default {
                   this.calculationNft[j].nftType == "EXTERNAL"
                   && this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
+                  this.externalList[i].nftType == "EXTERNAL";
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
@@ -1022,6 +1030,7 @@ export default {
         return
       }
       this.seriesForm = {
+        nftType: "",
         chain: "ETH",
         seriesId: null,
         seriesName: null,
@@ -1057,6 +1066,7 @@ export default {
       this.calculationNft = [];
       this.platformList = [];
       this.externalList = [];
+      this.fileImg = [];
 
       this.$forceUpdate();
 
