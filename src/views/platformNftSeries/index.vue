@@ -8,6 +8,9 @@
       <el-button type="primary" icon="el-icon-download" class="public-search" @click="showDialog = true">
         创建NFT
       </el-button>
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="handleWallet()">
+        链接钱包
+      </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -116,16 +119,14 @@
 </template>
 
 <script>
+import Vue from "vue";
 import bigNumber from "bignumber.js";
+import { mapGetters, mapActions } from "vuex";
 import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
-import { chainList } from "@/utils/chain";
-
-import { chainOptions, chainList } from "@/utils/chain";
+import { chainOptions, chainList, chainData } from "@/utils/chain";
 import wallet from "@/utils/global.wallet.js";
-import { ethers } from "ethers";
-import bigNumber from "bignumber.js";
 import Web3 from "web3";
 export default {
   name: 'PlatformNftSeries',
@@ -196,7 +197,7 @@ export default {
   mixins: [pagination],
   // 方法
   methods: {
-    ...mapActions([
+    ...mapActions("user", [
       "listening",
       "walletConnect",
       "disWalletConnect",
@@ -207,7 +208,7 @@ export default {
     /**
      * @description: 连接钱包
      */
-    async handleReviewedInfo(row) {
+    async handleWallet() {
       if (!this.getConnect) {
         this.walletConnect()
           .then((event) => {
@@ -252,11 +253,6 @@ export default {
                 this.$wallet.chainId = parseInt(res, 16);
                 window.sessionStorage["chain"] = auditChain;
                 console.log("网络切换成功,当前链:" + (linkType || "BSC"));
-                if (type == 1) {
-                  this.handleReviewedVerify();
-                  return;
-                }
-                this.auditVote();
                 return;
               }
               console.log("取消网络切换");

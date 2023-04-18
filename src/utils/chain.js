@@ -97,6 +97,13 @@ export const chainList = {
   main: [{ chainName: "Ethereum", chainId: 1 }],
 }[config.ENV == "dev" ? "test" : "main"]
 
+/**
+ * @description: 链列表
+ */
+export const chainData = {
+  test: { BSC: 97, ETHEREUM: 4, OKC: 65 },
+  main: { BSC: 56, ETHEREUM: 1, OKC: 66 },
+}[config.ENV == "dev" ? "test" : "main"]
 
 
 /**

@@ -1,3 +1,4 @@
+import Vue from "vue";
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { setSessionStore } from '@/utils'
 import router, { resetRouter } from '@/router'
@@ -76,6 +77,20 @@ const mutations = {
 }
 
 const actions = {
+  /**
+ * @description: 链接钱包
+ */
+  walletConnect() {
+    var wallet = Vue.prototype.$wallet;
+    return new Promise((resolve, reject) => {
+      wallet.connect().then((success) => {
+        resolve(success);
+      }).catch((error) => {
+        console.log(error)
+        reject(error)
+      })
+    })
+  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
@@ -187,20 +202,7 @@ const actions = {
       commit("SET_ACCOUNT", undefined);
     }
   },
-  /**
-   * @description: 链接钱包
-   */
-  walletConnect() {
-    var wallet = Vue.prototype.$wallet;
-    return new Promise((resolve, reject) => {
-      wallet.connect().then((success) => {
-        resolve(success);
-      }).catch((error) => {
-        console.log(error)
-        reject(error)
-      })
-    })
-  },
+
   /**
    * @description: 获取当前链
    */
