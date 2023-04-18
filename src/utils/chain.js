@@ -106,6 +106,16 @@ export const chainData = {
 }[config.ENV == "dev" ? "test" : "main"]
 
 
+
+/**
+ * @description NFT查询
+ */
+
+export const getNftAddress = {
+  test: "https://testnets-api.opensea.io/api/v1/asset_contract/",
+  main: "https://api.opensea.io/api/v1/asset_contract/"
+}[config.ENV == "dev" ? "test" : "main"]
+
 /**
  * @description: 代币地址
  */

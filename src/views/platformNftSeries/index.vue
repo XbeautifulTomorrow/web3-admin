@@ -263,6 +263,32 @@ export default {
           });
       }
     },
+    /**
+     * @description 创建NFT
+     */
+    async createNFT(item) {
+      const address = await this.NFTContracts.methods
+        .createERC721(
+          this.defaultAccount, //该nft的管理员
+          start,
+          end,
+          contractConfig[this.chain][item.price_link_type][item.price_unit], //定价token
+          contractConfig[this.chain].inAddress, //接收付款地址
+          maxSupply, //该nft最大发行量
+          item.title, //名称
+          item.introduction, //简称
+          baseUri //baseUri
+        )
+        .send({ from: this.defaultAccount })
+        .on("error", (error) => {
+          console.log(error, 'error-------------------')
+          errorHandler(error);
+          this.fullscreenLoading = false;
+        });
+
+
+      return address;
+    },
     // 加载列表
     async fetchNftPlatformList(isSearch = true) {
       const { size } = this;

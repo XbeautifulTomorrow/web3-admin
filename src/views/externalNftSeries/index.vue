@@ -104,7 +104,11 @@
           <el-input v-model="ruleForm.seriesName" style="width: 300px" placeholder="请输入系列名称" />
         </el-form-item>
         <el-form-item label="合约地址" prop="contractAddress">
-          <el-input v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址" />
+          <el-input v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
+            <template slot="append">
+              <span @click="fetchNftSeries()">查询</span>
+            </template>
+          </el-input>
         </el-form-item>
         <el-form-item label="系列图片" prop="seriesImg">
           <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
@@ -148,10 +152,11 @@
 </template>
 
 <script>
+import axios from "axios";
 import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
-import { chainList } from "@/utils/chain";
+import { chainList, getNftAddress } from "@/utils/chain";
 export default {
   name: 'ExternalNftSeries',
   // 模板引入
@@ -183,7 +188,7 @@ export default {
         "keywords": "", //关键字
         "projectParty": "", //项目方
         "issuanceNumber": null, //发行数量
-        "crawleNumber": null // 爬取数量
+        "crawleNumber": null // 可用数量
       },
       rules: {},
       markes: [],
@@ -324,6 +329,36 @@ export default {
         }
       });
     },
+    /**
+     * @description 查询Nft系列
+     */
+    fetchNftSeries() {
+      console.log(getNftAddress)
+      const { contractAddress } = this.ruleForm
+      axios
+        .get(getNftAddress + contractAddress, {
+          responseType: "json",
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            const nftData = res.data;
+            this.fileImg = [{ url: nftData.image_url }]
+            this.ruleForm.projectParty = nftData.name;
+            this.ruleForm.seriesImg = nftData.image_url;
+            this.ruleForm.keywords = nftData.symbol;
+            this.ruleForm.issuanceNumber = nftData.total_supply; //发行总量
+
+            return
+          }
+          this.$message.error("查询失败，请检查合约地址是否正确");
+
+        })
+        .catch(function (error) {
+          this.$message.error("查询失败，请检查合约地址是否正确");
+          console.log(error);
+        });
+
+    },
     handleSizeChange(val) {
       this.size = val;
       this.fetchNftExternalList();
@@ -365,7 +400,7 @@ export default {
         { required: true, message: "请输入发行数量", trigger: ["blur", "change"] },
       ],
       crawleNumber: [
-        { required: true, message: "请输入爬取数量", trigger: ["blur", "change"] },
+        { required: true, message: "请输入可用数量", trigger: ["blur", "change"] },
       ],
     }
   },
