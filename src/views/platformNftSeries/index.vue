@@ -121,6 +121,12 @@ import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
+
+import { chainOptions, chainList } from "@/utils/chain";
+import wallet from "@/utils/global.wallet.js";
+import { ethers } from "ethers";
+import bigNumber from "bignumber.js";
+import Web3 from "web3";
 export default {
   name: 'PlatformNftSeries',
   // 模板引入
@@ -190,8 +196,77 @@ export default {
   mixins: [pagination],
   // 方法
   methods: {
+    ...mapActions([
+      "listening",
+      "walletConnect",
+      "disWalletConnect",
+      "currentChainId"
+    ]),
     bigNumber: bigNumber,
     timeForStr: timeForStr,
+    /**
+     * @description: 连接钱包
+     */
+    async handleReviewedInfo(row) {
+      if (!this.getConnect) {
+        this.walletConnect()
+          .then((event) => {
+            // 取得链
+            this.currentChainId().then((event) => {
+              this.chain = parseInt(event, 16);
+            });
+          })
+          .catch((error) => {
+            this.$message.error("请链接钱包!");
+          });
+      } else {
+        // 取得链
+        this.currentChainId().then((event) => {
+          this.chain = parseInt(event, 16);
+        });
+      }
+    },
+    /**
+ * @description: 切换链
+ * @param {object} chain: 链
+ */
+    async switchChain(type) {
+      const {
+        chainList, //链ID列表
+        linkType,
+      } = this;
+      // 取得链
+      let auditChain = chainList[linkType || "BSC"]; // 默认是BSC链
+      const { method, chainParmas } = chainOptions[auditChain];
+      if (window.ethereum) {
+        await window.ethereum
+          .request({
+            method: method,
+            params: [chainParmas],
+          })
+          .then((res, event) => {
+            // 取得链
+            this.currentChainId().then((res) => {
+              if (res == chainParmas.chainId) {
+                this.chain = auditChain;
+                this.$wallet.chainId = parseInt(res, 16);
+                window.sessionStorage["chain"] = auditChain;
+                console.log("网络切换成功,当前链:" + (linkType || "BSC"));
+                if (type == 1) {
+                  this.handleReviewedVerify();
+                  return;
+                }
+                this.auditVote();
+                return;
+              }
+              console.log("取消网络切换");
+            });
+          })
+          .catch((e) => {
+            console.log(e, "失败==========");
+          });
+      }
+    },
     // 加载列表
     async fetchNftPlatformList(isSearch = true) {
       const { size } = this;
@@ -249,7 +324,7 @@ export default {
     },
     handleClose(done) {
       this.operatingType = 1;
-      
+
       if (done) {
         done()
         return
@@ -327,6 +402,7 @@ export default {
   },
   // 计算属性
   computed: {
+    ...mapGetters(["getAccount", "getConnect", "getChainId"]),
     coin() {
       return this.$store.getters.coinConfig;
     },
@@ -335,7 +411,9 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {
+    Vue.prototype.$wallet = new wallet(this.listening, true);
+  },
   // 更新后
   updated() { },
   // 销毁

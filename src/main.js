@@ -21,6 +21,7 @@ import * as filters from './filters'; // 全局 filters
 
 // 原型(链)上添加 Function
 import prototype from './prototype';
+import contract from "./utils/global.contract.js";
 
 Vue.use(ElementUI, { size: 'mini', zIndex: 3000 });
 
@@ -29,6 +30,7 @@ Vue.prototype.$http = Fetch;
 Vue.prototype.$selfFunc = selfFunc;
 
 Vue.config.productionTip = false;
+Vue.prototype.$contract = new contract();
 
 new Vue({
   i18n,

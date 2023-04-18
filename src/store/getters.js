@@ -17,5 +17,24 @@ const getters = {
     if (localInfo) return localInfo;
     return null;
   },
+  /**
+   * @description: 获取账户信息
+   */
+  getAccount(state) {
+    if (state.user.account) return state.user.account;
+    return null;
+  },
+  /**
+   * @description: 获取链接状态
+   */
+  getConnect(state) {
+    return state.user.isConnect;
+  },
+  /**
+   * @description: 获取当前链ID
+   */
+  getChainId(state) {
+    return state.user.chainId;
+  },
 }
 export default getters
