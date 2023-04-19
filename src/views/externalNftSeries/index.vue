@@ -132,14 +132,11 @@
         <el-form-item label="关键字" prop="keywords">
           <el-input v-model="ruleForm.keywords" style="width: 300px" placeholder="请输入名称" />
         </el-form-item>
-        <el-form-item label="项目方" prop="projectParty">
+        <el-form-item label="项目方">
           <el-input v-model="ruleForm.projectParty" style="width: 300px" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="发行总量" prop="issuanceNumber">
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
-        </el-form-item>
-        <el-form-item label="可用数量" prop="crawleNumber">
-          <el-input type="number" v-model.number="ruleForm.crawleNumber" style="width: 300px" placeholder="请输入可用数量" />
         </el-form-item>
       </el-form>
 
@@ -187,8 +184,7 @@ export default {
         "contractAddress": "", //合约地址
         "keywords": "", //关键字
         "projectParty": "", //项目方
-        "issuanceNumber": null, //发行数量
-        "crawleNumber": null // 可用数量
+        "issuanceNumber": null //发行数量
       },
       rules: {},
       markes: [],
@@ -343,10 +339,10 @@ export default {
           if (res.status == 200) {
             const nftData = res.data;
             this.fileImg = [{ url: nftData.image_url }]
-            this.ruleForm.projectParty = nftData.name;
-            this.ruleForm.seriesImg = nftData.image_url;
-            this.ruleForm.keywords = nftData.symbol;
-            this.ruleForm.issuanceNumber = nftData.total_supply; //发行总量
+            this.ruleForm.seriesName = nftData.name; // 系列名称
+            this.ruleForm.issuanceNumber = nftData.total_supply; // 发行总量
+            this.ruleForm.seriesImg = nftData.image_url; // Nft图片
+            this.ruleForm.keywords = nftData.collection.slug; // 关键字
 
             return
           }
@@ -393,15 +389,9 @@ export default {
       keywords: [
         { required: true, message: "请输入关键字", trigger: ["blur", "change"] },
       ],
-      projectParty: [
-        { required: true, message: "请输入项目方", trigger: ["blur", "change"] },
-      ],
       issuanceNumber: [
         { required: true, message: "请输入发行数量", trigger: ["blur", "change"] },
-      ],
-      crawleNumber: [
-        { required: true, message: "请输入可用数量", trigger: ["blur", "change"] },
-      ],
+      ]
     }
   },
   // 计算属性
