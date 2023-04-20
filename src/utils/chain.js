@@ -147,3 +147,90 @@ export const contractList = {
     OKC: "0x1dC02fAdD520e73eB2Fbb1589E3d4BE357665b81"
   },
 }[config.ENV == "dev" ? "test" : "main"]
+
+
+
+//     /**
+//      * @description: 连接钱包
+//      */
+//     async handleWallet() {
+//       if (!this.getConnect) {
+//         this.walletConnect()
+//           .then((event) => {
+//             // 取得链
+//             this.currentChainId().then((event) => {
+//               this.chain = parseInt(event, 16);
+//             });
+//           })
+//           .catch((error) => {
+//             this.$message.error("请链接钱包!");
+//           });
+//       } else {
+//         // 取得链
+//         this.currentChainId().then((event) => {
+//           this.chain = parseInt(event, 16);
+//         });
+//       }
+//     },
+//     /**
+//  * @description: 切换链
+//  * @param {object} chain: 链
+//  */
+//     async switchChain(type) {
+//       const {
+//         chainList, //链ID列表
+//         linkType,
+//       } = this;
+//       // 取得链
+//       let auditChain = chainList[linkType || "BSC"]; // 默认是BSC链
+//       const { method, chainParmas } = chainOptions[auditChain];
+//       if (window.ethereum) {
+//         await window.ethereum
+//           .request({
+//             method: method,
+//             params: [chainParmas],
+//           })
+//           .then((res, event) => {
+//             // 取得链
+//             this.currentChainId().then((res) => {
+//               if (res == chainParmas.chainId) {
+//                 this.chain = auditChain;
+//                 this.$wallet.chainId = parseInt(res, 16);
+//                 window.sessionStorage["chain"] = auditChain;
+//                 console.log("网络切换成功,当前链:" + (linkType || "BSC"));
+//                 return;
+//               }
+//               console.log("取消网络切换");
+//             });
+//           })
+//           .catch((e) => {
+//             console.log(e, "失败==========");
+//           });
+//       }
+//     },
+//     /**
+//      * @description 创建NFT
+//      */
+//     async createNFT(item) {
+//       const address = await this.NFTContracts.methods
+//         .createERC721(
+//           this.defaultAccount, //该nft的管理员
+//           start,
+//           end,
+//           contractConfig[this.chain][item.price_link_type][item.price_unit], //定价token
+//           contractConfig[this.chain].inAddress, //接收付款地址
+//           maxSupply, //该nft最大发行量
+//           item.title, //名称
+//           item.introduction, //简称
+//           baseUri //baseUri
+//         )
+//         .send({ from: this.defaultAccount })
+//         .on("error", (error) => {
+//           console.log(error, 'error-------------------')
+//           errorHandler(error);
+//           this.fullscreenLoading = false;
+//         });
+
+
+//       return address;
+//     },
