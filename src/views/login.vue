@@ -83,9 +83,8 @@ export default {
     },
     async refreshCode() {
       const res = await this.$http.sysUserGetCode();
-      console.log(res)
+      
       if (res) {
-      console.log(res.headers)
         sessionStorage.setItem('verify', res.headers.verify);
         this.codeImg = window.URL.createObjectURL(res.data);
       }
