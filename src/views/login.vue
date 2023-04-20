@@ -7,55 +7,29 @@
           <!-- <i class="logo"></i> -->
           <span>管理系统</span>
         </p>
-        <el-form
-          :model="ruleForm"
-          status-icon
-          :rules="rules"
-          ref="ruleForm"
-          class="demo-ruleForm"
-          label-width="0px"
-          style="width: 70%; margin: 0 auto"
-        >
+        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm" label-width="0px"
+          style="width: 70%; margin: 0 auto">
           <el-form-item label="" prop="userName" class="inputLogin">
-            <el-input
-              placeholder="请输入您的账号"
-              v-model.trim="ruleForm.userName"
-              autocomplete="off"
-              @keyup.enter.native="handleSubmit"
-            >
+            <el-input placeholder="请输入您的账号" v-model.trim="ruleForm.userName" autocomplete="off"
+              @keyup.enter.native="handleSubmit">
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="passWord" class="inputLogin">
-            <el-input
-              type="password"
-              placeholder="请输入账户密码"
-              v-model.trim="ruleForm.passWord"
-              autocomplete="off"
-              @keyup.enter.native="handleSubmit"
-            >
+            <el-input type="password" placeholder="请输入账户密码" v-model.trim="ruleForm.passWord" autocomplete="off"
+              @keyup.enter.native="handleSubmit">
             </el-input>
           </el-form-item>
           <div class="authCodeBox">
             <div class="authCodeInput">
               <el-form-item label="" class="inputLogin" prop="code">
-                <el-input
-                  type="text"
-                  placeholder="请输入验证码"
-                  v-model.trim="ruleForm.code"
-                  autocomplete="off"
-                  @keyup.enter.native="handleSubmit"
-                >
+                <el-input type="text" placeholder="请输入验证码" v-model.trim="ruleForm.code" autocomplete="off"
+                  @keyup.enter.native="handleSubmit">
                 </el-input>
               </el-form-item>
             </div>
             <div class="authCode">
               <!-- <img src="@/assets/images/logo.png" alt="" @click="refreshCode"> -->
-              <img
-                :src="codeImg"
-                alt=""
-                v-show="codeImg"
-                @click="refreshCode"
-              />
+              <img :src="codeImg" alt="" v-show="codeImg" @click="refreshCode" />
             </div>
           </div>
           <p class="loginbtn" @click="handleSubmit">登 录</p>
@@ -109,7 +83,9 @@ export default {
     },
     async refreshCode() {
       const res = await this.$http.sysUserGetCode();
+      console.log(res)
       if (res) {
+      console.log(res.headers)
         sessionStorage.setItem('verify', res.headers.verify);
         this.codeImg = window.URL.createObjectURL(res.data);
       }
@@ -128,6 +104,7 @@ export default {
   background: #2d3a4b;
   // background: url('../assets/images/blur-bg.jpg') no-repeat;
   background-size: 100% 100%;
+
   .login-box {
     width: 540px;
     margin: 0 auto;
@@ -135,9 +112,11 @@ export default {
     background: rgba(0, 0, 0, 0.3);
     color: #fff;
     padding: 32px;
+
     .loginContent {
       width: 100%;
     }
+
     .tip {
       font-size: 30px;
       color: #fff;
@@ -145,11 +124,13 @@ export default {
       margin-bottom: 10px;
       text-align: center;
     }
+
     .title {
       font-size: 20px;
       color: #209e91;
       text-align: center;
       margin-bottom: 20px;
+
       .logo {
         display: inline-block;
         width: 40px;
@@ -161,24 +142,29 @@ export default {
         right: 20px;
       }
     }
+
     input:-webkit-autofill {
       box-shadow: 0 0 0px 1000px #f7f9fb inset;
     }
+
     .icon {
       position: absolute;
       left: 0;
       top: 8px;
     }
+
     .icon1 {
       width: 25px;
       height: 30px;
       background-size: contain;
     }
+
     .icon2 {
       width: 22px;
       height: 29px;
       background-size: contain;
     }
+
     .loginbtn {
       background: #209e91;
       box-shadow: 0px 17px 21px 0px rgba(152, 173, 241, 0.44);
@@ -194,21 +180,26 @@ export default {
       cursor: pointer;
       transition: all 0.1s;
     }
+
     .loginbtn:hover {
       background: #209e91;
       border-color: #209e91;
       transform: scale(1.3);
       transition: all 0.1s;
     }
+
     .authCodeBox {
       display: flex;
       align-content: center;
+
       .authCodeInput {
         flex: 1;
       }
+
       .authCode {
         width: 100px;
         margin-left: 20px;
+
         img {
           width: 100%;
           height: 50px;
@@ -222,12 +213,15 @@ export default {
 .login-page .el-form-item.is-error .el-input__inner {
   border-color: #8e9198;
 }
+
 .login-page .el-form-item__error {
   color: #f56c6c !important;
 }
+
 .inputLogin {
   height: 60px;
 }
+
 .inputLogin input {
   border: none;
   outline: none;
@@ -237,6 +231,7 @@ export default {
   padding-left: 15px;
   border-radius: 5px;
 }
+
 .loginContent {
   .el-input {
     .el-input__inner {
