@@ -343,13 +343,12 @@ export default {
             this.ruleForm.issuanceNumber = nftData.total_supply; // 发行总量
             this.ruleForm.seriesImg = nftData.image_url; // Nft图片
             this.ruleForm.keywords = nftData.collection.slug; // 关键字
-
             return
           }
           this.$message.error("查询失败，请检查合约地址是否正确");
 
         })
-        .catch(function (error) {
+        .catch(error => {
           this.$message.error("查询失败，请检查合约地址是否正确");
           console.log(error);
         });
