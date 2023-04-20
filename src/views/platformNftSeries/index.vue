@@ -8,9 +8,6 @@
       <el-button type="primary" icon="el-icon-download" class="public-search" @click="showDialog = true">
         创建NFT
       </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="handleWallet()">
-        链接钱包
-      </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
