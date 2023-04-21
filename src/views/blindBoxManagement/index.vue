@@ -159,11 +159,11 @@
           <el-form-item label="单价" prop="price">
             <el-input type="number" v-model="ruleForm.price" style="width: 300px" placeholder="请输入单价"></el-input>
           </el-form-item>
-          <el-form-item label="五连价格" prop="fivePrice">
-            <el-input type="number" v-model="ruleForm.fivePrice" style="width: 300px" placeholder="请输入五连价格"></el-input>
+          <el-form-item label="五连单价" prop="fivePrice">
+            <el-input type="number" v-model="ruleForm.fivePrice" style="width: 300px" placeholder="请输入五连单价"></el-input>
           </el-form-item>
-          <el-form-item label="十连价格" prop="tenPrice">
-            <el-input type="number" v-model="ruleForm.tenPrice" style="width: 300px" placeholder="请输入十连价格"></el-input>
+          <el-form-item label="十连单价" prop="tenPrice">
+            <el-input type="number" v-model="ruleForm.tenPrice" style="width: 300px" placeholder="请输入十连单价"></el-input>
           </el-form-item>
           <el-form-item label="设计返还率" prop="deviseRate">
             <el-input type="number" v-model="ruleForm.deviseRate" style="width: 300px" placeholder="请输入设计返还率">
@@ -412,8 +412,8 @@ export default {
         boxIndex: null, //推荐顺序
         price: null, //价格
         coin: "ETH", //币种
-        fivePrice: null, //五连价格
-        tenPrice: null, //十连价格
+        fivePrice: null, //五连单价
+        tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
@@ -1059,8 +1059,8 @@ export default {
         boxIndex: null, //推荐顺序
         price: null, //价格
         coin: "ETH", //币种
-        fivePrice: null, //五连价格
-        tenPrice: null, //十连价格
+        fivePrice: null, //五连单价
+        tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
@@ -1105,8 +1105,8 @@ export default {
     // 五连计算
     validateFive(rule, value, callback) {
       const { price } = this.ruleForm;
-      if (Number(value || 0) <= Number(price || 0)) {
-        callback(new Error('五连价格必须大于单价'));
+      if (Number(value) <= 0 || Number(value || 0) >= Number(price || 0)) {
+        callback(new Error('五连单价不能是0或以下，必须小于单买价格'));
       } else {
         callback();
       }
@@ -1114,8 +1114,8 @@ export default {
     // 十连计算
     validateTen(rule, value, callback) {
       const { fivePrice } = this.ruleForm;
-      if (Number(value || 0) <= Number(fivePrice || 0)) {
-        callback(new Error('十连连价格必须大于五连价格和单价'));
+      if (Number(value) <= 0 || Number(value || 0) >= Number(fivePrice || 0)) {
+        callback(new Error('十连单价不能是0或以下，必须小于五连单价'));
       } else {
         callback();
       }
