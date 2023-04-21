@@ -29,7 +29,7 @@
         <el-option label="已提走" value="MENTIONED">
         </el-option>
       </el-select>
-      <el-select v-model="enabledStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部入池状态"
+      <el-select v-model="enabledStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部冻结状态"
         clearable>
         <el-option label="冻结" value="DISABLE">
         </el-option>

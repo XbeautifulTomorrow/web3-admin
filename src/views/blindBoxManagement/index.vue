@@ -327,8 +327,8 @@
           </div>
           <el-form-item label="选择链" v-if="seriesType == 1" prop="adjust">
             <el-select style="width: 260px;" v-model="seriesForm.chain" popper-class="public-select-box"
-              placeholder="请选择">
-              <el-option label="ETH" value="ETH" />
+              @change="selectChain" placeholder="请选择">
+              <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
             </el-select>
           </el-form-item>
           <el-form-item label="选择系列" prop="adjust">
@@ -457,7 +457,7 @@ export default {
       isEbit: false,
       seriesForm: {
         nftType: "",
-        chain: "ETH",
+        chain: null,
         seriesId: null,
         seriesName: null,
         floorPrice: null,
@@ -518,6 +518,7 @@ export default {
     // 加载外部NFT
     async fetchNftExternalList() {
       const data = {
+        chain: this.seriesForm.chain,
         coin: this.coin,
         userType: this.userType,
         page: 1,
@@ -715,13 +716,11 @@ export default {
           };
 
 
-          let platformNftList = [];
-          let externalNftList = [];
+          let platformNftData = [];
+          let externalNftData = [];
 
           try {
             externalList.forEach(element => {
-              console.log(element)
-              console.log("111")
               if (Number(element.realNumber) < Number(element.number)) {
                 console.log("最大数量不对")
                 throw new Error("error");
@@ -732,7 +731,7 @@ export default {
                 throw new Error("error");
               }
 
-              externalNftList.push({
+              externalNftData.push({
                 seriesId: element.seriesId, //系列ID
                 nftNum: element.number, //数量
               })
@@ -742,24 +741,8 @@ export default {
             return
           };
 
-          try {
-            externalList.forEach(element => {
-              if (!element.number || Number(element.number) <= 0) {
-                throw new Error("error");
-              }
-
-              externalNftList.push({
-                seriesId: element.seriesId, //系列ID
-                nftNum: element.number, //数量
-              })
-            })
-          } catch (e) {
-            this.$message.error("有外部NFT系列未输入数量，请补充完整后重试");
-            return
-          };
-
           platformList.forEach(element => {
-            platformNftList.push({
+            platformNftData.push({
               seriesId: element.seriesId, //系列ID
               multipleRate: element.multipleRate, //倍率
               baseStatus: element.baseStatus //是否是基准NFT(TRUE-是,FALSE-否)
@@ -770,8 +753,8 @@ export default {
             ...this.ruleForm,
             coin: this.coin,
             deviseRate: new bigNumber(this.ruleForm.deviseRate).dividedBy(100).toFixed(6),
-            platformList: platformNftList,
-            externalList: externalNftList
+            platformList: platformNftData,
+            externalList: externalNftData
           };
 
           let res = null
@@ -808,6 +791,9 @@ export default {
       }
       this.isEbit = false;
       this.showSeriesDialog = true;
+    },
+    selectChain() {
+      this.fetchNftExternalList();
     },
     ebitSeries(event) {
       this.seriesForm = {
@@ -1031,7 +1017,7 @@ export default {
       }
       this.seriesForm = {
         nftType: "",
-        chain: "ETH",
+        chain: null,
         seriesId: null,
         seriesName: null,
         floorPrice: null,
@@ -1148,7 +1134,6 @@ export default {
       if (!legendNum) return 0;
 
       const nftData = calculationNft.slice(0, legendNum);
-      console.log("传奇NFT" + JSON.stringify(nftData));
 
       let legendNftNum = 0;
       nftData.forEach(element => {
@@ -1172,7 +1157,6 @@ export default {
       if (!epicNum) return 0;
 
       const nftData = calculationNft.slice(legendNum, Number(legendNum) + Number(epicNum));
-      console.log("史诗NFT" + JSON.stringify(nftData));
 
       let epicNftNum = 0;
       nftData.forEach(element => {
@@ -1196,7 +1180,6 @@ export default {
       if (!rareNum) return 0;
 
       const nftData = calculationNft.slice(Number(legendNum) + Number(epicNum), Number(legendNum) + Number(epicNum) + Number(rareNum));
-      console.log("稀有NFT" + JSON.stringify(nftData));
 
       let rareNftNum = 0;
       nftData.forEach(element => {
@@ -1220,7 +1203,6 @@ export default {
       if (!rareNum) return 0;
 
       const nftData = calculationNft.slice(Number(legendNum) + Number(epicNum) + Number(rareNum), Number(legendNum) + Number(epicNum) + Number(rareNum) + commonNum);
-      console.log("普通NFT" + JSON.stringify(nftData));
 
       let commonNftNum = 0;
       nftData.forEach(element => {
