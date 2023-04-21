@@ -181,7 +181,7 @@ export default {
         ],
         reclaimRate: [
           { required: true, message: "请输入回收比例", trigger: ["blur", "change"] },
-          { validator: validateRate, trigger: 'blur' }
+          { validator: validateRate, trigger: ["blur", "change"] }
         ],
       },
       chainList: chainList

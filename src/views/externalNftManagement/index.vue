@@ -100,10 +100,6 @@
       </el-table-column>
       <el-table-column prop="price" width="120" :label="`当前价(${coin})`" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="usdtPrice" label="U价" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="pastTraPrice" width="120" label="上次交易价" align="center" key="11">
-      </el-table-column>
       <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="12">
       </el-table-column>
       <el-table-column prop="openNumber" label="被开次数" align="center" key="13">

@@ -60,7 +60,7 @@ let axiosConfig = {
     'Content-Type': 'application/json',
     project: 'Web3 OS', //项目标识
   },
-  timeout: 30000,
+  timeout: 300000,
 };
 var instance = axios.create(axiosConfig);
 var service = {

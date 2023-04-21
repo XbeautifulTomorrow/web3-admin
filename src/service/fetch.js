@@ -70,6 +70,7 @@ export const calculationPlatformNft = (obj) => S.post('/box-manager/calcNft', ob
  * @description 盲盒测试
  */
 export const getBlindBoxTest = (obj) => S.get('/test/box', obj); // 开始测试
+export const getBlindBoxFastTest = (obj) => S.get('/test/boxBack', obj); // 快速测试
 export const blindBoxReset = (obj) => S.get('/test/reset', obj); // 重置
 
 /**

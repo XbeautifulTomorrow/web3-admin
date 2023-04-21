@@ -33,10 +33,14 @@
         </el-option>
       </el-select>
       <el-input class="public-input" style="width: 140px;" placeholder="请输入测试数量" v-model.number="testNumber" clearable />
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="startRaffle()">
+      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search" @click="startRaffle()">
         开始
       </el-button>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="blindBoxReset()">
+      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search"
+        @click="fetchBlindBoxTest()">
+        快速测试
+      </el-button>
+      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search" @click="blindBoxReset()">
         重置
       </el-button>
     </div>
@@ -88,6 +92,7 @@ import bigNumber from "bignumber.js";
 import { timeForStr, exportExcel } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
+import { Loading } from "element-ui";
 export default {
   name: 'BlindBoxTest',
   // 模板引入
@@ -113,7 +118,8 @@ export default {
         realRate: 0, //实际返还率
         totalExpenditures: 0, //总支出
         grossIncomes: 0 //总收入
-      }
+      },
+      loading: false
     };
   },
   mixins: [pagination],
@@ -136,12 +142,18 @@ export default {
         return
       }
 
+      this.blindBoxReset();
+      this.loading = true;
+
       const raffle = () => {
         setTimeout(() => {
           that.fetchBlindBoxTest();
           count--;
           if (count > 0) {
             raffle();
+          } else {
+            that.loading = false;
+            return
           }
         }, 300);
       }
@@ -179,11 +191,32 @@ export default {
         this.aggregateQuery = res;
       }
     },
+    // 快速测试
+    async fetchBlindBoxTest() {
+      this.loading = true;
+      const data = {
+        boxId: this.boxId, // 盲盒ID
+        bloodPoolsStatus: this.bloodPoolsStatus, // 血池状态
+        adjust: this.adjust, // 中奖修正值
+        lotteryHandler: this.lotteryHandler, // NFT处理
+        coiledType: this.coiledType, // 抽奖类型
+        countNumber: this.testNumber, // 抽奖次数
+        page: 1,
+        size: 9999
+      };
+      const res = await this.$http.getBlindBoxFastTest(data);
+      if (res) {
+        this.tableData = res.page.records;
+        this.aggregateQuery = res;
+        this.loading = false;
+      } else {
+        this.loading = false;
+      }
+    },
     // 重置
     async blindBoxReset() {
       const res = await this.$http.blindBoxReset();
       if (res) {
-        this.$message.success("操作成功");
         this.tableData = null;
         this.aggregateQuery = {
           price: 0,

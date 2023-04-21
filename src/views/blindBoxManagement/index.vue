@@ -265,6 +265,7 @@
                 <template slot-scope="scope">
                   <div style="display: flex;align-items: center;">
                     <img v-if="scope.row.baseStatus == 'TRUE'" src="@/assets/images/icon_benchmark_active.svg" alt="">
+                    <img v-else @click="onEbitNft(scope.row)" src="@/assets/images/icon_benchmark.svg" alt="">
                   </div>
                 </template>
               </el-table-column>
@@ -273,6 +274,11 @@
               <el-table-column prop="price" label="单价" align="center" key="3">
               </el-table-column>
               <el-table-column prop="multipleRate" label="基准系数" align="center" key="4">
+                <template slot-scope="scope" v-if="scope.row.baseStatus != 'TRUE'">
+                  <div class="number-box">
+                    <el-input type="number" class="number" v-model="scope.row.multipleRate"></el-input>
+                  </div>
+                </template>
               </el-table-column>
               <el-table-column prop="number" label="数量" align="center" key="5">
                 <template slot-scope="scope">
@@ -296,8 +302,6 @@
               </el-table-column>
               <el-table-column prop="id" align="center" width="120" key="20" fixed="right">
                 <template slot-scope="scope">
-                  <img style="width: 24px;margin-right: 10px;cursor: pointer;" @click="ebitSeries(scope.row)"
-                    src="@/assets/images/icon_ebit.svg" />
                   <img style="width: 24px;cursor: pointer;" @click="handleNftDel(scope.row, scope.$index, 2)"
                     src="@/assets/images/icon_delete.svg" />
                 </template>
@@ -338,7 +342,8 @@
           <el-form-item label="选择系列" prop="adjust">
             <el-select style="width: 300px;" v-model="seriesForm.seriesId" popper-class="public-select-box"
               @change="changeSeries" placeholder="请选择" clearable>
-              <el-option v-for="(item, index) in downNft" :key="index" :label="item.seriesName" :value="item.id">
+              <el-option :style="{ display: item.display }" v-for="(item, index) in downNft" :key="index"
+                :label="item.seriesName" :value="item.id">
                 <span style="float: left">{{ item.seriesName }}</span>
                 <span style="float: right; color: #8492a6; font-size: 12px">{{ item.floorPrice }}</span>
                 <span style="float: right; color: #8492a6; font-size: 12px">{{ item.price }}</span>
@@ -422,37 +427,6 @@ export default {
       },
       chainList: chainList,
       rules: {
-        boxName: [
-          { required: true, message: "请输入盲盒名称", trigger: ["blur", "change"] },
-        ],
-        boxImg: [
-          { required: true, message: "请选择盲盒图片", trigger: ["blur", "change"] },
-        ],
-        boxIndex: [
-          { required: true, message: "请输入推荐顺序", trigger: ["blur", "change"] },
-        ],
-        price: [
-          { required: true, message: "请输入价格", trigger: ["blur", "change"] },
-        ],
-        coin: "ETH", //币种
-        fivePrice: [
-          { required: true, message: "请输入五连价格", trigger: ["blur", "change"] },
-        ],
-        tenPrice: [
-          { required: true, message: "请输入十连价格", trigger: ["blur", "change"] },
-        ],
-        deviseRate: [
-          { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },
-        ],
-        legendNum: [
-          { required: true, message: "请输入传奇数量", trigger: ["blur", "change"] },
-        ],
-        epicNum: [
-          { required: true, message: "请输入史诗数量", trigger: ["blur", "change"] },
-        ],
-        rareNum: [
-          { required: true, message: "请输入稀有数量", trigger: ["blur", "change"] },
-        ]
       },
       externalData: [],
       platformData: [],
@@ -462,7 +436,6 @@ export default {
       /** 选择系列相关 */
       showSeriesDialog: false,
       seriesType: 1,
-      isEbit: false,
       seriesForm: {
         nftType: "",
         chain: null,
@@ -536,6 +509,17 @@ export default {
       if (res) {
         this.downNft = res.records;
         this.externalData = res.records;
+
+        if (!this.externalList.length > 0) return
+        for (let i = 0; i < this.downNft.length; i++) {
+          if (this.externalList.findIndex(e => e.seriesId == this.downNft[i].id) > -1) {
+            this.downNft[i].display = "none";
+          } else {
+            this.downNft[i].display = "block";
+          }
+        }
+
+        this.$forceUpdate();
       }
     },
     // 加载内部NFT
@@ -550,6 +534,18 @@ export default {
       if (res) {
         this.downNft = res.records;
         this.platformData = res.records;
+
+        if (!this.platformList.length > 0) return
+        for (let i = 0; i < this.downNft.length; i++) {
+          if (this.platformList.findIndex(e => e.seriesId == this.downNft[i].id) > -1) {
+            console.log(this.downNft[i])
+            this.downNft[i].display = "none";
+          } else {
+            this.downNft[i].display = "block";
+          }
+        }
+
+        this.$forceUpdate();
       }
     },
     // 冻结/解禁
@@ -783,6 +779,19 @@ export default {
         }
       });
     },
+    // 更改基准Nft
+    onEbitNft(row) {
+      for (let i = 0; i < this.platformList.length; i++) {
+        if (this.platformList[i].seriesId == row.seriesId) {
+          this.platformList[i].baseStatus = "TRUE"
+          this.platformList[i].multipleRate = 1;
+        } else {
+          this.platformList[i].baseStatus = "FALSE"
+        }
+      }
+
+      this.$forceUpdate();
+    },
     // 添加Nft系列
     addSeries(type) {
       this.seriesType = type;
@@ -797,20 +806,10 @@ export default {
         this.searchFun.nftType = "PLATFORM";
         this.fetchNftPlatformList();
       }
-      this.isEbit = false;
       this.showSeriesDialog = true;
     },
     selectChain() {
       this.fetchNftExternalList();
-    },
-    ebitSeries(event) {
-      this.seriesForm = {
-        ...event
-      }
-      this.fetchNftPlatformList();
-
-      this.isEbit = true;
-      this.showSeriesDialog = true;
     },
     // NFT系列变动
     changeSeries(event) {
@@ -843,7 +842,7 @@ export default {
           return
         }
 
-        if (!this.isEbit && this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId) > -1) {
+        if (this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId) > -1) {
           this.$message.warning("该NFT系列已存在");
           return
         }
@@ -852,12 +851,7 @@ export default {
           this.seriesForm.multipleRate = 1;
         }
 
-        if (this.isEbit) {
-          const index = this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId);
-          this.platformList[index] = this.seriesForm;
-        } else {
-          this.platformList.push(this.seriesForm);
-        }
+        this.platformList.push(this.seriesForm);
 
         // 更新基准Nft系列
         if (this.seriesForm.baseStatus == "TRUE" && this.platformList.length > 1) {
@@ -1108,6 +1102,24 @@ export default {
       this.page = val;
       this.fetchBoxManagerList(false);
     },
+    // 五连计算
+    validateFive(rule, value, callback) {
+      const { price } = this.ruleForm;
+      if (Number(value || 0) <= Number(price || 0)) {
+        callback(new Error('五连价格必须大于单价'));
+      } else {
+        callback();
+      }
+    },
+    // 十连计算
+    validateTen(rule, value, callback) {
+      const { fivePrice } = this.ruleForm;
+      if (Number(value || 0) <= Number(fivePrice || 0)) {
+        callback(new Error('十连连价格必须大于五连价格和单价'));
+      } else {
+        callback();
+      }
+    }
   },
   // 创建后
   created() {
@@ -1115,6 +1127,41 @@ export default {
     this.fetchNftExternalList();
     this.fetchNftPlatformList();
     this.uploadUrl = config.api + "/file/upload/image";
+    this.rules = {
+
+      boxName: [
+        { required: true, message: "请输入盲盒名称", trigger: ["blur", "change"] },
+      ],
+      boxImg: [
+        { required: true, message: "请选择盲盒图片", trigger: ["blur", "change"] },
+      ],
+      boxIndex: [
+        { required: true, message: "请输入推荐顺序", trigger: ["blur", "change"] },
+      ],
+      price: [
+        { required: true, message: "请输入价格", trigger: ["blur", "change"] },
+      ],
+      fivePrice: [
+        { required: true, message: "请输入五连价格", trigger: ["blur", "change"] },
+        { validator: this.validateFive, trigger: ["blur", "change"] }
+      ],
+      tenPrice: [
+        { required: true, message: "请输入十连价格", trigger: ["blur", "change"] },
+        { validator: this.validateTen, trigger: ["blur", "change"] }
+      ],
+      deviseRate: [
+        { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },
+      ],
+      legendNum: [
+        { required: true, message: "请输入传奇数量", trigger: ["blur", "change"] },
+      ],
+      epicNum: [
+        { required: true, message: "请输入史诗数量", trigger: ["blur", "change"] },
+      ],
+      rareNum: [
+        { required: true, message: "请输入稀有数量", trigger: ["blur", "change"] },
+      ]
+    }
   },
   computed: {
     coin() {
