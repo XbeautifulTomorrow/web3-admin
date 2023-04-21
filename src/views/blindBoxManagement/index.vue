@@ -124,8 +124,7 @@
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)">
             编辑
           </span>
-          <span class="blueColor publick-button cursor"
-            :style="`color: ${scope.row.boxStatus == 'DISABLE' ? '#09a9ff' : 'red'}`" @click="operatingNft(scope.row)">
+          <span class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.boxStatus == 'DISABLE' ? '解禁' : '冻结' }}
           </span>
           <span class="blueColor publick-button cursor" @click="handleDel(scope.row)">
@@ -215,6 +214,9 @@
               <el-table-column prop="seriesName" label="系列" align="center" key="1" show-overflow-tooltip>
               </el-table-column>
               <el-table-column prop="chain" label="链" align="center" key="2">
+                <template slot-scope="scope">
+                  {{ chainFormat(scope.row.chain) }}
+                </template>
               </el-table-column>
               <el-table-column prop="number" label="数量" width="120px" align="center" key="3">
                 <template slot-scope="scope">
@@ -228,19 +230,21 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="floorPrice" label="均价" align="center" key="4">
+              <el-table-column prop="floorPrice" v-if="calculationNft.length > 0" label="均价" align="center" key="4">
               </el-table-column>
-              <el-table-column prop="boxImg" label="总价" align="center" key="5">
+              <el-table-column prop="floorPrice" v-else label="地板价" align="center" key="5">
+              </el-table-column>
+              <el-table-column prop="boxImg" label="总价" align="center" key="6">
                 <template slot-scope="scope">
                   {{ new bigNumber(scope.row.floorPrice).multipliedBy(scope.row.number || 0).toFixed(4) }}
                 </template>
               </el-table-column>
-              <el-table-column label="几率" align="center" key="6">
+              <el-table-column label="几率" align="center" key="7">
                 <template slot-scope="scope">
                   {{ probability(scope.row, 1) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="id" align="center" width="60" key="7" fixed="right">
+              <el-table-column align="center" width="60" key="8" fixed="right">
                 <template slot-scope="scope">
                   <img style="width: 24px;cursor: pointer;" @click="handleNftDel(scope.row, scope.$index, 1)"
                     src="@/assets/images/icon_delete.svg" />
@@ -315,7 +319,7 @@
         <el-button @click="handleClose()">取 消</el-button>
         <el-button type="primary" @click="submitForm()">确 定</el-button>
       </span>
-      <el-dialog width="400px" :close-on-click-modal="false" :title="seriesType == 1 ? '选择外部NFT' : '选择内部NFT'"
+      <el-dialog width="440px" :close-on-click-modal="false" :title="seriesType == 1 ? '选择外部NFT' : '选择内部NFT'"
         :visible.sync="showSeriesDialog" append-to-body :before-close="handleSeriesClose">
         <el-form ref="seriesForm" class="add-form" :model="seriesForm" label-width="80px">
           <div class="benchmark-obx" v-if="seriesType == 2">
@@ -326,29 +330,33 @@
             <span>基准NFT</span>
           </div>
           <el-form-item label="选择链" v-if="seriesType == 1" prop="adjust">
-            <el-select style="width: 260px;" v-model="seriesForm.chain" popper-class="public-select-box"
+            <el-select style="width: 300px;" v-model="seriesForm.chain" popper-class="public-select-box"
               @change="selectChain" placeholder="请选择">
               <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
             </el-select>
           </el-form-item>
           <el-form-item label="选择系列" prop="adjust">
-            <el-select style="width: 260px;" v-model="seriesForm.seriesId" popper-class="public-select-box"
+            <el-select style="width: 300px;" v-model="seriesForm.seriesId" popper-class="public-select-box"
               @change="changeSeries" placeholder="请选择" clearable>
-              <el-option v-for="(item, index) in downNft" :key="index" :label="item.seriesName" :value="item.id" />
+              <el-option v-for="(item, index) in downNft" :key="index" :label="item.seriesName" :value="item.id">
+                <span style="float: left">{{ item.seriesName }}</span>
+                <span style="float: right; color: #8492a6; font-size: 12px">{{ item.floorPrice }}</span>
+                <span style="float: right; color: #8492a6; font-size: 12px">{{ item.price }}</span>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="地板价" v-if="seriesType == 1" prop="adjust">
-            <el-input style="width: 260px;" type="number" readonly v-model="seriesForm.floorPrice">
+            <el-input style="width: 300px;" type="number" readonly v-model="seriesForm.floorPrice">
               <template slot="append">{{ coin }}</template>
             </el-input>
           </el-form-item>
           <el-form-item label="单价" v-if="seriesType == 2" prop="adjust">
-            <el-input style="width: 260px;" type="number" readonly v-model="seriesForm.price">
+            <el-input style="width: 300px;" type="number" readonly v-model="seriesForm.price">
               <template slot="append">{{ coin }}</template>
             </el-input>
           </el-form-item>
           <el-form-item label="基准倍率" v-if="seriesType == 2 && seriesForm.baseStatus == 'FALSE'" prop="adjust">
-            <el-input style="width: 260px;" type="number" v-model="seriesForm.multipleRate"
+            <el-input style="width: 300px;" type="number" v-model="seriesForm.multipleRate"
               placeholder="请输入基准倍率"></el-input>
           </el-form-item>
         </el-form>
@@ -696,12 +704,12 @@ export default {
           }
 
           if (!platformList.length > 0) {
-            this.$message.error("请选择外部NFT！");
+            this.$message.error("请选择内部NFT！");
             return;
           }
 
           if (!externalList.length > 0) {
-            this.$message.error("请选择内部NFT！");
+            this.$message.error("请选择外部NFT！");
             return;
           }
 
@@ -818,6 +826,16 @@ export default {
           return
         }
 
+        if (!this.seriesForm.seriesId) {
+          this.$message.warning("请选择外部NFT系列");
+          return
+        }
+
+        if (!this.seriesForm.chain) {
+          const nftInfo = this.downNft.find(e => e.id == this.seriesForm.seriesId);
+          this.seriesForm.chain = nftInfo && nftInfo.chainId;
+        }
+
         this.externalList.push(this.seriesForm);
       } else {
         if (this.seriesForm.baseStatus == "FALSE" && !this.seriesForm.multipleRate) {
@@ -833,6 +851,7 @@ export default {
         if (this.seriesForm.baseStatus == "TRUE") {
           this.seriesForm.multipleRate = 1;
         }
+
         if (this.isEbit) {
           const index = this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId);
           this.platformList[index] = this.seriesForm;
@@ -914,12 +933,12 @@ export default {
           }
 
           if (!platformList.length > 0) {
-            this.$message.error("请选择外部NFT！");
+            this.$message.error("请选择内部NFT！");
             return;
           }
 
           if (!externalList.length > 0) {
-            this.$message.error("请选择内部NFT！");
+            this.$message.error("请选择外部NFT！");
             return;
           }
 
@@ -967,6 +986,8 @@ export default {
             }
 
             this.calculationNft = res.seriesSort; // 合计NFT系列
+            let platformCount = [];
+            let externalCount = [];
 
             for (let i = 0; i < this.platformList.length; i++) {
               for (let j = 0; j < this.calculationNft.length; j++) {
@@ -974,9 +995,9 @@ export default {
                   this.calculationNft[j].nftType == "PLATFORM"
                   && this.calculationNft[j].seriesId == this.platformList[i].seriesId
                 ) {
-
-                  this.platformList[i].nftType == "PLATFORM";
+                  this.platformList[i].nftType = "PLATFORM";
                   this.platformList[i].price = this.calculationNft[j].averagePrice;
+                  platformCount.push(this.platformList[i]);
                 }
               }
             }
@@ -987,13 +1008,22 @@ export default {
                   this.calculationNft[j].nftType == "EXTERNAL"
                   && this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
-                  this.externalList[i].nftType == "EXTERNAL";
+                  this.externalList[i].nftType = "EXTERNAL";
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
+                  externalCount.push(this.externalList[i]);
                 }
               }
             }
+
+            this.platformList = [];
+            this.externalList = [];
+
+            setTimeout(() => {
+              this.platformList = platformCount;
+              this.externalList = externalCount;
+            }, 10);
           }
         } else {
           console.log("error submit!!");
@@ -1065,6 +1095,10 @@ export default {
         return
       }
       this.showDialog = false;
+    },
+    chainFormat(event) {
+      const chain = chainList.find(e => e.chainId == event);
+      return chain && chain.chainName;
     },
     handleSizeChange(val) {
       this.size = val;

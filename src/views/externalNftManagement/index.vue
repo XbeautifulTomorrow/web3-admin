@@ -139,9 +139,7 @@
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="20" fixed="right">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor"
-            :style="`color: ${scope.row.enabledStatus == 'DISABLE' ? '#09a9ff' : 'red'}`"
-            @click="operatingNft(scope.row)">
+          <span class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.enabledStatus == 'DISABLE' ? '解禁' : '冻结' }}
           </span>
         </template>

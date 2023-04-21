@@ -26,7 +26,7 @@
       <el-table-column prop="id" label="操作" align="center" width="110" key="17">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)">
-            冻结
+            {{ scope.row.marketStatus == 'DISABLE' ? '解禁' : '冻结' }}
           </span>
         </template>
       </el-table-column>

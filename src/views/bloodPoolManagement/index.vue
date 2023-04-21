@@ -61,9 +61,7 @@
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)">
             编辑
           </span>
-          <span class="blueColor publick-button cursor"
-            :style="`color: ${scope.row.bloodPoolsStatus == 'FALSE' ? '#09a9ff' : 'red'}`"
-            @click="operatingNft(scope.row)">
+          <span class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.bloodPoolsStatus == 'FALSE' ? '开启' : '关闭' }}
           </span>
         </template>
