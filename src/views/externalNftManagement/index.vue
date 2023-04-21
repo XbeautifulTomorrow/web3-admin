@@ -47,7 +47,7 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalManagerList()">
         查询
       </el-button>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="nftExternalFlushed()">
+      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="nftExternalFlushed()">
         刷新
       </el-button>
     </div>

@@ -20,7 +20,7 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchBoxManagerList()">
         查询
       </el-button>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="addBox()">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="addBox()">
         添加盲盒
       </el-button>
     </div>

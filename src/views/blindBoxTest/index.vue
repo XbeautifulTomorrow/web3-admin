@@ -33,14 +33,14 @@
         </el-option>
       </el-select>
       <el-input class="public-input" style="width: 140px;" placeholder="请输入测试数量" v-model.number="testNumber" clearable />
-      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search" @click="startRaffle()">
+      <el-button :loading="loading" type="primary" icon="el-icon-video-play" class="public-search" @click="startRaffle()">
         开始
       </el-button>
-      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search"
+      <el-button :loading="loading" type="primary" icon="el-icon-s-promotion" class="public-search"
         @click="fetchBlindBoxTest()">
         快速测试
       </el-button>
-      <el-button :loading="loading" type="primary" icon="el-icon-search" class="public-search" @click="blindBoxReset()">
+      <el-button :loading="loading" type="primary" icon="el-icon-refresh" class="public-search" @click="blindBoxReset()">
         重置
       </el-button>
     </div>

@@ -22,10 +22,10 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalList()">
         查询
       </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="showDialog = true">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true">
         创建NFT
       </el-button>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalList()">
+      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="fetchNftExternalList()">
         刷新
       </el-button>
     </div>

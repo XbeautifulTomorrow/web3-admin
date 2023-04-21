@@ -5,7 +5,7 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformList()">
         查询
       </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="showDialog = true">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true">
         创建NFT
       </el-button>
     </div>

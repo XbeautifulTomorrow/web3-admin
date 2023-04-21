@@ -33,7 +33,7 @@
       <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()">
         导出
       </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="showDialog = true">
+      <el-button type="primary" icon="el-icon-upload2" class="public-search" @click="showDialog = true">
         导入测试号
       </el-button>
       <el-button type="primary" icon="el-icon-download" class="public-search" @click="downloadExcel()">
