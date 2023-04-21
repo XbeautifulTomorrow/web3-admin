@@ -193,6 +193,17 @@ export default {
     },
     // 快速测试
     async fetchBlindBoxTest() {
+      const { boxId, testNumber } = this;
+      if (!boxId) {
+        this.$message.error("请选择盲盒");
+        return
+      }
+
+      if (!testNumber) {
+        this.$message.error("请输入测试数量");
+        return
+      }
+
       this.loading = true;
       const data = {
         boxId: this.boxId, // 盲盒ID
