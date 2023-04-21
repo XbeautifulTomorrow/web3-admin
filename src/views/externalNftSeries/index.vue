@@ -340,7 +340,6 @@ export default {
             const nftData = res.data;
             this.fileImg = [{ url: nftData.image_url }]
             this.ruleForm.seriesName = nftData.name; // 系列名称
-            this.ruleForm.issuanceNumber = nftData.total_supply; // 发行总量
             this.ruleForm.seriesImg = nftData.image_url; // Nft图片
             this.ruleForm.keywords = nftData.collection.slug; // 关键字
             return
