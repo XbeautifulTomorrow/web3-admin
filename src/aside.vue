@@ -48,6 +48,14 @@
           <i class="el-icon-s-management"></i>
           <span>平台NFT管理</span>
         </el-menu-item>
+        <el-menu-item index="nftBuyManagement" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>一元购管理</span>
+        </el-menu-item>
+        <el-menu-item index="nftBuyRecord" class="menu-list">
+          <i class="el-icon-s-management"></i>
+          <span>一元购售票记录</span>
+        </el-menu-item>
         <el-menu-item index="marketManagement" class="menu-list">
           <i class="el-icon-s-management"></i>
           <span>市场管理</span>
@@ -163,6 +171,14 @@ export default {
         {
           label: '平台NFT管理',
           page: 'platformNftManagement',
+        },
+        {
+          label: '一元购管理',
+          page: 'nftBuyManagement',
+        },
+        {
+          label: '一元购售票记录',
+          page: 'nftBuyRecord',
         },
         {
           label: '市场管理',

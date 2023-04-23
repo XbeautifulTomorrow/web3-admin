@@ -40,12 +40,6 @@ export const routes = [
         name: 'ExternalNftSeries',
       },
       {
-        /** 市场管理 */
-        path: '/marketManagement',
-        component: () => import('@/views/marketManagement/index'),
-        name: 'MarketManagement',
-      },
-      {
         /** 外部NFT管理 */
         path: '/externalNftManagement',
         component: () => import('@/views/externalNftManagement/index'),
@@ -56,6 +50,24 @@ export const routes = [
         path: '/platformNftManagement',
         component: () => import('@/views/platformNftManagement/index'),
         name: 'PlatformNftManagement',
+      },
+      {
+        /** 一元购管理 */
+        path: '/nftBuyManagement',
+        component: () => import('@/views/nftBuyManagement/index'),
+        name: 'NftBuyManagement',
+      },
+      {
+        /** 一元购收票记录 */
+        path: '/nftBuyRecord',
+        component: () => import('@/views/nftBuyRecord/index'),
+        name: 'NftBuyRecord',
+      },
+      {
+        /** 市场管理 */
+        path: '/marketManagement',
+        component: () => import('@/views/marketManagement/index'),
+        name: 'MarketManagement',
       },
       {
         /** 盲盒管理 */

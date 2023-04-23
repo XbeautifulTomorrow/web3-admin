@@ -43,6 +43,14 @@ export const nftExternalFlushed = (obj) => S.get('/nft-external-manager/flushed'
 export const getNftPlatformManagerList = (obj) => S.get('/nft-platform-manager/pageList', obj); // 平台nft管理
 export const getNftPlatformManagerStatistics = (obj) => S.get('/nft-platform-manager/headerDataTotal', obj); // 平台nft管理统计
 
+/**
+ * @description 一元购管理
+ */
+export const getOneNftOrdersManagerList = (obj) => S.get('/nft/one-nft-orders/pageList', obj); // 一元购管理
+export const getOneNftOrdersStatistics = (obj) => S.get('/nft/one-nft-orders/statistics', obj); // 一元购统计
+export const updateOneNftOrders = (obj) => S.post('/nft/one-nft-orders/updateUpAndDown', obj); // 一元购更新
+export const getOneNftLotteryOrdersManagerList = (obj) => S.get('/nft/one-nft-lottery-orders/pageList', obj); // 一元购售票记录
+export const getOneNftLotteryOrdersStatistics = (obj) => S.get('/nft/one-nft-lottery-orders/statistics', obj); // 一元购售票统计
 
 /**
  * @description 市场管理

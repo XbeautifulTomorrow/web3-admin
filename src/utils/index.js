@@ -664,3 +664,53 @@ export function timeDifferenceFun(time1, time2) {
   }
   return '--';
 }
+
+
+/**
+ * @description: 精确小数点
+ * @param {string} number：为你要转换的数字
+ * @param {string} format：要保留几位小数；譬如要保留2位，则值为2
+ * @param {string} zerFill:是否补零。不需要补零可以不填写此参数
+ */
+export const accurateDecimal = (number, format, zeroFill) => {
+  //判断非空
+  if (!isEmpty(number)) {
+    //正则匹配:正整数，负整数，正浮点数，负浮点数
+    if (!/^\d+(\.\d+)?$|^-\d+(\.\d+)?$/.test(number))
+      return number;
+    var n = 1;
+    for (var i = 0; i < format; i++) {
+      n = n * 10;
+    }
+
+    //四舍五入
+    number = Math.round(number * n) / n;
+    var str = number.toString();
+
+    //是否补零
+    if (zeroFill) {
+      var index;
+      if (str.indexOf(".") == -1) {
+        index = format;
+        str += '.';
+      } else {
+        index = format - ((str.length - 1) - str.indexOf("."));
+      }
+
+      for (var i = 0; i < index; i++) {
+        str += '0';
+      }
+    }
+    return str;
+  }
+  return number;
+};
+
+//非空验证
+function isEmpty(ObjVal) {
+  if ((ObjVal == null || typeof (ObjVal) == "undefined") || (typeof (ObjVal) == "string" && ObjVal == "" && ObjVal != "undefined")) {
+    return true;
+  } else {
+    return false;
+  }
+}
