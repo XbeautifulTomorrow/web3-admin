@@ -10,9 +10,9 @@
         <el-option label="数量不足" value="NUMBER">
         </el-option>
       </el-select>
-      <el-select v-model="boxStatus" class="public-select-box" popper-class="public-select-box" placeholder="盲盒状态"
+      <el-select v-model="boxStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
         clearable>
-        <el-option label="冻结" value="DISABLE">
+        <el-option label="关闭" value="DISABLE">
         </el-option>
         <el-option label="正常" value="NORMAL">
         </el-option>

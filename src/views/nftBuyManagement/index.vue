@@ -29,7 +29,7 @@
         <span class="demonstration">
           上架时间
         </span>
-        <el-date-picker v-model="addedTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="addedTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -37,7 +37,7 @@
         <span class="demonstration">
           结束时间
         </span>
-        <el-date-picker v-model="endTimes" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="endTimes" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -207,17 +207,17 @@ export default {
       let endTime = null;
 
       if (addedTime && addedTime[0]) {
-        startOrderTime = timeForStr(addedTime[0], 'YYYY-MM-DD');
+        startOrderTime = timeForStr(addedTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (addedTime && addedTime[1]) {
-        endOrderTime = timeForStr(addedTime[1], 'YYYY-MM-DD');
+        endOrderTime = timeForStr(addedTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       if (endTimes && endTimes[0]) {
-        startTime = timeForStr(endTimes[0], 'YYYY-MM-DD');
+        startTime = timeForStr(endTimes[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (endTimes && endTimes[1]) {
-        endTime = timeForStr(endTimes[1], 'YYYY-MM-DD');
+        endTime = timeForStr(endTimes[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

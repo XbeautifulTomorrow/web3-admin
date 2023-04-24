@@ -15,7 +15,7 @@
         <span class="demonstration">
           添加时间
         </span>
-        <el-date-picker v-model="addTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="addTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -209,10 +209,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (addTime && addTime[0]) {
-        startTime = timeForStr(addTime[0], 'YYYY-MM-DD');
+        startTime = timeForStr(addTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (addTime && addTime[1]) {
-        endTime = timeForStr(addTime[1], 'YYYY-MM-DD');
+        endTime = timeForStr(addTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

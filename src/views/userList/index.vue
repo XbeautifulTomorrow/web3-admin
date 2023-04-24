@@ -17,13 +17,13 @@
         <span class="demonstration">
           注册时间
         </span>
-        <el-date-picker v-model="registrationTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="registrationTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
       <div class="public-date-box">
         <span class="demonstration">最后登录时间:</span>
-        <el-date-picker v-model="loginedTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="loginedTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -216,16 +216,16 @@ export default {
       let startLoginTime = null;
       let endLoginTime = null;
       if (registrationTime && registrationTime[0]) {
-        startRegTime = timeForStr(registrationTime[0], 'YYYY-MM-DD');
+        startRegTime = timeForStr(registrationTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (registrationTime && registrationTime[1]) {
-        endRegTime = timeForStr(registrationTime[1], 'YYYY-MM-DD');
+        endRegTime = timeForStr(registrationTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
       if (loginedTime && loginedTime[0]) {
-        startLoginTime = timeForStr(loginedTime[0], 'YYYY-MM-DD');
+        startLoginTime = timeForStr(loginedTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (loginedTime && loginedTime[1]) {
-        endLoginTime = timeForStr(loginedTime[1], 'YYYY-MM-DD');
+        endLoginTime = timeForStr(loginedTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
       return {
         obscureField: this.obscureField,

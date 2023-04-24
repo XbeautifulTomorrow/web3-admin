@@ -8,7 +8,7 @@
         <span class="demonstration">
           最后领取时间
         </span>
-        <el-date-picker v-model="lastPickUpTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="lastPickUpTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -197,10 +197,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (lastPickUpTime && lastPickUpTime[0]) {
-        startTime = timeForStr(lastPickUpTime[0], 'YYYY-MM-DD');
+        startTime = timeForStr(lastPickUpTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (lastPickUpTime && lastPickUpTime[1]) {
-        endTime = timeForStr(lastPickUpTime[1], 'YYYY-MM-DD');
+        endTime = timeForStr(lastPickUpTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

@@ -27,7 +27,7 @@
         <span class="demonstration">
           交易时间
         </span>
-        <el-date-picker v-model="transactionTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="transactionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -35,7 +35,7 @@
         <span class="demonstration">
           交易完成时间
         </span>
-        <el-date-picker v-model="transactionCompletionTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="transactionCompletionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -188,17 +188,17 @@ export default {
       let endConfirmTime = null;
 
       if (transactionTime && transactionTime[0]) {
-        startTxtime = timeForStr(transactionTime[0], 'YYYY-MM-DD');
+        startTxtime = timeForStr(transactionTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (transactionTime && transactionTime[1]) {
-        endTxTime = timeForStr(transactionTime[1], 'YYYY-MM-DD');
+        endTxTime = timeForStr(transactionTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       if (transactionCompletionTime && transactionCompletionTime[0]) {
-        startConfirmTime = timeForStr(transactionCompletionTime[0], 'YYYY-MM-DD');
+        startConfirmTime = timeForStr(transactionCompletionTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (transactionCompletionTime && transactionCompletionTime[1]) {
-        endConfirmTime = timeForStr(transactionCompletionTime[1], 'YYYY-MM-DD');
+        endConfirmTime = timeForStr(transactionCompletionTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

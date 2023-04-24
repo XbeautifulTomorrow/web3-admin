@@ -18,7 +18,7 @@
         <span class="demonstration">
           交易时间
         </span>
-        <el-date-picker v-model="transactionTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="transactionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -26,7 +26,7 @@
         <span class="demonstration">
           交易完成时间
         </span>
-        <el-date-picker v-model="transactionCompleteTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="transactionCompleteTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -206,16 +206,16 @@ export default {
       let finishStartTime = null;
       let finishEndTime = null;
       if (transactionTime && transactionTime[0]) {
-        startTime = timeForStr(transactionTime[0], 'YYYY-MM-DD');
+        startTime = timeForStr(transactionTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (transactionTime && transactionTime[1]) {
-        endTime = timeForStr(transactionTime[1], 'YYYY-MM-DD');
+        endTime = timeForStr(transactionTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
       if (transactionCompleteTime && transactionCompleteTime[0]) {
-        finishStartTime = timeForStr(transactionCompleteTime[0], 'YYYY-MM-DD');
+        finishStartTime = timeForStr(transactionCompleteTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (transactionCompleteTime && transactionCompleteTime[1]) {
-        finishEndTime = timeForStr(transactionCompleteTime[1], 'YYYY-MM-DD');
+        finishEndTime = timeForStr(transactionCompleteTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

@@ -114,7 +114,7 @@ export default {
             regUser = 0,
             loginUser = 0,
           } = item;
-          const time = dayjs(item.time).format('YYYY-MM-DD');
+          const time = dayjs(item.time).format('YYYY-MM-DD HH:mm:ss');
           const _dataMinerList = [
             {
               time,

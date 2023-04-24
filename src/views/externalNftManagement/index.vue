@@ -40,7 +40,7 @@
         <span class="demonstration">
           上次出奖时间
         </span>
-        <el-date-picker v-model="creationTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="creationTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -184,13 +184,13 @@ export default {
     // 搜索条件
     searchFun() {
       let { creationTime } = this;
-      let startTime = '';
-      let endTime = '';
+      let startTime = null;
+      let endTime = null;
       if (creationTime && creationTime[0]) {
-        startTime = timeForStr(creationTime[0], 'YYYY-MM-DD');
+        startTime = timeForStr(creationTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (creationTime && creationTime[1]) {
-        endTime = timeForStr(creationTime[1], 'YYYY-MM-DD');
+        endTime = timeForStr(creationTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

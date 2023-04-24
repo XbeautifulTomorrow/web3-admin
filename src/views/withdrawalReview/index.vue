@@ -20,7 +20,7 @@
         <span class="demonstration">
           发起时间
         </span>
-        <el-date-picker v-model="applicationTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="applicationTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -28,7 +28,7 @@
         <span class="demonstration">
           审核时间
         </span>
-        <el-date-picker v-model="reviewTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="reviewTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -36,7 +36,7 @@
         <span class="demonstration">
           到账时间
         </span>
-        <el-date-picker v-model="receiptTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="receiptTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -331,24 +331,24 @@ export default {
       let arrivalEndTime = null;
 
       if (applicationTime && applicationTime[0]) {
-        createStartTime = timeForStr(applicationTime[0], 'YYYY-MM-DD');
+        createStartTime = timeForStr(applicationTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (applicationTime && applicationTime[1]) {
-        createEndTime = timeForStr(applicationTime[1], 'YYYY-MM-DD');
+        createEndTime = timeForStr(applicationTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       if (reviewTime && reviewTime[0]) {
-        auditStartTime = timeForStr(reviewTime[0], 'YYYY-MM-DD');
+        auditStartTime = timeForStr(reviewTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (reviewTime && reviewTime[1]) {
-        auditEndTime = timeForStr(reviewTime[1], 'YYYY-MM-DD');
+        auditEndTime = timeForStr(reviewTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       if (receiptTime && receiptTime[0]) {
-        arrivalStartTime = timeForStr(receiptTime[0], 'YYYY-MM-DD');
+        arrivalStartTime = timeForStr(receiptTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (receiptTime && receiptTime[1]) {
-        arrivalEndTime = timeForStr(receiptTime[1], 'YYYY-MM-DD');
+        arrivalEndTime = timeForStr(receiptTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {

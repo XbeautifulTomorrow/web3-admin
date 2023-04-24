@@ -18,12 +18,6 @@
         <el-option label="提现" value="WITHDRAWALS">
         </el-option>
       </el-select>
-      <el-select v-model="coin" class="public-select-box" popper-class="public-select-box" placeholder="全部币种" clearable>
-        <el-option label="USDT" value="USDT">
-        </el-option>
-        <el-option label="ETH" value="ETH">
-        </el-option>
-      </el-select>
       <el-select v-model="flowSource" class="public-select-box" popper-class="public-select-box" placeholder="全部来源"
         clearable>
         <el-option label="平台" value="PLATFORM">
@@ -41,7 +35,7 @@
         <span class="demonstration">
           账变时间
         </span>
-        <el-date-picker v-model="changeTime" type="daterange" range-separator="到" start-placeholder="开始时间"
+        <el-date-picker v-model="changeTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
@@ -158,10 +152,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (changeTime && changeTime[0]) {
-        startTime = timeForStr(changeTime[0], 'YYYY-MM-DD');
+        startTime = timeForStr(changeTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (changeTime && changeTime[1]) {
-        endTime = timeForStr(changeTime[1], 'YYYY-MM-DD');
+        endTime = timeForStr(changeTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
 
       return {
