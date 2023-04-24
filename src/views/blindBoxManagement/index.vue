@@ -274,10 +274,11 @@
               <el-table-column prop="price" label="单价" align="center" key="3">
               </el-table-column>
               <el-table-column prop="multipleRate" label="基准系数" align="center" key="4">
-                <template slot-scope="scope" v-if="scope.row.baseStatus != 'TRUE'">
-                  <div class="number-box">
+                <template slot-scope="scope">
+                  <div class="number-box" v-if="scope.row.baseStatus != 'TRUE'">
                     <el-input type="number" class="number" v-model="scope.row.multipleRate"></el-input>
                   </div>
+                  <div v-else>{{ scope.row.multipleRate }}</div>
                 </template>
               </el-table-column>
               <el-table-column prop="number" label="数量" align="center" key="5">
@@ -360,10 +361,6 @@
               <template slot="append">{{ coin }}</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="基准倍率" v-if="seriesType == 2 && seriesForm.baseStatus == 'FALSE'" prop="adjust">
-            <el-input style="width: 300px;" type="number" v-model="seriesForm.multipleRate"
-              placeholder="请输入基准倍率"></el-input>
-          </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button @click="handleSeriesClose()">取 消</el-button>
@@ -437,7 +434,7 @@ export default {
       showSeriesDialog: false,
       seriesType: 1,
       seriesForm: {
-        nftType: "",
+        nftType: null,
         chain: null,
         seriesId: null,
         seriesName: null,
@@ -837,11 +834,6 @@ export default {
 
         this.externalList.push(this.seriesForm);
       } else {
-        if (this.seriesForm.baseStatus == "FALSE" && !this.seriesForm.multipleRate) {
-          this.$message.warning("请输入基准倍率");
-          return
-        }
-
         if (this.platformList.findIndex(e => e.seriesId == this.seriesForm.seriesId) > -1) {
           this.$message.warning("该NFT系列已存在");
           return
@@ -1040,7 +1032,7 @@ export default {
         return
       }
       this.seriesForm = {
-        nftType: "",
+        nftType: null,
         chain: null,
         seriesId: null,
         seriesName: null,
@@ -1114,8 +1106,8 @@ export default {
     // 十连计算
     validateTen(rule, value, callback) {
       const { fivePrice } = this.ruleForm;
-      if (Number(value) <= 0 || Number(value || 0) >= Number(fivePrice || 0)) {
-        callback(new Error('十连单价不能是0或以下，必须小于五连单价'));
+      if (Number(value) <= 0 || Number(value || 0) > Number(fivePrice || 0)) {
+        callback(new Error('十连单价不能是0或以下，小于或等于五连单价'));
       } else {
         callback();
       }

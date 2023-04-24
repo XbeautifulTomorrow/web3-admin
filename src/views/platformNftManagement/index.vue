@@ -154,8 +154,8 @@ export default {
     // 搜索条件
     searchFun() {
       let { creationTime } = this;
-      let startTime = '';
-      let endTime = '';
+      let startTime = null;
+      let endTime = null;
       if (creationTime && creationTime[0]) {
         startTime = timeForStr(creationTime[0], 'YYYY-MM-DD');
       }

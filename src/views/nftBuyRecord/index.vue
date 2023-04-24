@@ -182,10 +182,10 @@ export default {
     timeForStr: timeForStr,
     searchFun() {
       let { transactionTime, transactionCompletionTime } = this;
-      let startTxtime = '';
-      let endTxTime = '';
-      let startConfirmTime = '';
-      let endConfirmTime = '';
+      let startTxtime = null;
+      let endTxTime = null;
+      let startConfirmTime = null;
+      let endConfirmTime = null;
 
       if (transactionTime && transactionTime[0]) {
         startTxtime = timeForStr(transactionTime[0], 'YYYY-MM-DD');

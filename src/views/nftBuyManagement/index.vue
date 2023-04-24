@@ -201,10 +201,10 @@ export default {
     timeForStr: timeForStr,
     searchFun() {
       let { addedTime, endTimes } = this;
-      let startOrderTime = '';
-      let endOrderTime = '';
-      let startTime = '';
-      let endTime = '';
+      let startOrderTime = null;
+      let endOrderTime = null;
+      let startTime = null;
+      let endTime = null;
 
       if (addedTime && addedTime[0]) {
         startOrderTime = timeForStr(addedTime[0], 'YYYY-MM-DD');

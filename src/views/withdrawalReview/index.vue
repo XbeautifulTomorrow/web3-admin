@@ -323,12 +323,12 @@ export default {
     // 搜索条件
     searchFun() {
       let { applicationTime, reviewTime, receiptTime } = this;
-      let createStartTime = '';
-      let createEndTime = '';
-      let auditStartTime = '';
-      let auditEndTime = '';
-      let arrivalStartTime = '';
-      let arrivalEndTime = '';
+      let createStartTime = null;
+      let createEndTime = null;
+      let auditStartTime = null;
+      let auditEndTime = null;
+      let arrivalStartTime = null;
+      let arrivalEndTime = null;
 
       if (applicationTime && applicationTime[0]) {
         createStartTime = timeForStr(applicationTime[0], 'YYYY-MM-DD');
@@ -469,7 +469,7 @@ export default {
         done()
         return
       }
-      
+
       this.showNftDialog = false;
       this.showReviewDialog = false;
 

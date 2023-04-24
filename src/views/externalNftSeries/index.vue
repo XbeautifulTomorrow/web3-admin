@@ -179,11 +179,11 @@ export default {
       ruleForm: {
         "chainId": null, //链ID
         "marketId": null, //市场ID
-        "seriesName": "", //系列名称
-        "seriesImg": "", //系列图片
-        "contractAddress": "", //合约地址
-        "keywords": "", //关键字
-        "projectParty": "", //项目方
+        "seriesName": null, //系列名称
+        "seriesImg": null, //系列图片
+        "contractAddress": null, //合约地址
+        "keywords": null, //关键字
+        "projectParty": null, //项目方
         "issuanceNumber": null //发行数量
       },
       rules: {},
@@ -206,8 +206,8 @@ export default {
     },
     searchFun() {
       let { addTime } = this;
-      let startTime = '';
-      let endTime = '';
+      let startTime = null;
+      let endTime = null;
       if (addTime && addTime[0]) {
         startTime = timeForStr(addTime[0], 'YYYY-MM-DD');
       }

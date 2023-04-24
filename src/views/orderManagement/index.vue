@@ -201,10 +201,10 @@ export default {
     // 搜索条件
     searchFun() {
       let { transactionTime, transactionCompleteTime } = this;
-      let startTime = '';
-      let endTime = '';
-      let finishStartTime = '';
-      let finishEndTime = '';
+      let startTime = null;
+      let endTime = null;
+      let finishStartTime = null;
+      let finishEndTime = null;
       if (transactionTime && transactionTime[0]) {
         startTime = timeForStr(transactionTime[0], 'YYYY-MM-DD');
       }

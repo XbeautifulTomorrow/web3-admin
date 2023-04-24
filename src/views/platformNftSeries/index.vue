@@ -15,10 +15,6 @@
           <div class="title">总藏品数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.collNumberTotal }}</div>
         </div>
-        <div class="remittance-item">
-          <div class="title">总价值</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.priceTotal }}</div>
-        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
@@ -151,7 +147,7 @@ export default {
       },
       operatingType: 1,
       ruleForm: {
-        "hash": "",// hash
+        "hash": null,// hash
         "chainId": null,// 链ID
         "coin": "ETH",// 币种
         "price": null,// 价格

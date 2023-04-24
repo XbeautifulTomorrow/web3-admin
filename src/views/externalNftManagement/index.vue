@@ -38,7 +38,7 @@
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">
-          创建时间
+          上次出奖时间
         </span>
         <el-date-picker v-model="creationTime" type="daterange" range-separator="到" start-placeholder="开始时间"
           end-placeholder="结束时间">

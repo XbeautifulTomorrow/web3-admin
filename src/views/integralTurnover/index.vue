@@ -111,8 +111,8 @@ export default {
     // 搜索条件
     searchFun() {
       let { changeTime } = this;
-      let startTime = '';
-      let endTime = '';
+      let startTime = null;
+      let endTime = null;
       if (changeTime && changeTime[0]) {
         startTime = timeForStr(changeTime[0], 'YYYY-MM-DD');
       }

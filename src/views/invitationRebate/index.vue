@@ -194,8 +194,8 @@ export default {
     // 搜索条件
     searchFun() {
       let { lastPickUpTime } = this;
-      let startTime = '';
-      let endTime = '';
+      let startTime = null;
+      let endTime = null;
       if (lastPickUpTime && lastPickUpTime[0]) {
         startTime = timeForStr(lastPickUpTime[0], 'YYYY-MM-DD');
       }
