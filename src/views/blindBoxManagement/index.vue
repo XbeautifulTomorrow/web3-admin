@@ -1097,8 +1097,8 @@ export default {
     // 五连计算
     validateFive(rule, value, callback) {
       const { price } = this.ruleForm;
-      if (Number(value) <= 0 || Number(value || 0) >= Number(price || 0)) {
-        callback(new Error('五连单价不能是0或以下，必须小于单买价格'));
+      if (Number(value) <= 0 || Number(value || 0) > Number(price || 0)) {
+        callback(new Error('五连单价不能是0或以下，小于或等于单买价格'));
       } else {
         callback();
       }
