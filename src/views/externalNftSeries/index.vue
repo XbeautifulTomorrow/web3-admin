@@ -25,7 +25,7 @@
       <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true">
         创建NFT
       </el-button>
-      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="fetchNftExternalList()">
+      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="nftExternalFlushed()">
         刷新
       </el-button>
     </div>
@@ -122,12 +122,18 @@
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="选择市场" prop="marketId">
-          <el-radio-group v-model="ruleForm.marketId">
-            <el-radio-button v-for="(item, index) in markes" :label="item.id" :key="index">
+        <el-form-item label="选择市场" prop="marketNames">
+          <el-checkbox-group v-model="ruleForm.marketNames">
+            <el-checkbox v-for="(item, index) in markes" :label="item.id" :key="index" border>
               {{ item.marketName }}
-            </el-radio-button>
-          </el-radio-group>
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+        <el-form-item label="NFT类型" prop="seriesNftType">
+          <el-select v-model="ruleForm.seriesNftType" style="width: 300px">
+            <el-option label="ERC721" value="ERC721" />
+            <el-option label="ERC1155" value="ERC1155" />
+          </el-select>
         </el-form-item>
         <el-form-item label="关键字" prop="keywords">
           <el-input v-model="ruleForm.keywords" style="width: 300px" placeholder="请输入名称" />
@@ -137,6 +143,9 @@
         </el-form-item>
         <el-form-item label="发行总量" prop="issuanceNumber">
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
+        </el-form-item>
+        <el-form-item label="描述">
+          <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.boxDesc"></el-input>
         </el-form-item>
       </el-form>
 
@@ -177,14 +186,15 @@ export default {
         certificate: sessionStorage.getItem("token"),
       },
       ruleForm: {
-        "chainId": null, //链ID
-        "marketId": null, //市场ID
-        "seriesName": null, //系列名称
-        "seriesImg": null, //系列图片
-        "contractAddress": null, //合约地址
-        "keywords": null, //关键字
-        "projectParty": null, //项目方
-        "issuanceNumber": null //发行数量
+        chainId: null, //链ID
+        marketNames: [], //市场ID
+        seriesName: null, //系列名称
+        seriesImg: null, //系列图片
+        contractAddress: null, //合约地址
+        keywords: null, //关键字
+        projectParty: null, //项目方
+        issuanceNumber: null, //发行数量
+        seriesNftType: "", // NFT类型
       },
       rules: {},
       markes: [],
@@ -251,6 +261,14 @@ export default {
         this.aggregateQuery = resAggregateQuery;
       }
     },
+    // 刷新
+    async nftExternalFlushed() {
+      const res = await this.$http.nftExternalFlushed();
+      if (res) {
+        this.fetchNftExternalList();
+        this.$message.success("操作成功");
+      }
+    },
     // 删除
     handleDel(row) {
       this.$confirm(`确定要删除系列『${row.seriesName || row.id}』吗?`, "提示", {
@@ -272,6 +290,22 @@ export default {
         });
     },
     handleClose(done) {
+      this.ruleForm = {
+        chainId: null, //链ID
+        marketNames: [], //市场ID
+        seriesName: null, //系列名称
+        seriesImg: null, //系列图片
+        contractAddress: null, //合约地址
+        keywords: null, //关键字
+        projectParty: null, //项目方
+        issuanceNumber: null, //发行数量
+        seriesNftType: "", // NFT类型
+      }
+
+      setTimeout(() => {
+        this.$refs["ruleForm"].clearValidate();
+      }, 10);
+
       if (done) {
         done()
         return
@@ -309,7 +343,10 @@ export default {
             this.$message.error("请上传图片！");
             return;
           }
-          let ruleForm = { ...this.ruleForm };
+          let ruleForm = {
+            ...this.ruleForm,
+            marketNames: this.ruleForm.marketNames.join(",")
+          };
           ruleForm.seriesImg = this.fileImg[0].url;
           const res = await this.$http.nftExternalAdd({ ...ruleForm });
           if (res) {
@@ -372,7 +409,7 @@ export default {
       chainId: [
         { required: true, message: "请选择链", trigger: ["blur", "change"] },
       ],
-      marketId: [
+      marketNames: [
         { required: true, message: "请选择市场", trigger: ["blur", "change"] },
       ],
       seriesName: [
@@ -380,6 +417,9 @@ export default {
       ],
       seriesImg: [
         { required: true, message: "请选择NFT图片", trigger: ["blur", "change"] },
+      ],
+      seriesNftType: [
+        { required: true, message: "请选择NFT类型", trigger: ["blur", "change"] },
       ],
       contractAddress: [
         { required: true, message: "请输入合约地址", trigger: ["blur", "change"] },
