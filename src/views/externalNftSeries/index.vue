@@ -124,7 +124,7 @@
         </el-form-item>
         <el-form-item label="选择市场" prop="marketNames">
           <el-checkbox-group v-model="ruleForm.marketNames">
-            <el-checkbox v-for="(item, index) in markes" :label="item.id" :key="index" border>
+            <el-checkbox v-for="(item, index) in markes" :label="item.marketName" :key="index" border>
               {{ item.marketName }}
             </el-checkbox>
           </el-checkbox-group>
