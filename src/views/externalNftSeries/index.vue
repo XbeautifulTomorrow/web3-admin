@@ -22,7 +22,7 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalList()">
         查询
       </el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true">
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="handleAdd()">
         创建NFT
       </el-button>
       <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="nftExternalFlushed()">
@@ -87,6 +87,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" key="15">
         <template slot-scope="scope">
+          <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)">
+            编辑
+          </span>
           <span class="blueColor publick-button cursor" @click="handleDel(scope.row)">
             删除
           </span>
@@ -97,45 +100,45 @@
       @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
       layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
     </el-pagination>
-    <el-dialog v-if="showDialog" title="创建NFT" :visible.sync="showDialog" width="540px" :close-on-click-modal="false"
-      :before-close="handleClose">
+    <el-dialog v-if="showDialog" :title="operatingType == 1 ? '创建NFT' : '编辑NFT'" :visible.sync="showDialog" width="540px"
+      :close-on-click-modal="false" :before-close="handleClose">
       <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
         <el-form-item label="系列名称" prop="seriesName">
           <el-input v-model="ruleForm.seriesName" style="width: 300px" placeholder="请输入系列名称" />
         </el-form-item>
-        <el-form-item label="合约地址" prop="contractAddress">
+        <el-form-item label="合约地址" prop="contractAddress" v-if="operatingType == 1">
           <el-input v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
             <template slot="append">
               <span @click="fetchNftSeries()">查询</span>
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="系列图片" prop="seriesImg">
+        <el-form-item label="系列图片" prop="seriesImg" v-if="operatingType == 1">
           <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
             accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
             :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="所在链" prop="chainId">
+        <el-form-item label="所在链" prop="chainId" v-if="operatingType == 1">
           <el-select v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="选择市场" prop="marketNames">
+        <el-form-item label="选择市场" prop="marketNames" v-if="operatingType == 1">
           <el-checkbox-group v-model="ruleForm.marketNames">
             <el-checkbox v-for="(item, index) in markes" :label="item.marketName" :key="index" border>
               {{ item.marketName }}
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="NFT类型" prop="seriesNftType">
+        <el-form-item label="NFT类型" prop="seriesNftType" v-if="operatingType == 1">
           <el-select v-model="ruleForm.seriesNftType" style="width: 300px">
             <el-option label="ERC721" value="ERC721" />
             <el-option label="ERC1155" value="ERC1155" />
           </el-select>
         </el-form-item>
-        <el-form-item label="关键字" prop="keywords">
+        <el-form-item label="关键字" prop="keywords" v-if="operatingType == 1">
           <el-input v-model="ruleForm.keywords" style="width: 300px" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="项目方">
@@ -144,7 +147,7 @@
         <el-form-item label="发行总量" prop="issuanceNumber">
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
         </el-form-item>
-        <el-form-item label="描述">
+        <el-form-item label="描述" v-if="operatingType == 1">
           <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.boxDesc"></el-input>
         </el-form-item>
       </el-form>
@@ -172,6 +175,7 @@ export default {
   data() {
     return {
       showDialog: false,
+      operatingType: false,
       obscureField: null,
       projectParty: null,
       addTime: null,
@@ -269,6 +273,17 @@ export default {
         this.$message.success("操作成功");
       }
     },
+    handleAdd() {
+      this.operatingType = 1;
+      this.showDialog = true;
+    },
+    handleEdit(row) {
+      this.ruleForm = {
+        ...row
+      }
+      this.operatingType = 2;
+      this.showDialog = true;
+    },
     // 删除
     handleDel(row) {
       this.$confirm(`确定要删除系列『${row.seriesName || row.id}』吗?`, "提示", {
@@ -347,8 +362,15 @@ export default {
             ...this.ruleForm,
             marketNames: this.ruleForm.marketNames.join(",")
           };
-          ruleForm.seriesImg = this.fileImg[0].url;
-          const res = await this.$http.nftExternalAdd({ ...ruleForm });
+
+          let res = null;
+          if (this.operatingType == 1) {
+            ruleForm.marketNames = this.ruleForm.marketNames.join(",");
+            ruleForm.seriesImg = this.fileImg[0].url;
+            res = await this.$http.nftExternalAdd({ ...ruleForm });
+          } else {
+            res = await this.$http.nftExternalUpdate({ ...ruleForm });
+          }
           if (res) {
             this.handleClose();
             this.$refs["ruleForm"].resetFields();

@@ -53,18 +53,6 @@
           <div class="title">总Eth金额</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.amountTotal }}</div>
         </div>
-        <div class="remittance-item">
-          <div class="title">总Eth余额</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.assetBalanceTotal }}</div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总U金额</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.amountUTotal }}</div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总U余额</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.assetBalanceUTotal }}</div>
-        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>

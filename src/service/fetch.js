@@ -26,6 +26,7 @@ export const upAndDown = (obj) => S.post('/user/upAndDown', obj); // 上下分
 export const getNftExternalList = (obj) => S.get('/nft-external-series/pageList', obj); // 外部nft列表
 export const getNftExternalStatistics = (obj) => S.get('/nft-external-series/headerDataTotal', obj); // 外部nft统计
 export const nftExternalAdd = (obj) => S.post('/nft-external-series/add', obj); // 外部nft新增
+export const nftExternalUpdate = (obj) => S.post('/nft-external-series/update', obj); // 外部nft新增
 export const nftExternalDel = (obj) => S.get('/nft-external-series/delete', obj); // 外部nft删除
 
 export const getNftPlatformList = (obj) => S.get('/nft-platform-series/pageList', obj); // 平台nft列表

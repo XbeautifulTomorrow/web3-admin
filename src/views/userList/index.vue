@@ -62,6 +62,11 @@
           <div class="title">总收入金额</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.revenueTotal }}</div>
         </div>
+        <div class="remittance-item">
+          <div class="title">总积分</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.assetPointBalanceTotal }}</div>
+        </div>
+        
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
@@ -211,30 +216,30 @@ export default {
     timeForStr: timeForStr,
     searchFun() {
       let { registrationTime, loginedTime } = this;
-      let startRegTime = null;
-      let endRegTime = null;
-      let startLoginTime = null;
-      let endLoginTime = null;
+      let regStartTime = null;
+      let regEndTime = null;
+      let lastLoginStartTime = null;
+      let lastLoginEndTime = null;
       if (registrationTime && registrationTime[0]) {
-        startRegTime = timeForStr(registrationTime[0], 'YYYY-MM-DD HH:mm:ss');
+        regStartTime = timeForStr(registrationTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (registrationTime && registrationTime[1]) {
-        endRegTime = timeForStr(registrationTime[1], 'YYYY-MM-DD HH:mm:ss');
+        regEndTime = timeForStr(registrationTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
       if (loginedTime && loginedTime[0]) {
-        startLoginTime = timeForStr(loginedTime[0], 'YYYY-MM-DD HH:mm:ss');
+        lastLoginStartTime = timeForStr(loginedTime[0], 'YYYY-MM-DD HH:mm:ss');
       }
       if (loginedTime && loginedTime[1]) {
-        endLoginTime = timeForStr(loginedTime[1], 'YYYY-MM-DD HH:mm:ss');
+        lastLoginEndTime = timeForStr(loginedTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
       return {
         obscureField: this.obscureField,
         upId: this.upId,
         userStatus: this.userStatus,
-        startRegTime,
-        endRegTime,
-        startLoginTime,
-        endLoginTime,
+        regStartTime,
+        regEndTime,
+        lastLoginStartTime,
+        lastLoginEndTime,
       };
     },
     // 加载用户列表

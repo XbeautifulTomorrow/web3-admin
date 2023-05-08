@@ -2,10 +2,10 @@
   <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入系列名" v-model="seriesName" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="tokenId" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入项目方" v-model="projectParty" clearable />
       <el-select v-model="chainName" class="public-select-box" placeholder="所在链" clearable>
-        <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
+        <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainName" />
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">
@@ -160,7 +160,7 @@ export default {
   // 数据
   data() {
     return {
-      Id: null, // NFT Id
+      tokenId: null, // NFT Id
       seriesName: null, // 系列名
       projectParty: null, // 项目方
       chainName: null, // 链名称
@@ -194,7 +194,7 @@ export default {
       }
 
       return {
-        id: this.Id, // NFT Id
+        tokenId: this.tokenId, // NFT Id
         seriesName: this.seriesName, // 系列名
         projectParty: this.projectParty, // 项目方
         chainName: this.chainName,

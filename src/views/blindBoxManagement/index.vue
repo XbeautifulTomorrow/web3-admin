@@ -82,44 +82,45 @@
       <el-table-column prop="fivePrice" label="五连价格" align="center" key="7"></el-table-column>
       <el-table-column prop="tenPrice" label="十连价格" align="center" key="8"></el-table-column>
       <el-table-column prop="totalWeight" label="总权重" align="center" key="9"></el-table-column>
-      <el-table-column prop="sales" width="100" :label="`销量(${coin})`" align="center" key="10"></el-table-column>
-      <el-table-column prop="grossIncome" width="100" :label="`总收入(${coin})`" align="center" key="11"></el-table-column>
+      <el-table-column prop="sales" width="100" label="销量" align="center" key="10"></el-table-column>
+      <el-table-column prop="sales" width="100" :label="` 销售额(${coin})`" align="center" key="11"></el-table-column>
+      <el-table-column prop="grossIncome" width="100" :label="`总收入(${coin})`" align="center" key="12"></el-table-column>
       <el-table-column prop="totalExpenditure" width="100" :label="`总支出(${coin})`" align="center"
-        key="12"></el-table-column>
-      <el-table-column prop="totalProfit" width="100" :label="`总利润(${coin})`" align="center" key="13"></el-table-column>
-      <el-table-column prop="pastTraPrice" width="100" label="实际返还率" align="center" key="14">
+        key="13"></el-table-column>
+      <el-table-column prop="totalProfit" width="100" :label="`总利润(${coin})`" align="center" key="14"></el-table-column>
+      <el-table-column prop="pastTraPrice" width="100" label="实际返还率" align="center" key="15">
         <template slot-scope="scope">
           {{ `${new bigNumber(actualReturn(scope.row) || 0).multipliedBy(100).toFixed(2)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="15">
+      <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="16">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.deviseRate || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="16">
+      <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="17">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.expectRate || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="openNumber" width="120" label="抽奖返还率（以十连抽为准）" align="center" key="17">
+      <el-table-column prop="openNumber" width="120" label="抽奖返还率（以十连抽为准）" align="center" key="18">
         <template slot-scope="scope">
           {{ `${new bigNumber(paybackRate(scope.row) || 0).multipliedBy(100).toFixed(4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="externalStatus" label="外部异常" align="center" key="18">
+      <el-table-column prop="externalStatus" label="外部异常" align="center" key="19">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.externalStatus == 'NUMBER'">数量不足</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="boxStatus" label="状态" align="center" key="19">
+      <el-table-column prop="boxStatus" label="状态" align="center" key="20">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.boxStatus == 'DISABLE'">冻结</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="20" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="21" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)">
             编辑
@@ -137,8 +138,8 @@
       @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
       layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
     </el-pagination>
-    <el-dialog title="新增盲盒" :visible.sync="showDialog" width="1200px" :close-on-click-modal="false"
-      :before-close="handleClose">
+    <el-dialog :title="operatingType == 1 ? '新增盲盒' : '编辑盲盒'" :visible.sync="showDialog" width="1200px"
+      :close-on-click-modal="false" :before-close="handleClose">
       <div class="box-setting">
         <el-form ref="ruleForm" style="width: 420px;" :rules="rules" :model="ruleForm" label-width="100px">
           <el-form-item label="盲盒名称" prop="boxName">
@@ -398,6 +399,7 @@ export default {
 
       /** 添加盲盒相关 */
       showDialog: false,
+      operatingType: 1,
       uploadUrl: "",
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
@@ -610,6 +612,7 @@ export default {
     },
     addBox() {
       this.showDialog = true;
+      this.operatingType = 1;
     },
     // 编辑盲盒
     onEbit(row) {
@@ -618,6 +621,8 @@ export default {
         ...row,
         deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4)
       }
+
+      this.operatingType = 2;
       this.fileImg = [{ url: row.boxImg }];
 
       const platformLists = row.platformList;
@@ -662,6 +667,9 @@ export default {
 
       this.$forceUpdate();
       this.showDialog = true;
+      setTimeout(() => {
+        this.calculationPlatformNft();
+      }, 10);
     },
     handleUpload(res) {
       if (res.code == 200) {
@@ -975,8 +983,8 @@ export default {
             let platformCount = [];
             let externalCount = [];
 
-            for (let i = 0; i < this.platformList.length; i++) {
-              for (let j = 0; j < this.calculationNft.length; j++) {
+            for (let j = 0; j < this.calculationNft.length; j++) {
+              for (let i = 0; i < this.platformList.length; i++) {
                 if (
                   this.calculationNft[j].nftType == "PLATFORM"
                   && this.calculationNft[j].seriesId == this.platformList[i].seriesId
@@ -988,12 +996,13 @@ export default {
               }
             }
 
-            for (let i = 0; i < this.externalList.length; i++) {
-              for (let j = 0; j < this.calculationNft.length; j++) {
+            for (let j = 0; j < this.calculationNft.length; j++) {
+              for (let i = 0; i < this.externalList.length; i++) {
                 if (
                   this.calculationNft[j].nftType == "EXTERNAL"
                   && this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
+                  console.log(this.calculationNft[j].averagePrice)
                   this.externalList[i].nftType = "EXTERNAL";
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
@@ -1005,6 +1014,7 @@ export default {
 
             this.platformList = [];
             this.externalList = [];
+            console.log(externalCount)
 
             setTimeout(() => {
               this.platformList = platformCount;
@@ -1098,7 +1108,7 @@ export default {
     validateFive(rule, value, callback) {
       const { price } = this.ruleForm;
       if (Number(value) <= 0 || Number(value || 0) > Number(price || 0)) {
-        callback(new Error('五连单价不能是0或以下，小于或等于单买价格'));
+        callback(new Error('五连单价不能低于单买价格'));
       } else {
         callback();
       }
@@ -1107,7 +1117,7 @@ export default {
     validateTen(rule, value, callback) {
       const { fivePrice } = this.ruleForm;
       if (Number(value) <= 0 || Number(value || 0) > Number(fivePrice || 0)) {
-        callback(new Error('十连单价不能是0或以下，小于或等于五连单价'));
+        callback(new Error('十连单价不能低于五连单价'));
       } else {
         callback();
       }

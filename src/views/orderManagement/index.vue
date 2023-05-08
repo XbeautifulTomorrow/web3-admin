@@ -53,7 +53,7 @@
           <div class="val">{{ aggregateQuery && aggregateQuery.lotteryPrices }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">开奖总数</div>
+          <div class="title">总返奖价值</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.rebatesPrices }}</div>
         </div>
       </div>
@@ -75,7 +75,7 @@
       </el-table-column>
       <el-table-column prop="userName" width="120" label="用户" align="center" key="5">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
