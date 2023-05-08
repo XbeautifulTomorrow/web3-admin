@@ -81,7 +81,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="图片" prop="seriesImg" v-if="operatingType == 1">
-          <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
+          <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange"
+            :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
             accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
             :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
             <i class="el-icon-plus" />
@@ -142,6 +143,8 @@ export default {
       baseUserPage: null,
       uploadUrl: "",
       fileImg: [],
+      limitCount: 1,
+      hideUpload: false,
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
@@ -220,6 +223,7 @@ export default {
       }
 
       this.ruleForm.reclaimRate = new bigNumber(this.ruleForm.reclaimRate).multipliedBy(100).toString();
+      this.hideUpload = true;
       this.operatingType = 2;
       this.showDialog = true;
     },
@@ -268,7 +272,11 @@ export default {
       }
       return is1M;
     },
+    handleChange(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
+    },
     handleRemove(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
       this.fileImg = [];
     },
     handExceed(fiel) {
@@ -341,6 +349,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  /deep/ .el-upload--picture-card {
+    display: none;
+  }
+}
+
 .remittance-box {
   margin-bottom: 20px;
   display: flex;

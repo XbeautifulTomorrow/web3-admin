@@ -114,7 +114,8 @@
           </el-input>
         </el-form-item>
         <el-form-item label="系列图片" prop="seriesImg" v-if="operatingType == 1">
-          <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
+          <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange"
+            :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
             accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
             :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
             <i class="el-icon-plus" />
@@ -186,6 +187,8 @@ export default {
       baseUserPage: null,
       uploadUrl: "",
       fileImg: [],
+      limitCount: 1,
+      hideUpload: false,
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
@@ -275,6 +278,7 @@ export default {
     },
     handleAdd() {
       this.operatingType = 1;
+      this.hideUpload = false;
       this.showDialog = true;
     },
     handleEdit(row) {
@@ -282,6 +286,7 @@ export default {
         ...row
       }
       this.operatingType = 2;
+      this.hideUpload = true;
       this.showDialog = true;
     },
     // 删除
@@ -344,7 +349,11 @@ export default {
       }
       return is1M;
     },
+    handleChange(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
+    },
     handleRemove(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
       this.fileImg = [];
     },
     handExceed(fiel) {

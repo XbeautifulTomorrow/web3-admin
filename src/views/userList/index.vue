@@ -66,7 +66,7 @@
           <div class="title">总积分</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.assetPointBalanceTotal }}</div>
         </div>
-        
+
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
@@ -140,9 +140,9 @@
     <el-dialog :title="uploadType == 1 ? '导入测试账号' : '导入结果'" :visible.sync="showDialog"
       :width="uploadType == 1 ? '440px' : '1200px'" :close-on-click-modal="false" :before-close="handleClose">
       <div v-if="uploadType == 1">
-        <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileExcel" :multiple="false" :limit="1"
-          accept=".xls,.xlsx" list-type="picture-card" :before-upload="handleBefore" :on-remove="handleRemove"
-          :on-exceed="handExceed" :headers="uploadHeader">
+        <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange" :on-success="handleUpload"
+          :file-list="fileExcel" :multiple="false" :limit="1" accept=".xls,.xlsx" list-type="picture-card"
+          :before-upload="handleBefore" :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
           <i class="el-icon-plus" />
         </el-upload>
       </div>
@@ -160,8 +160,7 @@
     <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false"
       :before-close="handleClose">
       <div>
-        <el-input-number v-model="score" style="width: 100%;" size="medium" @change="handleChange"
-          label="描述文字"></el-input-number>
+        <el-input-number v-model="score" style="width: 100%;"></el-input-number>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -204,6 +203,8 @@ export default {
       baseUserPage: null, //分页相关
       uploadUrl: "", //上传url
       fileExcel: [], //文件列表
+      limitCount: 1,
+      hideUpload: false,
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
@@ -326,9 +327,6 @@ export default {
           console.error(err);
         });
     },
-    handleChange(value) {
-      // console.log(value);
-    },
     // 打开上下分弹窗
     operatingScore(row) {
       this.scoreId = row.id;
@@ -379,7 +377,11 @@ export default {
       }
       return is1M;
     },
+    handleChange(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
+    },
     handleRemove(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
       this.fileImg = [];
     },
     handExceed(fiel) {
@@ -419,6 +421,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  /deep/ .el-upload--picture-card {
+    display: none;
+  }
+}
+
 .remittance-box {
   margin-bottom: 20px;
   display: flex;

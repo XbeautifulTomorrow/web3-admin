@@ -147,7 +147,8 @@
             </el-input>
           </el-form-item>
           <el-form-item label="盲盒图片" prop="seriesImg">
-            <el-upload :action="uploadUrl" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
+            <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange"
+              :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="limitCount"
               accept="image/png,image/jpg,image/jpeg,image/svg+xml" list-type="picture-card" :before-upload="handleBefore"
               :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
               <i class="el-icon-plus" />
@@ -173,28 +174,28 @@
           <el-form-item label="传奇数量" prop="legendNum">
             <el-input type="number" v-model="ruleForm.legendNum" style="width: 300px" placeholder="请输入传奇数量">
               <template slot="append">
-                {{ `几率${new bigNumber(legendNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+                {{ `几率${new bigNumber(legendNftProbability || 0).multipliedBy(100).toFixed(4)}% ` }}
               </template>
             </el-input>
           </el-form-item>
           <el-form-item label="史诗数量" prop="epicNum">
             <el-input type="number" v-model="ruleForm.epicNum" style="width: 300px" placeholder="请输入史诗数量">
               <template slot="append">
-                {{ `几率${new bigNumber(epicNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+                {{ `几率${new bigNumber(epicNftProbability || 0).multipliedBy(100).toFixed(4)}% ` }}
               </template>
             </el-input>
           </el-form-item>
           <el-form-item label="稀有数量" prop="rareNum">
             <el-input type="number" v-model="ruleForm.rareNum" style="width: 300px" placeholder="请输入稀有数量">
               <template slot="append">
-                {{ `几率${new bigNumber(rareNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+                {{ `几率${new bigNumber(rareNftProbability || 0).multipliedBy(100).toFixed(4)}% ` }}
               </template>
             </el-input>
           </el-form-item>
           <el-form-item label="普通数量">
             <el-input type="number" readonly="readonly" v-model="commonNum" style="width: 300px" placeholder="普通数量">
               <template slot="append">
-                {{ `几率${new bigNumber(commonNftProbability || 0).multipliedBy(100).toFixed(4)}%` }}
+                {{ `几率${new bigNumber(commonNftProbability || 0).multipliedBy(100).toFixed(4)}% ` }}
               </template>
             </el-input>
           </el-form-item>
@@ -312,11 +313,12 @@
           </div>
           <div class="probability-box">
             <div>
-              {{ ruleForm.expectRate && `预计返还率：${new bigNumber(ruleForm.expectRate || 0).multipliedBy(100).toFixed(4)}%`
+              {{ ruleForm.expectRate && `预计返还率：${new bigNumber(ruleForm.expectRate || 0).multipliedBy(100).toFixed(4)}%
+              `
               }}
             </div>
             <div>
-              {{ ruleForm.lossRate && `赔本率：${new bigNumber(ruleForm.lossRate || 0).multipliedBy(100).toFixed(4)}%` }}
+              {{ ruleForm.lossRate && `赔本率：${new bigNumber(ruleForm.lossRate || 0).multipliedBy(100).toFixed(4)}% ` }}
             </div>
           </div>
         </div>
@@ -338,13 +340,14 @@
           <el-form-item label="选择链" v-if="seriesType == 1" prop="adjust">
             <el-select style="width: 300px;" v-model="seriesForm.chain" popper-class="public-select-box"
               @change="selectChain" placeholder="请选择">
-              <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
+              <el-option v-for="( item, index ) in  chainList " :key="index" :label="item.chainName"
+                :value="item.chainId" />
             </el-select>
           </el-form-item>
           <el-form-item label="选择系列" prop="adjust">
             <el-select style="width: 300px;" v-model="seriesForm.seriesId" popper-class="public-select-box"
               @change="changeSeries" placeholder="请选择" clearable>
-              <el-option :style="{ display: item.display }" v-for="(item, index) in downNft" :key="index"
+              <el-option :style="{ display: item.display }" v-for="( item, index ) in  downNft " :key="index"
                 :label="item.seriesName" :value="item.id">
                 <span style="float: left">{{ item.seriesName }}</span>
                 <span style="float: right; color: #8492a6; font-size: 12px">{{ item.floorPrice }}</span>
@@ -401,6 +404,8 @@ export default {
       showDialog: false,
       operatingType: 1,
       uploadUrl: "",
+      limitCount: 1,
+      hideUpload: false,
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
@@ -623,6 +628,7 @@ export default {
       }
 
       this.operatingType = 2;
+      this.hideUpload = true;
       this.fileImg = [{ url: row.boxImg }];
 
       const platformLists = row.platformList;
@@ -687,7 +693,11 @@ export default {
       }
       return is1M;
     },
+    handleChange(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
+    },
     handleRemove(file, fileList) {
+      this.hideUpload = fileList.length >= this.limitCount;
       this.fileImg = [];
     },
     handExceed(fiel) {
@@ -1002,7 +1012,6 @@ export default {
                   this.calculationNft[j].nftType == "EXTERNAL"
                   && this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
-                  console.log(this.calculationNft[j].averagePrice)
                   this.externalList[i].nftType = "EXTERNAL";
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
@@ -1014,7 +1023,6 @@ export default {
 
             this.platformList = [];
             this.externalList = [];
-            console.log(externalCount)
 
             setTimeout(() => {
               this.platformList = platformCount;
@@ -1310,6 +1318,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  /deep/ .el-upload--picture-card {
+    display: none;
+  }
+}
+
 .remittance-box {
   margin-bottom: 20px;
   display: flex;

@@ -22,88 +22,114 @@
           </el-select>
         </div>
       </div>
-      <el-menu :default-openeds="[]" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
+      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
         class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
         </el-menu-item>
-        <el-menu-item index="userList" class="menu-list">
-          <i class="el-icon-user"></i>
-          <span>用户管理</span>
-        </el-menu-item>
-        <el-menu-item index="platformNftSeries" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>平台NFT系列</span>
-        </el-menu-item>
-        <el-menu-item index="externalNftSeries" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>外部NFT系列</span>
-        </el-menu-item>
-        <el-menu-item index="externalNftManagement" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>外部NFT管理</span>
-        </el-menu-item>
-        <el-menu-item index="platformNftManagement" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>平台NFT管理</span>
-        </el-menu-item>
-        <el-menu-item index="nftBuyManagement" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>一元购管理</span>
-        </el-menu-item>
-        <el-menu-item index="nftBuyRecord" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>一元购售票记录</span>
-        </el-menu-item>
-        <el-menu-item index="marketManagement" class="menu-list">
-          <i class="el-icon-s-management"></i>
-          <span>市场管理</span>
-        </el-menu-item>
-        <el-menu-item index="blindBoxManagement" class="menu-list">
-          <i class="el-icon-box"></i>
-          <span>盲盒管理</span>
-        </el-menu-item>
-        <el-menu-item index="bloodPoolManagement" class="menu-list">
-          <i class="el-icon-s-finance"></i>
-          <span>血池管理</span>
-        </el-menu-item>
-        <el-menu-item index="blindBoxTest" class="menu-list">
-          <i class="el-icon-box"></i>
-          <span>盲盒测试</span>
-        </el-menu-item>
-        <el-menu-item index="cashManagement" class="menu-list">
-          <i class="el-icon-s-finance"></i>
-          <span>金流管理</span>
-        </el-menu-item>
-        <el-menu-item index="withdrawalReview" class="menu-list">
-          <i class="el-icon-stopwatch"></i>
-          <span>提款审核</span>
-        </el-menu-item>
-        <el-menu-item index="orderManagement" class="menu-list">
-          <i class="el-icon-s-order"></i>
-          <span>订单管理</span>
-        </el-menu-item>
-        <el-menu-item index="flashManagement" class="menu-list">
-          <i class="el-icon-s-order"></i>
-          <span>闪兑管理</span>
-        </el-menu-item>
-        <el-menu-item index="invitationRebate" class="menu-list">
-          <i class="el-icon-coin"></i>
-          <span>邀请返佣</span>
-        </el-menu-item>
-        <el-menu-item index="rebateRecord" class="menu-list">
-          <i class="el-icon-document"></i>
-          <span>返佣记录</span>
-        </el-menu-item>
-        <el-menu-item index="integralTurnover" class="menu-list">
-          <i class="el-icon-document"></i>
-          <span>积分流水</span>
-        </el-menu-item>
-        <el-menu-item index="setting" class="menu-list">
-          <i class="el-icon-s-tools"></i>
-          <span>系统设置</span>
-        </el-menu-item>
+        <el-submenu index="dataManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">数据管理</span>
+          </template>
+          <el-menu-item index="userList" class="menu-list">
+            <i class="el-icon-user"></i>
+            <span>用户管理</span>
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="nftManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">NFT管理</span>
+          </template>
+          <el-menu-item index="platformNftSeries" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>平台NFT系列</span>
+          </el-menu-item>
+          <el-menu-item index="externalNftSeries" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>外部NFT系列</span>
+          </el-menu-item>
+          <el-menu-item index="externalNftManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>外部NFT管理</span>
+          </el-menu-item>
+          <el-menu-item index="platformNftManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>平台NFT管理</span>
+          </el-menu-item>
+          <el-menu-item index="invitationRebate" class="menu-list">
+            <i class="el-icon-coin"></i>
+            <span>邀请返佣</span>
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="platformManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">平台管理</span>
+          </template>
+          <el-menu-item index="marketManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>市场管理</span>
+          </el-menu-item>
+          <el-menu-item index="setting" class="menu-list">
+            <i class="el-icon-s-tools"></i>
+            <span>系统设置</span>
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="mallManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">商城管理</span>
+          </template>
+          <el-menu-item index="blindBoxManagement" class="menu-list">
+            <i class="el-icon-box"></i>
+            <span>盲盒管理</span>
+          </el-menu-item>
+          <el-menu-item index="orderManagement" class="menu-list">
+            <i class="el-icon-s-order"></i>
+            <span>订单管理</span>
+          </el-menu-item>
+          <el-menu-item index="blindBoxTest" class="menu-list">
+            <i class="el-icon-box"></i>
+            <span>盲盒测试</span>
+          </el-menu-item>
+          <el-menu-item index="nftBuyManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>一元购管理</span>
+          </el-menu-item>
+          <el-menu-item index="nftBuyRecord" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>一元购售票记录</span>
+          </el-menu-item>
+        </el-submenu>
+        <el-submenu index="fundingStatistics">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">资金统计</span>
+          </template>
+          <el-menu-item index="cashManagement" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>金流管理</span>
+          </el-menu-item>
+          <el-menu-item index="withdrawalReview" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>提款审核</span>
+          </el-menu-item>
+          <el-menu-item index="flashManagement" class="menu-list">
+            <i class="el-icon-s-order"></i>
+            <span>闪兑管理</span>
+          </el-menu-item>
+          <el-menu-item index="rebateRecord" class="menu-list">
+            <i class="el-icon-document"></i>
+            <span>返佣记录</span>
+          </el-menu-item>
+          <el-menu-item index="integralTurnover" class="menu-list">
+            <i class="el-icon-document"></i>
+            <span>积分流水</span>
+          </el-menu-item>
+        </el-submenu>
       </el-menu>
     </el-aside>
     <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
@@ -117,8 +143,8 @@
               <svg-icon class-name="title-icon" icon-class="el-icon-s-fold" />
             </span>
           </div>
-          <!-- <span class="title">{{ title }}</span>
-          <span class="title title-middle colorNine" v-if="page">/</span> -->
+          <span class="title">{{ title }}</span>
+          <span class="title title-middle colorNine" v-if="page">/</span>
           <span class="title">{{ page }}</span>
         </div>
       </el-header>
@@ -140,6 +166,7 @@ export default {
   data() {
     return {
       drawer: false,
+      defaultList: [],
       defaultActive: 'userList',
       title: '',
       page: '',
@@ -148,6 +175,14 @@ export default {
       accountType: '',
       coinConfig: '',
       nav: [
+        {
+          label: '数据管理',
+          page: 'dataManagement',
+        },
+        {
+          label: 'NFT管理',
+          page: 'nftManagement',
+        },
         {
           label: '首页',
           page: 'report',
@@ -261,46 +296,70 @@ export default {
     selectFun(index, indexPage) {
       const { nav } = this;
       const _title = nav.filter((item) => item.page == indexPage[0]);
-      this.page = _title[0].label;
-      // if (indexPage.length > 1) {
-      //   const _otherTitle = nav.filte   ((item) => item.page === indexPage[1]);
-      //   this.page = _otherTitle[0].la   el;
-      // } else {
-      //   this.page = '';
-      // }
+      if (indexPage.length > 1) {
+        const _otherTitle = nav.filter((item) => item.page === indexPage[1]);
+        this.page = _otherTitle[0].label;
+      } else {
+        this.page = '';
+      }
       this.$router.push(`/${index}`);
     },
     pageFun() {
       const { path, nav } = this;
       const dataManagement = [
-        'userList',
-        'farmList',
-        'minerList',
-        'graphicsCardList',
-        'overclockList',
-        'walletsList',
-        'flightList',
+        'userList'
       ];
-      const systemManagement = [
-        'currencyList',
-        'algorithmList',
-        'miningSoftwareList',
-        'overclockPresetsList',
-        'orePoolList',
-        'aCardManagementList',
+
+      const nftManagement = [
+        'platformNftSeries',
+        'externalNftSeries',
+        'externalNftManagement',
+        'platformNftManagement',
+        'invitationRebate'
       ];
+
+      const platformManagement = [
+        'marketManagement',
+        'setting'
+      ];
+
+      const mallManagement = [
+        'blindBoxManagement',
+        'orderManagement',
+        'blindBoxTest',
+        'nftBuyManagement',
+        'nftBuyRecord'
+      ];
+
+      const fundingStatistics = [
+        'cashManagement',
+        'withdrawalReview',
+        'flashManagement',
+        'rebateRecord',
+        'integralTurnover'
+      ];
+
       if (path === '/') {
-        this.title = 'nav.dataManagement';
+        this.title = '数据管理';
         this.page = '用户管理';
       } else {
         nav.forEach((item) => {
-          if (`/${item.page}` === path) {
+          if (`/${item.page}` === `${path}`) {
             this.defaultActive = item.page;
             if (dataManagement.includes(item.page)) {
-              this.title = 'nav.dataManagement';
+              this.title = '数据管理';
               this.page = item.label;
-            } else if (systemManagement.includes(item.page)) {
-              this.title = 'nav.systemManagement';
+            } else if (nftManagement.includes(item.page)) {
+              this.title = 'NFT管理';
+              this.page = item.label;
+            } else if (platformManagement.includes(item.page)) {
+              this.title = '平台管理';
+              this.page = item.label;
+            } else if (mallManagement.includes(item.page)) {
+              this.title = '商城管理';
+              this.page = item.label;
+            } else if (fundingStatistics.includes(item.page)) {
+              this.title = '资金统计';
               this.page = item.label;
             } else {
               this.title = item.label;
