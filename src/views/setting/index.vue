@@ -88,6 +88,18 @@
       </div>
       <el-button type="primary" style="width: 160px;" size="medium" @click="submitRecycle()">确认修改</el-button>
     </div>
+    <div class="recycling-settings">
+      <div class="setting-item">
+        <div class="setting-title">一元购服务费</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入服务费" v-model="serviceFee"
+            clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px;" size="medium" @click="submitServiceFee()">确认修改</el-button>
+    </div>
     <div class="wallet-settings">
       <div class="operating-box">
         <span>归集钱包设置</span>
@@ -146,7 +158,7 @@
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr, exportExcel } from '@/utils';
+import { timeForStr, accurateDecimal, exportExcel } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
 export default {
@@ -176,6 +188,9 @@ export default {
 
       /** NFT回收相关配置 */
       nftReclaimRate: null,
+
+      /** 一元购服务费 */
+      serviceFee: null,
 
       /** 钱包相关 */
       showDialog: false,
@@ -248,9 +263,9 @@ export default {
 
       const res = await this.$http.pointConfigSet({
         ...this.points,
-        downCommissionRate: new bigNumber(this.points.downCommissionRate).dividedBy(100).toFixed(4), //下级佣金比例
-        downPointRate: new bigNumber(this.points.downPointRate).dividedBy(100).toFixed(4), //下级积分比例
-        consumePointRate: new bigNumber(this.points.consumePointRate).dividedBy(100).toFixed(4) //消费积分
+        downCommissionRate: accurateDecimal(new bigNumber(this.points.downCommissionRate).dividedBy(100), 4), //下级佣金比例
+        downPointRate: accurateDecimal(new bigNumber(this.points.downPointRate).dividedBy(100), 4), //下级积分比例
+        consumePointRate: accurateDecimal(new bigNumber(this.points.consumePointRate).dividedBy(100), 4) //消费积分
       });
 
       if (res) {
@@ -298,7 +313,7 @@ export default {
     async fetchRecycleConfig() {
       const res = await this.$http.getRecycleConfig({ coin: this.coin });
       if (res) {
-        this.nftReclaimRate = new bigNumber(res.nftReclaimRate).multipliedBy(100).toFixed(2);
+        this.nftReclaimRate = accurateDecimal(new bigNumber(res.nftReclaimRate).multipliedBy(100), 2);
         this.$forceUpdate();
       }
     },
@@ -315,11 +330,40 @@ export default {
       }
 
       const res = await this.$http.recycleConfigSet({
-        nftReclaimRate: new bigNumber(nftReclaimRate).dividedBy(100).toFixed(4)
+        nftReclaimRate: accurateDecimal(new bigNumber(nftReclaimRate).dividedBy(100), 4)
       });
 
       if (res) {
         this.fetchRecycleConfig();
+        this.$message.success("操作成功");
+      }
+    },
+    // 一元购服务费
+    async fetchServiceCharge() {
+      const res = await this.$http.getServiceCharge({ coin: this.coin });
+      if (res) {
+        this.serviceFee = accurateDecimal(new bigNumber(res || 0).multipliedBy(100) || 0, 2);
+        this.$forceUpdate();
+      }
+    },
+    // 一元购服务费更新
+    async submitServiceFee() {
+      const {
+        serviceFee,
+      } = this;
+
+      if (
+        !serviceFee) {
+        this.$message.error("请输入一元购服务费");
+        return
+      }
+
+      const res = await this.$http.updateServiceCharge({
+        servicePrice: accurateDecimal(new bigNumber(serviceFee).dividedBy(100), 4)
+      });
+
+      if (res) {
+        this.fetchServiceCharge();
         this.$message.success("操作成功");
       }
     },
@@ -404,6 +448,7 @@ export default {
     this.fetchPointConfig();
     this.fetchWithdrawalConfig();
     this.fetchRecycleConfig();
+    this.fetchServiceCharge();
   },
   computed: {
     coin() {

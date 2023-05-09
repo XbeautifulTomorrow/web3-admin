@@ -52,6 +52,12 @@ export const routes = [
         name: 'PlatformNftManagement',
       },
       {
+        /** 平台NFT管理 */
+        path: '/userNftList',
+        component: () => import('@/views/userNftList/index'),
+        name: 'UserNftList',
+      },
+      {
         /** 一元购管理 */
         path: '/nftBuyManagement',
         component: () => import('@/views/nftBuyManagement/index'),

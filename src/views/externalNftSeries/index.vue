@@ -482,6 +482,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.hide {
+  /deep/ .el-upload--picture-card {
+    display: none;
+  }
+}
+
 .remittance-box {
   margin-bottom: 20px;
   display: flex;

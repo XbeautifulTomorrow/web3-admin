@@ -52,6 +52,9 @@ export const getOneNftOrdersStatistics = (obj) => S.get('/nft/one-nft-orders/sta
 export const updateOneNftOrders = (obj) => S.post('/nft/one-nft-orders/updateUpAndDown', obj); // 一元购更新
 export const getOneNftLotteryOrdersManagerList = (obj) => S.get('/nft/one-nft-lottery-orders/pageList', obj); // 一元购售票记录
 export const getOneNftLotteryOrdersStatistics = (obj) => S.get('/nft/one-nft-lottery-orders/statistics', obj); // 一元购售票统计
+export const getServiceCharge = (obj) => S.get('/nft/one-nft-orders/getServiceCharge', obj); // 获取一元购服务费
+export const updateServiceCharge = (obj) => S.get('/nft/one-nft-orders/updateServiceCharge', obj); // 设置一元购服务费
+export const getUserNftList = (obj) => S.get('/nft/nft-user-data/pageList', obj); // 用户Nft列表
 
 /**
  * @description 市场管理
