@@ -85,42 +85,52 @@
       <el-table-column prop="sales" width="100" label="销量" align="center" key="10"></el-table-column>
       <el-table-column prop="sales" width="100" :label="` 销售额(${coin})`" align="center" key="11"></el-table-column>
       <el-table-column prop="grossIncome" width="100" :label="`总收入(${coin})`" align="center" key="12"></el-table-column>
-      <el-table-column prop="totalExpenditure" width="100" :label="`总支出(${coin})`" align="center"
+      <el-table-column prop="totalOpenNftPrice" width="100" :label="`总支出(${coin})`" align="center"
         key="13"></el-table-column>
-      <el-table-column prop="totalProfit" width="100" :label="`总利润(${coin})`" align="center" key="14"></el-table-column>
-      <el-table-column prop="pastTraPrice" width="100" label="实际返还率" align="center" key="15">
+      <el-table-column prop="totalExpenditure" width="120" :label="`实际返奖(${coin})`" align="center"
+        key="14"></el-table-column>
+      <el-table-column prop="totalProfit" width="100" :label="`总利润(${coin})`" align="center" key="15"></el-table-column>
+      <el-table-column prop="pastTraPrice" width="100" label="实际返还率" align="center" key="16">
         <template slot-scope="scope">
-          {{ `${new bigNumber(actualReturn(scope.row) || 0).multipliedBy(100).toFixed(2)}%` }}
+          {{ `${accurateDecimal(new bigNumber(scope.row.realRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="16">
+      <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="17">
         <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.deviseRate || 0).multipliedBy(100).toFixed(4)}%` }}
+          {{ `${accurateDecimal(new bigNumber(scope.row.deviseRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="17">
+      <el-table-column prop="adjust" width="100" label="中奖修正" align="center" key="18">
+      </el-table-column>
+      <el-table-column prop="adjustRate" width="100" label="修正返还率" align="center" key="19">
         <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.expectRate || 0).multipliedBy(100).toFixed(4)}%` }}
+          {{ `${accurateDecimal(new bigNumber(scope.row.adjustRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="openNumber" width="120" label="抽奖返还率（以十连抽为准）" align="center" key="18">
+      <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="20">
         <template slot-scope="scope">
-          {{ `${new bigNumber(paybackRate(scope.row) || 0).multipliedBy(100).toFixed(4)}%` }}
+          {{ `${accurateDecimal(new bigNumber(scope.row.expectRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="externalStatus" label="外部异常" align="center" key="19">
+      <el-table-column prop="externalStatus" label="外部异常" align="center" key="21">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.externalStatus == 'NUMBER'">数量不足</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="boxStatus" label="状态" align="center" key="20">
+      <el-table-column prop="bloodPoolsStatus" label="血池开关" align="center" key="22">
+        <template slot-scope="scope">
+          <span style="color: #EC5706;" v-if="scope.row.bloodPoolsStatus == 'FALSE'">关闭</span>
+          <span style="color: #21AE04;" v-else>正常</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="boxStatus" label="状态" align="center" key="23">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.boxStatus == 'DISABLE'">冻结</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="21" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="24" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)">
             编辑
@@ -203,6 +213,38 @@
             <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述"
               v-model="ruleForm.boxDesc"></el-input>
           </el-form-item>
+          <div class="blood_pool">
+            <div class="blood_pool_item">
+              <div class="blood_pool_item_l">{{ `消费:${bloodPool && bloodPool.grossIncome || 0}` }}</div>
+              <div class="blood_pool_item_r">
+                <span>血池开关：</span>
+                <el-switch v-model="bloodPool.bloodPoolsStatus" active-value="TRUE" inactive-value="FALSE"
+                  active-color="#13ce66" inactive-color="#ff4949">
+                </el-switch>
+              </div>
+            </div>
+            <div class="blood_pool_item">
+              <div class="blood_pool_item_l">{{ `返奖:${bloodPool && bloodPool.totalOpenNftPrice || 0}` }}</div>
+              <div class="blood_pool_item_r">
+                <span>修正值：</span>
+                <el-input type="number" v-model="bloodPool.adjust" style="flex:1;"></el-input>
+              </div>
+            </div>
+            <div class="blood_pool_item">
+              <span>修正值强制更新快照阈值：</span>
+              <el-input type="number" v-model="bloodPool.adjustCompulsionUpdateThreshold" style="flex:1;">
+                <template slot="append">%</template>
+              </el-input>
+            </div>
+            <div class="blood_pool_item">
+              <div class="blood_pool_item_l">
+                {{ `实际返还率:${accurateDecimal(new bigNumber(bloodPool.realRate || 0).multipliedBy(100), 4)}%` }}
+              </div>
+              <div class="blood_pool_item_r">
+                {{ `修正返还率:${accurateDecimal(new bigNumber(bloodPool.adjustRate || 0).multipliedBy(100), 4)}%` }}
+              </div>
+            </div>
+          </div>
         </el-form>
         <div class="nft-box">
           <div class="external-nft nft-item">
@@ -377,7 +419,7 @@
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr } from '@/utils';
+import { accurateDecimal, timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
@@ -429,6 +471,15 @@ export default {
         lossRate: null, // 亏本几率
         innerBaseNumber: null, // 基准NFT数量
       },
+      bloodPool: {
+        grossIncome: 0, // 消费
+        totalOpenNftPrice: 0, // 返奖
+        bloodPoolsStatus: "FALSE", // 血池开关
+        adjust: null, // 修正值
+        adjustCompulsionUpdateThreshold: null, // 修正阈值
+        realRate: null, // 实际返还率
+        adjustRate: null, // 修正返还率
+      }, //血池相关
       chainList: chainList,
       rules: {
       },
@@ -459,6 +510,7 @@ export default {
   // 方法
   methods: {
     bigNumber: bigNumber,
+    accurateDecimal: accurateDecimal,
     timeForStr: timeForStr,
     // 搜索条件
     searchFun() {
@@ -633,6 +685,15 @@ export default {
 
       const platformLists = row.platformList;
       const externalLists = row.externalList;
+      this.bloodPool = {
+        grossIncome: row.grossIncome, // 消费
+        totalOpenNftPrice: row.totalOpenNftPrice, // 返奖
+        bloodPoolsStatus: row.bloodPoolsStatus, // 血池开关
+        adjust: row.adjust, // 修正值
+        adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(row.adjustCompulsionUpdateThreshold || 0).multipliedBy(100), 4), // 修正阈值
+        realRate: row.realRate, // 实际返还率
+        adjustRate: row.adjustRate, // 修正返还率
+      }
 
       for (let i = 0; i < platformLists.length; i++) {
         if (platformLists[i].baseStatus == "TRUE") {
@@ -707,7 +768,7 @@ export default {
     submitForm() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          const { ruleForm: { innerBaseNumber }, fileImg, platformList, externalList, calculationNft } = this;
+          const { ruleForm: { innerBaseNumber }, bloodPool, fileImg, platformList, externalList, calculationNft } = this;
 
           if (fileImg.length == 0) {
             this.$message.error("请上传盲盒图片！");
@@ -770,8 +831,11 @@ export default {
 
           let ruleForm = {
             ...this.ruleForm,
+            adjust: bloodPool.adjust, // 修正值
+            bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
+            adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             coin: this.coin,
-            deviseRate: new bigNumber(this.ruleForm.deviseRate).dividedBy(100).toFixed(6),
+            deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
             platformList: platformNftData,
             externalList: externalNftData
           };
@@ -930,11 +994,12 @@ export default {
     calculationPlatformNft() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          const { fileImg, platformList, externalList } = this;
+          const { fileImg, bloodPool, platformList, externalList } = this;
           if (fileImg.length == 0) {
             this.$message.error("请上传盲盒图片！");
             return;
           }
+
 
           if (!platformList.length > 0) {
             this.$message.error("请选择内部NFT！");
@@ -976,7 +1041,7 @@ export default {
           let ruleForm = {
             ...this.ruleForm,
             coin: this.coin,
-            deviseRate: new bigNumber(this.ruleForm.deviseRate).dividedBy(100).toFixed(6),
+            deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
             platformList: platformNftList,
             externalList: externalNftList
           };
@@ -984,6 +1049,9 @@ export default {
           if (res) {
             this.ruleForm = {
               ...this.ruleForm,
+              adjust: bloodPool.adjust, // 修正值
+              bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
+              adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
               expectRate: res.expectRate, // 期望返还率
               lossRate: res.lossRate, // 亏本几率
               innerBaseNumber: res.innerBaseNumber, // 基准NFT数量
@@ -1082,6 +1150,16 @@ export default {
         lossRate: null, // 亏本几率
         innerBaseNumber: null, // 基准NFT数量
       };
+
+      this.bloodPool = {
+        grossIncome: 0, // 消费
+        totalOpenNftPrice: 0, // 返奖
+        bloodPoolsStatus: "FALSE", // 血池开关
+        adjust: null, // 修正值
+        adjustCompulsionUpdateThreshold: null, // 修正阈值
+        realRate: null, // 实际返还率
+        adjustRate: null, // 修正返还率
+      }; //血池相关
 
       this.calculationNft = [];
       this.platformList = [];
@@ -1446,6 +1524,27 @@ export default {
 
   &>div+div {
     margin-left: 20px;
+  }
+}
+
+.blood_pool {
+  background-color: rgba(242, 242, 242, 0.4);
+  padding: 8px 30px 8px 30px;
+  border-radius: 8px;
+
+  .blood_pool_item {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+
+    &>div {
+      flex: 1;
+    }
+
+    .blood_pool_item_r {
+      display: flex;
+      align-items: center;
+    }
   }
 }
 </style>
