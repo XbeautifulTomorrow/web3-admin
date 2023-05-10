@@ -26,8 +26,8 @@
         <span class="demonstration">
           交易完成时间
         </span>
-        <el-date-picker v-model="transactionCompleteTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <el-date-picker v-model="transactionCompleteTime" type="datetimerange" range-separator="到"
+          start-placeholder="开始时间" end-placeholder="结束时间">
         </el-date-picker>
       </div>
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOrderManagerList()">
@@ -58,8 +58,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="订单号" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="订单号" align="center" key="1">
       </el-table-column>
       <el-table-column prop="boxImg" width="120" label="盲盒" align="center" key="2">
         <template slot-scope="scope">
@@ -69,17 +69,17 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="boxName" width="120" label="盲盒名称" align="center" key="3">
+      <el-table-column prop="boxName" width="120" sortable="custom" label="盲盒名称" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="buyNumber" width="120" label="个数" align="center" key="4">
+      <el-table-column prop="buyNumber" width="120" sortable="custom" label="个数" align="center" key="4">
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="5">
+      <el-table-column prop="userName" width="120" sortable="custom" label="用户" align="center" key="5">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="buyPrice" width="120" :label="`消费(${coin})`" align="center" key="6">
+      <el-table-column prop="buyPrice" width="120" sortable="custom" :label="`消费(${coin})`" align="center" key="6">
       </el-table-column>
       <el-table-column prop="flashId" width="120" label="闪兑ID" align="center" key="7">
       </el-table-column>
@@ -90,9 +90,9 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="buyPrice" width="120" :label="`返奖价值(${coin})`" align="center" key="9">
+      <el-table-column prop="buyPrice" width="120" sortable="custom" :label="`返奖价值(${coin})`" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="rebatesPrice" width="120" :label="`佣金(${coin})`" align="center" key="10">
+      <el-table-column prop="rebatesPrice" width="120" sortable="custom" :label="`佣金(${coin})`" align="center" key="10">
       </el-table-column>
       <el-table-column prop="buySource" width="120" label="消费渠道" align="center" key="11">
       </el-table-column>
@@ -102,12 +102,12 @@
       </el-table-column>
       <el-table-column prop="flowId" width="120" label="流水号" align="center" key="14">
       </el-table-column>
-      <el-table-column prop="createTime" width="140" label="交易时间" align="center" key="15">
+      <el-table-column prop="createTime" width="140" sortable="custom" label="交易时间" align="center" key="15">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="traTime" width="140" label="交易完成时间" align="center" key="16">
+      <el-table-column prop="traTime" width="140" sortable="custom" label="交易完成时间" align="center" key="16">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.traTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -183,6 +183,10 @@ export default {
       endPrice: null,
       transactionTime: null, // 交易时间
       transactionCompleteTime: null, // 交易完成时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -231,10 +235,23 @@ export default {
         finishEndTime
       };
     },
+    /**
+ * @description: 排序
+ */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchOrderManagerList();
+    },
     // 加载列表
     async fetchOrderManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -247,6 +264,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getOrderManagerList(data);

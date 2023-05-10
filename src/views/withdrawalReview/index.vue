@@ -85,18 +85,19 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
       <el-table-column prop="flowId" label="订单ID" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="2">
+      <el-table-column prop="userName" sortable="custom" width="120" label="用户" align="center" key="2">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" width="120" :label="`用户余额(${coin})`" align="center" key="3">
+      <el-table-column prop="assetBalance" sortable="custom" width="120" :label="`用户余额(${coin})`" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="withdrawalPrice" width="120" :label="`提款金额(${coin})`" align="center" key="4">
+      <el-table-column prop="withdrawalPrice" sortable="custom" width="120" :label="`提款金额(${coin})`" align="center"
+        key="4">
       </el-table-column>
       <el-table-column prop="userName" width="80" label="提出NFT" align="center" key="5">
         <template slot-scope="scope">
@@ -105,9 +106,9 @@
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="serviceFee" width="120" :label="`手续费(${coin})`" align="center" key="6">
+      <el-table-column prop="serviceFee" width="120" sortable="custom" :label="`手续费(${coin})`" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="actualArrival" width="120" :label="`实际到账(${coin})`" align="center" key="7">
+      <el-table-column prop="actualArrival" width="120" sortable="custom" :label="`实际到账(${coin})`" align="center" key="7">
         <template slot-scope="scope">
           <span v-if="scope.row.withdrawalType == 'NFT'"
             @click="showWithdrawNft(2, scope.row.arrivedWithdrawalnftlist)">查看</span>
@@ -118,28 +119,28 @@
       </el-table-column>
       <el-table-column prop="hash" label="HASH" width="300" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="gas" label="GAS" align="center" key="10">
+      <el-table-column prop="gas" sortable="custom" label="GAS" align="center" key="10">
       </el-table-column>
       <el-table-column prop="withdrawalWalletAddress" width="300" label="提款钱包" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="withdrawalType" label="提款类型" align="center" key="12">
+      <el-table-column prop="withdrawalType" sortable="custom" label="提款类型" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="createTime" width="140" label="发起时间" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" width="140" label="发起时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="auditTime" width="140" label="审核时间" align="center" key="14">
+      <el-table-column prop="auditTime" sortable="custom" width="140" label="审核时间" align="center" key="14">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.auditTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="arrivalTime" width="140" label="到账时间" align="center" key="15">
+      <el-table-column prop="arrivalTime" sortable="custom" width="140" label="到账时间" align="center" key="15">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.arrivalTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="auditStatus" label="审核状态" align="center" key="16" fixed="right">
+      <el-table-column prop="auditStatus" sortable="custom" label="审核状态" align="center" key="16" fixed="right">
         <template slot-scope="scope">
           <span style="color: #0E9EFD;" v-if="scope.row.auditStatus == 'WAIT'">待审核</span>
           <span style="color: #FD770A;" v-if="scope.row.auditStatus == 'TRANSFERRING'">转帐中</span>
@@ -307,6 +308,10 @@ export default {
       applicationTime: null, // 发起时间
       reviewTime: null, // 审核时间
       receiptTime: null, // 到账时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -375,10 +380,23 @@ export default {
         arrivalEndTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchAssetWithdrawalList();
+    },
     // 加载列表
     async fetchAssetWithdrawalList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -391,6 +409,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getAssetWithdrawalList(data);

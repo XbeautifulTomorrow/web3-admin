@@ -43,8 +43,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="userName" sortable="custom" width="120" label="用户" align="center" key="1">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
@@ -54,20 +54,20 @@
       </el-table-column>
       <el-table-column prop="walletAddress" width="120" label="钱包地址" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="downIdNumber" width="120" label="下级数量" align="center" key="4">
+      <el-table-column prop="downIdNumber" sortable="custom" width="120" label="下级数量" align="center" key="4">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="showDown(scope.row)">
             {{ scope.row.downIdNumber || 0 }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="totalAmount" width="120" label="总佣金" align="center" key="5">
+      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="receiveAmount" width="120" label="已领取佣金" align="center" key="6">
+      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="noReceiveAmount" width="120" label="未领取佣金" align="center" key="7">
+      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="lastReceiveTime" width="140" label="最后领取时间" align="center" key="8">
+      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="8">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastReceiveTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -167,6 +167,10 @@ export default {
       email: null,
       walletAddress: null,
       lastPickUpTime: null, // 交易时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -212,10 +216,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchRebatesBaseList();
+    },
     // 加载列表
     async fetchRebatesBaseList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -228,6 +245,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...this.sortData,
         ...search,
       };
       const res = await this.$http.getRebatesBaseList(data);

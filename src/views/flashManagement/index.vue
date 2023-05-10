@@ -51,10 +51,10 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
       <el-table-column prop="id" label="流水号" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="2">
+      <el-table-column prop="userName" width="120" sortable="custom" label="用户" align="center" key="2">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
@@ -62,23 +62,23 @@
       </el-table-column>
       <el-table-column prop="sellCoin" label="卖出币种" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="sellNum" label="卖出币数" align="center" key="4">
+      <el-table-column prop="sellNum" sortable="custom" label="卖出币数" align="center" key="4">
       </el-table-column>
-      <el-table-column prop="realRate" label="实际汇率" align="center" key="5">
+      <el-table-column prop="realRate" sortable="custom" label="实际汇率" align="center" key="5">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.realRate).multipliedBy(100)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="showRate" label="展示汇率" align="center" key="6">
+      <el-table-column prop="showRate" sortable="custom" label="展示汇率" align="center" key="6">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.showRate).multipliedBy(100)}%` }}
         </template>
       </el-table-column>
       <el-table-column prop="buyCoin" label="买入币种" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="buyNum" label="买入数量" align="center" key="8">
+      <el-table-column prop="buyNum" sortable="custom" label="买入数量" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="fee" label="手续费" align="center" key="9">
+      <el-table-column prop="fee" sortable="custom" label="手续费" align="center" key="9">
       </el-table-column>
       <el-table-column prop="feeCoin" label="手续费币种" align="center" key="10">
       </el-table-column>
@@ -86,7 +86,7 @@
       </el-table-column>
       <el-table-column prop="plaformOrderId" label="平台订单ID" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="createTime" label="交易时间" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" label="交易时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -116,6 +116,10 @@ export default {
       flashPlaform: null, // 闪兑平台
       sellCoin: null, // 卖出币种
       changeTime: null, // 账变时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -149,10 +153,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchFlashManagerList();
+    },
     // 加载列表
     async fetchFlashManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, userType } = this;
+      const { sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -164,6 +181,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getFlashManagerList(data);

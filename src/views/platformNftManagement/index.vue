@@ -59,8 +59,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="NFT ID" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1">
       </el-table-column>
       <el-table-column prop="nftImg" label="NFT图片" width="120px" align="center" key="2">
         <template slot-scope="scope">
@@ -70,7 +70,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" width="120" label="NFT系列名称" align="center" key="3">
+      <el-table-column prop="seriesName" sortable="custom" width="120" label="NFT系列名称" align="center" key="3">
       </el-table-column>
       <el-table-column prop="contractAddress" label="合约" align="center" key="4">
       </el-table-column>
@@ -78,19 +78,19 @@
       </el-table-column>
       <el-table-column prop="chainName" label="所在链" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="price" width="120" :label="`当前价(${coin})`" align="center" key="9">
+      <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${coin})`" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="usdtPrice" label="U价" align="center" key="10">
+      <el-table-column prop="usdtPrice" sortable="custom" label="U价" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="12">
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="openNumber" label="被开次数" align="center" key="13">
+      <el-table-column prop="openNumber" sortable="custom" label="被开次数" align="center" key="13">
       </el-table-column>
-      <el-table-column prop="outNumber" label="提走次数" align="center" key="14">
+      <el-table-column prop="outNumber" sortable="custom" label="提走次数" align="center" key="14">
       </el-table-column>
-      <el-table-column prop="refunds" label="总退款" align="center" key="15">
+      <el-table-column prop="refunds" sortable="custom" label="总退款" align="center" key="15">
       </el-table-column>
-      <el-table-column prop="nftStatus" label="当前状态" align="center" key="16">
+      <el-table-column prop="nftStatus" sortable="custom" label="当前状态" align="center" key="16">
         <template slot-scope="scope">
           <span style="color: #05A8F0;" v-if="scope.row.nftStatus == 'IN_POOL'">已入池</span>
           <span style="color: #EC5706;" v-if="scope.row.nftStatus == 'NO_POOL'">未入池</span>
@@ -99,7 +99,7 @@
           <span style="color: #BBBBBB;" v-if="scope.row.nftStatus == 'MENTIONED'">已提出</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" width="140" label="创建时间" align="center" key="18">
+      <el-table-column prop="createTime" sortable="custom" width="140" label="创建时间" align="center" key="18">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -139,6 +139,10 @@ export default {
       nftStatus: null, // NFT状态
       enabledStatus: null, // 入池状态
       creationTime: null, // 创建时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -176,10 +180,23 @@ export default {
         endTime,
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchNftPlatformManagerList();
+    },
     // 加载列表
     async fetchNftPlatformManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -192,6 +209,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getNftPlatformManagerList(data);

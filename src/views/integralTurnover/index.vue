@@ -41,16 +41,16 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="流水号" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="流水号" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="2">
+      <el-table-column prop="userName" sortable="custom" width="120" label="用户" align="center" key="2">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="flowSource" label="来源" align="center" key="3">
+      <el-table-column prop="flowSource" sortable="custom" label="来源" align="center" key="3">
         <template slot-scope="scope">
           <span v-if="scope.row.flowSource == 'REG'">注册</span>
           <span v-if="scope.row.flowSource == 'CONSUME'">消费</span>
@@ -58,15 +58,15 @@
           <span v-if="scope.row.flowSource == 'DOWN_CONSUME'">下级消费</span>
         </template>
       </el-table-column>
-      <el-table-column prop="downId" label="下级ID" align="center" key="4">
+      <el-table-column prop="downId" sortable="custom" label="下级ID" align="center" key="4">
       </el-table-column>
       <el-table-column prop="orderNumber" label="交易单号" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="changePoint" label="数量" align="center" key="6">
+      <el-table-column prop="changePoint" sortable="custom" label="数量" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="totalPoint" label="总积分" align="center" key="7">
+      <el-table-column prop="totalPoint" sortable="custom" label="总积分" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="createTime" label="账变时间" align="center" key="8">
+      <el-table-column prop="createTime" sortable="custom" label="账变时间" align="center" key="8">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -96,6 +96,10 @@ export default {
       userId: null, // 用户ID
       flowSource: null, // 来源
       changeTime: null, // 账变时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -128,10 +132,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchAssetPointFlowList();
+    },
     // 加载列表
     async fetchAssetPointFlowList(isSearch = true) {
       const search = this.searchFun();
-      const { size, userType } = this;
+      const { sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -143,6 +160,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getAssetPointFlowList(data);

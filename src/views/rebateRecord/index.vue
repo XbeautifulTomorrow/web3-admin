@@ -35,31 +35,31 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="flowId" label="流水号" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="flowId" sortable="custom" label="流水号" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="用户" align="center" key="2">
+      <el-table-column prop="userName" width="120" sortable="custom" label="用户" align="center" key="2">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="userName" width="120" label="上级Id" align="center" key="3">
+      <el-table-column prop="userName" width="120" sortable="custom" label="上级Id" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="rebatesType" label="行为" align="center" key="4">
+      <el-table-column prop="rebatesType" sortable="custom" label="行为" align="center" key="4">
         <template slot-scope="scope">
           <span v-if="scope.row.rebatesType == 'CONSUME'">消费</span>
         </template>
       </el-table-column>
       <el-table-column prop="orderId" label="订单号" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="traAmount" :label="`金额(${coin})`" align="center" key="6">
+      <el-table-column prop="traAmount" sortable="custom" :label="`金额(${coin})`" align="center" key="6">
       </el-table-column>
       <el-table-column prop="commissionRate" label="返佣比例" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="rebatesAmount" :label="`佣金(${coin})`" align="center" key="8">
+      <el-table-column prop="rebatesAmount" sortable="custom" :label="`佣金(${coin})`" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="createTime" label="账变时间" align="center" key="9">
+      <el-table-column prop="createTime" sortable="custom" label="账变时间" align="center" key="9">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -89,6 +89,10 @@ export default {
       userId: null, // 用户Id
       upId: null, // 上级Id
       changeTime: null, // 账变时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -121,10 +125,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchRebatesRecordList();
+    },
     // 加载列表
     async fetchRebatesRecordList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -137,6 +154,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getRebatesRecordList(data);

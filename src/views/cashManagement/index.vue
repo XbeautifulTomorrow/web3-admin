@@ -55,17 +55,17 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="流水号" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="流水号" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="userId" width="120" label="用户ID" align="center" key="3">
+      <el-table-column prop="userId" sortable="custom" width="120" label="用户ID" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="flowType" label="金流类型" align="center" key="4">
+      <el-table-column prop="flowType" sortable="custom" label="金流类型" align="center" key="4">
         <template slot-scope="scope">
           {{ formatType(scope.row.flowType) }}
         </template>
       </el-table-column>
-      <el-table-column prop="flowSource" label="金流来源" align="center" key="5">
+      <el-table-column prop="flowSource" sortable="custom" label="金流来源" align="center" key="5">
         <template slot-scope="scope">
           {{ formatSource(scope.row.flowSource) }}
         </template>
@@ -78,20 +78,20 @@
       </el-table-column>
       <el-table-column prop="coin" label="金流币种" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="traPrice" label="币种金额" align="center" key="10">
+      <el-table-column prop="traPrice" sortable="custom" label="金额" align="center" key="10">
         <template slot-scope="scope">
           {{ scope.row.traPrice && Number(scope.row.traPrice || 0) > 0 ? `+${scope.row.traPrice}` : scope.row.traPrice }}
         </template>
       </el-table-column>
-      <el-table-column prop="changePrice" label="币种余额变化" align="center" key="11">
+      <el-table-column prop="changePrice" sortable="custom" label="余额变化" align="center" key="11">
         <template slot-scope="scope">
           {{ scope.row.changePrice && Number(scope.row.changePrice || 0) > 0 ? `+${scope.row.changePrice}` :
             scope.row.changePrice }}
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" label="币种余额" align="center" key="12">
+      <el-table-column prop="assetBalance" sortable="custom" label="余额" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="createTime" label="账变时间" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" label="账变时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -122,6 +122,10 @@ export default {
       flowType: null, // 流水状态
       flowSource: null, // 流水来源
       changeTime: null, // 账变时间
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -156,10 +160,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchAssetFlowList();
+    },
     // 加载列表
     async fetchAssetFlowList(isSearch = true) {
       const search = this.searchFun();
-      const { size, userType } = this;
+      const { sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -171,6 +188,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getAssetFlowList(data);

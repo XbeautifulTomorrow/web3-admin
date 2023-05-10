@@ -60,8 +60,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="盲盒ID" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="盲盒ID" align="center" key="1">
       </el-table-column>
       <el-table-column prop="boxImg" label="盲盒图片" width="120px" align="center" key="2">
         <template slot-scope="scope">
@@ -73,58 +73,59 @@
       </el-table-column>
       <el-table-column prop="boxName" width="120" label="盲盒名称" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="boxIndex" label="推荐顺序" align="center" key="4">
+      <el-table-column prop="boxIndex" sortable="custom" label="推荐顺序" align="center" key="4">
       </el-table-column>
       <el-table-column prop="sales" label="内容" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="price" label="单价" align="center" key="6">
+      <el-table-column prop="price" sortable="custom" label="单价" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="fivePrice" label="五连价格" align="center" key="7"></el-table-column>
-      <el-table-column prop="tenPrice" label="十连价格" align="center" key="8"></el-table-column>
-      <el-table-column prop="totalWeight" label="总权重" align="center" key="9"></el-table-column>
-      <el-table-column prop="sales" width="100" label="销量" align="center" key="10"></el-table-column>
-      <el-table-column prop="sales" width="100" :label="` 销售额(${coin})`" align="center" key="11"></el-table-column>
-      <el-table-column prop="grossIncome" width="100" :label="`总收入(${coin})`" align="center" key="12"></el-table-column>
-      <el-table-column prop="totalOpenNftPrice" width="100" :label="`总支出(${coin})`" align="center"
+      <el-table-column prop="fivePrice" sortable="custom" label="五连价格" align="center" key="7"></el-table-column>
+      <el-table-column prop="tenPrice" sortable="custom" label="十连价格" align="center" key="8"></el-table-column>
+      <el-table-column prop="totalWeight" sortable="custom" label="总权重" align="center" key="9"></el-table-column>
+      <el-table-column prop="sales" width="100" sortable="custom" label="销量" align="center" key="10"></el-table-column>
+      <el-table-column prop="grossIncome" sortable="custom" width="100" :label="`总收入(${coin})`" align="center"
+        key="12"></el-table-column>
+      <el-table-column prop="totalOpenNftPrice" sortable="custom" width="100" :label="`总支出(${coin})`" align="center"
         key="13"></el-table-column>
-      <el-table-column prop="totalExpenditure" width="120" :label="`实际返奖(${coin})`" align="center"
+      <el-table-column prop="totalExpenditure" sortable="custom" width="120" :label="`实际返奖(${coin})`" align="center"
         key="14"></el-table-column>
-      <el-table-column prop="totalProfit" width="100" :label="`总利润(${coin})`" align="center" key="15"></el-table-column>
-      <el-table-column prop="pastTraPrice" width="100" label="实际返还率" align="center" key="16">
+      <el-table-column prop="totalProfit" width="100" sortable="custom" :label="`总利润(${coin})`" align="center"
+        key="15"></el-table-column>
+      <el-table-column prop="realRate" width="100" sortable="custom" label="实际返还率" align="center" key="16">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.realRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="deviseRate" width="100" label="设计返还率" align="center" key="17">
+      <el-table-column prop="deviseRate" width="100" sortable="custom" label="设计返还率" align="center" key="17">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.deviseRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="adjust" width="100" label="中奖修正" align="center" key="18">
+      <el-table-column prop="adjust" width="100" sortable="custom" label="中奖修正" align="center" key="18">
       </el-table-column>
-      <el-table-column prop="adjustRate" width="100" label="修正返还率" align="center" key="19">
+      <el-table-column prop="adjustRate" width="100" sortable="custom" label="修正返还率" align="center" key="19">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.adjustRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="expectRate" width="100" label="期望返还率" align="center" key="20">
+      <el-table-column prop="expectRate" width="100" sortable="custom" label="期望返还率" align="center" key="20">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.expectRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="externalStatus" label="外部异常" align="center" key="21">
+      <el-table-column prop="externalStatus" sortable="custom" label="外部异常" align="center" key="21">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.externalStatus == 'NUMBER'">数量不足</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="bloodPoolsStatus" label="血池开关" align="center" key="22">
+      <el-table-column prop="bloodPoolsStatus" sortable="custom" label="血池开关" align="center" key="22">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.bloodPoolsStatus == 'FALSE'">关闭</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="boxStatus" label="状态" align="center" key="23">
+      <el-table-column prop="boxStatus" sortable="custom" label="状态" align="center" key="23">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.boxStatus == 'DISABLE'">冻结</span>
           <span style="color: #21AE04;" v-else>正常</span>
@@ -436,6 +437,10 @@ export default {
       boxName: null, // 系列名
       externalStatus: null, // 异常状态
       boxStatus: null, // 盲盒状态
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: [],
@@ -521,10 +526,23 @@ export default {
         boxStatus: this.boxStatus
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchBoxManagerList();
+    },
     // 加载列表
     async fetchBoxManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -537,6 +555,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getBoxManagerList(data);
