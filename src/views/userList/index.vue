@@ -69,8 +69,8 @@
 
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="用户ID/昵称" align="center" width="110" key="0">
+    <el-table :data="tableData" style="width: 100%" class="public-table" border @sort-change="sortChange">
+      <el-table-column prop="id" sortable="custom" label="用户ID/昵称" align="center" width="110" key="0">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
@@ -82,31 +82,31 @@
       </el-table-column>
       <el-table-column prop="walletAddress" label="钱包地址" align="center" width="320" key="3">
       </el-table-column>
-      <el-table-column prop="totalConsumps" label="总消费(ETH)" align="center" width="110" key="4">
+      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="4">
       </el-table-column>
 
-      <el-table-column prop="totalRevenues" label="总收入(ETH)" align="center" width="110" key="5">
+      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="5">
       </el-table-column>
-      <el-table-column prop="buyBoxNumbers" label="购买盲盒个数" align="center" width="110" key="6">
+      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="6">
       </el-table-column>
-      <el-table-column prop="totalCollects" label="获得藏品" align="center" width="110" key="7">
+      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="7">
       </el-table-column>
-      <el-table-column prop="remainderCollects" label="剩余藏品" align="center" width="110" key="8">
+      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="8">
       </el-table-column>
-      <el-table-column prop="assetBalance" label="余额(ETH)" align="center" width="110" key="9">
+      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="9">
       </el-table-column>
-      <el-table-column prop="withdrawalFees" label="提款手续费(ETH)" align="center" width="140" key="10">
+      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(ETH)" align="center" width="140" key="10">
       </el-table-column>
-      <el-table-column prop="withdrawalArrived" label="提款到账(ETH)" align="center" width="110" key="11">
+      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(ETH)" align="center" width="140" key="11">
       </el-table-column>
-      <el-table-column prop="point" label="总积分" align="center" width="110" key="12">
+      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="12">
       </el-table-column>
-      <el-table-column prop="createTime" label="注册时间" align="center" width="140" key="13">
+      <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginTime" label="最后登录时间" align="center" width="140" key="14">
+      <el-table-column prop="lastLoginTime" sortable="custom" label="最后登录时间" align="center" width="140" key="14">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -194,6 +194,10 @@ export default {
       obscureField: null,
       upId: null,
       userStatus: null,
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       registrationTime: null,
@@ -243,10 +247,23 @@ export default {
         lastLoginEndTime,
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchUserlist();
+    },
     // 加载用户列表
     async fetchUserlist(isSearch = true) {
       const search = this.searchFun();
-      const { size, coin, userType } = this;
+      const { sortData, size, coin, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -256,6 +273,7 @@ export default {
         ...{
           coin: coin,
           userType: userType,
+          ...sortData,
           size: size,
           page: _page,
         },

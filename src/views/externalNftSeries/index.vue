@@ -41,8 +41,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="系列ID" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="系列ID" align="center" key="1">
       </el-table-column>
       <el-table-column prop="seriesImg" label="系列图" width="120px" align="center" key="2">
         <template slot-scope="scope">
@@ -62,25 +62,25 @@
       </el-table-column>
       <el-table-column prop="chainName" label="所在链" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="issuanceNumber" label="发行数量" align="center" key="8">
+      <el-table-column prop="issuanceNumber" sortable="custom" label="发行数量" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="inBoxNumber" label="可入盒数量" align="center" key="9">
+      <el-table-column prop="inBoxNumber" sortable="custom" width="120" label="可入盒数量" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="floorPrice" :label="`地板价(${coin})`" align="center" key="10">
+      <el-table-column prop="floorPrice" sortable="custom" width="120" :label="`地板价(${coin})`" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="releaseTime" width="140" label="发行时间" align="center" key="11">
+      <el-table-column prop="releaseTime" sortable="custom" width="140" label="发行时间" align="center" key="11">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.releaseTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="12">
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="createTime" width="140" label="添加时间" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" width="140" label="添加时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="refreshTime" width="140" label="上次刷新" align="center" key="14">
+      <el-table-column prop="refreshTime" sortable="custom" width="140" label="上次刷新" align="center" key="14">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.refreshTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -106,41 +106,42 @@
         <el-form-item label="系列名称" prop="seriesName">
           <el-input v-model="ruleForm.seriesName" style="width: 300px" placeholder="请输入系列名称" />
         </el-form-item>
-        <el-form-item label="合约地址" prop="contractAddress" v-if="operatingType == 1">
-          <el-input v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
+        <el-form-item label="合约地址" prop="contractAddress">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
+            placeholder="请输入合约地址">
             <template slot="append">
               <span @click="fetchNftSeries()">查询</span>
             </template>
           </el-input>
         </el-form-item>
-        <el-form-item label="系列图片" prop="seriesImg" v-if="operatingType == 1">
-          <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange"
-            :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
+        <el-form-item label="系列图片" prop="seriesImg">
+          <el-upload :action="uploadUrl" :disabled="operatingType != 1" :class="{ hide: hideUpload }"
+            :on-change="handleChange" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
             accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
             :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="所在链" prop="chainId" v-if="operatingType == 1">
-          <el-select v-model="ruleForm.chainId" style="width: 300px">
+        <el-form-item label="所在链" prop="chainId">
+          <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="选择市场" prop="marketNames" v-if="operatingType == 1">
+        <el-form-item label="选择市场" prop="marketNames">
           <el-checkbox-group v-model="ruleForm.marketNames">
             <el-checkbox v-for="(item, index) in markes" :label="item.marketName" :key="index" border>
               {{ item.marketName }}
             </el-checkbox>
           </el-checkbox-group>
         </el-form-item>
-        <el-form-item label="NFT类型" prop="seriesNftType" v-if="operatingType == 1">
+        <el-form-item label="NFT类型" prop="seriesNftType">
           <el-select v-model="ruleForm.seriesNftType" style="width: 300px">
             <el-option label="ERC721" value="ERC721" />
             <el-option label="ERC1155" value="ERC1155" />
           </el-select>
         </el-form-item>
-        <el-form-item label="关键字" prop="keywords" v-if="operatingType == 1">
-          <el-input v-model="ruleForm.keywords" style="width: 300px" placeholder="请输入名称" />
+        <el-form-item label="关键字" prop="keywords">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.keywords" style="width: 300px" placeholder="请输入名称" />
         </el-form-item>
         <el-form-item label="项目方">
           <el-input v-model="ruleForm.projectParty" style="width: 300px" placeholder="请输入名称" />
@@ -148,7 +149,7 @@
         <el-form-item label="发行总量" prop="issuanceNumber">
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
         </el-form-item>
-        <el-form-item label="描述" v-if="operatingType == 1">
+        <el-form-item label="描述">
           <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.boxDesc"></el-input>
         </el-form-item>
       </el-form>
@@ -180,6 +181,10 @@ export default {
       obscureField: null,
       projectParty: null,
       addTime: null,
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -239,10 +244,23 @@ export default {
         endTime
       };
     },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchNftExternalList();
+    },
     // 加载列表
     async fetchNftExternalList(isSearch = true) {
       const search = this.searchFun();
-      const { size } = this;
+      const { sortData, size } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -253,6 +271,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getNftExternalList(data);
@@ -285,6 +304,8 @@ export default {
       this.ruleForm = {
         ...row
       }
+
+      this.fileImg = [{ url: row.seriesImg }];
       this.operatingType = 2;
       this.hideUpload = true;
       this.showDialog = true;
@@ -322,9 +343,8 @@ export default {
         seriesNftType: "", // NFT类型
       }
 
-      setTimeout(() => {
-        this.$refs["ruleForm"].clearValidate();
-      }, 10);
+      this.fileImg = [];
+      this.$refs["ruleForm"].clearValidate();
 
       if (done) {
         done()

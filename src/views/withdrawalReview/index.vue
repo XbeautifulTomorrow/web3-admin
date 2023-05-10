@@ -16,6 +16,16 @@
         <el-option label="已拒绝" value="REFUSE">
         </el-option>
       </el-select>
+      <el-select v-model="withdrawalType" class="public-select-box" popper-class="public-select-box" placeholder="全部类型"
+        clearable>
+        <el-option label="ETH" value="ETH">
+        </el-option>
+        <el-option label="NFT" value="NFT">
+        </el-option>
+        <el-option label="USDT" value="USDT">
+        </el-option>
+      </el-select>
+
       <div class="public-date-box">
         <span class="demonstration">
           发起时间
@@ -293,6 +303,7 @@ export default {
       Id: null, // Id
       userId: null, // 用户Id
       auditStatus: null, // 全部状态
+      withdrawalType: null, // 提款类型
       applicationTime: null, // 发起时间
       reviewTime: null, // 审核时间
       receiptTime: null, // 到账时间
@@ -355,6 +366,7 @@ export default {
         id: this.Id, // 订单Id
         userId: this.userId, // 用户Id
         auditStatus: this.auditStatus, // 来源
+        withdrawalType: this.withdrawalType, // 提款类型
         createStartTime,
         createEndTime,
         auditStartTime,

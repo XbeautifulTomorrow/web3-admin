@@ -218,8 +218,8 @@
               <div class="blood_pool_item_l">{{ `消费:${bloodPool && bloodPool.grossIncome || 0}` }}</div>
               <div class="blood_pool_item_r">
                 <span>血池开关：</span>
-                <el-switch v-model="bloodPool.bloodPoolsStatus" active-value="TRUE" inactive-value="FALSE"
-                  active-color="#13ce66" inactive-color="#ff4949">
+                <el-switch v-model="bloodPool.bloodPoolsStatus" @change="calculationPlatformNft" active-value="TRUE"
+                  inactive-value="FALSE" active-color="#13ce66" inactive-color="#ff4949">
                 </el-switch>
               </div>
             </div>
@@ -1041,17 +1041,18 @@ export default {
           let ruleForm = {
             ...this.ruleForm,
             coin: this.coin,
+            adjust: bloodPool.adjust, // 修正值
+            bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
+            adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
             platformList: platformNftList,
             externalList: externalNftList
           };
+
           let res = await this.$http.calculationPlatformNft({ ...ruleForm });
           if (res) {
             this.ruleForm = {
               ...this.ruleForm,
-              adjust: bloodPool.adjust, // 修正值
-              bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
-              adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
               expectRate: res.expectRate, // 期望返还率
               lossRate: res.lossRate, // 亏本几率
               innerBaseNumber: res.innerBaseNumber, // 基准NFT数量
@@ -1190,24 +1191,24 @@ export default {
       this.page = val;
       this.fetchBoxManagerList(false);
     },
-    // 五连计算
-    validateFive(rule, value, callback) {
-      const { price } = this.ruleForm;
-      if (Number(value) <= 0 || Number(value || 0) > Number(price || 0)) {
-        callback(new Error('五连单价不能低于单买价格'));
+    // 单价计算
+    validateOne(rule, value, callback) {
+      const { fivePrice } = this.ruleForm;
+      if (Number(value) <= 0 || Number(value || 0) < Number(fivePrice || 0)) {
+        callback(new Error('单买单价不能低于五连单价'));
       } else {
         callback();
       }
     },
-    // 十连计算
-    validateTen(rule, value, callback) {
-      const { fivePrice } = this.ruleForm;
-      if (Number(value) <= 0 || Number(value || 0) > Number(fivePrice || 0)) {
-        callback(new Error('十连单价不能低于五连单价'));
+    // 五连计算
+    validateFive(rule, value, callback) {
+      const { tenPrice } = this.ruleForm;
+      if (Number(value) <= 0 || Number(value || 0) < Number(tenPrice || 0)) {
+        callback(new Error('五连单价不能低于十连单价'));
       } else {
         callback();
       }
-    }
+    },
   },
   // 创建后
   created() {
@@ -1228,6 +1229,7 @@ export default {
       ],
       price: [
         { required: true, message: "请输入价格", trigger: ["blur", "change"] },
+        { validator: this.validateOne, trigger: ["blur", "change"] }
       ],
       fivePrice: [
         { required: true, message: "请输入五连价格", trigger: ["blur", "change"] },
@@ -1235,7 +1237,6 @@ export default {
       ],
       tenPrice: [
         { required: true, message: "请输入十连价格", trigger: ["blur", "change"] },
-        { validator: this.validateTen, trigger: ["blur", "change"] }
       ],
       deviseRate: [
         { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },

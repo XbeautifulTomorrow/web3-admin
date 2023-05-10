@@ -50,11 +50,11 @@
         </div>
         <div class="remittance-item">
           <div class="title">佣金总数</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.lotteryPrices }}</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.rebatesPrices }}</div>
         </div>
         <div class="remittance-item">
           <div class="title">总返奖价值</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.rebatesPrices }}</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.lotteryPrices }}</div>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="realPrice" width="120" :label="`返奖价值(${coin})`" align="center" key="9">
+      <el-table-column prop="buyPrice" width="120" :label="`返奖价值(${coin})`" align="center" key="9">
       </el-table-column>
       <el-table-column prop="rebatesPrice" width="120" :label="`佣金(${coin})`" align="center" key="10">
       </el-table-column>
@@ -102,14 +102,14 @@
       </el-table-column>
       <el-table-column prop="flowId" width="120" label="流水号" align="center" key="14">
       </el-table-column>
-      <el-table-column prop="traTime" width="140" label="交易时间" align="center" key="15">
-        <template slot-scope="scope">
-          {{ timeForStr(scope.row.traTime, 'YYYY-MM-DD HH:mm:ss') }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="createTime" width="140" label="交易完成时间" align="center" key="16">
+      <el-table-column prop="createTime" width="140" label="交易时间" align="center" key="15">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="traTime" width="140" label="交易完成时间" align="center" key="16">
+        <template slot-scope="scope">
+          {{ timeForStr(scope.row.traTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
     </el-table>
@@ -134,26 +134,26 @@
         </el-table-column>
         <el-table-column prop="seriesName" label="奖品系列" align="center" key="4">
         </el-table-column>
-        <el-table-column prop="id" label="ID" align="center" key="4">
+        <el-table-column prop="id" label="ID" align="center" key="5">
         </el-table-column>
-        <el-table-column prop="price" :label="`奖品价值(${coin})`" align="center" key="4">
+        <el-table-column prop="price" :label="`奖品价值(${coin})`" align="center" key="6">
         </el-table-column>
-        <el-table-column prop="userSelect" label="用户选择" align="center" key="4">
+        <el-table-column prop="userSelect" label="用户选择" align="center" key="7">
           <template slot-scope="scope">
             <span v-if="scope.row.userSelect == 'RECLAIM'">回收</span>
             <span v-if="scope.row.userSelect == 'HOLD'">持有</span>
           </template>
         </el-table-column>
-        <el-table-column prop="realPrice" :label="`实际价值(${coin})`" align="center" key="4">
+        <el-table-column prop="realPrice" :label="`实际价值(${coin})`" align="center" key="8">
         </el-table-column>
-        <el-table-column prop="lotteryStatus" label="NFT交付情况" align="center" key="4">
+        <el-table-column prop="lotteryStatus" label="NFT交付情况" align="center" key="9">
           <template slot-scope="scope">
             <span style="color: #D2D2D2;" v-if="scope.row.lotteryStatus == 'RECLAIMED'">已回收</span>
             <span style="color: #FF0707;" v-if="scope.row.lotteryStatus == 'FAIL'">交付失败</span>
             <span style="color: #09912E;" v-if="scope.row.lotteryStatus == 'SUCCESS'">已交付</span>
           </template>
         </el-table-column>
-        <el-table-column prop="traTime" width="140" label="交易时间" align="center" key="4">
+        <el-table-column prop="traTime" width="140" label="交易时间" align="center" key="10">
           <template slot-scope="scope">
             {{ timeForStr(scope.row.traTime, 'YYYY-MM-DD HH:mm:ss') }}
           </template>

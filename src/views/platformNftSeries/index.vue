@@ -17,8 +17,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="NFT ID" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" class="public-table" @sort-change="sortChange" border>
+      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1">
       </el-table-column>
       <el-table-column prop="seriesImg" label="NFT图" width="120px" align="center" key="2">
         <template slot-scope="scope">
@@ -35,17 +35,17 @@
       </el-table-column>
       <el-table-column prop="seriesName" label="系列名称" align="center" key="4">
       </el-table-column>
-      <el-table-column prop="price" :label="`价值(${coin})`" align="center" key="5">
+      <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="5">
       </el-table-column>
       <el-table-column prop="contractAddress" label="合约" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="7">
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="relevancyUserNumber" label="用户持有" align="center" key="8">
+      <el-table-column prop="relevancyUserNumber" sortable="custom" label="用户持有" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="relevancyFoundryNumber" label="铸造数量" align="center" key="9">
+      <el-table-column prop="relevancyFoundryNumber" sortable="custom" label="铸造数量" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="reclaimRate" label="回收比例" align="center" key="10">
+      <el-table-column prop="reclaimRate" sortable="custom" label="回收比例" align="center" key="10">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.reclaimRate || 0).multipliedBy(100).toFixed(2)}%` }}
         </template>
@@ -136,6 +136,10 @@ export default {
     return {
       showDialog: false,
       obscureField: null,
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
       page: 1,
       size: 20,
       tableData: null,
@@ -191,9 +195,22 @@ export default {
   methods: {
     bigNumber: bigNumber,
     timeForStr: timeForStr,
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchNftPlatformList();
+    },
     // 加载列表
     async fetchNftPlatformList(isSearch = true) {
-      const { size } = this;
+      const { sortData, size } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -201,6 +218,7 @@ export default {
       }
       const data = {
         obscureField: this.obscureField,
+        ...sortData,
         size: size,
         page: _page,
       };

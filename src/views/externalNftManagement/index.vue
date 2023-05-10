@@ -2,7 +2,8 @@
   <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入系列名" v-model="seriesName" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="tokenId" clearable />
+      <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 140px;" placeholder="输入token ID" v-model="tokenId" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入项目方" v-model="projectParty" clearable />
       <el-select v-model="chainName" class="public-select-box" placeholder="所在链" clearable>
         <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainName" />
@@ -78,7 +79,9 @@
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
       <el-table-column prop="id" label="NFT ID" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="nftImg" label="NFT图片" width="120px" align="center" key="2">
+      <el-table-column prop="tokenId" label="token Id" align="center" key="2">
+      </el-table-column>
+      <el-table-column prop="nftImg" label="NFT图片" width="120px" align="center" key="3">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
             <el-image style="height: 100%;" :src="scope.row.nftImg" :preview-src-list="[scope.row.nftImg]">
@@ -86,29 +89,29 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" width="120" label="NFT系列名称" align="center" key="3">
+      <el-table-column prop="seriesName" width="120" label="NFT系列名称" align="center" key="4">
       </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="4">
+      <el-table-column prop="contractAddress" label="合约" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="projectParty" label="项目方" align="center" key="5">
+      <el-table-column prop="projectParty" label="项目方" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="nftSource" label="来源" align="center" key="6">
+      <el-table-column prop="nftSource" label="来源" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="userName" label="所属用户" align="center" key="7">
+      <el-table-column prop="userName" label="所属用户" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="chainName" label="所在链" align="center" key="8">
+      <el-table-column prop="chainName" label="所在链" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="price" width="120" :label="`当前价(${coin})`" align="center" key="9">
+      <el-table-column prop="price" width="120" :label="`当前价(${coin})`" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="12">
+      <el-table-column prop="relevancyBoxNumber" label="关联盲盒" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="openNumber" label="被开次数" align="center" key="13">
+      <el-table-column prop="openNumber" label="被开次数" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="outNumber" label="提走次数" align="center" key="14">
+      <el-table-column prop="outNumber" label="提走次数" align="center" key="13">
       </el-table-column>
-      <el-table-column prop="refunds" label="总退款" align="center" key="15">
+      <el-table-column prop="refunds" label="总退款" align="center" key="14">
       </el-table-column>
-      <el-table-column prop="nftStatus" label="当前状态" align="center" key="16">
+      <el-table-column prop="nftStatus" label="当前状态" align="center" key="15">
         <template slot-scope="scope">
           <span style="color: #05A8F0;" v-if="scope.row.nftStatus == 'IN_POOL'">已入池</span>
           <span style="color: #EC5706;" v-if="scope.row.nftStatus == 'NO_POOL'">未入池</span>
@@ -117,23 +120,23 @@
           <span style="color: #BBBBBB;" v-if="scope.row.nftStatus == 'MENTIONED'">已提出</span>
         </template>
       </el-table-column>
-      <el-table-column prop="refreshTime" width="140" label="上次刷新" align="center" key="17">
+      <el-table-column prop="refreshTime" width="140" label="上次刷新" align="center" key="16">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.refreshTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="prizeTime" width="140" label="上次出奖" align="center" key="18">
+      <el-table-column prop="prizeTime" width="140" label="上次出奖" align="center" key="17">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.prizeTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="enabledStatus" label="能否入池" align="center" key="19">
+      <el-table-column prop="enabledStatus" label="能否入池" align="center" key="18">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.enabledStatus == 'DISABLE'">冻结</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="20" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="19" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.enabledStatus == 'DISABLE' ? '解禁' : '冻结' }}
@@ -160,6 +163,7 @@ export default {
   // 数据
   data() {
     return {
+      Id: null,
       tokenId: null, // NFT Id
       seriesName: null, // 系列名
       projectParty: null, // 项目方
@@ -194,6 +198,7 @@ export default {
       }
 
       return {
+        Id: this.Id,
         tokenId: this.tokenId, // NFT Id
         seriesName: this.seriesName, // 系列名
         projectParty: this.projectParty, // 项目方
