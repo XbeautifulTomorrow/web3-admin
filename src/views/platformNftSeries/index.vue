@@ -74,11 +74,11 @@
         </el-form-item>
         <el-form-item label="合约地址" prop="contractAddress">
           <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
-            placeholder="请输入Hash" />
+            placeholder="请输入合约地址" />
         </el-form-item>
         <el-form-item label="tokenId" prop="tokenId">
           <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px"
-            placeholder="请输入Hash" />
+            placeholder="请输入tokenId" />
         </el-form-item>
         <el-form-item label="类型" prop="seriesType">
           <el-select :disabled="operatingType != 1" v-model="ruleForm.seriesType" style="width: 300px"
