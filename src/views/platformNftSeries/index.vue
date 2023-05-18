@@ -252,6 +252,7 @@ export default {
         ...row
       }
 
+      this.fileImg = [{ url: row.seriesImg }];
       this.ruleForm.reclaimRate = new bigNumber(this.ruleForm.reclaimRate).multipliedBy(100).toString();
       this.hideUpload = true;
       this.operatingType = 2;
