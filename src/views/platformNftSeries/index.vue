@@ -68,33 +68,41 @@
     <el-dialog v-if="showDialog" :title="operatingType == 1 ? '创建NFT' : '编辑NFT'" :visible.sync="showDialog" width="540px"
       :close-on-click-modal="false" :before-close="handleClose">
       <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
-        <el-form-item label="名称" prop="seriesName" v-if="operatingType == 1">
-          <el-input v-model="ruleForm.seriesName" style="width: 300px" placeholder="请输入名称" />
+        <el-form-item label="名称" prop="seriesName">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.seriesName" style="width: 300px"
+            placeholder="请输入名称" />
         </el-form-item>
-        <el-form-item label="Hash" prop="hash" v-if="operatingType == 1">
-          <el-input v-model="ruleForm.hash" style="width: 300px" placeholder="请输入Hash" />
+        <el-form-item label="合约地址" prop="contractAddress">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
+            placeholder="请输入Hash" />
         </el-form-item>
-        <el-form-item label="类型" prop="seriesType" v-if="operatingType == 1">
-          <el-select v-model="ruleForm.seriesType" style="width: 300px" placeholder="请选择类型">
+        <el-form-item label="tokenId" prop="tokenId">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px"
+            placeholder="请输入Hash" />
+        </el-form-item>
+        <el-form-item label="类型" prop="seriesType">
+          <el-select :disabled="operatingType != 1" v-model="ruleForm.seriesType" style="width: 300px"
+            placeholder="请选择类型">
             <el-option label="币" value="COIN" />
             <el-option label="图" value="PIC" />
           </el-select>
         </el-form-item>
-        <el-form-item label="图片" prop="seriesImg" v-if="operatingType == 1">
-          <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange"
-            :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
+        <el-form-item label="图片" prop="seriesImg">
+          <el-upload :disabled="operatingType != 1" :action="uploadUrl" :class="{ hide: hideUpload }"
+            :on-change="handleChange" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
             accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
             :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="所在链" prop="chainId" v-if="operatingType == 1">
-          <el-select v-model="ruleForm.chainId" style="width: 300px">
+        <el-form-item label="所在链" prop="chainId">
+          <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
           </el-select>
         </el-form-item>
-        <el-form-item label="价值" prop="price" v-if="operatingType == 1">
-          <el-input type="number" v-model="ruleForm.price" style="width: 300px" placeholder="请输入价值">
+        <el-form-item label="价值" prop="price">
+          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 300px"
+            placeholder="请输入价值">
             <template slot="append">{{ coin }}</template>
           </el-input>
         </el-form-item>
@@ -154,18 +162,22 @@ export default {
       },
       operatingType: 1,
       ruleForm: {
-        "hash": null,// hash
-        "chainId": null,// 链ID
-        "coin": "ETH",// 币种
-        "price": null,// 价格
-        "seriesName": null,// 系列名称
-        "seriesType": null,// 系列类型(COIN-币，PIC-图)
-        "seriesImg": null,// 系列图片
-        "reclaimRate": null// 回收比例
+        tokenId: null,// tokenId
+        contractAddress: "", // 合约地址
+        chainId: null,// 链ID
+        coin: "ETH",// 币种
+        price: null,// 价格
+        seriesName: null,// 系列名称
+        seriesType: null,// 系列类型(COIN-币，PIC-图)
+        seriesImg: null,// 系列图片
+        reclaimRate: null// 回收比例
       },
       rules: {
-        hash: [
-          { required: true, message: "请输入Hash", trigger: ["blur", "change"] },
+        tokenId: [
+          { required: true, message: "请输入tokenId", trigger: ["blur", "change"] },
+        ],
+        contractAddress: [
+          { required: true, message: "请输入合约地址", trigger: ["blur", "change"] },
         ],
         chainId: [
           { required: true, message: "请选择链", trigger: ["blur", "change"] },
@@ -267,6 +279,17 @@ export default {
     },
     handleClose(done) {
       this.operatingType = 1;
+      this.ruleForm = {
+        tokenId: null,// tokenId
+        contractAddress: "", // 合约地址
+        chainId: null,// 链ID
+        coin: "ETH",// 币种
+        price: null,// 价格
+        seriesName: null,// 系列名称
+        seriesType: null,// 系列类型(COIN-币，PIC-图)
+        seriesImg: null,// 系列图片
+        reclaimRate: null// 回收比例
+      }
 
       if (done) {
         done()
