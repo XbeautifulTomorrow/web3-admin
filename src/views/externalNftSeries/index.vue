@@ -420,10 +420,13 @@ export default {
      * @description 查询Nft系列
      */
     fetchNftSeries() {
-      console.log(getNftAddress)
-      const { contractAddress } = this.ruleForm
+      const { chainId, contractAddress } = this.ruleForm;
+      let getUrl = getNftAddress.test;
+      if (chainId == 1) {
+        getUrl = getNftAddress.main
+      }
       axios
-        .get(getNftAddress + contractAddress, {
+        .get(getUrl + contractAddress, {
           responseType: "json",
         })
         .then((res) => {
