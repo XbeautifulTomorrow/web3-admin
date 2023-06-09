@@ -94,7 +94,8 @@ export const chainOptions = {
  */
 export const chainList = {
   test: [
-    { chainName: "Goerli", chainId: 5 }
+    { chainName: "Goerli", chainId: 5, type: "Test" },
+    { chainName: "Ethereum", chainId: 1, type: "Main" }
   ],
   main: [
     { chainName: "Ethereum", chainId: 1 }

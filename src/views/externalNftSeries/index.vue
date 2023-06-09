@@ -124,7 +124,10 @@
         </el-form-item>
         <el-form-item label="所在链" prop="chainId">
           <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
-            <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
+            <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
+              <span style="float: left;">{{ item.chainName }}</span>
+              <span style="float: right;color: #8492a6;">{{ item.type }}</span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="选择市场" prop="marketNames">
