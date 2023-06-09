@@ -421,10 +421,16 @@ export default {
      */
     fetchNftSeries() {
       const { chainId, contractAddress } = this.ruleForm;
+      if (!chainId) {
+        this.$message.warning("请选择网络");
+        return
+      }
+
       let getUrl = getNftAddress.test;
       if (chainId == 1) {
         getUrl = getNftAddress.main
       }
+
       axios
         .get(getUrl + contractAddress, {
           responseType: "json",
