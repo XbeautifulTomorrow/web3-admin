@@ -76,53 +76,55 @@
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="upId" label="上级ID" align="center" width="110" key="1">
+      <el-table-column prop="walletAddress" label="钱包地址" width="300" align="center" key="1">
       </el-table-column>
-      <el-table-column prop="email" label="邮箱" align="center" width="200" key="2">
+      <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2">
       </el-table-column>
-      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="3">
+      <el-table-column prop="email" label="邮箱" align="center" width="200" key="3">
       </el-table-column>
-      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="4">
+      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="4">
       </el-table-column>
-      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="5">
+      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="5">
       </el-table-column>
-      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(ETH)" align="center" width="120" key="6">
+      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="6">
       </el-table-column>
-      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(ETH)" align="center" width="120" key="7">
+      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(ETH)" align="center" width="120" key="7">
       </el-table-column>
-      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="8">
+      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(ETH)" align="center" width="120" key="8">
       </el-table-column>
-      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="9">
+      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9">
       </el-table-column>
-      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="10">
+      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10">
       </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="11">
+      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11">
       </el-table-column>
-      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(ETH)" align="center" width="140" key="12">
+      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="12">
       </el-table-column>
-      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(ETH)" align="center" width="140" key="13">
+      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(ETH)" align="center" width="140" key="13">
       </el-table-column>
-      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="14">
+      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(ETH)" align="center" width="140" key="14">
       </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="15">
+      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15">
+      </el-table-column>
+      <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="16">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginTime" sortable="custom" label="最后登录时间" align="center" width="140" key="16">
+      <el-table-column prop="lastLoginTime" sortable="custom" label="最后登录时间" align="center" width="140" key="17">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginIp" label="最后登录IP" align="center" width="110" key="17">
+      <el-table-column prop="lastLoginIp" label="最后登录IP" align="center" width="110" key="18">
       </el-table-column>
-      <el-table-column prop="userStatus" label="状态" align="center" width="110" key="18">
+      <el-table-column prop="userStatus" label="状态" align="center" width="110" key="19">
         <template slot-scope="scope">
           <span style="color:red;" v-if="scope.row.userStatus == 'DISABLE'">封停</span>
           <span style="color:#21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="140" key="19" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="140" key="20" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)">
             上下分
