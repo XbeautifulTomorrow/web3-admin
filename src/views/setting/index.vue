@@ -2,20 +2,6 @@
   <div class="page-wrapper">
     <div class="points-settings">
       <div class="setting-item">
-        <div class="setting-title">注册积分</div>
-        <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入注册积分" v-model="points.point"
-            clearable />
-        </div>
-      </div>
-      <div class="setting-item">
-        <div class="setting-title">下级注册积分</div>
-        <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级注册积分"
-            v-model="points.downPoint" clearable />
-        </div>
-      </div>
-      <div class="setting-item">
         <div class="setting-title">下级佣金比例</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级佣金比例"
@@ -25,9 +11,9 @@
         </div>
       </div>
       <div class="setting-item">
-        <div class="setting-title">下级积分比例</div>
+        <div class="setting-title">下级空投积分额外比例</div>
         <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级积分比例"
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级空投积分额外比例"
             v-model="points.downPointRate" clearable>
             <template slot="append">%</template>
           </el-input>
