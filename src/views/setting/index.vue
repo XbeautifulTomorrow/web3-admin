@@ -2,6 +2,13 @@
   <div class="page-wrapper">
     <div class="points-settings">
       <div class="setting-item">
+        <div class="setting-title">注册拉新开始时间</div>
+        <div class="setting-val">
+          <el-date-picker class="public-input" style="width: 300px;" value-format="yyyy-MM-dd HH:mm:ss"
+            v-model="points.regCountdownTime" type="datetime" placeholder="Select time" />
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">下级佣金比例</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下级佣金比例"
@@ -157,11 +164,12 @@ export default {
     return {
       /** 积分相关配置 */
       points: {
-        point: null, //注册积分
-        downPoint: null, //下级注册积分
-        downCommissionRate: null, //下级佣金比例
-        downPointRate: null, //下级积分比例
-        consumePointRate: null //消费积分
+        point: null, // 注册积分
+        downPoint: null, // 下级注册积分
+        downCommissionRate: null, // 下级佣金比例
+        downPointRate: null, // 下级积分比例
+        consumePointRate: null, // 消费积分
+        regCountdownTime: null // 
       },
 
       /** 提现相关配置 */
@@ -490,7 +498,7 @@ export default {
   .setting-title {
     font-size: 16px;
     font-weight: bold;
-    width: 140px;
+    min-width: 200px;
 
     &>span {
       margin-right: 8px;
@@ -502,7 +510,7 @@ export default {
   }
 
   .el-select {
-    margin: 0;
+    margin: 0 !important;
   }
 }
 
