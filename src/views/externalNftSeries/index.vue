@@ -434,6 +434,7 @@ export default {
       axios
         .get(getUrl + contractAddress, {
           responseType: "json",
+          "X-API-KEY": "3eb9844d094945f288c104c770365ac8"
         })
         .then((res) => {
           if (res.status == 200) {
