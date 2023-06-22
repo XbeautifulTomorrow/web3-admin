@@ -74,7 +74,10 @@
         </el-form-item>
         <el-form-item label="合约地址" prop="contractAddress">
           <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
-            placeholder="请输入合约地址" />
+            placeholder="请输入合约地址">
+            <template slot="append">
+              <el-button @click="fetchNftSeries()">查询</el-button>
+            </template></el-input>
         </el-form-item>
         <el-form-item label="tokenId" prop="tokenId">
           <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px"
@@ -97,7 +100,10 @@
         </el-form-item>
         <el-form-item label="所在链" prop="chainId">
           <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
-            <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId" />
+            <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
+              <span style="float: left;">{{ item.chainName }}</span>
+              <span style="float: right;color: #8492a6;">{{ item.type }}</span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="价值" prop="price">
@@ -121,11 +127,12 @@
 </template>
 
 <script>
+import axios from "axios";
 import bigNumber from "bignumber.js";
 import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
-import { chainList } from "@/utils/chain";
+import { chainList, getNftAddress } from "@/utils/chain";
 export default {
   name: 'PlatformNftSeries',
   // 模板引入
@@ -323,6 +330,46 @@ export default {
     },
     handExceed(fiel) {
       this.$message.error("文件只能上传一个");
+    },
+    /**
+ * @description 查询Nft系列
+ */
+    fetchNftSeries() {
+      const { chainId, contractAddress } = this.ruleForm;
+      if (!chainId) {
+        this.$message.warning("请选择网络");
+        return
+      }
+
+      let getUrl = getNftAddress.test;
+      if (chainId == 1) {
+        getUrl = getNftAddress.main
+      }
+
+      axios
+        .get(getUrl + contractAddress, {
+          responseType: "json",
+          headers: {
+            "X-API-KEY": "3eb9844d094945f288c104c770365ac8"
+          }
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            const nftData = res.data;
+            this.fileImg = [{ url: nftData.image_url }]
+            this.ruleForm.seriesName = nftData.name; // 系列名称
+            this.ruleForm.seriesImg = nftData.image_url; // Nft图片
+            this.ruleForm.keywords = nftData.collection.slug; // 关键字
+            return
+          }
+          this.$message.error("查询失败，请检查合约地址是否正确");
+
+        })
+        .catch(error => {
+          this.$message.error("查询失败，请检查合约地址是否正确");
+          console.log(error);
+        });
+
     },
     // 提交
     submitForm() {

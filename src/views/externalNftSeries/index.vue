@@ -110,7 +110,7 @@
           <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
             placeholder="请输入合约地址">
             <template slot="append">
-              <span @click="fetchNftSeries()">查询</span>
+              <el-button @click="fetchNftSeries()">查询</el-button>
             </template>
           </el-input>
         </el-form-item>
