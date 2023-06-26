@@ -13,7 +13,7 @@ import 'normalize.css/normalize.css'; // a modern alternative to CSS resets
 import * as Fetch from '@/service/fetch';
 import selfFunc from '@/utils/common';
 import ElementUI from 'element-ui';
-import './styles/element-variables.scss';
+import '@/styles/element-variables.scss';
 
 import '@/styles/index.scss'; // global css
 

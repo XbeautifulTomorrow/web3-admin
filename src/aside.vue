@@ -37,6 +37,10 @@
             <i class="el-icon-user"></i>
             <span>用户管理</span>
           </el-menu-item>
+          <el-menu-item index="invitationRebate" class="menu-list">
+            <i class="el-icon-coin"></i>
+            <span>邀请返佣</span>
+          </el-menu-item>
         </el-submenu>
         <el-submenu index="nftManagement">
           <template slot="title">
@@ -120,10 +124,6 @@
           <el-menu-item index="flashManagement" class="menu-list">
             <i class="el-icon-s-order"></i>
             <span>闪兑管理</span>
-          </el-menu-item>
-          <el-menu-item index="invitationRebate" class="menu-list">
-            <i class="el-icon-coin"></i>
-            <span>邀请返佣</span>
           </el-menu-item>
           <el-menu-item index="rebateRecord" class="menu-list">
             <i class="el-icon-document"></i>
@@ -315,7 +315,8 @@ export default {
     pageFun() {
       const { path, nav } = this;
       const dataManagement = [
-        'userList'
+        'userList',
+        'invitationRebate'
       ];
 
       const nftManagement = [
@@ -343,7 +344,6 @@ export default {
         'cashManagement',
         'withdrawalReview',
         'flashManagement',
-        'invitationRebate',
         'rebateRecord',
         'integralTurnover'
       ];

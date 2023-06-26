@@ -113,6 +113,7 @@ export const getRebatesBaseList = (obj) => S.get('/rebates-base/pageList', obj);
 export const getRebatesBaseStatistics = (obj) => S.get('/rebates-base/headerDataTotal', obj); // 邀请返佣统计
 export const getRebatesBaseDownList = (obj) => S.get('/rebates-base/down/pageList', obj); // 邀请下级列表
 export const getRebatesBaseDownStatistics = (obj) => S.get('/rebates-base/down/headerDataTotal', obj); // 邀请下级统计
+export const setRebateRate = (obj) => S.get('/rebates-base/set/rebateRate', obj); // 分佣比例更新
 
 /**
  * @description 返佣记录

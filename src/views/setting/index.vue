@@ -164,8 +164,6 @@ export default {
     return {
       /** 积分相关配置 */
       points: {
-        point: null, // 注册积分
-        downPoint: null, // 下级注册积分
         downCommissionRate: null, // 下级佣金比例
         downPointRate: null, // 下级积分比例
         consumePointRate: null, // 消费积分
@@ -239,15 +237,12 @@ export default {
     // 积分配置更新
     async submitPoints() {
       const {
-        point,
-        downPoint,
         downCommissionRate,
         downPointRate,
         consumePointRate
       } = this.points;
 
-      if (!point ||
-        !downPoint ||
+      if (
         !downCommissionRate ||
         !downPointRate ||
         !consumePointRate) {

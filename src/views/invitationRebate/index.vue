@@ -3,7 +3,7 @@
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="email" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入钱包地址" v-model="walletAddress" clearable />
+      <el-input class="public-input" style="width: 140px;" placeholder="输入邀请码" v-model="inviteCode" clearable />
       <div class="public-date-box">
         <span class="demonstration">
           最后领取时间
@@ -52,7 +52,7 @@
       </el-table-column>
       <el-table-column prop="email" width="120" label="邮箱" align="center" key="2">
       </el-table-column>
-      <el-table-column prop="walletAddress" width="120" label="钱包地址" align="center" key="3">
+      <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3">
       </el-table-column>
       <el-table-column prop="downIdNumber" sortable="custom" width="120" label="下级数量" align="center" key="4">
         <template slot-scope="scope">
@@ -67,9 +67,18 @@
       </el-table-column>
       <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="8">
+      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="8">
+      </el-table-column>
+      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="9">
+      </el-table-column>
+      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="10">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastReceiveTime, 'YYYY-MM-DD HH:mm:ss') }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="11">
+        <template slot-scope="scope">
+          <el-button @click="setRatio(scope.row)">设置分佣比例</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +92,7 @@
         <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="downObscureField"
           clearable />
         <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="downEmail" clearable />
-        <el-input class="public-input" style="width: 140px;" placeholder="输入钱包地址" v-model="downWalletAddress" clearable />
+        <el-input class="public-input" style="width: 140px;" placeholder="输入钱包地址" v-model="downInviteCode" clearable />
         <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseDownList()">
           查询
         </el-button>
@@ -121,7 +130,7 @@
         </el-table-column>
         <el-table-column prop="email" width="120" label="邮箱" align="center" key="2">
         </el-table-column>
-        <el-table-column prop="walletAddress" width="120" label="钱包地址" align="center" key="3">
+        <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3">
         </el-table-column>
         <el-table-column prop="traNumber" width="120" label="交易笔数" align="center" key="4">
         </el-table-column>
@@ -146,12 +155,26 @@
         class="public-pagination">
       </el-pagination>
     </el-dialog>
+    <el-dialog width="440px" :close-on-click-modal="false" title="设置分佣比例" :visible.sync="showSetRatio" append-to-body
+      :before-close="handleClose">
+      <el-form ref="seriesForm" class="add-form" :model="ratioForm" label-width="80px">
+        <el-form-item label="比例" prop="ratio">
+          <el-input style="width: 300px;" type="number" v-model="ratioForm.ratio">
+            <template slot="append">%</template>
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="submitRatio()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr, exportExcel } from '@/utils';
+import { timeForStr, exportExcel, accurateDecimal } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
 
@@ -165,7 +188,7 @@ export default {
     return {
       obscureField: null,
       email: null,
-      walletAddress: null,
+      inviteCode: null,
       lastPickUpTime: null, // 交易时间
       sortData: {
         orderBy: null,
@@ -177,12 +200,20 @@ export default {
       baseUserPage: null,
       aggregateQuery: null,
 
+      /** 设置分佣比例 */
+      showSetRatio: false,
+      ratioForm: {
+        ratio: null
+      },
+      userSet: {},
+      timer: null,
+
       /** 下级相关 */
       upId: null,
       showDownDialog: false,
       downObscureField: null,
       downEmail: null,
-      downWalletAddress: null,
+      downInviteCode: null,
       downPage: 1,
       downSize: 20,
       downData: null,
@@ -210,6 +241,7 @@ export default {
       return {
         obscureField: this.obscureField,
         email: this.email,
+        inviteCode: this.inviteCode,
         startPrice: this.startPrice,
         endPrice: this.endPrice,
         startTime,
@@ -252,7 +284,6 @@ export default {
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
-        this.tableData = [11, 144];
       }
 
       delete data.size;
@@ -271,7 +302,7 @@ export default {
       const search = {
         obscureField: this.downObscureField,
         email: this.downEmail,
-        walletAddress: this.downWalletAddress,
+        inviteCode: this.downInviteCode,
         upId: this.upId
       };
 
@@ -303,6 +334,36 @@ export default {
         this.downAggregateQuery = resAggregateQuery;
       }
     },
+    setRatio(event) {
+      this.showSetRatio = true;
+      this.userSet = event;
+      this.ratioForm.ratio = accurateDecimal(Number(new bigNumber(event.rebateRate).multipliedBy(100)), 4)
+    },
+    async submitRatio() {
+      const { ratioForm: { ratio }, userSet: { id }
+      } = this;
+
+      if (ratio == null || ratio == "" || ratio == undefined) {
+        this.$message.error("请输入分佣比例");
+        return
+      }
+
+      if (ratio <= 0) {
+        this.$message.error("分佣比例不能为0或以下");
+        return
+      }
+
+      const res = await this.$http.setRebateRate({
+        rebateRate: accurateDecimal(Number(new bigNumber(ratio).div(100)), 4),
+        userId: id
+      });
+
+      if (res) {
+        this.handleClose();
+        this.fetchRebatesBaseList();
+        this.$message.success("操作成功");
+      }
+    },
     // 列表导出
     onExport() {
       const search = this.searchFun();
@@ -323,7 +384,7 @@ export default {
       const search = {
         obscureField: this.downObscureField,
         email: this.downEmail,
-        walletAddress: this.downWalletAddress,
+        inviteCode: this.downInviteCode,
         upId: this.upId
       };
       const urlStr = config.api + '/rebates-base/down/exportExcel';
@@ -339,12 +400,17 @@ export default {
       exportExcel(urlStr, data, "邀请下级列表导出")
     },
     handleClose(done) {
+      this.userSet = {};
+      this.ratioForm = {
+        ratio: null
+      }
       if (done) {
         done()
         return
       }
 
       this.showDownDialog = false;
+      this.showSetRatio = false;
     },
     handleSizeChange(val) {
       this.size = val;
@@ -366,6 +432,22 @@ export default {
   // 创建后
   created() {
     this.fetchRebatesBaseList();
+  },
+  watch: {
+    "ratioForm.ratio"(newV, oldV) {
+      if (!newV) return
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+      this.timer = setTimeout(() => {
+        if (newV < 0) {
+          this.ratioForm.ratio = 0;
+        } else if (newV > 100) {
+          this.ratioForm.ratio = 100;
+        }
+      }, 300);
+
+    },
   },
   computed: {
     coin() {
