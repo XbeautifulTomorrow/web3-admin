@@ -61,22 +61,29 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="5">
+      <el-table-column prop="totalConsumption" sortable="custom" width="120" label="总消费" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="6">
+      <el-table-column prop="rebateRate" sortable="custom" width="120" label="分佣比例" align="center" key="6">
+        <template slot-scope="scope">
+          {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
+        </template>
       </el-table-column>
-      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="7">
+      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="8">
+      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="9">
+      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="10">
+      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="10">
+      </el-table-column>
+      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="11">
+      </el-table-column>
+      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="12">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastReceiveTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="11">
+      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="13">
         <template slot-scope="scope">
           <el-button @click="setRatio(scope.row)">设置分佣比例</el-button>
         </template>
@@ -86,13 +93,12 @@
       @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
       layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
     </el-pagination>
-    <el-dialog title="返奖详情" :visible.sync="showDownDialog" width="1200px" :close-on-click-modal="false"
+    <el-dialog title="下级详情" :visible.sync="showDownDialog" width="1200px" :close-on-click-modal="false"
       :before-close="handleClose">
       <div class="public-list-inputs">
         <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="downObscureField"
           clearable />
         <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="downEmail" clearable />
-        <el-input class="public-input" style="width: 140px;" placeholder="输入钱包地址" v-model="downInviteCode" clearable />
         <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseDownList()">
           查询
         </el-button>
@@ -130,20 +136,24 @@
         </el-table-column>
         <el-table-column prop="email" width="120" label="邮箱" align="center" key="2">
         </el-table-column>
-        <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3">
+        <el-table-column prop="inviteCode" label="邀请码" align="center" key="3">
         </el-table-column>
-        <el-table-column prop="traNumber" width="120" label="交易笔数" align="center" key="4">
+        <el-table-column prop="traNumber" label="交易笔数" align="center" key="4">
         </el-table-column>
-        <el-table-column prop="consumeTotal" width="120" label="消费金额" align="center" key="5">
+        <el-table-column prop="consumeTotal" label="消费金额" align="center" key="5">
         </el-table-column>
-        <el-table-column prop="commissionRate" width="120" label="返佣比例" align="center" key="6">
+        <el-table-column prop="rebateRate" label="返佣比例" align="center" key="6">
           <template slot-scope="scope">
-            {{ `${new bigNumber(scope.row.commissionRate).multipliedBy(100)}%` }}
+            {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
           </template>
         </el-table-column>
-        <el-table-column prop="totalAmount" width="120" label="佣金" align="center" key="7">
+        <el-table-column prop="totalAmount" label="佣金" align="center" key="7">
         </el-table-column>
-        <el-table-column prop="createTime" width="140" label="注册时间" align="center" key="8">
+        <el-table-column prop="pointAmountTotal" label="注册积分" align="center" key="8">
+        </el-table-column>
+        <el-table-column prop="extraPointAmountTotal" label="额外积分" align="center" key="9">
+        </el-table-column>
+        <el-table-column prop="createTime" width="140" label="注册时间" align="center" key="10">
           <template slot-scope="scope">
             {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
           </template>
@@ -210,10 +220,10 @@ export default {
 
       /** 下级相关 */
       upId: null,
+      downInviteCode: null,
       showDownDialog: false,
       downObscureField: null,
       downEmail: null,
-      downInviteCode: null,
       downPage: 1,
       downSize: 20,
       downData: null,
@@ -295,6 +305,7 @@ export default {
     },
     showDown(event) {
       this.upId = event.id;
+      this.downInviteCode = event.inviteCode;
       this.fetchRebatesBaseDownList();
       this.showDownDialog = true;
     },
@@ -384,7 +395,6 @@ export default {
       const search = {
         obscureField: this.downObscureField,
         email: this.downEmail,
-        inviteCode: this.downInviteCode,
         upId: this.upId
       };
       const urlStr = config.api + '/rebates-base/down/exportExcel';
