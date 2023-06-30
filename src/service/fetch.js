@@ -147,5 +147,8 @@ export const getSystemWalletList = (obj) => S.get('/system-wallet/pageList', obj
 export const systemWalletActive = (obj) => S.get('/system-wallet/activate', obj); // 归集钱包激活
 export const systemWalletAdd = (obj) => S.post('/system-wallet/add', obj); // 归集钱包新增
 export const systemWalletDel = (obj) => S.get('/system-wallet/delete', obj); // 归集钱包删除
+export const getInviteSetting = (obj) => S.get('/system-setting/findBaseSetting', obj); // 邀请文本查询
+export const inviteSet = (obj) => S.post('/system-setting/baseSetting', obj); // 邀请文本设置
+
 
 

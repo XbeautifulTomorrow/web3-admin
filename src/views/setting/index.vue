@@ -99,7 +99,7 @@
         <el-button type="primary" style="width: 160px;" @click="showDialog = true">新增钱包</el-button>
       </div>
       <el-table :data="tableData" style="width: 760px;min-width: 0;" class="public-table" border>
-        <el-table-column prop="walletAddress" width="300" label="钱包地址" align="center" key="1">
+        <el-table-column prop="walletAddress" width="320" label="钱包地址" align="center" key="1">
         </el-table-column>
         <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
           <template slot-scope="scope">
@@ -133,6 +133,26 @@
         @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
         layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
       </el-pagination>
+    </div>
+    <div class="invite-settings">
+      <div class="setting-item" v-for="(item, index) in inviteList" :key="index">
+        <div class="setting-title">
+          <span v-if="index == 0">邀请文本</span>
+        </div>
+        <div class="setting-val">
+          <el-input class="public-input" style="width: 100%" placeholder="输入邀请文本（单行）" v-model="item.text" clearable>
+            <template slot="append">
+              <el-button v-if="index == 0" @click="inviteAdd()">
+                <i class="el-icon-plus"></i>
+              </el-button>
+              <el-button v-else @click="inviteDel(index)">
+                <i class="el-icon-minus"></i>
+              </el-button>
+            </template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px;" size="medium" @click="submitInvite()">确认修改</el-button>
     </div>
     <el-dialog v-if="showDialog" title="新增归集钱包" :visible.sync="showDialog" width="440px" :close-on-click-modal="false"
       :before-close="handleClose">
@@ -187,6 +207,9 @@ export default {
       /** 钱包相关 */
       showDialog: false,
       walletAddr: null,
+
+      /** 邀请文本相关 */
+      inviteList: [{ text: "" }],
 
       page: 1,
       size: 20,
@@ -414,6 +437,57 @@ export default {
           console.error(err);
         });
     },
+    // 新增邀请文本行
+    inviteAdd() {
+      this.inviteList.push({ text: "" });
+      this.$forceUpdate();
+    },
+    // 删除邀请文本单行
+    inviteDel(index) {
+      this.inviteList.splice(index, 1)
+      this.$forceUpdate();
+    },
+    // 邀请文本查询
+    async fetchInviteSetting() {
+      const res = await this.$http.getInviteSetting();
+      if (res) {
+        const invites = res.inviteText.split(",");
+        this.inviteList = [];
+        invites.forEach(element => {
+          this.inviteList.push({ text: element })
+        });
+
+        this.$forceUpdate();
+      }
+    },
+    // 邀请文本更新
+    async submitInvite() {
+      const {
+        inviteList,
+      } = this;
+      let invites = "";
+      inviteList.forEach(element => {
+        if (!invites) {
+          invites = element.text;
+          return
+        }
+
+        invites += "," + element.text
+      });;
+      if (!invites) {
+        this.$message.error("请输入邀请文本");
+        return
+      }
+
+      const res = await this.$http.inviteSet({
+        inviteText: invites
+      });
+
+      if (res) {
+        this.fetchInviteSetting();
+        this.$message.success("操作成功");
+      }
+    },
     handleClose(done) {
       if (done) {
         done()
@@ -438,6 +512,7 @@ export default {
     this.fetchWithdrawalConfig();
     this.fetchRecycleConfig();
     this.fetchServiceCharge();
+    this.fetchInviteSetting();
   },
   computed: {
     coin() {
@@ -523,13 +598,20 @@ export default {
   margin-top: 10px;
 }
 
+.wallet-settings {
+  width: 760px;
+}
+
+.invite-settings {
+  width: 760px;
+}
+
 .operating-box {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 16px;
   font-weight: bold;
-  width: 760px;
   padding-bottom: 10px;
 }
 </style>
