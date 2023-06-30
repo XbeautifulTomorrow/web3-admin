@@ -41,6 +41,14 @@
           <div class="title">领取数量</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.receiveNumber }}</div>
         </div>
+        <div class="remittance-item">
+          <div class="title">总积分</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.pointAmountTotal }}</div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总额外积分</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.extraPointAmountTotal }}</div>
+        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
