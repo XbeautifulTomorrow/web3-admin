@@ -268,8 +268,9 @@
                   <div class="number-box">
                     <el-input type="number" class="number" v-model.number="scope.row.number"></el-input>
                     <el-tooltip
-                      v-if="scope.row.realNumber && Number(scope.row.realNumber || 0) < Number(scope.row.number || 0)"
-                      class="item" effect="dark" :content="`该NFT当前最大只能设置为${scope.row.realNumber}个`" placement="top-start">
+                      v-if="scope.row.totalNumber && Number(scope.row.totalNumber || 0) < Number(scope.row.number || 0)"
+                      class="item" effect="dark" :content="`该NFT当前最大只能设置为${scope.row.totalNumber}个`"
+                      placement="top-start">
                       <i class="icon-warning el-icon-warning-outline"></i>
                     </el-tooltip>
                   </div>
@@ -820,7 +821,7 @@ export default {
 
           try {
             externalList.forEach(element => {
-              if (Number(element.realNumber) < Number(element.number)) {
+              if (Number(element.totalNumber) < Number(element.number)) {
                 console.log("最大数量不对")
                 throw new Error("error");
               }
@@ -1074,8 +1075,10 @@ export default {
               ...this.ruleForm,
               expectRate: res.expectRate, // 期望返还率
               lossRate: res.lossRate, // 亏本几率
-              innerBaseNumber: res.innerBaseNumber, // 基准NFT数量
+              innerBaseNumber: res.innerBaseNumber // 基准NFT数量
             }
+
+            this.bloodPool.adjustRate = res.adjustRate;
 
             this.calculationNft = res.seriesSort; // 合计NFT系列
             let platformCount = [];
@@ -1101,7 +1104,7 @@ export default {
                   && this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
                   this.externalList[i].nftType = "EXTERNAL";
-                  this.externalList[i].realNumber = this.calculationNft[j].realNumber;
+                  this.externalList[i].totalNumber = this.calculationNft[j].totalNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
                   externalCount.push(this.externalList[i]);

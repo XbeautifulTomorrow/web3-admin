@@ -32,7 +32,7 @@
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
         <div class="remittance-item">
-          <div class="title">总藏品数</div>
+          <div class="title">总系列数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.collNumberTotal }}</div>
         </div>
         <div class="remittance-item">

@@ -69,8 +69,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="挂单ID" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="挂单ID" align="center" key="1">
       </el-table-column>
       <el-table-column prop="seriesName" label="系列名" align="center" key="2">
       </el-table-column>
@@ -94,19 +94,19 @@
           <p :style="{ color: scope.row.pendingOrderUserIsTest ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="orderType" label="挂单类型" align="center" key="8">
+      <el-table-column prop="orderType" sortable="custom" label="挂单类型" align="center" key="8">
         <template slot-scope="scope">
           <span v-if="scope.row.orderType == 'SALE'">已开奖</span>
           <span v-if="scope.row.orderType == 'AUCTION'">拍卖</span>
         </template>
       </el-table-column>
-      <el-table-column prop="price" label="价值" align="center" key="9">
+      <el-table-column prop="price" sortable="custom" label="价值" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="ticketPrice" label="票单价" align="center" key="10">
+      <el-table-column prop="ticketPrice" sortable="custom" label="票单价" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="limitDay" label="限制" align="center" key="11">
+      <el-table-column prop="limitDay" sortable="custom" label="限制" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="theNumberOfSecondsRemaining" label="剩余时间" align="center" key="12">
+      <el-table-column prop="theNumberOfSecondsRemaining" sortable="custom" label="剩余时间" align="center" key="12">
         <template slot-scope="scope">
           <span v-if="scope.row.theNumberOfSecondsRemaining">
             {{
@@ -118,19 +118,21 @@
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="participatingUsers" label="参与用户" align="center" key="13">
+      <el-table-column prop="participatingUsers" sortable="custom" label="参与用户" align="center" key="13">
       </el-table-column>
-      <el-table-column prop="numberOfTicketsSold" label="售出票数" align="center" key="14">
+      <el-table-column prop="numberOfTicketsSold" sortable="custom" label="售出票数" align="center" key="14">
       </el-table-column>
       <el-table-column prop="txid" label="链上hash" align="center" key="15">
       </el-table-column>
       <el-table-column prop="winningAddress" label="中奖用户" align="center" key="16">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUserId || '--' }}</p>
-          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUsername || '--' }}</p>
+          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUserId || '--' }}
+          </p>
+          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUsername || '--' }}
+          </p>
         </template>
       </el-table-column>
-      <el-table-column prop="currentStatus" label="当前状态" align="center" key="17" fixed="right">
+      <el-table-column prop="currentStatus" sortable="custom" label="当前状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
           <span style="color: #05A8F0;" v-if="scope.row.currentStatus == 'IN_PROGRESS'">进行中</span>
           <span style="color: #31CE0B;" v-if="scope.row.currentStatus == 'DRAWN'">已开奖</span>
@@ -138,12 +140,13 @@
           <span style="color: #FF0000;" v-if="scope.row.currentStatus == 'CLOSED'">已结束</span>
         </template>
       </el-table-column>
-      <el-table-column prop="listingTime" width="140px" label="上架时间" align="center" key="18" fixed="right">
+      <el-table-column prop="listingTime" sortable="custom" width="140px" label="上架时间" align="center" key="18"
+        fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.listingTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="endTime" width="140px" label="结束时间" align="center" key="19" fixed="right">
+      <el-table-column prop="endTime" width="140px" sortable="custom" label="结束时间" align="center" key="19" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.endTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -191,6 +194,10 @@ export default {
       tableData: null,
       aggregateQuery: null,
       baseUserPage: null,
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
     };
   },
   mixins: [pagination],
@@ -199,6 +206,19 @@ export default {
     accurateDecimal: accurateDecimal,
     bigNumber: bigNumber,
     timeForStr: timeForStr,
+    /**
+ * @description: 排序
+ */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchBoxManagerList();
+    },
     searchFun() {
       let { addedTime, endTimes } = this;
       let startOrderTime = null;
@@ -237,7 +257,7 @@ export default {
     // 加载列表
     async fetchOneNftOrdersManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, userType } = this;
+      const { sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -249,6 +269,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getOneNftOrdersManagerList(data);

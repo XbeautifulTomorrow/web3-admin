@@ -83,12 +83,6 @@
           {{ scope.row.traPrice && Number(scope.row.traPrice || 0) > 0 ? `+${scope.row.traPrice}` : scope.row.traPrice }}
         </template>
       </el-table-column>
-      <el-table-column prop="changePrice" sortable="custom" label="余额变化" align="center" key="11">
-        <template slot-scope="scope">
-          {{ scope.row.changePrice && Number(scope.row.changePrice || 0) > 0 ? `+${scope.row.changePrice}` :
-            scope.row.changePrice }}
-        </template>
-      </el-table-column>
       <el-table-column prop="assetBalance" sortable="custom" label="余额" align="center" key="12">
       </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="账变时间" align="center" key="13">
