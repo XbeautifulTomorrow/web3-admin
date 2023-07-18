@@ -655,14 +655,14 @@ export default {
     },
     // 删除
     handleDel(event) {
-      this.$confirm(`确定要删除盲盒『${row.boxName || row.id}』吗?`, "提示", {
+      this.$confirm(`确定要删除盲盒『${event.boxName || event.id}』吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
       })
         .then(async () => {
           let res = await this.$http.boxManagerDelete({
-            id: row.id
+            id: event.id
           });
           if (res) {
             this.fetchBoxManagerList();
