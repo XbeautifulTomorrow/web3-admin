@@ -132,7 +132,7 @@ import bigNumber from "bignumber.js";
 import { timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
 import config from "@/config/env";
-import { chainList, getNftAddress } from "@/utils/chain";
+import { chainList } from "@/utils/chain";
 export default {
   name: 'PlatformNftSeries',
   // 模板引入
@@ -341,9 +341,9 @@ export default {
         return
       }
 
-      let getUrl = getNftAddress.test;
+      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = getNftAddress.main
+        getUrl = config.api + "/nft-external-series/assetContract/eth/";
       }
 
       axios
