@@ -1,29 +1,41 @@
 <template>
   <el-container>
-    <el-aside :width="`${asideWidth}px`" style="background-color: rgb(238, 241, 246)" class="width-animation nav">
-      <div class="logoBox" style="background-color: #304156;">
-        <div class="logo-box">
-
-        </div>
+    <el-aside
+      :width="`${asideWidth}px`"
+      style="background-color: rgb(238, 241, 246)"
+      class="width-animation nav"
+    >
+      <div class="logoBox" style="background-color: #304156">
+        <div class="logo-box"></div>
         <div class="config-box">
-          <el-select v-model="accountType" @change="changeAccount" placeholder="展示测试账号" clearable>
-            <el-option label="展示测试账号" value="">
-            </el-option>
-            <el-option label="不展示测试账号" value="NORMAL">
-            </el-option>
-            <el-option label="只展示测试账号" value="INNER">
-            </el-option>
+          <el-select
+            v-model="accountType"
+            @change="changeAccount"
+            placeholder="展示测试账号"
+            clearable
+          >
+            <el-option label="展示测试账号" value=""> </el-option>
+            <el-option label="不展示测试账号" value="NORMAL"> </el-option>
+            <el-option label="只展示测试账号" value="INNER"> </el-option>
           </el-select>
-          <el-select v-model="coinConfig" @change="changeConfig" placeholder="结算币种">
-            <el-option label="ETH" value="ETH">
-            </el-option>
+          <el-select
+            v-model="coinConfig"
+            @change="changeConfig"
+            placeholder="结算币种"
+          >
+            <el-option label="ETH" value="ETH"> </el-option>
             <!-- <el-option label="USDT" value="USDT">
             </el-option> -->
           </el-select>
         </div>
       </div>
-      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
-        class="nav-ul">
+      <el-menu
+        :default-openeds="defaultList"
+        :default-active="defaultActive"
+        @select="selectFun"
+        :collapse="isCollapse"
+        class="nav-ul"
+      >
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
@@ -81,6 +93,10 @@
             <i class="el-icon-s-tools"></i>
             <span>系统设置</span>
           </el-menu-item>
+          <el-menu-item index="email" class="menu-list">
+            <i class="el-icon-message"></i>
+            <span>群发邮件</span>
+          </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
@@ -136,7 +152,10 @@
         </el-submenu>
       </el-menu>
     </el-aside>
-    <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
+    <el-container
+      class="width-animation"
+      :style="{ marginLeft: `${asideWidth}px` }"
+    >
       <el-header style="text-align: left; font-size: 12px">
         <div class="header-title">
           <div class="header-title-buttons cursor">
@@ -152,9 +171,11 @@
           <span class="title">{{ page }}</span>
         </div>
       </el-header>
-      <el-main :class="{
-        'report-main': path === '/report',
-      }">
+      <el-main
+        :class="{
+          'report-main': path === '/report',
+        }"
+      >
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -163,7 +184,7 @@
 
 <script>
 export default {
-  name: 'Aside',
+  name: "Aside",
   // 模板引入
   components: {},
   // 数据
@@ -171,109 +192,113 @@ export default {
     return {
       drawer: false,
       defaultList: [],
-      defaultActive: 'userList',
-      title: '',
-      page: '',
+      defaultActive: "userList",
+      title: "",
+      page: "",
       isCollapse: false,
       asideWidth: 220,
-      accountType: '',
-      coinConfig: '',
+      accountType: "",
+      coinConfig: "",
       nav: [
         {
-          label: '数据管理',
-          page: 'dataManagement',
+          label: "数据管理",
+          page: "dataManagement",
         },
         {
-          label: 'NFT管理',
-          page: 'nftManagement',
+          label: "NFT管理",
+          page: "nftManagement",
         },
         {
-          label: '首页',
-          page: 'report',
+          label: "首页",
+          page: "report",
         },
         {
-          label: '用户管理',
-          page: 'userList',
+          label: "用户管理",
+          page: "userList",
         },
         {
-          label: '平台NFT系列',
-          page: 'platformNftSeries',
+          label: "平台NFT系列",
+          page: "platformNftSeries",
         },
         {
-          label: '外部NFT系列',
-          page: 'externalNftSeries',
+          label: "外部NFT系列",
+          page: "externalNftSeries",
         },
         {
-          label: '外部NFT管理',
-          page: 'externalNftManagement',
+          label: "外部NFT管理",
+          page: "externalNftManagement",
         },
         {
-          label: '平台NFT管理',
-          page: 'platformNftManagement',
+          label: "平台NFT管理",
+          page: "platformNftManagement",
         },
         {
-          label: '用户NFT管理',
-          page: 'userNftList',
+          label: "用户NFT管理",
+          page: "userNftList",
         },
         {
-          label: '一元购管理',
-          page: 'nftBuyManagement',
+          label: "一元购管理",
+          page: "nftBuyManagement",
         },
         {
-          label: '一元购售票记录',
-          page: 'nftBuyRecord',
+          label: "一元购售票记录",
+          page: "nftBuyRecord",
         },
         {
-          label: '市场管理',
-          page: 'marketManagement',
+          label: "市场管理",
+          page: "marketManagement",
         },
         {
-          label: '盲盒管理',
-          page: 'blindBoxManagement',
+          label: "盲盒管理",
+          page: "blindBoxManagement",
         },
         {
-          label: '血池管理',
-          page: 'bloodPoolManagement',
+          label: "血池管理",
+          page: "bloodPoolManagement",
         },
         {
-          label: '盲盒测试',
-          page: 'blindBoxTest',
+          label: "盲盒测试",
+          page: "blindBoxTest",
         },
         {
-          label: '金流管理',
-          page: 'cashManagement',
+          label: "金流管理",
+          page: "cashManagement",
         },
         {
-          label: '提款审核',
-          page: 'withdrawalReview',
+          label: "提款审核",
+          page: "withdrawalReview",
         },
         {
-          label: '提款管理',
-          page: 'withdrawalManagement',
+          label: "提款管理",
+          page: "withdrawalManagement",
         },
         {
-          label: '订单管理',
-          page: 'orderManagement',
+          label: "订单管理",
+          page: "orderManagement",
         },
         {
-          label: '闪兑管理',
-          page: 'flashManagement',
+          label: "闪兑管理",
+          page: "flashManagement",
         },
         {
-          label: '邀请返佣',
-          page: 'invitationRebate',
+          label: "邀请返佣",
+          page: "invitationRebate",
         },
         {
-          label: '返佣记录',
-          page: 'rebateRecord',
+          label: "返佣记录",
+          page: "rebateRecord",
         },
         {
-          label: '积分流水',
-          page: 'integralTurnover',
+          label: "积分流水",
+          page: "integralTurnover",
         },
         {
-          label: '系统设置',
-          page: 'setting',
+          label: "系统设置",
+          page: "setting",
+        },
+        {
+          label: "群发邮件",
+          page: "email",
         },
       ],
     };
@@ -308,67 +333,61 @@ export default {
         const _otherTitle = nav.filter((item) => item.page === indexPage[1]);
         this.page = _otherTitle[0].label;
       } else {
-        this.page = '';
+        this.page = "";
       }
       this.$router.push(`/${index}`);
     },
     pageFun() {
       const { path, nav } = this;
-      const dataManagement = [
-        'userList',
-        'invitationRebate'
-      ];
+      const dataManagement = ["userList", "invitationRebate"];
 
       const nftManagement = [
-        'platformNftSeries',
-        'externalNftSeries',
-        'externalNftManagement',
-        'platformNftManagement',
-        'userNftList',
+        "platformNftSeries",
+        "externalNftSeries",
+        "externalNftManagement",
+        "platformNftManagement",
+        "userNftList",
       ];
 
-      const platformManagement = [
-        'marketManagement',
-        'setting'
-      ];
+      const platformManagement = ["marketManagement", "setting", "email"];
 
       const mallManagement = [
-        'blindBoxManagement',
-        'orderManagement',
-        'blindBoxTest',
-        'nftBuyManagement',
-        'nftBuyRecord'
+        "blindBoxManagement",
+        "orderManagement",
+        "blindBoxTest",
+        "nftBuyManagement",
+        "nftBuyRecord",
       ];
 
       const fundingStatistics = [
-        'cashManagement',
-        'withdrawalReview',
-        'flashManagement',
-        'rebateRecord',
-        'integralTurnover'
+        "cashManagement",
+        "withdrawalReview",
+        "flashManagement",
+        "rebateRecord",
+        "integralTurnover",
       ];
 
-      if (path === '/') {
-        this.title = '数据管理';
-        this.page = '用户管理';
+      if (path === "/") {
+        this.title = "数据管理";
+        this.page = "用户管理";
       } else {
         nav.forEach((item) => {
           if (`/${item.page}` === `${path}`) {
             this.defaultActive = item.page;
             if (dataManagement.includes(item.page)) {
-              this.title = '数据管理';
+              this.title = "数据管理";
               this.page = item.label;
             } else if (nftManagement.includes(item.page)) {
-              this.title = 'NFT管理';
+              this.title = "NFT管理";
               this.page = item.label;
             } else if (platformManagement.includes(item.page)) {
-              this.title = '平台管理';
+              this.title = "平台管理";
               this.page = item.label;
             } else if (mallManagement.includes(item.page)) {
-              this.title = '商城管理';
+              this.title = "商城管理";
               this.page = item.label;
             } else if (fundingStatistics.includes(item.page)) {
-              this.title = '资金统计';
+              this.title = "资金统计";
               this.page = item.label;
             } else {
               this.title = item.label;
@@ -386,11 +405,11 @@ export default {
     this.pageFun();
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
   watch: {
     path: function () {
       this.pageFun();
@@ -440,7 +459,6 @@ export default {
   background-color: #304156;
 }
 
-
 .logoBox {
   display: flex;
   flex-direction: column;
@@ -453,7 +471,7 @@ export default {
   align-items: center;
   justify-content: center;
 
-  &>.el-select+.el-select {
+  & > .el-select + .el-select {
     margin-top: 10px;
   }
 }

@@ -150,5 +150,17 @@ export const systemWalletDel = (obj) => S.get('/system-wallet/delete', obj); // 
 export const getInviteSetting = (obj) => S.get('/system-setting/findBaseSetting', obj); // 邀请文本查询
 export const inviteSet = (obj) => S.post('/system-setting/baseSetting', obj); // 邀请文本设置
 
+/**
+ * @description 群发邮件
+ */
+export const getSendEmailList = (obj) => S.get("/send-email-content/emailList", obj); // 邮箱列表
+export const getSendEmailPageList = (obj) => S.get("/send-email-content/pageList", obj); // 分页查询发送列表
+export const getSendEmailUserList = (obj) => S.get("/send-email-content/userList", obj); // 发送邮件用户验证,用户id存在的会返回用户详细
+export const sendEmailSave = (obj) => S.post("/send-email-content/save", obj); // 发送邮件
+export const getSendEmailUserTotal = (obj) => S.get("/send-email-content/getUserTotal", obj); // 获取用户总量
+export const sendEmailDel = (obj) => S.get("/send-email-content/del", obj); // 删除
+export const sendEmailCancel = (obj) => S.get("/send-email-content/isCancel", obj); // 取消
+export const getSendMailUser = (obj) => S.get("/send-email-content/getSendMailUser", obj); // 查看发送邮箱用户
+
 
 

@@ -1,156 +1,160 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from "vue";
+import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-import UserList from '@/views/userList/index';
-import aside from '@/aside.vue';
+import UserList from "@/views/userList/index";
+import aside from "@/aside.vue";
 
 export const routes = [
   {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login'),
+    path: "/login",
+    name: "login",
+    component: () => import("@/views/login"),
   },
   {
-    path: '/',
+    path: "/",
     component: aside,
     children: [
       {
-        path: '',
+        path: "",
         component: UserList,
-        name: 'UserList',
+        name: "UserList",
       },
       {
         /** 用户列表 */
-        path: '/userList',
+        path: "/userList",
         component: UserList,
-        name: 'UserList',
+        name: "UserList",
       },
       {
         /** 平台NFT系列 */
-        path: '/platformNftSeries',
-        component: () => import('@/views/platformNftSeries/index'),
-        name: 'PlatformNftSeries',
+        path: "/platformNftSeries",
+        component: () => import("@/views/platformNftSeries/index"),
+        name: "PlatformNftSeries",
       },
       {
         /** 外部NFT系列 */
-        path: '/externalNftSeries',
-        component: () => import('@/views/externalNftSeries/index'),
-        name: 'ExternalNftSeries',
+        path: "/externalNftSeries",
+        component: () => import("@/views/externalNftSeries/index"),
+        name: "ExternalNftSeries",
       },
       {
         /** 外部NFT管理 */
-        path: '/externalNftManagement',
-        component: () => import('@/views/externalNftManagement/index'),
-        name: 'ExternalNftManagement',
+        path: "/externalNftManagement",
+        component: () => import("@/views/externalNftManagement/index"),
+        name: "ExternalNftManagement",
       },
       {
         /** 平台NFT管理 */
-        path: '/platformNftManagement',
-        component: () => import('@/views/platformNftManagement/index'),
-        name: 'PlatformNftManagement',
+        path: "/platformNftManagement",
+        component: () => import("@/views/platformNftManagement/index"),
+        name: "PlatformNftManagement",
       },
       {
         /** 平台NFT管理 */
-        path: '/userNftList',
-        component: () => import('@/views/userNftList/index'),
-        name: 'UserNftList',
+        path: "/userNftList",
+        component: () => import("@/views/userNftList/index"),
+        name: "UserNftList",
       },
       {
         /** 一元购管理 */
-        path: '/nftBuyManagement',
-        component: () => import('@/views/nftBuyManagement/index'),
-        name: 'NftBuyManagement',
+        path: "/nftBuyManagement",
+        component: () => import("@/views/nftBuyManagement/index"),
+        name: "NftBuyManagement",
       },
       {
         /** 一元购收票记录 */
-        path: '/nftBuyRecord',
-        component: () => import('@/views/nftBuyRecord/index'),
-        name: 'NftBuyRecord',
+        path: "/nftBuyRecord",
+        component: () => import("@/views/nftBuyRecord/index"),
+        name: "NftBuyRecord",
       },
       {
         /** 市场管理 */
-        path: '/marketManagement',
-        component: () => import('@/views/marketManagement/index'),
-        name: 'MarketManagement',
+        path: "/marketManagement",
+        component: () => import("@/views/marketManagement/index"),
+        name: "MarketManagement",
       },
       {
         /** 盲盒管理 */
-        path: '/blindBoxManagement',
-        component: () => import('@/views/blindBoxManagement/index'),
-        name: 'BlindBoxManagement',
+        path: "/blindBoxManagement",
+        component: () => import("@/views/blindBoxManagement/index"),
+        name: "BlindBoxManagement",
       },
       {
         /** 血池管理 */
-        path: '/bloodPoolManagement',
-        component: () => import('@/views/bloodPoolManagement/index'),
-        name: 'BloodPoolManagement',
+        path: "/bloodPoolManagement",
+        component: () => import("@/views/bloodPoolManagement/index"),
+        name: "BloodPoolManagement",
       },
       {
         /** 血池管理 */
-        path: '/blindBoxTest',
-        component: () => import('@/views/blindBoxTest/index'),
-        name: 'BlindBoxTest',
+        path: "/blindBoxTest",
+        component: () => import("@/views/blindBoxTest/index"),
+        name: "BlindBoxTest",
       },
       {
         /** 金流管理 */
-        path: '/cashManagement',
-        component: () => import('@/views/cashManagement/index'),
-        name: 'CashManagement',
+        path: "/cashManagement",
+        component: () => import("@/views/cashManagement/index"),
+        name: "CashManagement",
       },
       {
         /** 提现审核 */
-        path: '/withdrawalReview',
-        component: () => import('@/views/withdrawalReview/index'),
-        name: 'WithdrawalReview',
+        path: "/withdrawalReview",
+        component: () => import("@/views/withdrawalReview/index"),
+        name: "WithdrawalReview",
       },
       {
         /** 订单管理 */
-        path: '/orderManagement',
-        component: () => import('@/views/orderManagement/index'),
-        name: 'OrderManagement',
+        path: "/orderManagement",
+        component: () => import("@/views/orderManagement/index"),
+        name: "OrderManagement",
       },
       {
         /** 闪兑管理 */
-        path: '/flashManagement',
-        component: () => import('@/views/flashManagement/index'),
-        name: 'FlashManagement',
+        path: "/flashManagement",
+        component: () => import("@/views/flashManagement/index"),
+        name: "FlashManagement",
       },
       {
         /** 邀请返佣 */
-        path: '/invitationRebate',
-        component: () => import('@/views/invitationRebate/index'),
-        name: 'invitationRebate',
+        path: "/invitationRebate",
+        component: () => import("@/views/invitationRebate/index"),
+        name: "invitationRebate",
       },
       {
         /** 返佣记录 */
-        path: '/rebateRecord',
-        component: () => import('@/views/rebateRecord/index'),
-        name: 'RebateRecord',
+        path: "/rebateRecord",
+        component: () => import("@/views/rebateRecord/index"),
+        name: "RebateRecord",
       },
       {
         /** 积分流水 */
-        path: '/integralTurnover',
-        component: () => import('@/views/integralTurnover/index'),
-        name: 'IntegralTurnover',
+        path: "/integralTurnover",
+        component: () => import("@/views/integralTurnover/index"),
+        name: "IntegralTurnover",
       },
       {
         /** 系统设置 */
-        path: '/setting',
-        component: () => import('@/views/setting/index'),
-        name: 'Setting',
+        path: "/setting",
+        component: () => import("@/views/setting/index"),
+        name: "Setting",
       },
-
       {
-        path: '/report',
-        component: () => import('@/views/report/index'),
-        name: 'Report',
+        path: "/report",
+        component: () => import("@/views/report/index"),
+        name: "Report",
+      },
+      {
+        /** 群发邮件 */
+        path: "/email",
+        component: () => import("@/views/email/index"),
+        name: "email",
       },
     ],
   },
 ];
-
 
 const createRouter = () =>
   new VueRouter({
@@ -158,7 +162,7 @@ const createRouter = () =>
       window.scrollTo(0, 0);
       return { x: 0, y: 0 };
     },
-    mode: 'history',
+    mode: "history",
     base: process.env.BASE_URL,
     routes,
   });
@@ -166,27 +170,27 @@ const createRouter = () =>
 const router = createRouter();
 
 // 获取原型对象push函数
-const originalPush = VueRouter.prototype.push
+const originalPush = VueRouter.prototype.push;
 
 // 获取原型对象replace函数
-const originalReplace = VueRouter.prototype.replace
+const originalReplace = VueRouter.prototype.replace;
 
 // 修改原型对象中的push函数
 VueRouter.prototype.push = function push(location) {
-  return originalPush.call(this, location).catch(err => err)
-}
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 // 修改原型对象中的replace函数
 VueRouter.prototype.replace = function replace(location) {
-  return originalReplace.call(this, location).catch(err => err)
-}
+  return originalReplace.call(this, location).catch((err) => err);
+};
 
 router.beforeEach((to, from, next) => {
-  let token = sessionStorage.getItem('token');
-  if (to.name == 'login' || token) {
+  let token = sessionStorage.getItem("token");
+  if (to.name == "login" || token) {
     next();
   } else {
-    next({ name: 'login' });
+    next({ name: "login" });
   }
 });
 
