@@ -316,7 +316,7 @@
         prop="id"
         label="操作"
         align="center"
-        width="60"
+        width="180"
         key="17"
         fixed="right"
       >
@@ -331,7 +331,13 @@
             class="blueColor publick-button cursor"
             @click="withdrawNft(scope.row)"
           >
-            提现
+            提现(授权)
+          </span>
+          <span
+            class="blueColor publick-button cursor"
+            @click="withdrawNft(scope.row,true)"
+          >
+            提现(执行)
           </span>
         </template>
       </el-table-column>
@@ -602,6 +608,7 @@ export default {
       reviewStatus: null,
       reviewData: null,
       remark: null,
+      walletAddress: "",
     };
   },
   mixins: [pagination],
@@ -721,6 +728,44 @@ export default {
       this.withdrawNftList = event;
       this.showNftDialog = ture;
     },
+    // 连接小狐狸
+    async connectMetaMask() {
+      const _that = this;
+      let web3 = new Web3(window.ethereum);
+      let ethereum = window.ethereum;
+      if (typeof ethereum === "undefined") {
+        _that.connectType = 0;
+        //没安装MetaMask钱包打开MetaMask链接
+        openUrl(`https://metamask.app.link/dapp/${window.location.origin}`);
+      } else {
+        //如果用户安装了MetaMask，你可以要求他们授权应用登录并获取其账号
+        ethereum
+          .enable()
+          .then(async (accounts) => {
+            web3 = new Web3(window.ethereum);
+            //如果用户同意了登录请求，你就可以拿到用户的账号
+            web3.eth.defaultAccount = accounts[0];
+            _that.walletAddress = accounts[0];
+            // _that.walletStore.setWeb3(web3);
+            // _that.web3 = web3;
+            // const _ethBalance = new BigNumber(
+            //   await _that.web3.eth.getBalance(accounts[0])
+            // )
+            //   .div(1e18)
+            //   .toFixed(4);
+          })
+          .catch((reason) => {
+            //如果用户拒绝了登录请求
+            this.connectType = 0;
+            if (reason === "User rejected provider access") {
+              // 用户拒绝登录后执行语句；
+            } else {
+              // 本不该执行到这里，但是真到这里了，说明发生了意外
+              ElMessage.error(t("airdrop.failedTips"));
+            }
+          });
+      }
+    },
     // 弹出审核具体信息
     showReview(event) {
       this.reviewType = event.withdrawalType != "NFT" ? 1 : 2;
@@ -728,9 +773,13 @@ export default {
       this.reviewData = event;
       this.showReviewDialog = true;
     },
-    async withdrawNft(item) {
+    async withdrawNft(item,isExcute=false) {
+      await this.connectMetaMask();
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
       const signAddressList = [
-        "0x9B424522C56c2c90abb94695eeB1b148666644cF",
+        "0x9B424522C56c2c90abb94695eeB1b148666644cF",//nft持有的地址
         "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
         "0x893c32B67caE093791c177AF2B72D37Dc1566369",
       ];
@@ -739,24 +788,24 @@ export default {
       const web3 = new Web3(window.ethereum);
       let MultiSignContract = new web3.eth.Contract(multi, MultiSign);
       const target = nftHelpAddress;
-      const token = "0xbbD29e7aab0f8F3Ea24Be29b3Fb0337B948df04d"; //nft合约地址
-      const tokenIds = [1]; //nft的tokenid
+      const token = "0xbbd29e7aab0f8f3ea24be29b3fb0337b948df04d"; //nft合约地址
+      const tokenIds = [8]; //nft的tokenid
       const amounts = [1]; //转账数量
       const receiver = "0x12240621278701EcD3ABb4741BdBa517c13A0cAe"; //收款地址
       const orderId = "order1234";
-      const predecessorAddress = "0x789516ECe5A6E88470220bE4b99a7Edf1e6d4c59"; //nft持有的地址
-      const walletAddress = "0x7ef9873d3D85724A59aC2C56c1C7Ae0d1D27dACB"; //当前连接的钱包地址
+      const predecessorAddress = "0x9B424522C56c2c90abb94695eeB1b148666644cF"; //nft持有的地址
+      const walletAddress = this.walletAddress; //当前连接的钱包地址
       const predeBytes32 = web3.utils.asciiToHex(predecessorAddress).toString();
       const predecessor = predeBytes32.substring(0, 66);
       let nftContract = new web3.eth.Contract(nft1155Abi, token);
       // 授权判断
       let isApproved = await nftContract.methods
-        .isApprovedForAll(walletAddress, nftTokenAddress)
+        .isApprovedForAll(walletAddress, nftHelpAddress)
         .call();
       if (!isApproved) {
         //授权
         await nftContract.methods
-          .setApprovalForAll(nftTokenAddress, true)
+          .setApprovalForAll(nftHelpAddress, true)
           .send({ from: walletAddress });
       }
       let transferNFTArgs = [
@@ -816,31 +865,31 @@ export default {
           type: "function",
         },
       ];
-      if (item.type != "ERC1155") {
-        transferNFTArgs = [];
-        nftHelpAbi = [];
-      }
+      // if (item.type != "ERC1155") {
+      //   transferNFTArgs = [];
+      //   nftHelpAbi = [];
+      // }
       const calldata = web3.eth.abi.encodeFunctionCall(
         nftHelpAbi[0],
         transferNFTArgs
       );
       const salt = web3.utils.asciiToHex("1690162934437");
       const delay = 1;
-      // 查询是否签名
-      const isSignId = await MultiSignContract.methods
-        .hashOperation(target, calldata, predecessor, salt, delay)
-        .call();
-      //创建日程
-      let signCount = 0; //签名数量
-      signAddressList.forEach(async (item) => {
-        let isSigned = await MultiSignContract.methods
-          .schedules(isSignId, item)
-          .call();
-        if (isSigned) {
-          signCount++;
-        }
-      });
-      if (signCount > 1) {
+      // // 查询是否签名
+      // const isSignId = await MultiSignContract.methods
+      //   .hashOperation(target, calldata, predecessor, salt, delay)
+      //   .call();
+      // //创建日程
+      // let signCount = 0; //签名数量
+      // signAddressList.forEach(async (item) => {
+      //   let isSigned = await MultiSignContract.methods
+      //     .schedules(isSignId, item)
+      //     .call();
+      //   if (isSigned) {
+      //     signCount++;
+      //   }
+      // });
+      if (isExcute) {
         //执行日程
         MultiSignContract.methods
           .execute(target, 0, calldata, predecessor, salt)
