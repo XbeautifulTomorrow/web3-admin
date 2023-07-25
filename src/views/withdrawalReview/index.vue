@@ -331,13 +331,13 @@
             class="blueColor publick-button cursor"
             @click="withdrawNft(scope.row)"
           >
-            提现(授权)
+            提现NFT(授权签名)
           </span>
           <span
             class="blueColor publick-button cursor"
             @click="withdrawNft(scope.row,true)"
           >
-            提现(执行)
+            提现NFT(执行)
           </span>
         </template>
       </el-table-column>
@@ -778,6 +778,7 @@ export default {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
+      console.log(item.withdrawalWalletAddress,"item.withdrawalWalletAddress==")
       const signAddressList = [
         "0x9B424522C56c2c90abb94695eeB1b148666644cF",//nft持有的地址
         "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
@@ -791,7 +792,7 @@ export default {
       const token = "0xbbd29e7aab0f8f3ea24be29b3fb0337b948df04d"; //nft合约地址
       const tokenIds = [8]; //nft的tokenid
       const amounts = [1]; //转账数量
-      const receiver = "0x12240621278701EcD3ABb4741BdBa517c13A0cAe"; //收款地址
+      const receiver = item.withdrawalWalletAddress; //收款地址
       const orderId = "order1234";
       const predecessorAddress = "0x9B424522C56c2c90abb94695eeB1b148666644cF"; //nft持有的地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
