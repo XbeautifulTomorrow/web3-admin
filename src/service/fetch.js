@@ -162,5 +162,37 @@ export const sendEmailDel = (obj) => S.get("/send-email-content/del", obj); // �
 export const sendEmailCancel = (obj) => S.get("/send-email-content/isCancel", obj); // 取消
 export const getSendMailUser = (obj) => S.get("/send-email-content/getSendMailUser", obj); // 查看发送邮箱用户
 
+/**
+ * @description 钱包管理-充值钱包
+ */
+export const getWalletRechargeList = (obj) => S.get("/wallet-recharge/pageList", obj); // 充值钱包分页查询
+export const getWalletRechargeStatistics = (obj) => S.get("/wallet-recharge/headerDataTotal", obj); // 充值钱包统计数据
+
+/**
+ * @description 钱包管理-盲盒抽奖钱包
+ */
+export const getWalleBoxLotteryList = (obj) => S.get("/wallet-box-lottery/pageList", obj);
+export const getWalletBoxLotteryStatistics = (obj) => S.get("/wallet-box-lottery/headerDataTotal", obj);
+
+/**
+ * @description 钱包管理-一元购抽奖钱包
+ */
+export const getWalleOneDallarLotteryList = (obj) => S.get("/wallet-one-dollar/pageList", obj);
+
+/**
+ * @description 钱包管理-出账钱包
+ */
+export const getWalleWithdrawalList = (obj) => S.get("/wallet-withdrawal/findList", obj);
+
+/**
+ * @description 钱包管理-GAS钱包
+ */
+export const getWalleGasList = (obj) => S.get("/wallet-gas/findList", obj);
+
+/**
+ * @description 钱包管理-NFT购买
+ */
+export const getWalleBuyNftList = (obj) => S.get("/wallet-buy-nft/findList", obj);
+
 
 

@@ -152,6 +152,42 @@ export const routes = [
         component: () => import("@/views/email/index"),
         name: "email",
       },
+      {
+        /** 钱包管理-充值钱包 */
+        path: "/walletRechargeList",
+        component: () => import("@/views/walletRechargeList/index.vue"),
+        name: "walletRechargeList",
+      },
+      {
+        /** 钱包管理-盲盒抽奖钱包 */
+        path: "/walletUnboxLottery",
+        component: () => import("@/views/walletUnboxLottery/index"),
+        name: "walletUnboxLottery",
+      },
+      {
+        /** 钱包管理-一元购抽奖钱包 */
+        path: "/walletOneDollarLottery",
+        component: () => import("@/views/walletOneDollarLottery/index"),
+        name: "walletOneDollarLottery",
+      },
+      {
+        /** 钱包管理-提款钱包 */
+        path: "/walletDrawMoney",
+        component: () => import("@/views/walletDrawMoney/index"),
+        name: "walletDrawMoney",
+      },
+      {
+        /** 钱包管理-GAS钱包 */
+        path: "/walletGAS",
+        component: () => import("@/views/walletGAS/index"),
+        name: "walletGAS",
+      },
+      {
+        /** 钱包管理-NFT购买钱包 */
+        path: "/walletNFTBuy",
+        component: () => import("@/views/walletNFTBuy/index"),
+        name: "walletNFTBuy",
+      },
     ],
   },
 ];

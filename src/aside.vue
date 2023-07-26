@@ -150,6 +150,36 @@
             <span>积分流水</span>
           </el-menu-item>
         </el-submenu>
+        <el-submenu index="walletManagement">
+          <template slot="title">
+            <i class="el-icon-wallet"></i>
+            <span slot="title">钱包管理</span>
+          </template>
+          <el-menu-item index="walletRechargeList" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>充值钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletUnboxLottery" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>盲盒抽奖钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletOneDollarLottery" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>一元购抽奖钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletDrawMoney" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>提款钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletGAS" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>GAS钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletNFTBuy" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>NFT购买钱包</span>
+          </el-menu-item>
+        </el-submenu>
       </el-menu>
     </el-aside>
     <el-container
@@ -300,6 +330,30 @@ export default {
           label: "群发邮件",
           page: "email",
         },
+        {
+          label: "充值钱包",
+          page: "walletRechargeList",
+        },
+        {
+          label: "盲盒抽奖钱包",
+          page: "walletUnboxLottery",
+        },
+        {
+          label: "一元购抽奖钱包",
+          page: "walletOneDollarLottery",
+        },
+        {
+          label: "提款钱包",
+          page: "walletDrawMoney",
+        },
+        {
+          label: "GAS钱包",
+          page: "walletGAS",
+        },
+        {
+          label: "NFT购买钱包",
+          page: "walletNFTBuy",
+        },
       ],
     };
   },
@@ -366,6 +420,14 @@ export default {
         "rebateRecord",
         "integralTurnover",
       ];
+      const walletManagement = [
+        "walletRechargeList",
+        "walletUnboxLottery",
+        "walletOneDollarLottery",
+        "walletDrawMoney",
+        "walletGAS",
+        "walletNFTBuy",
+      ];
 
       if (path === "/") {
         this.title = "数据管理";
@@ -388,6 +450,9 @@ export default {
               this.page = item.label;
             } else if (fundingStatistics.includes(item.page)) {
               this.title = "资金统计";
+              this.page = item.label;
+            } else if (walletManagement.includes(item.page)) {
+              this.title = "钱包管理";
               this.page = item.label;
             } else {
               this.title = item.label;
