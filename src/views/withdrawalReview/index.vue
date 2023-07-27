@@ -928,7 +928,7 @@ export default {
         nftHelpAbi[0],
         transferNFTArgs
       );
-      const salt = web3.utils.asciiToHex(dayjs(item.createTime).valueOf());
+      const salt = web3.utils.asciiToHex(dayjs(item.createTime).valueOf().toString());
       const delay = 1;
       // // 查询是否签名
       // const isSignId = await MultiSignContract.methods
