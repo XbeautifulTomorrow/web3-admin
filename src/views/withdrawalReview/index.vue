@@ -334,13 +334,13 @@
           >
             提现NFT(授权签名)
           </span>
-          <span
+          <!-- <span
             class="blueColor publick-button cursor"
             v-if="scope.row.outWithdrawalNftList.length > 0"
             @click="withdrawNft(scope.row, true)"
           >
             提现NFT(执行)
-          </span>
+          </span> -->
         </template>
       </el-table-column>
     </el-table>
@@ -781,6 +781,7 @@ export default {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
+
       const is1155 = item.outWithdrawalNftList[0].seriesNftType == "ERC1155";
       const MultiSign = "0x0763f0e9306742E1dBEebBa0f617BDF0bEe642CF"; //MultiSign 合约地址
       const nftHelpAddress = "0x9e46333d65aeDBFbfADD7AeA409A6fE414CC6cfa"; //新的nft转账合约地址
@@ -805,6 +806,7 @@ export default {
         is1155 ? nft1155Abi : nft721Abi,
         token
       );
+
       // 授权判断
       let isApproved = await nftContract.methods
         .isApprovedForAll(walletAddress, nftHelpAddress)
@@ -950,16 +952,25 @@ export default {
             from: walletAddress,
           });
       } else {
-        console.log("target", target);
-        console.log("calldata", calldata);
-        console.log("predecessor", predecessor);
-        console.log("salt", salt);
-        console.log("delay", delay);
+        // console.log("target", target);
+        // console.log("calldata", calldata);
+        // console.log("predecessor", predecessor);
+        // console.log("salt", salt);
+        // console.log("delay", delay);
         //签名日程
+        const _that = this;
         await MultiSignContract.methods
           .signToSchedule(target, calldata, predecessor, salt, delay)
           .send({
             from: walletAddress,
+          })
+          .on("transactionHash", async function (hash) {
+            console.log(hash,"hash====")
+            const data = {
+              ids: tokenIds, //提款ID集合
+              appleHash: hash, //申请hash
+            };
+            const res = await _that.$http.withdrawawSign(data);
           });
       }
     },

@@ -98,7 +98,7 @@ export const getAssetWithdrawalList = (obj) => S.get('/asset-withdrawal/pageList
 export const getAssetWithdrawalStatistics = (obj) => S.get('/asset-withdrawal/headerDataTotal', obj); // 提款审核统计
 export const withdrawalApproved = (obj) => S.get('/asset-withdrawal/approved', obj); // 审核通过统计
 export const withdrawalRefuse = (obj) => S.get('/asset-withdrawal/refuse', obj); // 审核拒绝统计
-
+export const withdrawawSign = (obj) => S.post('/asset-withdrawal/nft/apple', obj); // 提款签名
 /**
  * @description 订单管理
  */
