@@ -792,7 +792,7 @@ export default {
       const tokenIds = [parseInt(item.outWithdrawalNftList[0].tokenId)]; //nft的tokenid
       const amounts = [1]; //转账数量
       const receiver = item.withdrawalWalletAddress; //收款地址
-      const orderId = "order1234";
+      const orderId = "";
       const signAddressList = [
         "0x9B424522C56c2c90abb94695eeB1b148666644cF", //nft持有的地址
         "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
