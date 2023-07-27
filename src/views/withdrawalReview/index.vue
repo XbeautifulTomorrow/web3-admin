@@ -329,15 +329,15 @@
           </span>
           <span
             class="blueColor publick-button cursor"
-            v-if="scope.row.outWithdrawalNftList.length>0"
+            v-if="scope.row.outWithdrawalNftList.length > 0"
             @click="withdrawNft(scope.row)"
           >
             提现NFT(授权签名)
           </span>
           <span
             class="blueColor publick-button cursor"
-            v-if="scope.row.outWithdrawalNftList.length>0"
-            @click="withdrawNft(scope.row,true)"
+            v-if="scope.row.outWithdrawalNftList.length > 0"
+            @click="withdrawNft(scope.row, true)"
           >
             提现NFT(执行)
           </span>
@@ -575,7 +575,7 @@ import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
 import multi from "@/contracts/multi.json";
 import Web3 from "web3";
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 export default {
   name: "WithdrawalReview",
   // 模板引入
@@ -776,36 +776,35 @@ export default {
       this.reviewData = event;
       this.showReviewDialog = true;
     },
-    async withdrawNft(item,isExcute=false) {
+    async withdrawNft(item, isExcute = false) {
       await this.connectMetaMask();
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      const is1155 = item.outWithdrawalNftList[0].seriesNftType=="ERC1155";
-      if(!is1155){
-        return;
-      }
-      console.log(item.outWithdrawalNftList[0].seriesNftType,"item.outWithdrawalNftList[0].seriesNftType====")
-      const signAddressList = [
-        "0x9B424522C56c2c90abb94695eeB1b148666644cF",//nft持有的地址
-        "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
-        "0x893c32B67caE093791c177AF2B72D37Dc1566369",
-      ];
+      const is1155 = item.outWithdrawalNftList[0].seriesNftType == "ERC1155";
       const MultiSign = "0xadd5ed79b63f557ea9bf02644bb73086a1f1b598"; //MultiSign 合约地址
-      const nftHelpAddress = "0x8516a78a635a6fb1ac36eb39f8e467d799c1dabe"; //新的转账地址
+      const nftHelpAddress = "0x8516a78a635a6fb1ac36eb39f8e467d799c1dabe"; //新的nft转账合约地址
       const web3 = new Web3(window.ethereum);
       let MultiSignContract = new web3.eth.Contract(multi, MultiSign);
       const target = nftHelpAddress;
-      const token = "0xbbd29e7aab0f8f3ea24be29b3fb0337b948df04d"; //nft合约地址
+      const token = item.outWithdrawalNftList[0].contractAddress; //nft合约地址
       const tokenIds = [parseInt(item.outWithdrawalNftList[0].tokenId)]; //nft的tokenid
       const amounts = [1]; //转账数量
       const receiver = item.withdrawalWalletAddress; //收款地址
       const orderId = "order1234";
+      const signAddressList = [
+        "0x9B424522C56c2c90abb94695eeB1b148666644cF", //nft持有的地址
+        "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
+        "0x893c32B67caE093791c177AF2B72D37Dc1566369",
+      ];
       const predecessorAddress = signAddressList[0]; //nft持有的地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
       const predeBytes32 = web3.utils.asciiToHex(predecessorAddress).toString();
       const predecessor = predeBytes32.substring(0, 66);
-      let nftContract = new web3.eth.Contract(is1155?nft1155Abi:nft721Abi, token);
+      let nftContract = new web3.eth.Contract(
+        is1155 ? nft1155Abi : nft721Abi,
+        token
+      );
       // 授权判断
       let isApproved = await nftContract.methods
         .isApprovedForAll(walletAddress, nftHelpAddress)
@@ -826,7 +825,7 @@ export default {
         orderId,
         "0x",
       ];
-  
+
       // 1155 transferNFT 函数的 ABI
       let nftHelpAbi = [
         {
@@ -874,9 +873,50 @@ export default {
         },
       ];
 
-      if(item.outWithdrawalNftList[0].seriesNftType=="ERC721"){
-        transferNFTArgs = []//721参数
-        nftHelpAbi =[]
+      if (item.outWithdrawalNftList[0].seriesNftType == "ERC721") {
+        transferNFTArgs = [
+          //721
+          token,
+          predecessorAddress,
+          tokenIds, //tokenid
+          receiver, //收款地址
+          orderId,
+        ]; //721参数
+        nftHelpAbi = [
+          {
+            inputs: [
+              {
+                internalType: "address",
+                name: "token",
+                type: "address",
+              },
+              {
+                internalType: "address",
+                name: "from",
+                type: "address",
+              },
+              {
+                internalType: "uint256[]",
+                name: "tokenIds",
+                type: "uint256[]",
+              },
+              {
+                internalType: "address",
+                name: "receiver",
+                type: "address",
+              },
+              {
+                internalType: "string",
+                name: "orderId",
+                type: "string",
+              },
+            ],
+            name: "transferNFT",
+            outputs: [],
+            stateMutability: "nonpayable",
+            type: "function",
+          },
+        ];
       }
       // if (item.type != "ERC1155") {
       //   transferNFTArgs = [];
@@ -886,7 +926,6 @@ export default {
         nftHelpAbi[0],
         transferNFTArgs
       );
-      
       const salt = web3.utils.asciiToHex(dayjs(item.createTime).valueOf());
       const delay = 1;
       // // 查询是否签名
@@ -911,6 +950,11 @@ export default {
             from: walletAddress,
           });
       } else {
+        console.log("target", target);
+        console.log("calldata", calldata);
+        console.log("predecessor", predecessor);
+        console.log("salt", salt);
+        console.log("delay", delay);
         //签名日程
         await MultiSignContract.methods
           .signToSchedule(target, calldata, predecessor, salt, delay)
