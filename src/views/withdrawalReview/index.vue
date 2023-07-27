@@ -967,7 +967,7 @@ export default {
           .on("transactionHash", async function (hash) {
             console.log(hash,"hash====")
             const data = {
-              ids: tokenIds, //提款ID集合
+              ids: [item.id], //提款ID集合
               appleHash: hash, //申请hash
             };
             const res = await _that.$http.withdrawawSign(data);
