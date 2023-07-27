@@ -90,7 +90,7 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="buyPrice" width="120" sortable="custom" :label="`返奖价值(${coin})`" align="center" key="9">
+      <el-table-column prop="realPrice" width="120" sortable="custom" :label="`返奖价值(${coin})`" align="center" key="9">
       </el-table-column>
       <el-table-column prop="rebatesPrice" width="120" sortable="custom" :label="`佣金(${coin})`" align="center" key="10">
       </el-table-column>
