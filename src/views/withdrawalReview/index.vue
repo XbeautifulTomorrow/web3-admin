@@ -571,9 +571,9 @@ import bigNumber from "bignumber.js";
 import { timeForStr, exportExcel, openUrl } from "@/utils";
 import pagination from "@/mixins/pagination";
 import config from "@/config/env";
+import multi from "@/contracts/multi.json";
 import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
-import multi from "@/contracts/multi.json";
 import Web3 from "web3";
 import dayjs from "dayjs";
 export default {
