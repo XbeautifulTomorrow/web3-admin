@@ -782,8 +782,8 @@ export default {
         method: "eth_requestAccounts",
       });
       const is1155 = item.outWithdrawalNftList[0].seriesNftType == "ERC1155";
-      const MultiSign = "0xadd5ed79b63f557ea9bf02644bb73086a1f1b598"; //MultiSign 合约地址
-      const nftHelpAddress = "0x8516a78a635a6fb1ac36eb39f8e467d799c1dabe"; //新的nft转账合约地址
+      const MultiSign = "0x0763f0e9306742E1dBEebBa0f617BDF0bEe642CF"; //MultiSign 合约地址
+      const nftHelpAddress = "0x9e46333d65aeDBFbfADD7AeA409A6fE414CC6cfa"; //新的nft转账合约地址
       const web3 = new Web3(window.ethereum);
       let MultiSignContract = new web3.eth.Contract(multi, MultiSign);
       const target = nftHelpAddress;
@@ -795,7 +795,7 @@ export default {
       const signAddressList = [
         "0x9B424522C56c2c90abb94695eeB1b148666644cF", //nft持有的地址
         "0x728a86A400D673c7286BE43AC27B0B825Ba57616",
-        "0x893c32B67caE093791c177AF2B72D37Dc1566369",
+        "0x47187c1da710f2021929c0bde8b1cdbc8b3f115c",
       ];
       const predecessorAddress = signAddressList[0]; //nft持有的地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
