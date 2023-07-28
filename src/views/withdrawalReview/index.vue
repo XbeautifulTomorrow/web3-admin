@@ -971,6 +971,7 @@ export default {
               appleHash: hash, //申请hash
             };
             const res = await _that.$http.withdrawawSign(data);
+            _that.fetchAssetWithdrawalList();
           });
       }
     },
