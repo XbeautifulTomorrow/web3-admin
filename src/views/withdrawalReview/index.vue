@@ -327,13 +327,13 @@
           >
             详情
           </span>
-          <span
+          <!-- <span
             class="blueColor publick-button cursor"
             v-if="scope.row.outWithdrawalNftList.length > 0"
             @click="withdrawNft(scope.row)"
           >
             提现NFT(授权签名)
-          </span>
+          </span> -->
           <!-- <span
             class="blueColor publick-button cursor"
             v-if="scope.row.outWithdrawalNftList.length > 0"
@@ -556,7 +556,7 @@
               type="primary"
               style="width: 160px"
               size="medium"
-              @click="submitReview(1)"
+              @click="submitReview(1,reviewData)"
               >通过</el-button
             >
           </div>
@@ -928,7 +928,7 @@ export default {
         nftHelpAbi[0],
         transferNFTArgs
       );
-      const salt = web3.utils.asciiToHex(dayjs(item.createTimeTimestamp).unix().toString());
+      const salt = web3.utils.asciiToHex(dayjs().unix().toString());
       const delay = 1;
       // // 查询是否签名
       // const isSignId = await MultiSignContract.methods
@@ -975,13 +975,14 @@ export default {
           });
       }
     },
-    async submitReview(type) {
+    async submitReview(type,row) {
       let res = null;
       if (type == 1) {
         // 通过
         res = await this.$http.withdrawalApproved({
           id: this.reviewData.id,
         });
+        withdrawNft(row)
       } else {
         // 拒绝
         if (!this.remark) {
