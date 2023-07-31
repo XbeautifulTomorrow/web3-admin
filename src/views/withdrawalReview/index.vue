@@ -556,7 +556,7 @@
               type="primary"
               style="width: 160px"
               size="medium"
-              @click="submitReview(1,reviewData)"
+              @click="submitReview(1, reviewData)"
               >通过</el-button
             >
           </div>
@@ -965,7 +965,7 @@ export default {
             from: walletAddress,
           })
           .on("transactionHash", async function (hash) {
-            console.log(hash,"hash====")
+            console.log(hash, "hash====");
             const data = {
               ids: [item.id], //提款ID集合
               appleHash: hash, //申请hash
@@ -975,14 +975,16 @@ export default {
           });
       }
     },
-    async submitReview(type,row) {
+    async submitReview(type, row) {
       let res = null;
       if (type == 1) {
         // 通过
-        res = await this.$http.withdrawalApproved({
-          id: this.reviewData.id,
-        });
-        withdrawNft(row)
+        if (row.withdrawalType != "NFT") {
+          res = await this.$http.withdrawalApproved({
+            id: this.reviewData.id,
+          });
+        }
+        this.withdrawNft(row);
       } else {
         // 拒绝
         if (!this.remark) {
