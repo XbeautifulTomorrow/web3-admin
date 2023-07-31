@@ -380,7 +380,7 @@ export default {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "用户列表.xls");
+      link.setAttribute("download", "用户列表.xlsx");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

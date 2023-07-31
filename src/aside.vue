@@ -179,6 +179,26 @@
             <i class="el-icon-bank-card"></i>
             <span>NFT购买钱包</span>
           </el-menu-item>
+          <el-menu-item index="walletCollection" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>归集钱包</span>
+          </el-menu-item>
+          <el-menu-item index="walletCollectCoinStat" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>代币归集统计</span>
+          </el-menu-item>
+          <el-menu-item index="walletCollectionNFTStat" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>NFT归集统计</span>
+          </el-menu-item>
+          <el-menu-item index="walletNFTBuyStat" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>NFT购买统计</span>
+          </el-menu-item>
+          <el-menu-item index="walletGASStat" class="menu-list">
+            <i class="el-icon-bank-card"></i>
+            <span>GAS统计</span>
+          </el-menu-item>
         </el-submenu>
       </el-menu>
     </el-aside>
@@ -354,6 +374,26 @@ export default {
           label: "NFT购买钱包",
           page: "walletNFTBuy",
         },
+        {
+          label: "归集钱包",
+          page: "walletCollection",
+        },
+        {
+          label: "代币归集统计",
+          page: "walletCollectCoinStat",
+        },
+        {
+          label: "NFT归集统计",
+          page: "walletCollectionNFTStat",
+        },
+        {
+          label: "NFT购买统计",
+          page: "walletNFTBuyStat",
+        },
+        {
+          label: "GAS统计",
+          page: "walletGASStat",
+        },
       ],
     };
   },
@@ -427,6 +467,11 @@ export default {
         "walletDrawMoney",
         "walletGAS",
         "walletNFTBuy",
+        "walletCollection",
+        "walletCollectCoinStat",
+        "walletCollectionNFTStat",
+        "walletNFTBuyStat",
+        "walletGASStat",
       ];
 
       if (path === "/") {

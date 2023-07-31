@@ -188,6 +188,36 @@ export const routes = [
         component: () => import("@/views/walletNFTBuy/index"),
         name: "walletNFTBuy",
       },
+      {
+        /** 钱包管理-归集钱包 */
+        path: "/walletCollection",
+        component: () => import("@/views/walletCollection/index"),
+        name: "walletCollection",
+      },
+      {
+        /** 钱包管理-代币归集统计 */
+        path: "/walletCollectCoinStat",
+        component: () => import("@/views/walletCollectCoinStat/index"),
+        name: "walletCollectCoinStat",
+      },
+      {
+        /** 钱包管理-NFT归集统计 */
+        path: "/walletCollectionNFTStat",
+        component: () => import("@/views/walletCollectionNFTStat/index"),
+        name: "walletCollectionNFTStat",
+      },
+      {
+        /** 钱包管理-NFT购买统计 */
+        path: "/walletNFTBuyStat",
+        component: () => import("@/views/walletNFTBuyStat/index"),
+        name: "walletNFTBuyStat",
+      },
+      {
+        /** 钱包管理-GAS统计 */
+        path: "/walletGASStat",
+        component: () => import("@/views/walletGASStat/index"),
+        name: "walletGASStat",
+      },
     ],
   },
 ];
