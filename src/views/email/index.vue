@@ -46,21 +46,40 @@
                     v-model="ruleForm.sendUser"
                     @change="sendUserTypeChange"
                   >
-                    <el-radio label="subscribe">所有用户(不含退订)</el-radio>
                     <el-radio label="all">所有用户</el-radio>
                     <el-radio label="part"> 自定义 </el-radio>
                   </el-radio-group>
                   <div v-if="ruleForm.sendUser == 'part'" class="user-select">
-                    <el-upload
-                      class="upload-demo"
-                      action="/"
-                      :on-change="handleChange"
-                      v-if="fileUserList?.length == 0"
+                    <template
+                      v-if="
+                        fileUserList?.length == 0 ||
+                        (ruleForm.subscribe && userList?.length == 0)
+                      "
                     >
-                      <el-button size="small" type="primary" plain
-                        >上传用户列表</el-button
+                      <el-upload
+                        class="upload-demo"
+                        action="/"
+                        :on-change="handleChange"
                       >
-                    </el-upload>
+                        <el-button size="small" type="primary" plain
+                          >上传用户列表</el-button
+                        >
+                      </el-upload>
+                      <el-tooltip
+                        content="xls第一列请填写用户ID"
+                        placement="bottom"
+                        effect="light"
+                      >
+                        <el-button
+                          size="small"
+                          type="info"
+                          plain
+                          @click="downloadTemplate"
+                          style="margin-left: 5px"
+                          >下载模板</el-button
+                        >
+                      </el-tooltip>
+                    </template>
                     <el-button
                       size="small"
                       type="primary"
@@ -71,6 +90,12 @@
                     >
                   </div>
                 </div>
+              </el-form-item>
+              <el-form-item label="不含退订" prop="subscribe">
+                <el-switch
+                  v-model="ruleForm.subscribe"
+                  @change="subscribeChange"
+                ></el-switch>
               </el-form-item>
               <el-form-item label="内容" prop="content" :rules="rules.select">
                 <el-upload
@@ -307,6 +332,7 @@ export default {
         sendUser: "",
         content: "",
         sendTimeStr: "",
+        subscribe: false,
       },
       fileUserList: [],
       userList: [],
@@ -345,6 +371,21 @@ export default {
   },
   methods: {
     timeForStr: timeForStr,
+    downloadTemplate() {
+      const workbook = XLSX.utils.book_new(); // 创建一个新的工作簿
+      const worksheet = XLSX.utils.json_to_sheet([]); // 创建一个空的工作表
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // 将工作表添加到工作簿
+      const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" }); // 将工作簿转换为二进制数组
+      const blob = new Blob([wbout], { type: "application/octet-stream" }); // 创建 Blob 对象
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "用户列表.xls");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    },
     async getSendEmailListFunc() {
       const { size, page } = this;
       const res = await this.$http.getSendEmailPageList({
@@ -371,18 +412,24 @@ export default {
     },
     // 查看excel用户列表
     async getSendEmailUserListFunc() {
+      if (this.fileUserList?.length == 0) return;
       const userIds = this.fileUserList.join(",");
-      const res = await this.$http.getSendEmailUserList({ userIds });
+      const res = await this.$http.getSendEmailUserList({
+        userIds,
+        type: this.ruleForm.subscribe ? "subscribe" : "all",
+      });
       if (res) {
         this.userList = res;
         if (this.userList?.length == 0) {
           this.$message.error("用户不存在,请重新上传");
-          this.fileUserList = [];
         } else {
           this.sendAmount = res?.length;
           this.dialogVisible = true;
         }
       }
+    },
+    subscribeChange(val) {
+      this.getSendEmailUserListFunc();
     },
     // 查看发送邮箱用户
     async getSendMailUserFunc(row) {
@@ -415,12 +462,15 @@ export default {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
         if (jsonData?.length == 0) {
-          this.$message.error("请上传正确格式的文件");
+          this.$message.error("上传数据为空，请上传数据格式正确的文件");
           return;
         }
         this.fileUserList = jsonData.map((arr) => arr[0]);
       };
       reader.readAsArrayBuffer(file.raw);
+      if (this.fileUserList?.length) {
+        this.getSendEmailUserListFunc();
+      }
     },
     contentHandleChange(file) {
       const reader = new FileReader();
@@ -453,7 +503,7 @@ export default {
               this.$message.error("请上传用户列表");
               return;
             } else if (this.userList?.length == 0) {
-              this.$message.error("请点击查看用户列表以完成用户验证！");
+              this.$message.error("自定义用户数据为空，请重新上传！");
               return;
             }
           }
@@ -485,6 +535,8 @@ export default {
       ruleForm.emailId = ruleForm.emailId.join(",");
       if (ruleForm.sendUser == "part") {
         ruleForm.sendUser = this.userList.map((x) => x.id).join(",");
+      } else {
+        ruleForm.sendUser = ruleForm.subscribe ? "subscribe" : "all";
       }
 
       const res = await this.$http.sendEmailSave({
@@ -589,4 +641,3 @@ export default {
   }
 }
 </style>
-<style></style>
