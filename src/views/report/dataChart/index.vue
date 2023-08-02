@@ -1,7 +1,7 @@
 <template>
   <div class="dataChart report-public-content">
     <div class="report-public-header">
-      <h2>{{ $t('report.dataChart') }}</h2>
+      <h2>{{ $t("report.dataChart") }}</h2>
       <el-select
         v-model="day"
         :placeholder="$t('public.select')"
@@ -23,68 +23,53 @@
         <li
           :class="[
             'dataChart-content-title-list cursor',
-            { 'active-list disabled-cursor': activeName === 'miner' },
+            { 'active-list disabled-cursor': activeName === 'balance' },
           ]"
-          @click="tabClick('miner')"
+          @click="tabClick('balance')"
         >
-          {{ $t('farmList.miner') }}
+          余额
         </li>
         <li
           :class="[
             'dataChart-content-title-list cursor',
-            { 'active-list disabled-cursor': activeName === 'card' },
+            { 'active-list disabled-cursor': activeName === 'integral' },
           ]"
-          @click="tabClick('card')"
+          @click="tabClick('integral')"
         >
-          {{ $t('userList.graphicsCard') }}
-        </li>
-        <li
-          :class="[
-            'dataChart-content-title-list cursor',
-            { 'active-list disabled-cursor': activeName === 'user' },
-          ]"
-          @click="tabClick('user')"
-        >
-          {{ $t('report.user') }}
+          积分
         </li>
       </ul>
       <chart
-        v-if="activeName === 'miner'"
-        :mainChartDataShow="mainChartDataShowMiner"
-        id="miner"
+        v-if="activeName === 'balance'"
+        :mainChartDataShow="mainChartDataShowbalance"
+        id="balance"
       />
       <chart
-        v-if="activeName === 'card'"
-        :mainChartDataShow="mainChartDataShowCard"
-        id="card"
-      />
-      <chart
-        v-if="activeName === 'user'"
-        :mainChartDataShow="mainChartDataShowUser"
-        id="user"
+        v-if="activeName === 'integral'"
+        :mainChartDataShow="mainChartDataShowintegral"
+        id="integral"
       />
     </div>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs';
+import dayjs from "dayjs";
 
-import { options } from '../day';
-import chart from './chart.vue';
+import { options } from "../day";
+import chart from "./chart.vue";
 export default {
-  name: 'DataChart',
+  name: "DataChart",
   // 模板引入
   components: { chart },
   // 数据
   data() {
     return {
-      activeName: 'miner',
+      activeName: "balance",
       options: options,
       day: 7,
-      mainChartDataShowMiner: [],
-      mainChartDataShowCard: [],
-      mainChartDataShowUser: [],
+      mainChartDataShowbalance: [],
+      mainChartDataShowintegral: [],
     };
   },
   // 方法
@@ -100,74 +85,57 @@ export default {
       const res = await this.$http.mainChartDataShow({ day });
       if (res) {
         const _data = Object.copyArrObj(res);
-        let _dataMinerArr = [];
-        let _dataCardArr = [];
-        let _dataUserArr = [];
+        let _databalanceArr = [];
+        let _dataintegralArr = [];
         _data.forEach((item) => {
           const {
-            addMiner = 0,
-            connectMiner = 0,
-            onlineMiner = 0,
-            addCard = 0,
-            connectCard = 0,
-            onlineCard = 0,
-            regUser = 0,
-            loginUser = 0,
+            addbalance = 0,
+            connectbalance = 0,
+            onlinebalance = 0,
+            addintegral = 0,
+            connectintegral = 0,
+            onlineintegral = 0,
           } = item;
-          const time = dayjs(item.time).format('YYYY-MM-DD HH:mm:ss');
-          const _dataMinerList = [
+          const time = dayjs(item.time).format("YYYY-MM-DD HH:mm:ss");
+          const _databalanceList = [
             {
               time,
-              name: this.$t('report.addMiner'),
-              value: addMiner,
+              name: this.$t("report.addbalance"),
+              value: addbalance,
             },
             {
               time,
-              name: this.$t('report.connectMiner'),
-              value: connectMiner,
+              name: this.$t("report.connectbalance"),
+              value: connectbalance,
             },
             {
               time,
-              name: this.$t('report.onlineMiner'),
-              value: onlineMiner,
-            },
-          ];
-          const _dataCardList = [
-            {
-              time,
-              name: this.$t('report.addCard'),
-              value: addCard,
-            },
-            {
-              time,
-              name: this.$t('report.connectCard'),
-              value: connectCard,
-            },
-            {
-              time,
-              name: this.$t('report.onlineCard'),
-              value: onlineCard,
+              name: this.$t("report.onlinebalance"),
+              value: onlinebalance,
             },
           ];
-          const _dataUserList = [
+          const _dataintegralList = [
             {
               time,
-              name: this.$t('report.regUser'),
-              value: regUser,
+              name: this.$t("report.addintegral"),
+              value: addintegral,
             },
             {
               time,
-              name: this.$t('report.loginUser'),
-              value: loginUser,
+              name: this.$t("report.connectintegral"),
+              value: connectintegral,
+            },
+            {
+              time,
+              name: this.$t("report.onlineintegral"),
+              value: onlineintegral,
             },
           ];
-          _dataMinerArr = [..._dataMinerArr, ..._dataMinerList];
-          _dataCardArr = [..._dataCardArr, ..._dataCardList];
-          _dataUserArr = [..._dataUserArr, ..._dataUserList];
+          _databalanceArr = [..._databalanceArr, ..._databalanceList];
+          _dataintegralArr = [..._dataintegralArr, ..._dataintegralList];
         });
-        this.mainChartDataShowMiner = _dataMinerArr;
-        this.mainChartDataShowCard = _dataCardArr;
-        this.mainChartDataShowUser = _dataUserArr;
+        this.mainChartDataShowbalance = _databalanceArr;
+        this.mainChartDataShowintegral = _dataintegralArr;
       }
     },
   },
@@ -212,7 +180,7 @@ export default {
 </style>
 <style lang="scss">
 // .dataChart {
-//   .el-tabs--border-card > .el-tabs__header {
+//   .el-tabs--border-integral > .el-tabs__header {
 //     background-color: none;
 //     border-bottom: none;
 //   }

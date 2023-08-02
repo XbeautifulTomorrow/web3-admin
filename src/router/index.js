@@ -218,6 +218,24 @@ export const routes = [
         component: () => import("@/views/walletGASStat/index"),
         name: "walletGASStat",
       },
+      {
+        /** 资金统计-NFT 交易管理 */
+        path: "/nftTransactionManagement",
+        component: () => import("@/views/nftTransactionManagement/index"),
+        name: "nftTransactionManagement",
+      },
+      {
+        /** 资金统计-NFT 交易管理 */
+        path: "/nftTransactionManagement",
+        component: () => import("@/views/nftTransactionManagement/index"),
+        name: "nftTransactionManagement",
+      },
+      {
+        /** 平台管理-机器人管理 */
+        path: "/robotManagement",
+        component: () => import("@/views/robotManagement/index"),
+        name: "robotManagement",
+      },
     ],
   },
 ];

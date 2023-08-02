@@ -195,4 +195,7 @@ export const getWalleGasList = (obj) => S.get("/wallet-gas/findList", obj);
 export const getWalleBuyNftList = (obj) => S.get("/wallet-buy-nft/findList", obj);
 
 
-
+/**
+ * @description 资金统计-NFT 交易管理
+ */
+export const getNftFlowPageList = (obj) => S.get("/nft-flow/pageList", obj);

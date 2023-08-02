@@ -1,13 +1,22 @@
 <template>
-  <div class="report">
+  <div class="report-box">
+    <!-- <card></card>
+    <dataChart></dataChart>
+    <registerChart></registerChart> -->
   </div>
 </template>
 
 <script>
+import dataChart from "./dataChart";
+import registerChart from "./registerChart";
+import card from "./card";
 export default {
-  name: 'Report',
+  name: "Report",
   // 模板引入
   components: {
+    dataChart,
+    registerChart,
+    card,
   },
   // 数据
   data() {
@@ -16,17 +25,20 @@ export default {
   // 方法
   methods: {},
   // 创建后
-  created() { },
+  created() {},
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
 <style lang="scss" scoped>
+.report-box {
+  margin: 20px;
+}
 .report-par {
   display: flex;
   justify-content: space-between;
@@ -72,4 +84,5 @@ export default {
 
 .public-leaderboard-table-header {
   font-weight: 600;
-}</style>
+}
+</style>

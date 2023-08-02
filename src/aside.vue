@@ -97,6 +97,10 @@
             <i class="el-icon-message"></i>
             <span>群发邮件</span>
           </el-menu-item>
+          <el-menu-item index="robotManagement" class="menu-list">
+            <i class="el-icon-message"></i>
+            <span> 机器人管理</span>
+          </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
@@ -132,6 +136,10 @@
           <el-menu-item index="cashManagement" class="menu-list">
             <i class="el-icon-s-finance"></i>
             <span>金流管理</span>
+          </el-menu-item>
+          <el-menu-item index="nftTransactionManagement" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>NFT 交易管理</span>
           </el-menu-item>
           <el-menu-item index="withdrawalReview" class="menu-list">
             <i class="el-icon-stopwatch"></i>
@@ -394,6 +402,14 @@ export default {
           label: "GAS统计",
           page: "walletGASStat",
         },
+        {
+          label: "NFT 交易管理",
+          page: "nftTransactionManagement",
+        },
+        {
+          label: "机器人管理",
+          page: "robotManagement",
+        },
       ],
     };
   },
@@ -443,7 +459,12 @@ export default {
         "userNftList",
       ];
 
-      const platformManagement = ["marketManagement", "setting", "email"];
+      const platformManagement = [
+        "marketManagement",
+        "setting",
+        "email",
+        "robotManagement",
+      ];
 
       const mallManagement = [
         "blindBoxManagement",
@@ -455,6 +476,7 @@ export default {
 
       const fundingStatistics = [
         "cashManagement",
+        "nftTransactionManagement",
         "withdrawalReview",
         "flashManagement",
         "rebateRecord",
@@ -553,7 +575,7 @@ export default {
 }
 
 .report-main {
-  padding: 20px 0 0;
+  padding: 0;
 }
 
 .width-animation {
