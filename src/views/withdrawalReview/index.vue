@@ -184,7 +184,10 @@
             </el-image>
           </div>
           <div class="info">
-            <div class="nft-name">NFT名称：{{ item.nftName }}</div>
+            <div class="nft-name">
+              <span>{{ item.nftName }}&nbsp;</span>
+              <span>#{{ item.tokenId }}</span>
+            </div>
             <div class="nft-contract">合约：{{ item.contractAddress }}</div>
           </div>
         </div>
@@ -273,12 +276,15 @@
               <div class="nft-box">
                 <div class="nft-item" v-for="(item, index) in reviewData &&
                   reviewData.outWithdrawalNftList" :key="index">
-                  <div style="min-width: 80px; height: 80px">
+                  <div style="width: 80px; height: 80px">
                     <el-image style="height: 80px" :src="item.nftImg" :preview-src-list="[item.nftImg]">
                     </el-image>
                   </div>
                   <div class="info">
-                    <div class="nft-name">NFT名称：{{ item.nftName }}</div>
+                    <div class="nft-name">
+                      <span>{{ item.nftName }}&nbsp;</span>
+                      <span>#{{ item.tokenId }}</span>
+                    </div>
                     <div class="nft-contract">
                       合约：{{ item.contractAddress }}
                     </div>
@@ -899,14 +905,26 @@ export default {
     padding-left: 10px;
 
     .nft-name {
-      font-size: 20px;
+      width: 380px;
+      font-size: 16px;
       font-weight: bold;
-      padding: 10px 0;
+      padding: 10px 0 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      span {
+        display: inline-block;
+        max-width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
     }
 
     .nft-contract {
       font-size: 14px;
-      padding: 10px 0;
+      padding: 10px 0 0;
     }
   }
 }
