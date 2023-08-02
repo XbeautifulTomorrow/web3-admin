@@ -313,6 +313,7 @@ export default {
       }
 
       const res = await this.$http.withdrawalConfigSet({
+        coin: this.coin,
         ...this.withdrawals
       });
 
