@@ -71,6 +71,7 @@
         <el-option label="待确认" value="WAIT"> </el-option>
         <el-option label="被领取" value="BE_CLAIMED"> </el-option>
         <el-option label="已提走" value="MENTIONED"> </el-option>
+        <el-option label="不可用" value="NO_AVAILABLE"> </el-option>
       </el-select>
       <el-select
         v-model="enabledStatus"

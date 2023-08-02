@@ -71,10 +71,10 @@
             <i class="el-icon-s-management"></i>
             <span>外部NFT管理</span>
           </el-menu-item>
-          <el-menu-item index="platformNftManagement" class="menu-list">
+          <!-- <el-menu-item index="platformNftManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>平台NFT管理</span>
-          </el-menu-item>
+          </el-menu-item> -->
           <el-menu-item index="userNftList" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>用户NFT管理</span>

@@ -94,13 +94,13 @@ export const chainOptions = {
  */
 export const chainList = {
   test: [
-    { chainName: "Goerli", chainId: 5, type: "Test" },
-    { chainName: "Ethereum", chainId: 1, type: "Main" }
+    { chainName: "Goerli", chainId: 5, type: "Test",blockExplorerUrls:'https://goerli.etherscan.io/' },
+    { chainName: "Ethereum", chainId: 1, type: "Main",blockExplorerUrls:'https://etherscan.io/' }
   ],
   main: [
     { chainName: "Ethereum", chainId: 1 }
   ],
-}[config.ENV == "dev" ? "test" : "main"]
+}[config.ENV != "main" ? "test" : "main"]
 
 /**
  * @description: 链列表

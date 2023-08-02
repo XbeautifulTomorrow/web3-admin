@@ -96,8 +96,8 @@
       </el-table-column>
       <el-table-column prop="orderType" sortable="custom" label="挂单类型" align="center" key="8">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderType == 'SALE'">已开奖</span>
-          <span v-if="scope.row.orderType == 'AUCTION'">拍卖</span>
+          <span v-if="scope.row.orderType == 'LIMITED_TIME'">限时</span>
+          <span v-if="scope.row.orderType == 'LIMITED_PRICE'">限价</span>
         </template>
       </el-table-column>
       <el-table-column prop="price" sortable="custom" label="价值" align="center" key="9">
@@ -106,14 +106,10 @@
       </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="限制" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="theNumberOfSecondsRemaining" sortable="custom" label="剩余时间" align="center" key="12">
+      <el-table-column prop="endTime" sortable="custom" label="剩余时间" align="center" key="12">
         <template slot-scope="scope">
-          <span v-if="scope.row.theNumberOfSecondsRemaining">
-            {{
-              accurateDecimal(new
-                bigNumber(scope.row.theNumberOfSecondsRemaining ||
-                  0).dividedBy(24).dividedBy(60).dividedBy(60), 2) || "--"
-            }}天
+          <span v-if="scope.row.endTime&&scope.row.currentStatus == 'IN_PROGRESS'">
+            {{ getRemainingTime(scope.row.endTime) }}
           </span>
           <span v-else>--</span>
         </template>
@@ -155,9 +151,9 @@
         <template slot-scope="scope">
           <span v-if="scope.row.currentStatus == 'IN_PROGRESS' || scope.row.currentStatus == 'CANCELLED'"
             class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
-            {{ scope.row.upAndDown == 'down' ? '上架' : '下架' }}
+            {{ scope.row.upAndDown == 'down' ? '' : '下架' }}
           </span>
-          <span style="color: #31CE0B" v-if="scope.row.currentStatus == 'DRAWN'">查看结果</span>
+          <chainExplorerSkip :chainId="scope.row.chainId" :address="`address/${scope.row.contractAddress}`"  v-if="scope.row.currentStatus == 'DRAWN'" />
         </template>
       </el-table-column>
     </el-table>
@@ -169,13 +165,17 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
 import bigNumber from "bignumber.js";
 import { accurateDecimal, timeForStr } from '@/utils';
 import pagination from '@/mixins/pagination';
+import chainExplorerSkip from "@/components/chainExplorerSkip";
+
 export default {
   name: 'NftBuyManagement',
   // 模板引入
   components: {
+    chainExplorerSkip
   },
   // 数据
   data() {
@@ -218,6 +218,15 @@ export default {
       }
 
       this.fetchBoxManagerList();
+    },
+    getRemainingTime(time) {
+      const currentTime = dayjs(this.baseUserPage.localDateTime)
+      const endTime = dayjs(time)
+      const diffInMilliseconds = endTime.diff(currentTime);
+      const diffInHours = Math.floor(diffInMilliseconds / (1000 * 60 * 60));
+      const days = Math.floor(diffInHours / 24);
+      const hours = diffInHours % 24;
+      return `${Math.floor(days)}天${Math.floor(hours)}小时`;
     },
     searchFun() {
       let { addedTime, endTimes } = this;

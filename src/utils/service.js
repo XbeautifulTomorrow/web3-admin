@@ -51,7 +51,7 @@ function messageFun(data) {
 // 直接返回数据
 const returnData = ['sys-user/getCode'];
 // 需要返回 localDateTime
-const localDateTimeArr = ['user-miner/page'];
+const localDateTimeArr = ['user-miner/page','/nft/one-nft-orders/pageList'];
 
 let baseUrl = config.api;
 let axiosConfig = {

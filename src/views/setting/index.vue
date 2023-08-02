@@ -67,6 +67,24 @@
           </el-select>
         </div>
       </div>
+      <div class="setting-item">
+        <div class="setting-title">闪兑展示上浮汇率</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入上浮汇率"
+            v-model="withdrawals.upRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">闪兑展示下浮汇率</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下浮汇率"
+            v-model="withdrawals.downRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
       <el-button type="primary" style="width: 160px;" size="medium" @click="submitWithdrawal()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
@@ -195,7 +213,9 @@ export default {
         coin: null, //币种
         withdrawalFees: null, //提现手续费
         withdrawalLimits: null, //提款限制
-        withdrawalDayLimits: null //限制天数
+        withdrawalDayLimits: null, //限制天数
+        upRate: null, //闪兑上浮比率
+        downRate: null //闪兑下浮比率
       },
 
       /** NFT回收相关配置 */
@@ -290,7 +310,7 @@ export default {
       const res = await this.$http.getWithdrawalConfig({ coin: this.coin });
       if (res) {
         this.withdrawals = {
-          ...res
+          ...res,
         };
 
         this.$forceUpdate();
@@ -311,10 +331,10 @@ export default {
         this.$message.error("提现配置相关参数不完整，请补充完整后重试");
         return
       }
-
+ 
       const res = await this.$http.withdrawalConfigSet({
-        coin: this.coin,
-        ...this.withdrawals
+        ...this.withdrawals,
+        coin: this.coin
       });
 
       if (res) {

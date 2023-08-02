@@ -1,15 +1,20 @@
 <template>
-  <a :href="addressUrl" target="_blank">查看</a>
+  <a :href="addressUrl" target="_blank">查看结果</a>
 </template>
 
 <script>
+import { chainList } from "@/utils/chain";
 export default {
   props: {
-    chain: {
-      type: String,
-      default: true,
+    chainId: {
+      type: String | Boolean,
+      default: false,
     },
-    hash: {
+    chain: {
+      type: String | Boolean,
+      default: false,
+    },
+    address: {
       type: String | Boolean,
       default: false,
     },
@@ -20,15 +25,18 @@ export default {
     };
   },
   mounted() {
-    let chainType = this.chain.toUpperCase();
-    const chainUrl = process.env[`VUE_APP_CHAIN_${chainType}_ADDR`];
-    this.addressUrl = chainUrl + this.hash;
+    const { chainId } = this
+    if (chainId) {
+      let res = chainList.find(x => x.chainId == chainId)
+      const chainUrl = res?.blockExplorerUrls
+      this.addressUrl = chainUrl + this.address;
+    }
   },
 };
 </script>
 
 <style lang="scss" scoped>
 a {
-  color: #09a9ff;
+  color: rgb(49, 206, 11);
 }
 </style>
