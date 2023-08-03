@@ -39,17 +39,35 @@
     </div>
     <div class="withdrawal-settings">
       <div class="setting-item">
-        <div class="setting-title">提现手续费</div>
+        <div class="setting-title">代币提现手续费</div>
         <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入提现手续费"
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入代币提现手续费"
             v-model="withdrawals.withdrawalFees" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
       </div>
       <div class="setting-item">
+        <div class="setting-title">NFT提现手续费</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入NFT提现手续费"
+            v-model="withdrawals.nftWithdrawalFees" clearable>
+            <template slot="append">{{ coin }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">单次审核阈值</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入审核阈值"
+            v-model="withdrawals.auditThresholds" clearable>
+            <template slot="append">{{ coin }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">
-          <span>提现限制</span>
+          <span>累计审核阈值</span>
           <el-tooltip class="item" effect="dark" content="用户提款的限制，即无、每天、每周还是每月共能提多少" placement="top-start">
             <i class="el-icon-warning-outline"></i>
           </el-tooltip>
@@ -210,12 +228,14 @@ export default {
 
       /** 提现相关配置 */
       withdrawals: {
-        coin: null, //币种
-        withdrawalFees: null, //提现手续费
-        withdrawalLimits: null, //提款限制
-        withdrawalDayLimits: null, //限制天数
-        upRate: null, //闪兑上浮比率
-        downRate: null //闪兑下浮比率
+        coin: null, // 币种
+        withdrawalFees: null, // 提现手续费
+        nftWithdrawalFees: null, // NFT提现手续费
+        withdrawalLimits: null, // 提款限制
+        withdrawalDayLimits: null, // 限制天数
+        auditThresholds: null, // 单次审核阈值
+        upRate: null, // 闪兑上浮比率
+        downRate: null // 闪兑下浮比率
       },
 
       /** NFT回收相关配置 */
@@ -295,9 +315,9 @@ export default {
 
       const res = await this.$http.pointConfigSet({
         ...this.points,
-        downCommissionRate: accurateDecimal(new bigNumber(this.points.downCommissionRate).dividedBy(100), 4), //下级佣金比例
-        downPointRate: accurateDecimal(new bigNumber(this.points.downPointRate).dividedBy(100), 4), //下级积分比例
-        consumePointRate: accurateDecimal(new bigNumber(this.points.consumePointRate).dividedBy(100), 4) //消费积分
+        downCommissionRate: accurateDecimal(new bigNumber(downCommissionRate).dividedBy(100), 4), //下级佣金比例
+        downPointRate: accurateDecimal(new bigNumber(downPointRate).dividedBy(100), 4), //下级积分比例
+        consumePointRate: accurateDecimal(new bigNumber(consumePointRate).dividedBy(100), 4) //消费积分
       });
 
       if (res) {
@@ -313,6 +333,9 @@ export default {
           ...res,
         };
 
+        this.withdrawals.upRate = accurateDecimal(new bigNumber(res.upRate).multipliedBy(100), 2);
+        this.withdrawals.downRate = accurateDecimal(new bigNumber(res.downRate).multipliedBy(100), 2);
+
         this.$forceUpdate();
       }
     },
@@ -320,20 +343,31 @@ export default {
     async submitWithdrawal() {
       const {
         withdrawalFees,
+        nftWithdrawalFees,
         withdrawalLimits,
-        withdrawalDayLimits
+        withdrawalDayLimits,
+        auditThresholds,
+        upRate,
+        downRate
       } = this.withdrawals;
 
       if (
         !withdrawalFees ||
+        !nftWithdrawalFees ||
+        !auditThresholds ||
         !withdrawalLimits ||
-        !withdrawalDayLimits) {
+        !withdrawalDayLimits ||
+        !upRate ||
+        !downRate
+      ) {
         this.$message.error("提现配置相关参数不完整，请补充完整后重试");
         return
       }
- 
+
       const res = await this.$http.withdrawalConfigSet({
         ...this.withdrawals,
+        upRate: accurateDecimal(new bigNumber(upRate).dividedBy(100), 4), // 闪兑展示上浮汇率
+        downRate: accurateDecimal(new bigNumber(downRate).dividedBy(100), 4), // 闪兑展示下浮汇率
         coin: this.coin
       });
 
