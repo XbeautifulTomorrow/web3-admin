@@ -236,8 +236,8 @@ export default {
       }
 
     },
-      // 连接小狐狸
-     async connectMetaMask() {
+    // 连接小狐狸
+    async connectMetaMask() {
       const _that = this;
       let web3 = new Web3(window.ethereum);
       let ethereum = window.ethereum;
@@ -366,7 +366,8 @@ export default {
     },
     handleEdit(row) {
       this.ruleForm = {
-        ...row
+        ...row,
+        marketNames: row.marketNames.split(",")
       }
 
       this.fileImg = [{ url: row.seriesImg }];
@@ -451,14 +452,16 @@ export default {
             this.$message.error("请上传图片！");
             return;
           }
+
+          const { marketNames } = this.ruleForm;
           let ruleForm = {
             ...this.ruleForm,
-            marketNames: this.ruleForm.marketNames.join(",")
+            marketNames: marketNames && marketNames.join(",")
           };
 
           let res = null;
           if (this.operatingType == 1) {
-            ruleForm.marketNames = this.ruleForm.marketNames.join(",");
+            ruleForm.marketNames = marketNames && marketNames.join(",");
             ruleForm.seriesImg = this.fileImg[0].url;
             res = await this.$http.nftExternalAdd({ ...ruleForm });
           } else {
