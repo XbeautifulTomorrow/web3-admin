@@ -89,19 +89,16 @@ export const chainOptions = {
   },
 }[config.ENV == "dev" ? "test" : "main"]
 
-/**
- * @description: 链列表
- */
 export const chainList = {
   test: [
-    { chainName: "Goerli", chainId: 5, type: "Test",blockExplorerUrls:'https://goerli.etherscan.io/' },
-    { chainName: "Ethereum", chainId: 1, type: "Main",blockExplorerUrls:'https://etherscan.io/' },
-    { chainName: "OKT_TEST", chainId: 2, type: "Test",blockExplorerUrls:'https://www.oklink.com/cn/oktc-test/' }
+    { chainName: "Goerli", chainId: 5, type: "Test" },
+    { chainName: "Ethereum", chainId: 1, type: "Main" }
   ],
   main: [
     { chainName: "Ethereum", chainId: 1 }
   ],
-}[config.ENV != "main" ? "test" : "main"]
+}[config.ENV == "dev" ? "test" : "main"]
+
 
 /**
  * @description: 链列表
@@ -111,7 +108,19 @@ export const chainData = {
   main: { BSC: 56, ETHEREUM: 1, OKC: 66 },
 }[config.ENV == "dev" ? "test" : "main"]
 
-
+/**
+ * @description: 链浏览器
+ */
+export const chainUrlList = {
+  test: [
+    { chainName: "Mumbai", blockExplorerUrls:'https://mumbai.polygonscan.com/' },
+    { chainName: "BSC_TEST", blockExplorerUrls:'https://testnet.bscscan.com/' },
+    { chainName: "OKT_TEST", blockExplorerUrls:'https://www.oklink.com/oktc-test/' }
+  ],
+  main: [
+    { chainName: "Ethereum"}
+  ],
+}[config.ENV != "main" ? "test" : "main"]
 
 /**
  * @description NFT查询

@@ -220,7 +220,7 @@
         key="12"
       >
         <template slot-scope="scope">
-          <chainExplorerSkip :chainId="scope.row.lotteryChainId" :address="`tx/${scope.row.hash}`">{{ scope.row.lotteryChainType }}</chainExplorerSkip>
+          <chainExplorerSkip :chain="scope.row.lotteryChainType" :address="`tx/${scope.row.hash}`">{{ scope.row.lotteryChainType }}</chainExplorerSkip>
         </template>
       </el-table-column>
       <el-table-column

@@ -3,13 +3,13 @@
 </template>
 
 <script>
-import { chainList } from "@/utils/chain";
+import { chainUrlList } from "@/utils/chain";
 export default {
   props: {
-    chainId: {
-      type: String | Boolean,
-      default: false,
-    },
+    // chainId: {
+    //   type: String | Boolean,
+    //   default: false,
+    // },
     chain: {
       type: String | Boolean,
       default: false,
@@ -25,9 +25,9 @@ export default {
     };
   },
   mounted() {
-    const { chainId } = this
-    if (chainId) {
-      let res = chainList.find(x => x.chainId == chainId)
+    const { chain } = this
+    if (chain) {
+      let res = chainUrlList.find(x => x.chainName == chain)
       const chainUrl = res?.blockExplorerUrls
       this.addressUrl = chainUrl + this.address;
     }

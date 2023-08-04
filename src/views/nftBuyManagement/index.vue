@@ -118,7 +118,7 @@
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="participatingUsers" sortable="custom" label="参与用户" align="center" key="13">
+      <el-table-column prop="userTotal" sortable="custom" label="参与用户数" align="center" key="13">
       </el-table-column>
       <el-table-column prop="numberOfTicketsSold" sortable="custom" label="售出票数" align="center" key="14">
       </el-table-column>
@@ -157,7 +157,7 @@
             class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.upAndDown == 'down' ? '' : '下架' }}
           </span>
-          <chainExplorerSkip :chainId="scope.row.chainId" :address="`address/${scope.row.contractAddress}`"  v-if="scope.row.currentStatus == 'DRAWN'" />
+          <chainExplorerSkip :chain="scope.row.chainType" :address="`tx/${scope.row.txid}`"  v-if="scope.row.currentStatus == 'DRAWN'" />
         </template>
       </el-table-column>
     </el-table>
