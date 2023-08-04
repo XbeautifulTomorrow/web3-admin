@@ -86,7 +86,7 @@
         </div>
       </div>
       <div class="setting-item">
-        <div class="setting-title">闪兑展示上浮汇率</div>
+        <div class="setting-title">闪兑入金上浮比例</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入上浮汇率"
             v-model="withdrawals.upRate" clearable>
@@ -95,7 +95,7 @@
         </div>
       </div>
       <div class="setting-item">
-        <div class="setting-title">闪兑展示下浮汇率</div>
+        <div class="setting-title">闪兑出金下浮比例</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入下浮汇率"
             v-model="withdrawals.downRate" clearable>
