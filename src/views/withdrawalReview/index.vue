@@ -271,7 +271,7 @@
               </div>
             </div>
             <div class="info-item">
-              <div class="info-item-title">提款类型：</div>
+              <div class="info-item-title">目标币种：</div>
               <div class="info-item-val">
                 {{ reviewData && reviewData.userCoin }}
               </div>
