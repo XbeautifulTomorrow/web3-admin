@@ -44,7 +44,11 @@
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="userName" width="120" sortable="custom" label="上级Id" align="center" key="3">
+      <el-table-column prop="userName" width="120" sortable="custom" label="上级" align="center" key="3">
+        <template slot-scope="scope">
+          <p>{{ scope.row.upId || '--' }}</p>
+          <p>{{ scope.row.upUserName || '--' }}</p>
+        </template>
       </el-table-column>
       <el-table-column prop="rebatesType" sortable="custom" label="行为" align="center" key="4">
         <template slot-scope="scope">

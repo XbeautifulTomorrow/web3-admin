@@ -99,9 +99,9 @@
       </el-table-column>
       <el-table-column prop="expenditure" label="消费" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="winningStatus" label="返奖" align="center" key="9">
+      <el-table-column prop="winningStatus" label="中奖" align="center" key="9">
         <template slot-scope="scope">
-          <span v-if="scope.row.winningStatus == 'YES'">查看返奖</span>
+          <span v-if="scope.row.winningStatus == 'YES'" style="color: #67C23A;">已中奖</span>
           <span v-else>未中奖</span>
         </template>
       </el-table-column>

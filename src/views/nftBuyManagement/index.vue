@@ -149,7 +149,7 @@
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="20" fixed="right">
         <template slot-scope="scope">
-          <span v-if="scope.row.currentStatus == 'IN_PROGRESS' || scope.row.currentStatus == 'CANCELLED'"
+          <span v-if="scope.row.currentStatus == 'IN_PROGRESS' && scope.row.currentStatus !== 'CANCELLED'"
             class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
             {{ scope.row.upAndDown == 'down' ? '' : '下架' }}
           </span>
@@ -217,7 +217,7 @@ export default {
         this.sortData.orderType = null;
       }
 
-      this.fetchBoxManagerList();
+      this.fetchOneNftOrdersManagerList();
     },
     getRemainingTime(time) {
       const currentTime = dayjs(this.baseUserPage.localDateTime)
