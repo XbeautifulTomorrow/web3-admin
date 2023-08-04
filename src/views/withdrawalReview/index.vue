@@ -94,53 +94,56 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" width="120" :label="`用户余额(${coin})`" align="center" key="3">
+      <el-table-column prop="assetBalance" sortable="custom" width="130" :label="`用户余额(${coin})`" align="center" key="3">
       </el-table-column>
-      <el-table-column prop="withdrawalPrice" sortable="custom" width="120" :label="`提款金额(${coin})`" align="center"
+      <el-table-column prop="withdrawalPrice" sortable="custom" width="130" :label="`提款金额(${coin})`" align="center"
         key="4">
       </el-table-column>
       <el-table-column prop="userName" width="80" label="提出NFT" align="center" key="5">
         <template slot-scope="scope">
-          <span v-if="scope.row.withdrawalType == 'NFT'"
+          <span style="color: #0e9efd; cursor: pointer;" v-if="scope.row.withdrawalType == 'NFT'"
             @click="showWithdrawNft(scope.row.outWithdrawalNftList, 1)">查看</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
       <el-table-column prop="serviceFee" width="120" sortable="custom" :label="`手续费(${coin})`" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="actualArrival" width="120" sortable="custom" :label="`实际到账(${coin})`" align="center" key="7">
+      userCoin
+      <el-table-column prop="userCoin" width="120" sortable="custom" label="目标币种" align="center" key="7">
+      </el-table-column>
+      <el-table-column prop="actualArrival" width="120" sortable="custom" label="实际到账" align="center" key="8">
         <template slot-scope="scope">
-          <span v-if="scope.row.withdrawalType == 'NFT'"
+          <span style="color: #0e9efd; cursor: pointer;" v-if="scope.row.withdrawalType == 'NFT'"
             @click="showWithdrawNft(scope.row.arrivedWithdrawalnftlist, 2)">查看</span>
           <span v-else>{{ scope.row.actualArrival }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="flowId" label="流水号" align="center" key="8">
+      <el-table-column prop="flowId" label="流水号" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="hash" label="HASH" width="300" align="center" key="9">
+      <el-table-column prop="hash" label="HASH" width="300" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="gas" sortable="custom" label="GAS" align="center" key="10">
+      <el-table-column prop="gas" sortable="custom" label="GAS" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="withdrawalWalletAddress" width="300" label="提款钱包" align="center" key="11">
+      <el-table-column prop="withdrawalWalletAddress" width="300" label="提款钱包" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="withdrawalType" sortable="custom" label="提款类型" align="center" key="12">
+      <el-table-column prop="withdrawalType" sortable="custom" label="提款类型" align="center" key="13">
       </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" width="140" label="发起时间" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" width="140" label="发起时间" align="center" key="14">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="auditTime" sortable="custom" width="140" label="审核时间" align="center" key="14">
+      <el-table-column prop="auditTime" sortable="custom" width="140" label="审核时间" align="center" key="15">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.auditTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="arrivalTime" sortable="custom" width="140" label="到账时间" align="center" key="15">
+      <el-table-column prop="arrivalTime" sortable="custom" width="140" label="到账时间" align="center" key="16">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.arrivalTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="auditStatus" sortable="custom" label="审核状态" align="center" key="16" fixed="right">
+      <el-table-column prop="auditStatus" sortable="custom" label="审核状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
           <span style="color: #0e9efd" v-if="scope.row.auditStatus == 'WAIT'">待审核</span>
           <span style="color: #fd770a" v-if="scope.row.auditStatus == 'TRANSFERRING'">转帐中</span>
@@ -149,7 +152,7 @@
           <span style="color: #c1c1c1" v-if="scope.row.auditStatus == 'REFUSE'">已拒绝</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="180" key="17" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="180" key="18" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="showReview(scope.row)">
             详情
@@ -265,6 +268,12 @@
               <div class="info-item-title">总充值：</div>
               <div class="info-item-val">
                 {{ reviewData && reviewData.totalRecharge }}
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-item-title">提款类型：</div>
+              <div class="info-item-val">
+                {{ reviewData && reviewData.userCoin }}
               </div>
             </div>
           </div>
@@ -537,7 +546,7 @@ export default {
               // 用户拒绝登录后执行语句；
             } else {
               // 本不该执行到这里，但是真到这里了，说明发生了意外
-              ElMessage.error(t("airdrop.failedTips"));
+              ElMessage.error("Connection to wallet failed");
             }
           });
       }

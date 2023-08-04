@@ -111,20 +111,8 @@
         </div>
       </div>
     </div>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      @sort-change="sortChange"
-      class="public-table"
-      border
-    >
-      <el-table-column
-        prop="id"
-        sortable="custom"
-        label="订单号"
-        align="center"
-        key="1"
-      >
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="orderNumber" sortable="custom" label="订单号" align="center" key="1">
       </el-table-column>
       <el-table-column
         prop="boxImg"
