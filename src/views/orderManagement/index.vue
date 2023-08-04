@@ -215,6 +215,17 @@
       <el-table-column
         prop="hash"
         width="120"
+        label="抽奖链"
+        align="center"
+        key="12"
+      >
+        <template slot-scope="scope">
+          <chainExplorerSkip :chainId="scope.row.lotteryChainId" :address="`tx/${scope.row.hash}`">{{ scope.row.lotteryChainType }}</chainExplorerSkip>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="hash"
+        width="120"
         label="Harsh"
         align="center"
         key="13"
@@ -379,10 +390,11 @@
 import bigNumber from "bignumber.js";
 import { timeForStr } from "@/utils";
 import pagination from "@/mixins/pagination";
+import chainExplorerSkip from "@/components/chainExplorerSkip";
 export default {
   name: "OrderManagement",
   // 模板引入
-  components: {},
+  components: {chainExplorerSkip},
   // 数据
   data() {
     return {

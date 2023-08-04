@@ -95,7 +95,8 @@ export const chainOptions = {
 export const chainList = {
   test: [
     { chainName: "Goerli", chainId: 5, type: "Test",blockExplorerUrls:'https://goerli.etherscan.io/' },
-    { chainName: "Ethereum", chainId: 1, type: "Main",blockExplorerUrls:'https://etherscan.io/' }
+    { chainName: "Ethereum", chainId: 1, type: "Main",blockExplorerUrls:'https://etherscan.io/' },
+    { chainName: "OKT_TEST", chainId: 2, type: "Test",blockExplorerUrls:'https://www.oklink.com/cn/oktc-test/' }
   ],
   main: [
     { chainName: "Ethereum", chainId: 1 }

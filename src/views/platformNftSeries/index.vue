@@ -35,36 +35,36 @@
       </el-table-column>
       <el-table-column prop="seriesName" label="系列名称" align="center" key="4">
       </el-table-column>
-      <el-table-column prop="chainType" label="所在链" align="center" key="4">
+      <el-table-column prop="chainType" label="所在链" align="center" key="5">
       </el-table-column>
-      <el-table-column prop="tokenId" label="tokenId" align="center" key="4">
+      <el-table-column prop="tokenId" label="tokenId" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="5">
+      <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="7">
       </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="6">
+      <el-table-column prop="contractAddress" label="合约" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="7">
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="9">
       </el-table-column>
-      <el-table-column prop="openNumberTotal" sortable="custom" label="开出数量" align="center" key="8">
+      <el-table-column prop="openNumberTotal" sortable="custom" label="开出数量" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="openPriceTotal" sortable="custom" label="开出总价值" align="center" key="9">
+      <el-table-column prop="openPriceTotal" sortable="custom" label="开出总价值" align="center" key="11">
       </el-table-column>
-      <el-table-column prop="sellNumberTotal" sortable="custom" label="转卖数量" align="center" key="10">
+      <el-table-column prop="sellNumberTotal" sortable="custom" label="转卖数量" align="center" key="12">
       </el-table-column>
-      <el-table-column prop="sellPriceTotal" sortable="custom" label="转卖总价值" align="center" key="11">
+      <el-table-column prop="sellPriceTotal" sortable="custom" label="转卖总价值" align="center" key="13">
       </el-table-column>
-      <el-table-column prop="outNumberTotal" sortable="custom" label="提出数量" align="center" key="12">
+      <el-table-column prop="outNumberTotal" sortable="custom" label="提出数量" align="center" key="14">
       </el-table-column>
-      <el-table-column prop="relevancyUserNumber" sortable="custom" label="用户持有" align="center" key="13">
+      <el-table-column prop="relevancyUserNumber" sortable="custom" label="用户持有" align="center" key="15">
       </el-table-column>
-      <el-table-column prop="relevancyFoundryNumber" sortable="custom" label="铸造数量" align="center" key="14">
+      <el-table-column prop="relevancyFoundryNumber" sortable="custom" label="铸造数量" align="center" key="16">
       </el-table-column>
-      <el-table-column prop="reclaimRate" sortable="custom" label="回收比例" align="center" key="15">
+      <el-table-column prop="reclaimRate" sortable="custom" label="回收比例" align="center" key="17">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.reclaimRate || 0).multipliedBy(100).toFixed(2)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" key="16">
+      <el-table-column prop="id" label="操作" align="center" key="18">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="approve(scope.row)">
             授权

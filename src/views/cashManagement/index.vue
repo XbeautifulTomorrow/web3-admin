@@ -17,6 +17,12 @@
         </el-option>
         <el-option label="提现" value="WITHDRAWALS">
         </el-option>
+        <el-option label="手续费" value="FEE">
+        </el-option>
+        <el-option label="挂单" value="PENDING_ORDERS">
+        </el-option>
+        <el-option label="退款" value="REFUND">
+        </el-option>
       </el-select>
       <el-select v-model="flowSource" class="public-select-box" popper-class="public-select-box" placeholder="全部来源"
         clearable>
@@ -29,6 +35,10 @@
         <el-option label="余额" value="BALANCE">
         </el-option>
         <el-option label="回收" value="RECLAIM">
+        </el-option>
+        <el-option label="挂单" value="PENDING_ORDERS">
+        </el-option>
+        <el-option label="提现" value="WITHDRAWALS">
         </el-option>
       </el-select>
       <div class="public-date-box">
@@ -213,6 +223,12 @@ export default {
         return "充值"
       } else if (event == "WITHDRAWALS") {
         return "提现"
+      } else if (event == "FEE") {
+        return "手续费"
+      } else if (event == "PENDING_ORDERS") {
+        return "挂单"
+      } else if (event == "REFUND") {
+        return "退款"
       }
     },
     // 格式化流水来源
@@ -228,6 +244,10 @@ export default {
         return "余额"
       } else if (event == "RECLAIM") {
         return "回收"
+      } else if (event == "PENDING_ORDERS") {
+        return "挂单"
+      } else if (event == "WITHDRAWALS") {
+        return "提现"
       }
     },
     handleSizeChange(val) {

@@ -1,5 +1,5 @@
 <template>
-  <a :href="addressUrl" target="_blank">查看结果</a>
+  <a :href="addressUrl" target="_blank"><slot>查看结果</slot></a>
 </template>
 
 <script>
