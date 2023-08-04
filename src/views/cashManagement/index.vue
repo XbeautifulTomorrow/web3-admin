@@ -19,8 +19,8 @@
         </el-option>
         <el-option label="手续费" value="FEE">
         </el-option>
-        <el-option label="挂单" value="PENDING_ORDERS">
-        </el-option>
+        <!-- <el-option label="挂单" value="PENDING_ORDERS">
+        </el-option> -->
         <el-option label="退款" value="REFUND">
         </el-option>
       </el-select>
@@ -38,8 +38,8 @@
         </el-option>
         <el-option label="挂单" value="PENDING_ORDERS">
         </el-option>
-        <el-option label="提现" value="WITHDRAWALS">
-        </el-option>
+        <!-- <el-option label="提现" value="WITHDRAWALS">
+        </el-option> -->
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">

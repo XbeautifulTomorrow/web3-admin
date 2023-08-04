@@ -423,6 +423,7 @@ export default {
     changeAccount(event) {
       // 设置当前挖矿币种
       this.$store.dispatch("user/setAccountConfig", event);
+      window.location.reload()
     },
     changeConfig(event) {
       // 设置当前挖矿币种

@@ -68,8 +68,8 @@
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="订单号" align="center" key="1">
+    <el-table :data="tableData" style="width: 100%"  @sort-change="sortChange" class="public-table" border>
+      <el-table-column sortable="custom" prop="id" label="订单号" align="center" key="1">
       </el-table-column>
       <el-table-column prop="nftImage" label="NFT图" align="center" key="3">
         <template slot-scope="scope">
@@ -79,14 +79,14 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="orderId" label="商品" align="center" key="4">
+      <el-table-column sortable="custom" prop="name" label="商品" align="center" key="4">
         <template slot-scope="scope">
           {{ `${scope.row.name} ${scope.row.orderId}` }}
         </template>
       </el-table-column>
-      <el-table-column prop="tickets" label="票数" align="center" key="5">
+      <el-table-column sortable="custom" prop="tickets" label="票数" align="center" key="5">
       </el-table-column>
-      <el-table-column label="票号" align="center" key="6">
+      <el-table-column sortable="custom" label="票号" align="center" key="6">
         <template slot-scope="scope">
           {{ `${scope.row.startNumbers} ${scope.row.endNumbers}` }}
         </template>
@@ -97,9 +97,9 @@
           <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="expenditure" label="消费" align="center" key="8">
+      <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="8">
       </el-table-column>
-      <el-table-column prop="winningStatus" label="中奖" align="center" key="9">
+      <el-table-column sortable="custom" prop="winningStatus" label="中奖" align="center" key="9">
         <template slot-scope="scope">
           <span v-if="scope.row.winningStatus == 'YES'" style="color: #67C23A;">已中奖</span>
           <span v-else>未中奖</span>
@@ -115,24 +115,24 @@
       </el-table-column>
       <el-table-column prop="refundSerialId" label="退款流水号" align="center" key="15">
       </el-table-column>
-      <el-table-column prop="status" label="状态" align="center" key="17" fixed="right">
+      <el-table-column sortable="custom" prop="status" label="状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
           <span style="color: #05A8F0;" v-if="scope.row.status == 'TO_BE_AWARDED'">待开奖</span>
           <span style="color: #31CE0B;" v-if="scope.row.status == 'REFUNDED'">已退款</span>
           <span style="color: #BBBBBB;" v-if="scope.row.status == 'AWARDED'">已开奖</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paymentTime" width="140px" label="付款时间" align="center" key="18" fixed="right">
+      <el-table-column sortable="custom" prop="paymentTime" width="140px" label="付款时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.paymentTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="transactionTime" width="140px" label="交易完成时间" align="center" key="19" fixed="right">
+      <el-table-column sortable="custom" prop="transactionTime" width="140px" label="交易完成时间" align="center" key="19" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.transactionTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
-      <el-table-column prop="confirmationTime" width="140px" label="确认时间" align="center" key="20" fixed="right">
+      <el-table-column sortable="custom" prop="confirmationTime" width="140px" label="确认时间" align="center" key="20" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.confirmationTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
@@ -172,6 +172,10 @@ export default {
       tableData: null,
       aggregateQuery: null,
       baseUserPage: null,
+      sortData: {
+        orderBy: null,
+        orderType: null
+      },
     };
   },
   mixins: [pagination],
@@ -219,7 +223,7 @@ export default {
     // 加载列表
     async fetchOneNftLotteryOrdersManagerList(isSearch = true) {
       const search = this.searchFun();
-      const { size, userType } = this;
+      const {sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -231,6 +235,7 @@ export default {
           size: size,
           page: _page,
         },
+        ...sortData,
         ...search,
       };
       const res = await this.$http.getOneNftLotteryOrdersManagerList(data);
@@ -245,6 +250,15 @@ export default {
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }
+    },
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchOneNftLotteryOrdersManagerList();
     },
     // 上架和下架
     operatingNft(row) {
