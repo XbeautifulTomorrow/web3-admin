@@ -59,7 +59,7 @@
       </el-table-column>
       <el-table-column prop="traAmount" sortable="custom" :label="`金额(${coin})`" align="center" key="6">
       </el-table-column>
-      <el-table-column prop="commissionRate" label="返佣比例" align="center" key="7">
+      <el-table-column prop="rebateRate" label="返佣比例" align="center" key="7">
       </el-table-column>
       <el-table-column prop="rebatesAmount" sortable="custom" :label="`佣金(${coin})`" align="center" key="8">
       </el-table-column>

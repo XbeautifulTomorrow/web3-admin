@@ -48,11 +48,11 @@
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
         <div class="remittance-item">
-          <div class="title">藏品数量</div>
+          <div class="title">总NFT数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalNumberOfCollections }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总被开</div>
+          <div class="title">总被开次数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalNumberOfTimesItWasOpened }}</div>
         </div>
         <div class="remittance-item">
@@ -60,12 +60,16 @@
           <div class="val">{{ aggregateQuery && aggregateQuery.totalValue }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总提走</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.totalNumberOfWithdrawals }}</div>
+          <div class="title">总参与用户数</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalEngagedUsers }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总退款</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.totalNumberOfRefunds }}</div>
+          <div class="title">总售出数</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalNumberSold }}</div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总售出金额</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalAmountSold }}</div>
         </div>
       </div>
     </div>

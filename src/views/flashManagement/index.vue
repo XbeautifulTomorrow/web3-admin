@@ -65,14 +65,8 @@
       <el-table-column prop="sellNum" sortable="custom" label="卖出币数" align="center" key="4">
       </el-table-column>
       <el-table-column prop="realRate" sortable="custom" label="实际汇率" align="center" key="5">
-        <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.realRate).multipliedBy(100)}%` }}
-        </template>
       </el-table-column>
       <el-table-column prop="showRate" sortable="custom" label="展示汇率" align="center" key="6">
-        <template slot-scope="scope">
-          {{ `${new bigNumber(scope.row.showRate).multipliedBy(100)}%` }}
-        </template>
       </el-table-column>
       <el-table-column prop="buyCoin" label="买入币种" align="center" key="7">
       </el-table-column>

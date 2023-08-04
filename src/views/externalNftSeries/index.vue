@@ -35,10 +35,6 @@
           <div class="title">总系列数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.collNumberTotal }}</div>
         </div>
-        <div class="remittance-item">
-          <div class="title">总价值</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.priceTotal }}</div>
-        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
