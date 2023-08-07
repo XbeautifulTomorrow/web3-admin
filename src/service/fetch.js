@@ -19,6 +19,9 @@ export const accountFreeze = (obj) => S.get('/user/freeze', obj); // 封停
 export const accountThaw = (obj) => S.get('/user/thaw', obj); // 解禁
 export const importInner = (obj) => S.post('/user/importInner', obj); // 导入测试账号
 export const upAndDown = (obj) => S.post('/user/upAndDown', obj); // 上下分
+export const importBatchUpAndDown = (obj) => S.post('/user/importBatchUpAndDown', obj); // Excel导入测试上下分账号
+export const batchUpAndDown = (obj) => S.post('/user/batch/upAndDown', obj); // 批量上下分
+
 
 /**
  * @description NFT系列
@@ -199,3 +202,4 @@ export const getWalleBuyNftList = (obj) => S.get("/wallet-buy-nft/findList", obj
  * @description 资金统计-NFT 交易管理
  */
 export const getNftFlowPageList = (obj) => S.get("/nft-flow/pageList", obj);
+

@@ -36,9 +36,17 @@
       <el-button type="primary" icon="el-icon-upload2" class="public-search" @click="showDialog = true">
         导入测试号
       </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="downloadExcel()">
-        下载模板
-      </el-button>
+      <el-link icon="el-icon-download"  type="primary" @click="downloadExcel('SIGN_ACCOUNT')" class="download-module">下载模板</el-link>
+      <el-upload
+        class="upload-demo"
+        action="/"
+        :on-change="importBatchUpAndDownFunc"
+        :auto-upload="false"
+        :show-file-list="false"
+      >
+        <el-button icon="el-icon-upload2" type="primary" class="public-search">批量上分</el-button>
+      </el-upload>
+      <el-link icon="el-icon-download"  type="primary" @click="downloadExcel('BATCH_UP_AND_DOWN')" class="download-module">下载模板</el-link>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -172,6 +180,30 @@
         <el-button type="primary" @click="updateScore()">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="批量上分" :visible.sync="dialogVisible" width="440px" :close-on-click-modal="false">
+      <div>
+        <div class="amount-input">
+          <p>数量</p>
+          <el-input type="number" v-model="upscoreNum" style="width: 100%;"></el-input>
+        </div>
+        <div class="total-box">
+          <p>总人数：{{ upscoreList?.length }}</p>
+          <p>总上分：{{ upscoreList?.length*upscoreNum }}</p>
+        </div>
+        <el-table :data="upscoreList" style="width: auto" border>
+          <el-table-column prop="id" label="ID" align="center" width="110" key="1">
+          </el-table-column>
+          <el-table-column prop="email" label="邮箱" align="center" key="2">
+          </el-table-column>
+          <el-table-column prop="balance" label="余额" align="center" width="110" key="3">
+          </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button type="primary" @click="batchUpAndDownSave">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -217,7 +249,9 @@ export default {
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
-
+      dialogVisible: false,
+      upscoreList:[],
+      upscoreNum:""
     };
   },
   mixins: [pagination],
@@ -313,13 +347,40 @@ export default {
       exportExcel(urlStr, data, "用户列表导出")
     },
     // 下载模板
-    downloadExcel() {
+    downloadExcel(name) {
       const urlStr = config.api + '/file/template/download';
       const data = {
-        name: 'SIGN_ACCOUNT'
+        name
       };
-
       exportExcel(urlStr, data, "用户导入模板")
+    },
+    async importBatchUpAndDownFunc(file) {
+      const formData = new FormData();
+      formData.append('file', file.raw); 
+      const res = await this.$http.importBatchUpAndDown(formData);
+      if (res) {
+        this.upscoreList = res;
+        if (this.upscoreList?.length > 0) {
+          this.dialogVisible = true;
+        } else {
+          this.$message.error('上传数据不正确，请确认后重新上传！')
+        }
+      } else {
+        this.upscoreList = []
+      }
+    },
+    async batchUpAndDownSave() {
+      if (!this.upscoreNum) {
+        this.$message.error('请输入数量')
+        return
+      }
+      const ids = this.upscoreList.map(x=>x.id)
+      const res = await this.$http.batchUpAndDown({ids,amount:this.upscoreNum,coin:'ETH'});
+      if (res) {
+        this.dialogVisible = false;
+        this.fetchUserlist();
+        this.$message.success('操作成功！')
+      }
     },
     // 封停/解禁
     operatingAccount(row) {
@@ -477,5 +538,29 @@ export default {
 
 .remittance-more {
   display: flex;
+}
+.amount-input{
+  display: flex;
+  align-items: center;
+  p{
+    width: 50px;
+  }
+}
+.total-box{
+  display: flex;
+  margin: 15px 0;
+  margin-bottom: 20px;
+  p{
+    margin-right: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+.upload-demo{
+  margin-left: 20px;
+}
+.download-module{
+  position: relative;
+  top: -4px;
 }
 </style>
