@@ -152,7 +152,7 @@
           <el-input type="number" v-model.number="ruleForm.issuanceNumber" style="width: 300px" placeholder="请输入发行总量" />
         </el-form-item>
         <el-form-item label="描述">
-          <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.boxDesc"></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.remark"></el-input>
         </el-form-item>
       </el-form>
 
