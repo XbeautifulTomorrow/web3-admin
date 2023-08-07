@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="setting-item">
-        <div class="setting-title">流水佣金比率</div>
+        <div class="setting-title">流水佣金比例</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入流水佣金比率"
             v-model="points.flowCommissionRate" clearable>
