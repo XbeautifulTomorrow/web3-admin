@@ -55,7 +55,7 @@
           <span v-if="scope.row.rebatesType == 'CONSUME'">消费</span>
         </template>
       </el-table-column>
-      <el-table-column prop="orderId" label="订单号" align="center" key="5">
+      <el-table-column prop="orderNumber" label="订单号" align="center" key="5">
       </el-table-column>
       <el-table-column prop="traAmount" sortable="custom" :label="`金额(${coin})`" align="center" key="6">
       </el-table-column>
