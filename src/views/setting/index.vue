@@ -35,6 +35,15 @@
           </el-input>
         </div>
       </div>
+      <div class="setting-item">
+        <div class="setting-title">流水佣金比率</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px;" placeholder="输入流水佣金比率"
+            v-model="points.flowCommissionRate" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
       <el-button type="primary" style="width: 160px;" size="medium" @click="submitPoints()">确认修改</el-button>
     </div>
     <div class="withdrawal-settings">
@@ -223,7 +232,8 @@ export default {
         downCommissionRate: null, // 下级佣金比例
         downPointRate: null, // 下级积分比例
         consumePointRate: null, // 消费积分
-        regCountdownTime: null // 
+        regCountdownTime: null, // 
+        flowCommissionRate:null //流水佣金比例
       },
 
       /** 提现相关配置 */
@@ -290,8 +300,9 @@ export default {
         this.points = {
           ...res,
           downCommissionRate: new bigNumber(res.downCommissionRate).multipliedBy(100).toFixed(2), //下级佣金比例
-          downPointRate: new bigNumber(res.downPointRate).multipliedBy(100).toFixed(2), //下级积分比例
-          consumePointRate: new bigNumber(res.consumePointRate).multipliedBy(100).toFixed(2) //消费积分
+          downPointRate: new bigNumber(res.downPointRate).multipliedBy(100).toFixed(2), //下级积分比例  
+          consumePointRate: new bigNumber(res.consumePointRate).multipliedBy(100).toFixed(2), //消费积分
+          flowCommissionRate: new bigNumber(res.flowCommissionRate).multipliedBy(100).toFixed(2) //流水佣金比例
         };
 
         this.$forceUpdate();
@@ -302,13 +313,15 @@ export default {
       const {
         downCommissionRate,
         downPointRate,
-        consumePointRate
+        consumePointRate,
+        flowCommissionRate
       } = this.points;
 
       if (
         !downCommissionRate ||
         !downPointRate ||
-        !consumePointRate) {
+        !consumePointRate ||
+        !flowCommissionRate) {
         this.$message.error("积分配置相关参数不完整，请补充完整后重试");
         return
       }
@@ -317,7 +330,8 @@ export default {
         ...this.points,
         downCommissionRate: accurateDecimal(new bigNumber(downCommissionRate).dividedBy(100), 4), //下级佣金比例
         downPointRate: accurateDecimal(new bigNumber(downPointRate).dividedBy(100), 4), //下级积分比例
-        consumePointRate: accurateDecimal(new bigNumber(consumePointRate).dividedBy(100), 4) //消费积分
+        consumePointRate: accurateDecimal(new bigNumber(consumePointRate).dividedBy(100), 4), //消费积分
+        flowCommissionRate: accurateDecimal(new bigNumber(flowCommissionRate).dividedBy(100), 4) //流水佣金比例
       });
 
       if (res) {
