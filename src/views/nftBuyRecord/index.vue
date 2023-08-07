@@ -5,6 +5,15 @@
       <el-input class="public-input" style="width: 220px;" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
       <el-input class="public-input" style="width: 220px;" placeholder="输入hash" v-model="txid" clearable />
       <el-input class="public-input" style="width: 220px;" placeholder="输入票号" v-model="num" clearable />
+      <el-select class="public-input" v-model="winningStatus" placeholder="中奖状态" clearable style="width: 120px">
+        <el-option label="已中奖" value="YES" />
+        <el-option label="未中奖" value="NO" />
+      </el-select>
+      <el-select class="public-input" v-model="status" placeholder="全部状态" clearable style="width: 120px">
+        <el-option label="待开奖" value="TO_BE_AWARDED" />
+        <el-option label="已开奖" value="AWARDED" />
+        <el-option label="已退款" value="REFUNDED" />
+      </el-select>
       <div class="public-date-box">
         <span class="demonstration">
           价格区间
@@ -161,6 +170,8 @@ export default {
       userName: null,
       txid: null,
       num: null,
+      winningStatus: null,
+      status: null,
       startPrice: null,
       endPrice: null,
       startNumbers: null,
@@ -208,6 +219,8 @@ export default {
       return {
         orderNum: this.orderNum,
         userName: this.userName,
+        winningStatus: this.winningStatus,
+        status: this.status,
         txid: this.txid,
         num: this.num,
         startPrice: this.startPrice,
