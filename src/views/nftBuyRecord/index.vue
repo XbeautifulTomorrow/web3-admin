@@ -3,7 +3,6 @@
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 220px;" placeholder="输入订单号" v-model="orderNum" clearable />
       <el-input class="public-input" style="width: 220px;" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
-      <el-input class="public-input" style="width: 220px;" placeholder="输入hash" v-model="txid" clearable />
       <el-input class="public-input" style="width: 220px;" placeholder="输入票号" v-model="num" clearable />
       <el-select class="public-input" v-model="winningStatus" placeholder="中奖状态" clearable style="width: 120px">
         <el-option label="已中奖" value="YES" />
@@ -16,7 +15,7 @@
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">
-          价格区间
+          消费区间
         </span>
         <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最低价"
           v-model.number="startPrice" clearable />
@@ -40,14 +39,6 @@
           end-placeholder="结束时间">
         </el-date-picker>
       </div>
-      <div class="public-date-box">
-        <span class="demonstration">
-          交易完成时间
-        </span>
-        <el-date-picker v-model="transactionCompletionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
-        </el-date-picker>
-      </div>
       <el-button type="primary" icon="el-icon-search" class="public-search"
         @click="fetchOneNftLotteryOrdersManagerList()">
         查询
@@ -56,29 +47,29 @@
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
         <div class="remittance-item">
-          <div class="title">订单数量</div>
+          <div class="title">订单数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.numberOfOrders }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">开盒次数</div>
+          <div class="title">总票数</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.numberOfUnpacks }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">总消费</div>
+          <div class="title">总金额</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalConsumption }}</div>
         </div>
-        <div class="remittance-item">
+        <!-- <div class="remittance-item">
           <div class="title">总返奖</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalRebates }}</div>
         </div>
         <div class="remittance-item">
           <div class="title">总佣金</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalCommission }}</div>
-        </div>
+        </div> -->
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%"  @sort-change="sortChange" class="public-table" border>
-      <el-table-column sortable="custom" prop="id" label="订单号" align="center" key="1">
+      <el-table-column sortable="custom" prop="orderNum" label="订单号" align="center" key="1">
       </el-table-column>
       <el-table-column prop="nftImage" label="NFT图" align="center" key="3">
         <template slot-scope="scope">
@@ -97,13 +88,13 @@
       </el-table-column>
       <el-table-column sortable="custom" label="票号" align="center" key="6">
         <template slot-scope="scope">
-          {{ `${scope.row.startNumbers} ${scope.row.endNumbers}` }}
+          {{ `${scope.row.startNumbers}-${scope.row.endNumbers}` }}
         </template>
       </el-table-column>
-      <el-table-column prop="userId" label="挂单用户" align="center" key="7">
+      <el-table-column prop="userId" label="下单用户" align="center" key="7">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
-          <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
+          <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.username || '--' }}</p>
         </template>
       </el-table-column>
       <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="8">
@@ -116,10 +107,6 @@
       </el-table-column>
       <el-table-column prop="paymentChannel" label="消费渠道" align="center" key="10">
       </el-table-column>
-      <el-table-column prop="walletAddress" label="钱包地址" align="center" key="11">
-      </el-table-column>
-      <el-table-column prop="txid" label="Hash" align="center" key="13">
-      </el-table-column>
       <el-table-column prop="expenditureSerialId" label="消费流水号" align="center" key="14">
       </el-table-column>
       <el-table-column prop="refundSerialId" label="退款流水号" align="center" key="15">
@@ -131,19 +118,9 @@
           <span style="color: #BBBBBB;" v-if="scope.row.status == 'AWARDED'">已开奖</span>
         </template>
       </el-table-column>
-      <el-table-column sortable="custom" prop="paymentTime" width="140px" label="付款时间" align="center" key="18" fixed="right">
+      <el-table-column sortable="custom" prop="paymentTime" width="140px" label="交易时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.paymentTime, 'YYYY-MM-DD HH:mm:ss') }}
-        </template>
-      </el-table-column>
-      <el-table-column sortable="custom" prop="transactionTime" width="140px" label="交易完成时间" align="center" key="19" fixed="right">
-        <template slot-scope="scope">
-          {{ timeForStr(scope.row.transactionTime, 'YYYY-MM-DD HH:mm:ss') }}
-        </template>
-      </el-table-column>
-      <el-table-column sortable="custom" prop="confirmationTime" width="140px" label="确认时间" align="center" key="20" fixed="right">
-        <template slot-scope="scope">
-          {{ timeForStr(scope.row.confirmationTime, 'YYYY-MM-DD HH:mm:ss') }}
         </template>
       </el-table-column>
     </el-table>
@@ -168,7 +145,6 @@ export default {
     return {
       orderNum: null,
       userName: null,
-      txid: null,
       num: null,
       winningStatus: null,
       status: null,
@@ -177,7 +153,6 @@ export default {
       startNumbers: null,
       endNumbers: null,
       transactionTime: null,
-      transactionCompletionTime: null,
       page: 1,
       size: 20,
       tableData: null,
@@ -196,7 +171,7 @@ export default {
     bigNumber: bigNumber,
     timeForStr: timeForStr,
     searchFun() {
-      let { transactionTime, transactionCompletionTime } = this;
+      let { transactionTime } = this;
       let startTxtime = null;
       let endTxTime = null;
       let startConfirmTime = null;
@@ -208,20 +183,11 @@ export default {
       if (transactionTime && transactionTime[1]) {
         endTxTime = timeForStr(transactionTime[1], 'YYYY-MM-DD HH:mm:ss');
       }
-
-      if (transactionCompletionTime && transactionCompletionTime[0]) {
-        startConfirmTime = timeForStr(transactionCompletionTime[0], 'YYYY-MM-DD HH:mm:ss');
-      }
-      if (transactionCompletionTime && transactionCompletionTime[1]) {
-        endConfirmTime = timeForStr(transactionCompletionTime[1], 'YYYY-MM-DD HH:mm:ss');
-      }
-
       return {
         orderNum: this.orderNum,
         userName: this.userName,
         winningStatus: this.winningStatus,
         status: this.status,
-        txid: this.txid,
         num: this.num,
         startPrice: this.startPrice,
         endPrice: this.endPrice,
@@ -229,8 +195,6 @@ export default {
         endNumbers: this.endNumbers,
         startTxtime,
         endTxTime,
-        startConfirmTime,
-        endConfirmTime
       };
     },
     // 加载列表
