@@ -24,15 +24,6 @@
       </div>
       <div class="public-date-box">
         <span class="demonstration">
-          票号区间
-        </span>
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最低价"
-          v-model.number="startNumbers" clearable />
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最高价"
-          v-model.number="endNumbers" clearable />
-      </div>
-      <div class="public-date-box">
-        <span class="demonstration">
           交易时间
         </span>
         <el-date-picker v-model="transactionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
