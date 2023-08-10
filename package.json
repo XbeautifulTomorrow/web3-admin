@@ -10,7 +10,7 @@
     "pre": "vue-cli-service build --mode pre"
   },
   "dependencies": {
-    "@antv/g2": "^4.2.8",
+    "@antv/g2plot": "^2.4.31",
     "ansi_up": "^5.2.1",
     "axios": "^0.22.0",
     "bignumber.js": "^9.1.1",

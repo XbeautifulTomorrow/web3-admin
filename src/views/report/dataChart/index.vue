@@ -1,56 +1,29 @@
 <template>
-  <div class="dataChart report-public-content">
-    <div class="report-public-header">
-      <h2>{{ $t("report.dataChart") }}</h2>
-      <el-select
-        v-model="day"
-        :placeholder="$t('public.select')"
-        class="public-select-box"
-        popper-class="public-select-box"
-        @change="dayChangeFun"
-      >
-        <el-option
-          v-for="item in options"
-          :key="`${item.key}-${item.value}`"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+  <el-card>
+    <div slot="header" class="clearfix">
+      <div class="report-public-header">
+        <h3><slot></slot></h3>
+        <el-select v-model="day" :placeholder="$t('public.select')" @change="dayChangeFun" style="width: 135px">
+          <el-option v-for="item in options" :key="`${item.key}-${item.value}`" :label="item.label" :value="item.value"> </el-option>
+        </el-select>
+      </div>
     </div>
-    <div class="dataChart-content">
-      <ul class="dataChart-content-title">
-        <li
-          :class="[
-            'dataChart-content-title-list cursor',
-            { 'active-list disabled-cursor': activeName === 'balance' },
-          ]"
-          @click="tabClick('balance')"
-        >
-          余额
-        </li>
-        <li
-          :class="[
-            'dataChart-content-title-list cursor',
-            { 'active-list disabled-cursor': activeName === 'integral' },
-          ]"
-          @click="tabClick('integral')"
-        >
-          积分
-        </li>
-      </ul>
-      <chart
-        v-if="activeName === 'balance'"
-        :mainChartDataShow="mainChartDataShowbalance"
-        id="balance"
-      />
-      <chart
-        v-if="activeName === 'integral'"
-        :mainChartDataShow="mainChartDataShowintegral"
-        id="integral"
-      />
+    <div class="dataChart report-public-content">
+      <div class="dataChart-content">
+        <ul class="dataChart-content-title">
+          <li
+            :class="['dataChart-content-title-list cursor', { 'active-list disabled-cursor': activeName === item.type }]"
+            @click="tabClick(item.type)"
+            v-for="item in typeList"
+            :key="item.type"
+          >
+            {{ item.name }}
+          </li>
+        </ul>
+        <chart :dataList="dataList" :id="activeName" />
+      </div>
     </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
@@ -62,89 +35,38 @@ export default {
   name: "DataChart",
   // 模板引入
   components: { chart },
+  props: {
+    typeList: {
+      type: [],
+      required: true,
+    },
+    dataList: {
+      type: [],
+      required: true,
+    },
+  },
   // 数据
   data() {
     return {
-      activeName: "balance",
+      activeName: "",
       options: options,
       day: 7,
-      mainChartDataShowbalance: [],
-      mainChartDataShowintegral: [],
     };
   },
+  watch: {},
   // 方法
   methods: {
-    dayChangeFun() {
-      this.mainChartDataShowApi();
-    },
+    dayChangeFun() {},
     tabClick(name) {
       this.activeName = name;
     },
-    async mainChartDataShowApi() {
-      const { day } = this;
-      const res = await this.$http.mainChartDataShow({ day });
-      if (res) {
-        const _data = Object.copyArrObj(res);
-        let _databalanceArr = [];
-        let _dataintegralArr = [];
-        _data.forEach((item) => {
-          const {
-            addbalance = 0,
-            connectbalance = 0,
-            onlinebalance = 0,
-            addintegral = 0,
-            connectintegral = 0,
-            onlineintegral = 0,
-          } = item;
-          const time = dayjs(item.time).format("YYYY-MM-DD HH:mm:ss");
-          const _databalanceList = [
-            {
-              time,
-              name: this.$t("report.addbalance"),
-              value: addbalance,
-            },
-            {
-              time,
-              name: this.$t("report.connectbalance"),
-              value: connectbalance,
-            },
-            {
-              time,
-              name: this.$t("report.onlinebalance"),
-              value: onlinebalance,
-            },
-          ];
-          const _dataintegralList = [
-            {
-              time,
-              name: this.$t("report.addintegral"),
-              value: addintegral,
-            },
-            {
-              time,
-              name: this.$t("report.connectintegral"),
-              value: connectintegral,
-            },
-            {
-              time,
-              name: this.$t("report.onlineintegral"),
-              value: onlineintegral,
-            },
-          ];
-          _databalanceArr = [..._databalanceArr, ..._databalanceList];
-          _dataintegralArr = [..._dataintegralArr, ..._dataintegralList];
-        });
-        this.mainChartDataShowbalance = _databalanceArr;
-        this.mainChartDataShowintegral = _dataintegralArr;
-      }
-    },
   },
   // 创建后
-  created() {
-    this.mainChartDataShowApi();
-  },
+  created() {},
   // 挂载后
-  mounted() {},
+  mounted() {
+    this.activeName = this.typeList[0].type;
+  },
   // 更新后
   updated() {},
   // 销毁

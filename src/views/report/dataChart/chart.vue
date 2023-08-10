@@ -1,16 +1,16 @@
 <template>
-  <div class="reportChart" :id="id"></div>
+  <div :id="id"></div>
 </template>
 
 <script>
-import { Chart } from '@antv/g2';
+import { Line } from "@antv/g2plot";
 export default {
-  name: 'ReportChart',
+  name: "ReportChart",
   // 模板引入
   components: {},
   props: {
-    mainChartDataShow: {
-      tpe: Array,
+    dataList: {
+      type: Array,
       default: () => {
         return [];
       },
@@ -29,70 +29,64 @@ export default {
   // 方法
   methods: {
     chartFun() {
-      const { container, mainChartDataShow, id } = this;
-      if (mainChartDataShow.length < 1 && !id) return;
+      const { container, dataList, id } = this;
+      if (dataList.length < 1 && !id) return;
+      const data = dataList;
       if (container) {
         this.container.clear();
       } else {
-        this.container = new Chart({
-          container: id,
-          autoFit: true,
-          height: 500,
+        const mergedData = [];
+        data.forEach((d) => {
+          Object.keys(d).forEach((key) => {
+            if (key !== "year") {
+              mergedData.push({
+                year: d.year,
+                value: d[key],
+                series: key,
+                type: d[key].type || null,
+              });
+            }
+          });
         });
+        // 创建折线图实例
+        const linePlot = new Line(id, {
+          data: mergedData,
+          xField: "year", // x轴字段
+          yField: "value", // y轴字段
+          seriesField: "series", // 数据系列字段
+          legend: true, // 是否展示图例
+          smooth: true, // 是否平滑连接点
+        });
+
+        // 渲染图表
+        linePlot.render();
       }
-      const chart = this.container;
-      chart.data(mainChartDataShow);
-      chart.scale({
-        // 之前的chart.source()方法已经替换为chart.data()和chart.scale()
-        time: {
-          range: [0, 1], // 输出数据的范围，默认[ 0, 1 ]，格式为 [ min, max ]，min 和 max 均为 0 至 1 范围的数据 --官方
-        }, // 简单来说就是 这个图标的多少用于显示数据[0,1]就是数据占满横坐标宽度,[0,0.5]就是还余下半个空的横坐标
-        value: {
-          min: 0, // 我的纵坐标count的最小值，不设置的话自动取数据中最小数的作为y=0的起始
-          nice: true, // 默认为 true，用于优化数值范围，使绘制的坐标轴刻度线均匀分布。例如原始数据的范围为 [3, 97]，如果 nice 为 true，那么就会将数值范围调整为 [0, 100] --官方
-        },
-      });
-      chart.tooltip({
-        showCrosshairs: false,
-        shared: true,
-      });
-      chart.legend({
-        position: 'top-left',
-      });
-      chart.axis('time', {
-        label: {
-          offset: 25,
-          rotate: -45,
-          autoRotate: true,
-          formatter(text) {
-            // 字符太长添加省略号
-            return text.length > 6 ? `${text.slice(0, 6)}...` : text;
-          },
-        },
-      });
-      chart
-        .line()
-        .position('time*value')
-        .color('name');
-      chart.render();
     },
   },
   // 创建后
   created() {},
   // 挂载后
   mounted() {
-    this.chartFun();
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.chartFun();
+      }, 200);
+    });
   },
   // 更新后
   updated() {},
   // 销毁
   beforeDestroy() {},
   watch: {
-    mainChartDataShow: {
+    dataList: {
       deep: true,
-      handler: function(newData) {
+      handler: function (newData) {
         if (newData.length > 0) {
-          this.chartFun();
+          this.$nextTick(() => {
+            setTimeout(() => {
+              this.chartFun();
+            }, 200);
+          });
         }
       },
     },
