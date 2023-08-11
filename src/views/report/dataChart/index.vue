@@ -10,16 +10,9 @@
     </div>
     <div class="dataChart report-public-content">
       <div class="dataChart-content">
-        <ul class="dataChart-content-title">
-          <li
-            :class="['dataChart-content-title-list cursor', { 'active-list disabled-cursor': activeName === item.type }]"
-            @click="tabClick(item.type)"
-            v-for="item in typeList"
-            :key="item.type"
-          >
-            {{ item.name }}
-          </li>
-        </ul>
+        <el-radio-group size="medium" v-model="activeName" @change="changeType" style="margin-bottom: 50px">
+          <el-radio-button :label="item.type" v-for="item in typeList" :key="item.type">{{ item.name }}</el-radio-button>
+        </el-radio-group>
         <chart :dataList="dataList" :id="activeName" />
       </div>
     </div>
@@ -56,9 +49,12 @@ export default {
   watch: {},
   // 方法
   methods: {
-    dayChangeFun() {},
-    tabClick(name) {
-      this.activeName = name;
+    dayChangeFun() {
+      this.$emit("change", { day: this.day, type: this.activeName });
+    },
+    changeType(type) {
+      this.activeName = type;
+      this.$emit("change", { day: this.day, type: this.activeName });
     },
   },
   // 创建后
@@ -74,37 +70,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.dataChart-content-title {
-  display: flex;
-  align-items: center;
-  align-content: center;
-  position: relative;
-  top: 1px;
-}
-.dataChart-content-title-list {
-  padding: 10px 20px;
-  margin-right: 2px;
-  background-color: #c6c6c6;
-  color: #979797;
-  &:last-child {
-    margin-right: 0;
-  }
-  &:hover {
-    color: #333333;
-    background-color: #fff;
-  }
-}
-.active-list {
-  color: #333333;
-  background-color: #fff;
-}
-</style>
-<style lang="scss">
-// .dataChart {
-//   .el-tabs--border-integral > .el-tabs__header {
-//     background-color: none;
-//     border-bottom: none;
-//   }
-// }
-</style>
+<style lang="scss" scoped></style>

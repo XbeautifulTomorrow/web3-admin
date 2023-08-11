@@ -24,6 +24,7 @@ export default {
   data() {
     return {
       container: null,
+      linePlot: null,
     };
   },
   // 方法
@@ -48,8 +49,11 @@ export default {
             }
           });
         });
+        if (this.linePlot) {
+          this.linePlot.destroy();
+        }
         // 创建折线图实例
-        const linePlot = new Line(id, {
+        this.linePlot = new Line(id, {
           data: mergedData,
           xField: "year", // x轴字段
           yField: "value", // y轴字段
@@ -59,7 +63,7 @@ export default {
         });
 
         // 渲染图表
-        linePlot.render();
+        this.linePlot.render();
       }
     },
   },
@@ -68,9 +72,7 @@ export default {
   // 挂载后
   mounted() {
     this.$nextTick(() => {
-      setTimeout(() => {
-        this.chartFun();
-      }, 200);
+      this.chartFun();
     });
   },
   // 更新后
@@ -83,9 +85,7 @@ export default {
       handler: function (newData) {
         if (newData.length > 0) {
           this.$nextTick(() => {
-            setTimeout(() => {
-              this.chartFun();
-            }, 200);
+            this.chartFun();
           });
         }
       },

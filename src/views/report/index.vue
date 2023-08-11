@@ -7,7 +7,8 @@
         { type: 'balance', name: '余额' },
         { type: 'integral', name: '积分' },
       ]"
-      :dataList="dataList2"
+      @change="changeTypeCash"
+      :dataList="dataList"
     >
       金流监测
     </dataChart>
@@ -17,7 +18,8 @@
         { type: 'population', name: '人数' },
         { type: 'withdrawal', name: '充提' },
       ]"
-      :dataList="dataList"
+      :dataList="dataList1"
+      @change="changeTypeChart"
     >
       数据图表
     </dataChart>
@@ -29,7 +31,8 @@
         { type: 'twoWeek', name: '14日' },
         { type: 'month', name: '30日' },
       ]"
-      :dataList="dataList"
+      :dataList="dataList2"
+      @change="changeTypeKeep"
     >
       留存数据
     </dataChart>
@@ -76,6 +79,11 @@ export default {
         { year: "2011", series1: 120, series2: 220, series3: 230 },
         { year: "2012", series1: 140, series2: 240, series3: 260 },
       ],
+      dataList1: [
+        { year: "2010", series1: 100, series2: 200, series3: 300 },
+        { year: "2011", series1: 120, series2: 220, series3: 230 },
+        { year: "2012", series1: 140, series2: 240, series3: 260 },
+      ],
       dataList2: [
         {
           year: "2018",
@@ -99,7 +107,23 @@ export default {
     };
   },
   // 方法
-  methods: {},
+  methods: {
+    //金流监测
+    changeTypeCash(data) {
+      console.log(data);
+    },
+    // 数据图表
+    changeTypeChart(data) {
+      console.log(data);
+      this.dataList1 = [
+        { year: "2010", series1: 10, series2: 200, series3: 300 },
+        { year: "2011", series1: 120, series2: 220, series3: 230 },
+        { year: "2012", series1: 440, series2: 240, series3: 260 },
+      ];
+    },
+    // 留存数据
+    changeTypeKeep(data) {},
+  },
   // 创建后
   created() {},
   // 挂载后
