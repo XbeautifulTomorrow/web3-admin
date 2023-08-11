@@ -4,7 +4,8 @@
       <div class="title-box">
         <h3>盲盒排行榜</h3>
         <el-select v-model="type" @change="getDataList" style="width: 135px">
-          <el-option :label="item.label" :value="item.value" v-for="item in selectOptions"></el-option>
+          <el-option :label="item.label" :value="item.value" v-for="(item, index) in selectOptions"
+            :key="index"></el-option>
         </el-select>
       </div>
     </div>
@@ -55,11 +56,11 @@ export default {
     // this.mainChartDataShowApi();
   },
   // 挂载后
-  mounted() {},
+  mounted() { },
   // 更新后
-  updated() {},
+  updated() { },
   // 销毁
-  beforeDestroy() {},
+  beforeDestroy() { },
 };
 </script>
 
@@ -67,6 +68,7 @@ export default {
 .report-table-box {
   min-height: 300px;
 }
+
 .title-box {
   display: flex;
   justify-content: space-between;

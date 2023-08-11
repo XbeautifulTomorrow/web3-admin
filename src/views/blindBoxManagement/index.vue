@@ -1094,6 +1094,9 @@ export default {
             }
 
             this.bloodPool.adjustRate = res.adjustRate;
+            this.bloodPool.grossIncome = res.grossIncome;
+            this.bloodPool.totalOpenNftPrice = res.totalOpenNftPrice;
+            this.bloodPool.realRate = res.realRate;
 
             this.calculationNft = res.seriesSort; // 合计NFT系列
             let platformCount = [];
