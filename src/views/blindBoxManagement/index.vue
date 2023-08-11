@@ -101,37 +101,42 @@
           {{ `${accurateDecimal(new bigNumber(scope.row.deviseRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="adjust" width="100" sortable="custom" label="中奖修正" align="center" key="18">
+      <el-table-column prop="reduceThreshold" width="100" sortable="custom" label="盲盒衰减率" align="center" key="18">
+        <template slot-scope="scope">
+          {{ `${accurateDecimal(new bigNumber(scope.row.reduceThreshold || 0).multipliedBy(100), 4)}%` }}
+        </template>
       </el-table-column>
-      <el-table-column prop="adjustRate" width="100" sortable="custom" label="修正返还率" align="center" key="19">
+      <el-table-column prop="adjust" width="100" sortable="custom" label="中奖修正" align="center" key="19">
+      </el-table-column>
+      <el-table-column prop="adjustRate" width="100" sortable="custom" label="修正返还率" align="center" key="20">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.adjustRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="expectRate" width="100" sortable="custom" label="期望返还率" align="center" key="20">
+      <el-table-column prop="expectRate" width="100" sortable="custom" label="期望返还率" align="center" key="21">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.expectRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="externalStatus" sortable="custom" label="外部异常" align="center" key="21">
+      <el-table-column prop="externalStatus" sortable="custom" label="外部异常" align="center" key="22">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.externalStatus == 'NUMBER'">数量不足</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="bloodPoolsStatus" sortable="custom" label="血池开关" align="center" key="22">
+      <el-table-column prop="bloodPoolsStatus" sortable="custom" label="血池开关" align="center" key="23">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.bloodPoolsStatus == 'FALSE'">关闭</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="boxStatus" sortable="custom" label="状态" align="center" key="23">
+      <el-table-column prop="boxStatus" sortable="custom" label="状态" align="center" key="24">
         <template slot-scope="scope">
           <span style="color: #EC5706;" v-if="scope.row.boxStatus == 'DISABLE'">冻结</span>
           <span style="color: #21AE04;" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="24" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="25" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)">
             编辑
@@ -180,6 +185,10 @@
           </el-form-item>
           <el-form-item label="设计返还率" prop="deviseRate">
             <el-input type="number" v-model="ruleForm.deviseRate" style="width: 300px" placeholder="请输入设计返还率">
+              <template slot="append">%</template></el-input>
+          </el-form-item>
+          <el-form-item label="盲盒衰减率" prop="reduceThreshold">
+            <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入盲盒衰减率">
               <template slot="append">%</template></el-input>
           </el-form-item>
           <el-form-item label="传奇数量" prop="legendNum">
@@ -263,7 +272,7 @@
                   {{ chainFormat(scope.row.chain) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="number" label="数量" width="120px" align="center" key="3">
+              <el-table-column prop="number" label="期望数量" width="120px" align="center" key="3">
                 <template slot-scope="scope">
                   <div class="number-box">
                     <el-input type="number" class="number" v-model.number="scope.row.number"></el-input>
@@ -276,21 +285,23 @@
                   </div>
                 </template>
               </el-table-column>
-              <el-table-column prop="floorPrice" v-if="calculationNft.length > 0" label="均价" align="center" key="4">
+              <el-table-column prop="realNumber" label="实际数量" width="120px" align="center" key="4">
               </el-table-column>
-              <el-table-column prop="floorPrice" v-else label="地板价" align="center" key="5">
+              <el-table-column prop="floorPrice" v-if="calculationNft.length > 0" label="均价" align="center" key="5">
               </el-table-column>
-              <el-table-column prop="boxImg" label="总价" align="center" key="6">
+              <el-table-column prop="floorPrice" v-else label="地板价" align="center" key="6">
+              </el-table-column>
+              <el-table-column prop="boxImg" label="总价" align="center" key="7">
                 <template slot-scope="scope">
                   {{ new bigNumber(scope.row.floorPrice).multipliedBy(scope.row.number || 0).toFixed(4) }}
                 </template>
               </el-table-column>
-              <el-table-column label="几率" align="center" key="7">
+              <el-table-column label="几率" align="center" key="8">
                 <template slot-scope="scope">
                   {{ probability(scope.row, 1) }}
                 </template>
               </el-table-column>
-              <el-table-column align="center" width="60" key="8" fixed="right">
+              <el-table-column align="center" width="60" key="9" fixed="right">
                 <template slot-scope="scope">
                   <img style="width: 24px;cursor: pointer;" @click="handleNftDel(scope.row, scope.$index, 1)"
                     src="@/assets/images/icon_delete.svg" />
@@ -467,6 +478,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
+        reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
@@ -696,7 +708,8 @@ export default {
       this.ruleForm = {
         ...this.ruleForm,
         ...row,
-        deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4)
+        deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4),
+        reduceThreshold: new bigNumber(row.reduceThreshold).multipliedBy(100).toFixed(4),
       }
 
       this.operatingType = 2;
@@ -856,6 +869,7 @@ export default {
             adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             coin: this.coin,
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
+            reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
             platformList: platformNftData,
             externalList: externalNftData
           };
@@ -1065,6 +1079,7 @@ export default {
             bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
             adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
+            reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
             platformList: platformNftList,
             externalList: externalNftList
           };
@@ -1105,6 +1120,7 @@ export default {
                 ) {
                   this.externalList[i].nftType = "EXTERNAL";
                   this.externalList[i].totalNumber = this.calculationNft[j].totalNumber;
+                  this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
                   externalCount.push(this.externalList[i]);
@@ -1163,6 +1179,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
+        reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
@@ -1262,6 +1279,9 @@ export default {
       ],
       deviseRate: [
         { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },
+      ],
+      reduceThreshold: [
+        { required: true, message: "请输入盲盒衰减率", trigger: ["blur", "change"] },
       ],
       legendNum: [
         { required: true, message: "请输入传奇数量", trigger: ["blur", "change"] },
