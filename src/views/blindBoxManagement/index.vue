@@ -101,11 +101,11 @@
           {{ `${accurateDecimal(new bigNumber(scope.row.deviseRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="reduceThreshold" width="100" sortable="custom" label="盲盒衰减率" align="center" key="18">
+      <!-- <el-table-column prop="reduceThreshold" width="100" sortable="custom" label="盲盒衰减率" align="center" key="18">
         <template slot-scope="scope">
           {{ `${accurateDecimal(new bigNumber(scope.row.reduceThreshold || 0).multipliedBy(100), 4)}%` }}
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column prop="adjust" width="100" sortable="custom" label="中奖修正" align="center" key="19">
       </el-table-column>
       <el-table-column prop="adjustRate" width="100" sortable="custom" label="修正返还率" align="center" key="20">
@@ -187,10 +187,10 @@
             <el-input type="number" v-model="ruleForm.deviseRate" style="width: 300px" placeholder="请输入设计返还率">
               <template slot="append">%</template></el-input>
           </el-form-item>
-          <el-form-item label="盲盒衰减率" prop="reduceThreshold">
+          <!-- <el-form-item label="盲盒衰减率" prop="reduceThreshold">
             <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入盲盒衰减率">
               <template slot="append">%</template></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="传奇数量" prop="legendNum">
             <el-input type="number" v-model="ruleForm.legendNum" style="width: 300px" placeholder="请输入传奇数量">
               <template slot="append">
@@ -478,7 +478,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
-        reduceThreshold: null, // 盲盒衰减率
+        // reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
@@ -709,7 +709,7 @@ export default {
         ...this.ruleForm,
         ...row,
         deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4),
-        reduceThreshold: new bigNumber(row.reduceThreshold).multipliedBy(100).toFixed(4),
+        // reduceThreshold: new bigNumber(row.reduceThreshold).multipliedBy(100).toFixed(4),
       }
 
       this.operatingType = 2;
@@ -869,7 +869,7 @@ export default {
             adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             coin: this.coin,
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
-            reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
+            // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
             platformList: platformNftData,
             externalList: externalNftData
           };
@@ -1079,7 +1079,7 @@ export default {
             bloodPoolsStatus: bloodPool.bloodPoolsStatus, // 血池开关
             adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100), 4), // 修正阈值
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
-            reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
+            // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
             platformList: platformNftList,
             externalList: externalNftList
           };
@@ -1182,7 +1182,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
-        reduceThreshold: null, // 盲盒衰减率
+        // reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
@@ -1283,9 +1283,9 @@ export default {
       deviseRate: [
         { required: true, message: "请输入设计返还率", trigger: ["blur", "change"] },
       ],
-      reduceThreshold: [
-        { required: true, message: "请输入盲盒衰减率", trigger: ["blur", "change"] },
-      ],
+      // reduceThreshold: [
+      //   { required: true, message: "请输入盲盒衰减率", trigger: ["blur", "change"] },
+      // ],
       legendNum: [
         { required: true, message: "请输入传奇数量", trigger: ["blur", "change"] },
       ],
