@@ -153,6 +153,7 @@ import { chainList } from "@/utils/chain";
 import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
 import Web3 from "web3";
+import contractInfo from '@/config/sign.js';
 export default {
   name: 'PlatformNftSeries',
   // 模板引入
@@ -283,7 +284,6 @@ export default {
         method: "eth_requestAccounts",
       });
       const is1155 = item.seriesNftType == "ERC1155";
-      const nftHelpAddress = "0x9e46333d65aeDBFbfADD7AeA409A6fE414CC6cfa"; //新的nft转账合约地址
       const web3 = new Web3(window.ethereum);
       const token = item.contractAddress; //nft合约地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
@@ -291,6 +291,7 @@ export default {
         is1155 ? nft1155Abi : nft721Abi,
         token
       );
+      const nftHelpAddress  = contractInfo.nftHelpAddress
       // 授权判断
       let isApproved = await nftContract.methods
         .isApprovedForAll(walletAddress, nftHelpAddress)
