@@ -565,8 +565,8 @@ export default {
       });
 
       const is1155 = item.outWithdrawalNftList[0].seriesNftType == "ERC1155";
-      const MultiSign = "0x0763f0e9306742E1dBEebBa0f617BDF0bEe642CF"; //MultiSign 合约地址
-      const nftHelpAddress = "0x9e46333d65aeDBFbfADD7AeA409A6fE414CC6cfa"; //新的nft转账合约地址
+      const MultiSign = "0x6311ad21c46e0867028a283118a3e9ddfec1a9af"; //MultiSign 合约地址
+      const nftHelpAddress = "0x5062162b0b29ceabe92cd679587977650d91066d"; //新的nft转账合约地址
       const web3 = new Web3(window.ethereum);
       let MultiSignContract = new web3.eth.Contract(multi, MultiSign);
       const target = nftHelpAddress;
