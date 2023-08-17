@@ -1,13 +1,9 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="obscureField" clearable />
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformList()">
-        查询
-      </el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true">
-        创建NFT
-      </el-button>
+      <el-input class="public-input" style="width: 220px" placeholder="输入ID、名称" v-model="obscureField" clearable />
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="showDialog = true"> 创建NFT </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -18,47 +14,32 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" @sort-change="sortChange" border>
-      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1">
-      </el-table-column>
+      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="seriesImg" label="NFT图" width="120px" align="center" key="2">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%;" :src="scope.row.seriesImg" :preview-src-list="[scope.row.seriesImg]">
-            </el-image>
+            <el-image style="height: 100%" :src="scope.row.seriesImg" :preview-src-list="[scope.row.seriesImg]"> </el-image>
           </div>
         </template>
       </el-table-column>
       <el-table-column prop="seriesType" label="类型" align="center" key="3">
         <template slot-scope="scope">
-          {{ scope.row.seriesType == 'COIN' ? '币' : '图' }}
+          {{ scope.row.seriesType == "COIN" ? "币" : "图" }}
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" label="系列名称" align="center" key="4">
-      </el-table-column>
-      <el-table-column prop="chainType" label="所在链" align="center" key="5">
-      </el-table-column>
-      <el-table-column prop="tokenId" label="tokenId" align="center" key="6">
-      </el-table-column>
-      <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="7">
-      </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="8">
-      </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="9">
-      </el-table-column>
-      <el-table-column prop="openNumberTotal" sortable="custom" label="开出数量" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="openPriceTotal" sortable="custom" label="开出总价值" align="center" key="11">
-      </el-table-column>
-      <el-table-column prop="sellNumberTotal" sortable="custom" label="转卖数量" align="center" key="12">
-      </el-table-column>
-      <el-table-column prop="sellPriceTotal" sortable="custom" label="转卖总价值" align="center" key="13">
-      </el-table-column>
-      <el-table-column prop="outNumberTotal" sortable="custom" label="提出数量" align="center" key="14">
-      </el-table-column>
-      <el-table-column prop="relevancyUserNumber" sortable="custom" label="用户持有" align="center" key="15">
-      </el-table-column>
-      <el-table-column prop="relevancyFoundryNumber" sortable="custom" label="铸造数量" align="center" key="16">
-      </el-table-column>
+      <el-table-column prop="seriesName" label="系列名称" align="center" key="4"> </el-table-column>
+      <el-table-column prop="chainType" label="所在链" align="center" key="5"> </el-table-column>
+      <el-table-column prop="tokenId" label="tokenId" align="center" key="6"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="7"> </el-table-column>
+      <el-table-column prop="contractAddress" label="合约" align="center" key="8"> </el-table-column>
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="9"> </el-table-column>
+      <el-table-column prop="openNumberTotal" sortable="custom" label="开出数量" align="center" key="10"> </el-table-column>
+      <el-table-column prop="openPriceTotal" sortable="custom" label="开出总价值" align="center" key="11"> </el-table-column>
+      <el-table-column prop="sellNumberTotal" sortable="custom" label="转卖数量" align="center" key="12"> </el-table-column>
+      <el-table-column prop="sellPriceTotal" sortable="custom" label="转卖总价值" align="center" key="13"> </el-table-column>
+      <el-table-column prop="outNumberTotal" sortable="custom" label="提出数量" align="center" key="14"> </el-table-column>
+      <el-table-column prop="relevancyUserNumber" sortable="custom" label="用户持有" align="center" key="15"> </el-table-column>
+      <el-table-column prop="relevancyFoundryNumber" sortable="custom" label="铸造数量" align="center" key="16"> </el-table-column>
       <el-table-column prop="reclaimRate" sortable="custom" label="回收比例" align="center" key="17">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.reclaimRate || 0).multipliedBy(100).toFixed(2)}%` }}
@@ -66,66 +47,103 @@
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" key="18">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="approve(scope.row)">
-            授权
-          </span>
-          <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)">
-            编辑
-          </span>
-          <span class="blueColor publick-button cursor" @click="handleDel(scope.row)">
-            删除
-          </span>
+          <span class="blueColor publick-button cursor" @click="approve(scope.row)" v-if="scope.row.seriesType == 'PIC'"> 授权 </span>
+          <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)"> 编辑 </span>
+          <span class="blueColor publick-button cursor" @click="handleDel(scope.row)"> 删除 </span>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
-    <el-dialog v-if="showDialog" :title="operatingType == 1 ? '创建NFT' : '编辑NFT'" :visible.sync="showDialog" width="540px"
-      :close-on-click-modal="false" :before-close="handleClose">
+    <el-dialog
+      v-if="showDialog"
+      :title="operatingType == 1 ? '创建NFT' : '编辑NFT'"
+      :visible.sync="showDialog"
+      width="540px"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+    >
       <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
         <el-form-item label="名称" prop="seriesName">
-          <el-input :disabled="operatingType != 1" v-model="ruleForm.seriesName" style="width: 300px"
-            placeholder="请输入名称" />
-        </el-form-item>
-        <el-form-item label="合约地址" prop="contractAddress">
-          <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
-            placeholder="请输入合约地址">
-            <template slot="append">
-              <el-button @click="fetchNftSeries()">查询</el-button>
-            </template></el-input>
-        </el-form-item>
-        <el-form-item label="tokenId" prop="tokenId">
-          <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px"
-            placeholder="请输入tokenId" />
+          <el-input
+            :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1"
+            v-model="ruleForm.seriesName"
+            style="width: 300px"
+            placeholder="请输入名称"
+          />
         </el-form-item>
         <el-form-item label="类型" prop="seriesType">
-          <el-select :disabled="operatingType != 1" v-model="ruleForm.seriesType" style="width: 300px"
-            placeholder="请选择类型">
+          <el-select :disabled="operatingType != 1" v-model="ruleForm.seriesType" style="width: 300px" placeholder="请选择类型">
             <el-option label="币" value="COIN" />
             <el-option label="图" value="PIC" />
           </el-select>
         </el-form-item>
+        <template v-if="ruleForm.seriesType !== 'COIN'">
+          <el-form-item label="合约地址" prop="contractAddress">
+            <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
+              <template slot="append">
+                <el-button @click="fetchNftSeries()">查询</el-button>
+              </template></el-input
+            >
+          </el-form-item>
+          <el-form-item label="tokenId" prop="tokenId">
+            <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px" placeholder="请输入tokenId" />
+          </el-form-item>
+        </template>
+        <template v-else>
+          <el-form-item label="币种" prop="seriesCoin">
+            <el-select :disabled="operatingType != 1" v-model="ruleForm.seriesCoin" style="width: 300px">
+              <el-option label="ETH" value="ETH"></el-option>
+            </el-select>
+          </el-form-item>
+        </template>
         <el-form-item label="图片" prop="seriesImg">
-          <el-upload :disabled="operatingType != 1" :action="uploadUrl" :class="{ hide: hideUpload }"
-            :on-change="handleChange" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
-            accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
-            :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
+          <el-upload
+            :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1"
+            :action="uploadUrl"
+            :class="{ hide: hideUpload }"
+            :on-change="handleChange"
+            :on-success="handleUpload"
+            :file-list="fileImg"
+            :multiple="false"
+            :limit="1"
+            accept="image/png,image/jpg,image/jpeg"
+            list-type="picture-card"
+            :before-upload="handleBefore"
+            :on-remove="handleRemove"
+            :on-exceed="handExceed"
+            :headers="uploadHeader"
+          >
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="所在链" prop="chainId">
+        <el-form-item label="所在链" prop="chainId" v-if="ruleForm.seriesType !== 'COIN'">
           <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
-              <span style="float: left;">{{ item.chainName }}</span>
-              <span style="float: right;color: #8492a6;">{{ item.type }}</span>
+              <span style="float: left">{{ item.chainName }}</span>
+              <span style="float: right; color: #8492a6">{{ item.type }}</span>
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="价值" prop="price">
-          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 300px"
-            placeholder="请输入价值">
+          <el-input
+            :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1"
+            type="number"
+            v-model="ruleForm.price"
+            style="width: 300px"
+            placeholder="请输入价值"
+          >
             <template slot="append">{{ coin }}</template>
           </el-input>
         </el-form-item>
@@ -146,24 +164,23 @@
 <script>
 import axios from "axios";
 import bigNumber from "bignumber.js";
-import { timeForStr } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { timeForStr } from "@/utils";
+import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
 import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
 import Web3 from "web3";
 export default {
-  name: 'PlatformNftSeries',
+  name: "PlatformNftSeries",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     var validateRate = (rule, value, callback) => {
       var patt = new RegExp(/^(100|[1-9]?\d(\.\d\d?\d?)?)$|0$/);
       if (!patt.test(value)) {
-        callback(new Error('请输入0-100的百分数'));
+        callback(new Error("请输入0-100的百分数"));
       } else {
         callback();
       }
@@ -174,7 +191,7 @@ export default {
       obscureField: null,
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
@@ -190,44 +207,31 @@ export default {
       },
       operatingType: 1,
       ruleForm: {
-        tokenId: null,// tokenId
+        tokenId: undefined, // tokenId
         contractAddress: "", // 合约地址
-        chainId: null,// 链ID
-        coin: "ETH",// 币种
-        price: null,// 价格
-        seriesName: null,// 系列名称
-        seriesType: null,// 系列类型(COIN-币，PIC-图)
-        seriesImg: null,// 系列图片
-        reclaimRate: null// 回收比例
+        chainId: undefined, // 链ID
+        coin: "ETH", // 币种
+        seriesCoin: "ETH", // 系列币种
+        price: null, // 价格
+        seriesName: null, // 系列名称
+        seriesType: null, // 系列类型(COIN-币，PIC-图)
+        seriesImg: null, // 系列图片
+        reclaimRate: null, // 回收比例
       },
       rules: {
-        tokenId: [
-          { required: true, message: "请输入tokenId", trigger: ["blur", "change"] },
-        ],
-        contractAddress: [
-          { required: true, message: "请输入合约地址", trigger: ["blur", "change"] },
-        ],
-        chainId: [
-          { required: true, message: "请选择链", trigger: ["blur", "change"] },
-        ],
-        price: [
-          { required: true, message: "请输入价值", trigger: ["blur", "change"] },
-        ],
-        seriesName: [
-          { required: true, message: "请输入名称", trigger: ["blur", "change"] },
-        ],
-        seriesType: [
-          { required: true, message: "请选择类型", trigger: ["blur", "change"] },
-        ],
-        seriesImg: [
-          { required: true, message: "请选择NFT图片", trigger: ["blur", "change"] },
-        ],
+        tokenId: [{ required: true, message: "请输入tokenId", trigger: ["blur", "change"] }],
+        contractAddress: [{ required: true, message: "请输入合约地址", trigger: ["blur", "change"] }],
+        chainId: [{ required: true, message: "请选择链", trigger: ["blur", "change"] }],
+        price: [{ required: true, message: "请输入价值", trigger: ["blur", "change"] }],
+        seriesName: [{ required: true, message: "请输入名称", trigger: ["blur", "change"] }],
+        seriesType: [{ required: true, message: "请选择类型", trigger: ["blur", "change"] }],
+        seriesImg: [{ required: true, message: "请选择NFT图片", trigger: ["blur", "change"] }],
         reclaimRate: [
           { required: true, message: "请输入回收比例", trigger: ["blur", "change"] },
-          { validator: validateRate, trigger: ["blur", "change"] }
+          { validator: validateRate, trigger: ["blur", "change"] },
         ],
       },
-      chainList: chainList
+      chainList: chainList,
     };
   },
   mixins: [pagination],
@@ -248,8 +252,8 @@ export default {
 
       this.fetchNftPlatformList();
     },
-          // 连接小狐狸
-          async connectMetaMask() {
+    // 连接小狐狸
+    async connectMetaMask() {
       const _that = this;
       let web3 = new Web3(window.ethereum);
       let ethereum = window.ethereum;
@@ -287,19 +291,12 @@ export default {
       const web3 = new Web3(window.ethereum);
       const token = item.contractAddress; //nft合约地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
-      let nftContract = new web3.eth.Contract(
-        is1155 ? nft1155Abi : nft721Abi,
-        token
-      );
+      let nftContract = new web3.eth.Contract(is1155 ? nft1155Abi : nft721Abi, token);
       // 授权判断
-      let isApproved = await nftContract.methods
-        .isApprovedForAll(walletAddress, nftHelpAddress)
-        .call();
+      let isApproved = await nftContract.methods.isApprovedForAll(walletAddress, nftHelpAddress).call();
       if (!isApproved) {
         //授权
-        await nftContract.methods
-          .setApprovalForAll(nftHelpAddress, true)
-          .send({ from: walletAddress });
+        await nftContract.methods.setApprovalForAll(nftHelpAddress, true).send({ from: walletAddress });
       }
     },
     // 加载列表
@@ -331,8 +328,8 @@ export default {
     },
     handleEdit(row) {
       this.ruleForm = {
-        ...row
-      }
+        ...row,
+      };
 
       this.fileImg = [{ url: row.seriesImg }];
       this.ruleForm.reclaimRate = new bigNumber(this.ruleForm.reclaimRate).multipliedBy(100).toString();
@@ -349,7 +346,7 @@ export default {
       })
         .then(async () => {
           let res = await this.$http.nftPlatformDel({
-            id: row.id
+            id: row.id,
           });
           if (res) {
             this.fetchNftPlatformList(true);
@@ -363,22 +360,22 @@ export default {
     handleClose(done) {
       this.operatingType = 1;
       this.ruleForm = {
-        tokenId: null,// tokenId
+        tokenId: null, // tokenId
         contractAddress: "", // 合约地址
-        chainId: null,// 链ID
-        coin: "ETH",// 币种
-        price: null,// 价格
-        seriesName: null,// 系列名称
-        seriesType: null,// 系列类型(COIN-币，PIC-图)
-        seriesImg: null,// 系列图片
-        reclaimRate: null// 回收比例
-      }
+        chainId: null, // 链ID
+        coin: "ETH", // 币种
+        price: null, // 价格
+        seriesName: null, // 系列名称
+        seriesType: null, // 系列类型(COIN-币，PIC-图)
+        seriesImg: null, // 系列图片
+        reclaimRate: null, // 回收比例
+      };
 
       if (done) {
-        done()
-        return
+        done();
+        return;
       }
-      this.showDialog = false
+      this.showDialog = false;
     },
     handleUpload(res) {
       if (res.code == 200) {
@@ -407,13 +404,13 @@ export default {
       this.$message.error("文件只能上传一个");
     },
     /**
- * @description 查询Nft系列
- */
+     * @description 查询Nft系列
+     */
     fetchNftSeries() {
       const { chainId, contractAddress } = this.ruleForm;
       if (!chainId) {
         this.$message.warning("请选择网络");
-        return
+        return;
       }
 
       let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
@@ -425,26 +422,24 @@ export default {
         .get(getUrl + contractAddress, {
           responseType: "json",
           headers: {
-            "X-API-KEY": "3eb9844d094945f288c104c770365ac8"
-          }
+            "X-API-KEY": "3eb9844d094945f288c104c770365ac8",
+          },
         })
         .then((res) => {
           if (res.status == 200) {
             const nftData = res.data;
-            this.fileImg = [{ url: nftData.image_url }]
+            this.fileImg = [{ url: nftData.image_url }];
             this.ruleForm.seriesName = nftData.name; // 系列名称
             this.ruleForm.seriesImg = nftData.image_url; // Nft图片
             this.ruleForm.keywords = nftData.collection.slug; // 关键字
-            return
+            return;
           }
           this.$message.error("查询失败，请检查合约地址是否正确");
-
         })
-        .catch(error => {
+        .catch((error) => {
           this.$message.error("查询失败，请检查合约地址是否正确");
           console.log(error);
         });
-
     },
     // 提交
     submitForm() {
@@ -472,6 +467,9 @@ export default {
             this.$refs["ruleForm"].resetFields();
             this.$message.success("操作成功！");
             this.fileImg = [];
+            this.hideUpload = false;
+            console.log(this.fileImg);
+            console.log(this.ruleForm);
           }
         } else {
           console.log("error submit!!");
@@ -503,12 +501,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() {
-  },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -539,7 +536,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
