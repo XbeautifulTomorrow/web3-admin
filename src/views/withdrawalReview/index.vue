@@ -358,6 +358,7 @@ import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
 import Web3 from "web3";
 import dayjs from "dayjs";
+import contractInfo  from '@/config/sign.js';
 export default {
   name: "WithdrawalReview",
   // 模板引入
@@ -565,8 +566,8 @@ export default {
       });
 
       const is1155 = item.outWithdrawalNftList[0].seriesNftType == "ERC1155";
-      const MultiSign = "0x0763f0e9306742E1dBEebBa0f617BDF0bEe642CF"; //MultiSign 合约地址
-      const nftHelpAddress = "0x9e46333d65aeDBFbfADD7AeA409A6fE414CC6cfa"; //新的nft转账合约地址
+      const MultiSign = contractInfo.MultiSign ; //MultiSign 合约地址
+      const nftHelpAddress =     contractInfo.nftHelpAddress //新的nft转账合约地址
       const web3 = new Web3(window.ethereum);
       let MultiSignContract = new web3.eth.Contract(multi, MultiSign);
       const target = nftHelpAddress;
