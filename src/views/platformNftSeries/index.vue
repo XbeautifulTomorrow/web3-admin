@@ -89,14 +89,19 @@
             <el-option label="图" value="PIC" />
           </el-select>
         </el-form-item>
+        <el-form-item label="合约地址" prop="contractAddress">
+          <el-input
+            :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1"
+            v-model="ruleForm.contractAddress"
+            style="width: 300px"
+            placeholder="请输入合约地址"
+          >
+            <template slot="append">
+              <el-button @click="fetchNftSeries()">查询</el-button>
+            </template></el-input
+          >
+        </el-form-item>
         <template v-if="ruleForm.seriesType !== 'COIN'">
-          <el-form-item label="合约地址" prop="contractAddress">
-            <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
-              <template slot="append">
-                <el-button @click="fetchNftSeries()">查询</el-button>
-              </template></el-input
-            >
-          </el-form-item>
           <el-form-item label="tokenId" prop="tokenId">
             <el-input :disabled="operatingType != 1" v-model="ruleForm.tokenId" style="width: 300px" placeholder="请输入tokenId" />
           </el-form-item>
@@ -128,8 +133,8 @@
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-form-item label="所在链" prop="chainId" v-if="ruleForm.seriesType !== 'COIN'">
-          <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
+        <el-form-item label="所在链" prop="chainId">
+          <el-select :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
               <span style="float: left">{{ item.chainName }}</span>
               <span style="float: right; color: #8492a6">{{ item.type }}</span>

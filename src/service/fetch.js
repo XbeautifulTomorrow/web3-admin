@@ -207,3 +207,5 @@ export const getBoxBotPageList = (obj) => S.get("/box-bot/pageList", obj);
 export const boxBotOpen = (obj) => S.get("/box-bot/open", obj);
 export const boxBotClose = (obj) => S.get("/box-bot/close", obj);
 export const boxBotUpdate = (obj) => S.post("/box-bot/add", obj);
+export const boxBotHeaderDataTotal = (obj) => S.get("/box-bot/headerDataTotal", obj);
+export const boxBotUpAndDown = (obj) => S.get("/box-bot/upAndDown", obj);

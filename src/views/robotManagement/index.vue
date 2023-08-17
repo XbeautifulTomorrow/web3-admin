@@ -6,13 +6,13 @@
           <div class="remittance-item">
             <div class="title">机器人数量</div>
             <div class="val">
-              {{ statisticsData && statisticsData.totalWalletNum }}
+              {{ statisticsData && statisticsData.botNumber }}
             </div>
           </div>
           <div class="remittance-item">
             <div class="title">机器人余额</div>
             <div class="val">
-              {{ statisticsData && statisticsData.totalAssetBalance }}
+              {{ statisticsData && statisticsData.botBalance }}
             </div>
           </div>
         </div>
@@ -38,10 +38,10 @@
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'open')" v-if="scope.row.botStatus == 'FALSE'">
-            开启
+          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-if="scope.row.botStatus == 'TRUE'">
+            关闭
           </span>
-          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-else> 关闭 </span>
+          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'open')" v-else>开启 </span>
           <span class="blueColor publick-button cursor" @click="setFun(scope.row)">配置</span>
         </template>
       </el-table-column>
@@ -99,8 +99,8 @@
     </el-dialog>
     <el-dialog title="批量上下分" :visible.sync="dialogVisiblePoint" width="30%">
       <el-form ref="ruleFormPoint" :model="ruleFormPoint" label-width="120px" :rules="rules">
-        <el-form-item label="上分" prop="pointer" :rules="rules.blur">
-          <el-input v-model.number="ruleFormPoint.pointer" type="number" autocomplete="off"></el-input>
+        <el-form-item label="上分" prop="amount" :rules="rules.blur">
+          <el-input v-model.number="ruleFormPoint.amount" type="number" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -130,7 +130,7 @@ export default {
       dialogVisiblePoint: false,
       ruleForm: {},
       ruleFormPoint: {
-        pointer: "",
+        amount: "",
       },
       rules: {
         blur: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -163,7 +163,7 @@ export default {
       }
       delete data.size;
       delete data.page;
-      const statisticsData = await this.$http.getWalletRechargeStatistics(data);
+      const statisticsData = await this.$http.boxBotHeaderDataTotal(data);
       if (statisticsData) {
         this.statisticsData = statisticsData;
       }
@@ -217,7 +217,7 @@ export default {
     savePointerFunc() {
       this.$refs.ruleFormPoint.validate(async (valid) => {
         if (valid) {
-          let res = await this.$http.boxBotUpdate({ ...this.ruleFormPoint });
+          let res = await this.$http.boxBotUpAndDown({ ...this.ruleFormPoint });
           if (res) {
             this.dialogVisiblePoint = false;
             this.$refs["ruleFormPoint"].resetFields();
