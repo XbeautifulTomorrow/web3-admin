@@ -254,8 +254,6 @@ export default {
         },
         ...sortData,
         ...search,
-        coinName: "ETH",
-        chainId: "1",
       };
       const res = await this.$http.externalCoinPageList(data);
       if (res) {
