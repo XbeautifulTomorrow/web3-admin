@@ -1257,10 +1257,10 @@ export default {
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
                   externalCount.push(this.externalList[i]);
                 } else if (
-                  this.calculationNft[j].nftType == "EXTERNAL_COIN" &&
+                  this.calculationNft[j].nftType == "EXT_COIN" &&
                   this.calculationNft[j].seriesId == this.externalList[i].seriesId
                 ) {
-                  this.externalList[i].nftType = "EXTERNAL_COIN";
+                  this.externalList[i].nftType = "EXT_COIN";
                   this.externalList[i].totalNumber = this.calculationNft[j].totalNumber;
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
