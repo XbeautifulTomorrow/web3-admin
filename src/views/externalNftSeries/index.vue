@@ -285,6 +285,8 @@ export default {
         await nftContract.methods
           .setApprovalForAll(nftHelpAddress, true)
           .send({ from: walletAddress });
+      }else{
+        this.$message.success("isApproved");
       }
     },
     searchFun() {
