@@ -40,6 +40,12 @@ export const routes = [
         name: "ExternalNftSeries",
       },
       {
+        /** 外部代币管理 */
+        path: "/externalTokenManagement",
+        component: () => import("@/views/externalTokenManagement/index"),
+        name: "externalTokenManagement",
+      },
+      {
         /** 外部NFT管理 */
         path: "/externalNftManagement",
         component: () => import("@/views/externalNftManagement/index"),
@@ -235,6 +241,12 @@ export const routes = [
         path: "/robotManagement",
         component: () => import("@/views/robotManagement/index"),
         name: "robotManagement",
+      },
+      {
+        /** 平台管理-抽奖链管理 */
+        path: "/lotteryChainManagement",
+        component: () => import("@/views/lotteryChainManagement/index"),
+        name: "lotteryChainManagement",
       },
     ],
   },

@@ -474,8 +474,6 @@ export default {
             this.$message.success("操作成功！");
             this.fileImg = [];
             this.hideUpload = false;
-            console.log(this.fileImg);
-            console.log(this.ruleForm);
           }
         } else {
           console.log("error submit!!");

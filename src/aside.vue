@@ -1,41 +1,22 @@
 <template>
   <el-container>
-    <el-aside
-      :width="`${asideWidth}px`"
-      style="background-color: rgb(238, 241, 246)"
-      class="width-animation nav"
-    >
+    <el-aside :width="`${asideWidth}px`" style="background-color: rgb(238, 241, 246)" class="width-animation nav">
       <div class="logoBox" style="background-color: #304156">
         <div class="logo-box"></div>
         <div class="config-box">
-          <el-select
-            v-model="accountType"
-            @change="changeAccount"
-            placeholder="展示测试账号"
-            clearable
-          >
+          <el-select v-model="accountType" @change="changeAccount" placeholder="展示测试账号" clearable>
             <el-option label="展示测试账号" value=""> </el-option>
             <el-option label="不展示测试账号" value="NORMAL"> </el-option>
             <el-option label="只展示测试账号" value="INNER"> </el-option>
           </el-select>
-          <el-select
-            v-model="coinConfig"
-            @change="changeConfig"
-            placeholder="结算币种"
-          >
+          <el-select v-model="coinConfig" @change="changeConfig" placeholder="结算币种">
             <el-option label="ETH" value="ETH"> </el-option>
             <!-- <el-option label="USDT" value="USDT">
             </el-option> -->
           </el-select>
         </div>
       </div>
-      <el-menu
-        :default-openeds="defaultList"
-        :default-active="defaultActive"
-        @select="selectFun"
-        :collapse="isCollapse"
-        class="nav-ul"
-      >
+      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse" class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
@@ -67,6 +48,10 @@
             <i class="el-icon-s-management"></i>
             <span>外部NFT系列</span>
           </el-menu-item>
+          <el-menu-item index="externalTokenManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>外部代币管理</span>
+          </el-menu-item>
           <el-menu-item index="externalNftManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>外部NFT管理</span>
@@ -92,6 +77,10 @@
           <el-menu-item index="setting" class="menu-list">
             <i class="el-icon-s-tools"></i>
             <span>系统设置</span>
+          </el-menu-item>
+          <el-menu-item index="lotteryChainManagement" class="menu-list">
+            <i class="el-icon-message"></i>
+            <span>抽奖链管理</span>
           </el-menu-item>
           <el-menu-item index="email" class="menu-list">
             <i class="el-icon-message"></i>
@@ -210,10 +199,7 @@
         </el-submenu>
       </el-menu>
     </el-aside>
-    <el-container
-      class="width-animation"
-      :style="{ marginLeft: `${asideWidth}px` }"
-    >
+    <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
       <el-header style="text-align: left; font-size: 12px">
         <div class="header-title">
           <div class="header-title-buttons cursor">
@@ -281,6 +267,10 @@ export default {
         {
           label: "外部NFT系列",
           page: "externalNftSeries",
+        },
+        {
+          label: "外部代币管理",
+          page: "externalTokenManagement",
         },
         {
           label: "外部NFT管理",
@@ -355,6 +345,10 @@ export default {
           page: "setting",
         },
         {
+          label: "抽奖链管理",
+          page: "lotteryChainManagement",
+        },
+        {
           label: "群发邮件",
           page: "email",
         },
@@ -423,7 +417,7 @@ export default {
     changeAccount(event) {
       // 设置当前挖矿币种
       this.$store.dispatch("user/setAccountConfig", event);
-      window.location.reload()
+      window.location.reload();
     },
     changeConfig(event) {
       // 设置当前挖矿币种
@@ -458,22 +452,12 @@ export default {
         "externalNftManagement",
         "platformNftManagement",
         "userNftList",
+        "externalTokenManagement",
       ];
 
-      const platformManagement = [
-        "marketManagement",
-        "setting",
-        "email",
-        "robotManagement",
-      ];
+      const platformManagement = ["marketManagement", "setting", "email", "robotManagement", "lotteryChainManagement"];
 
-      const mallManagement = [
-        "blindBoxManagement",
-        "orderManagement",
-        "blindBoxTest",
-        "nftBuyManagement",
-        "nftBuyRecord",
-      ];
+      const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
 
       const fundingStatistics = [
         "cashManagement",

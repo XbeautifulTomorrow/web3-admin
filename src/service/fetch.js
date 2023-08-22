@@ -209,3 +209,19 @@ export const boxBotClose = (obj) => S.get("/box-bot/close", obj);
 export const boxBotUpdate = (obj) => S.post("/box-bot/add", obj);
 export const boxBotHeaderDataTotal = (obj) => S.get("/box-bot/headerDataTotal", obj);
 export const boxBotUpAndDown = (obj) => S.get("/box-bot/upAndDown", obj);
+
+/**
+ * @description 外部代币管理
+ */
+export const externalCoinPageList = (obj) => S.get("/coin-external-series/pageList", obj);
+export const externalCoinAdd = (obj) => S.post("/coin-external-series/add", obj);
+export const externalCoinRefresh = (obj) => S.get("/coin-external-series/refresh", obj);
+export const externalCoinDelete = (obj) => S.get("/coin-external-series/delete", obj);
+
+/**
+ * @description 抽奖链管理
+ */
+export const lotteryChainPageList = (obj) => S.get("/lottery-chain/pageList", obj);
+export const lotteryChainUpdateStatus = (obj) => S.get("/lottery-chain/updateStatus", obj);
+export const lotteryChainGetIsBreak = (obj) => S.get("/lottery-chain/getIsBreak", obj);
+export const lotteryChainIsBreak = (obj) => S.get("/lottery-chain/setIsBreak", obj);
