@@ -187,7 +187,7 @@
               :file-list="fileImg"
               :multiple="false"
               :limit="limitCount"
-              accept="image/png,image/jpg,image/jpeg,image/svg+xml"
+              accept="image/png,image/jpg,image/jpeg,image/svg+xml,image/gif,image/webp"
               list-type="picture-card"
               :before-upload="handleBefore"
               :on-remove="handleRemove"

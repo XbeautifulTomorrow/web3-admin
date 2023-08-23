@@ -1,8 +1,8 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="obscureField" clearable />
-      <el-input class="public-input" style="width: 120px;" placeholder="输入项目方" v-model="projectParty" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入ID、名称" v-model="obscureField" clearable />
+      <el-input class="public-input" style="width: 120px" placeholder="输入项目方" v-model="projectParty" clearable />
       <!-- <el-select class="public-input" v-model="accountInfo" style="width: 120px">
         <el-option label="全部状态" value="ETH" />
         <el-option label="待审核" value="ETH" />
@@ -12,22 +12,13 @@
         <el-option label="已下架" value="ETH" />
       </el-select> -->
       <div class="public-date-box">
-        <span class="demonstration">
-          添加时间
-        </span>
-        <el-date-picker v-model="addTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 添加时间 </span>
+        <el-date-picker v-model="addTime" type="datetimerange" range-separator="到" start-placeholder="开始时间" end-placeholder="结束时间">
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalList()">
-        查询
-      </el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="handleAdd()">
-        创建NFT
-      </el-button>
-      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="nftExternalFlushed()">
-        刷新
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftExternalList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="handleAdd()"> 创建NFT </el-button>
+      <el-button type="primary" icon="el-icon-refresh" class="public-search" @click="nftExternalFlushed()"> 刷新 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -38,94 +29,104 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="id" sortable="custom" label="系列ID" align="center" key="1">
-      </el-table-column>
+      <el-table-column prop="id" sortable="custom" label="系列ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="seriesImg" label="系列图" width="120px" align="center" key="2">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%;" :src="scope.row.seriesImg" :preview-src-list="[scope.row.seriesImg]">
-            </el-image>
+            <el-image style="height: 100%" :src="scope.row.seriesImg" :preview-src-list="[scope.row.seriesImg]"> </el-image>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" label="系列名" align="center" key="3">
-      </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="4">
-      </el-table-column>
-      <el-table-column prop="projectParty" label="项目方" align="center" key="5">
-      </el-table-column>
-      <el-table-column prop="marketName" label="市场" align="center" key="6">
-      </el-table-column>
-      <el-table-column prop="chainName" label="所在链" align="center" key="7">
-      </el-table-column>
-      <el-table-column prop="issuanceNumber" sortable="custom" label="发行数量" align="center" key="8">
-      </el-table-column>
-      <el-table-column prop="inBoxNumber" sortable="custom" width="120" label="可入盒数量" align="center" key="9">
-      </el-table-column>
+      <el-table-column prop="seriesName" label="系列名" align="center" key="3"> </el-table-column>
+      <el-table-column prop="contractAddress" label="合约" align="center" key="4"> </el-table-column>
+      <el-table-column prop="projectParty" label="项目方" align="center" key="5"> </el-table-column>
+      <el-table-column prop="marketName" label="市场" align="center" key="6"> </el-table-column>
+      <el-table-column prop="chainName" label="所在链" align="center" key="7"> </el-table-column>
+      <el-table-column prop="issuanceNumber" sortable="custom" label="发行数量" align="center" key="8"> </el-table-column>
+      <el-table-column prop="inBoxNumber" sortable="custom" width="120" label="可入盒数量" align="center" key="9"> </el-table-column>
       <el-table-column prop="floorPrice" sortable="custom" width="120" :label="`地板价(${coin})`" align="center" key="10">
       </el-table-column>
       <el-table-column prop="releaseTime" sortable="custom" width="140" label="发行时间" align="center" key="11">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.releaseTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.releaseTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12">
-      </el-table-column>
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" width="140" label="添加时间" align="center" key="13">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
       <el-table-column prop="refreshTime" sortable="custom" width="140" label="上次刷新" align="center" key="14">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.refreshTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.refreshTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" key="15">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="approve(scope.row)">
-            授权
-          </span>
-          <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)">
-            编辑
-          </span>
-          <span class="blueColor publick-button cursor" @click="handleDel(scope.row)">
-            删除
-          </span>
+          <span class="blueColor publick-button cursor" @click="approve(scope.row)"> 授权 </span>
+          <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)"> 编辑 </span>
+          <span class="blueColor publick-button cursor" @click="handleDel(scope.row)"> 删除 </span>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
-    <el-dialog v-if="showDialog" :title="operatingType == 1 ? '创建NFT' : '编辑NFT'" :visible.sync="showDialog" width="540px"
-      :close-on-click-modal="false" :before-close="handleClose">
+    <el-dialog
+      v-if="showDialog"
+      :title="operatingType == 1 ? '创建NFT' : '编辑NFT'"
+      :visible.sync="showDialog"
+      width="540px"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+    >
       <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="130px">
         <el-form-item label="系列名称" prop="seriesName">
           <el-input v-model="ruleForm.seriesName" style="width: 300px" placeholder="请输入系列名称" />
         </el-form-item>
         <el-form-item label="合约地址" prop="contractAddress">
-          <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px"
-            placeholder="请输入合约地址">
+          <el-input :disabled="operatingType != 1" v-model="ruleForm.contractAddress" style="width: 300px" placeholder="请输入合约地址">
             <template slot="append">
               <el-button @click="fetchNftSeries()">查询</el-button>
             </template>
           </el-input>
         </el-form-item>
         <el-form-item label="系列图片" prop="seriesImg">
-          <el-upload :action="uploadUrl" :disabled="operatingType != 1" :class="{ hide: hideUpload }"
-            :on-change="handleChange" :on-success="handleUpload" :file-list="fileImg" :multiple="false" :limit="1"
-            accept="image/png,image/jpg,image/jpeg" list-type="picture-card" :before-upload="handleBefore"
-            :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
+          <el-upload
+            :action="uploadUrl"
+            :disabled="operatingType != 1"
+            :class="{ hide: hideUpload }"
+            :on-change="handleChange"
+            :on-success="handleUpload"
+            :file-list="fileImg"
+            :multiple="false"
+            :limit="1"
+            accept="image/png,image/jpg,image/jpeg,image/gif,image/webp"
+            list-type="picture-card"
+            :before-upload="handleBefore"
+            :on-remove="handleRemove"
+            :on-exceed="handExceed"
+            :headers="uploadHeader"
+          >
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
         <el-form-item label="所在链" prop="chainId">
           <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 300px">
             <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
-              <span style="float: left;">{{ item.chainName }}</span>
-              <span style="float: right;color: #8492a6;">{{ item.type }}</span>
+              <span style="float: left">{{ item.chainName }}</span>
+              <span style="float: right; color: #8492a6">{{ item.type }}</span>
             </el-option>
           </el-select>
         </el-form-item>
@@ -166,19 +167,18 @@
 
 <script>
 import axios from "axios";
-import { timeForStr } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { timeForStr } from "@/utils";
+import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
 import nft721Abi from "@/contracts/721.json";
 import nft1155Abi from "@/contracts/1155.json";
-import contractInfo  from '@/config/sign.js';
+import contractInfo from "@/config/sign.js";
 import Web3 from "web3";
 export default {
-  name: 'ExternalNftSeries',
+  name: "ExternalNftSeries",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -190,7 +190,7 @@ export default {
       addTime: null,
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
@@ -217,7 +217,7 @@ export default {
       },
       rules: {},
       markes: [],
-      chainList: chainList
+      chainList: chainList,
     };
   },
   mixins: [pagination],
@@ -226,12 +226,12 @@ export default {
     timeForStr: timeForStr,
     async fetchMarketManagerList() {
       const res = await this.$http.getMarketManagerList({
-        page: 1, size: 9999
+        page: 1,
+        size: 9999,
       });
       if (res) {
         this.markes = res.records;
       }
-
     },
     // 连接小狐狸
     async connectMetaMask() {
@@ -271,21 +271,14 @@ export default {
       const web3 = new Web3(window.ethereum);
       const token = item.contractAddress; //nft合约地址
       const walletAddress = this.walletAddress; //当前连接的钱包地址
-      let nftContract = new web3.eth.Contract(
-        is1155 ? nft1155Abi : nft721Abi,
-        token
-      );
-      const nftHelpAddress  = contractInfo.nftHelpAddress
+      let nftContract = new web3.eth.Contract(is1155 ? nft1155Abi : nft721Abi, token);
+      const nftHelpAddress = contractInfo.nftHelpAddress;
       // 授权判断
-      let isApproved = await nftContract.methods
-        .isApprovedForAll(walletAddress, nftHelpAddress)
-        .call();
+      let isApproved = await nftContract.methods.isApprovedForAll(walletAddress, nftHelpAddress).call();
       if (!isApproved) {
         //授权
-        await nftContract.methods
-          .setApprovalForAll(nftHelpAddress, true)
-          .send({ from: walletAddress });
-      }else{
+        await nftContract.methods.setApprovalForAll(nftHelpAddress, true).send({ from: walletAddress });
+      } else {
         this.$message.success("isApproved");
       }
     },
@@ -294,17 +287,17 @@ export default {
       let startTime = null;
       let endTime = null;
       if (addTime && addTime[0]) {
-        startTime = timeForStr(addTime[0], 'YYYY-MM-DD HH:mm:ss');
+        startTime = timeForStr(addTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (addTime && addTime[1]) {
-        endTime = timeForStr(addTime[1], 'YYYY-MM-DD HH:mm:ss');
+        endTime = timeForStr(addTime[1], "YYYY-MM-DD HH:mm:ss");
       }
 
       return {
         obscureField: this.obscureField,
         projectParty: this.projectParty,
         startTime,
-        endTime
+        endTime,
       };
     },
     /**
@@ -366,8 +359,8 @@ export default {
     handleEdit(row) {
       this.ruleForm = {
         ...row,
-        marketNames: row.marketNames.split(",")
-      }
+        marketNames: row.marketNames.split(","),
+      };
 
       this.fileImg = [{ url: row.seriesImg }];
       this.operatingType = 2;
@@ -383,7 +376,7 @@ export default {
       })
         .then(async () => {
           let res = await this.$http.nftExternalDel({
-            id: row.id
+            id: row.id,
           });
           if (res) {
             this.fetchNftExternalList();
@@ -405,17 +398,17 @@ export default {
         projectParty: null, //项目方
         issuanceNumber: null, //发行数量
         seriesNftType: "", // NFT类型
-      }
+      };
 
       this.fileImg = [];
       this.$refs["ruleForm"].clearValidate();
 
       if (done) {
-        done()
-        return
+        done();
+        return;
       }
 
-      this.showDialog = false
+      this.showDialog = false;
     },
     handleUpload(res) {
       if (res.code == 200) {
@@ -455,7 +448,7 @@ export default {
           const { marketNames } = this.ruleForm;
           let ruleForm = {
             ...this.ruleForm,
-            marketNames: marketNames && marketNames.join(",")
+            marketNames: marketNames && marketNames.join(","),
           };
 
           let res = null;
@@ -486,7 +479,7 @@ export default {
       const { chainId, contractAddress } = this.ruleForm;
       if (!chainId) {
         this.$message.warning("请选择网络");
-        return
+        return;
       }
 
       let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
@@ -498,26 +491,24 @@ export default {
         .get(getUrl + contractAddress, {
           responseType: "json",
           headers: {
-            "X-API-KEY": "3eb9844d094945f288c104c770365ac8"
-          }
+            "X-API-KEY": "3eb9844d094945f288c104c770365ac8",
+          },
         })
         .then((res) => {
           if (res.status == 200) {
             const nftData = res.data;
-            this.fileImg = [{ url: nftData.image_url }]
+            this.fileImg = [{ url: nftData.image_url }];
             this.ruleForm.seriesName = nftData.name; // 系列名称
             this.ruleForm.seriesImg = nftData.image_url; // Nft图片
             this.ruleForm.keywords = nftData.collection.slug; // 关键字
-            return
+            return;
           }
           this.$message.error("查询失败，请检查合约地址是否正确");
-
         })
-        .catch(error => {
+        .catch((error) => {
           this.$message.error("查询失败，请检查合约地址是否正确");
           console.log(error);
         });
-
     },
     handleSizeChange(val) {
       this.size = val;
@@ -535,31 +526,15 @@ export default {
     this.uploadUrl = config.api + "/file/upload/image";
 
     this.rules = {
-      chainId: [
-        { required: true, message: "请选择链", trigger: ["blur", "change"] },
-      ],
-      marketNames: [
-        { required: true, message: "请选择市场", trigger: ["blur", "change"] },
-      ],
-      seriesName: [
-        { required: true, message: "请输入系列名称", trigger: ["blur", "change"] },
-      ],
-      seriesImg: [
-        { required: true, message: "请选择NFT图片", trigger: ["blur", "change"] },
-      ],
-      seriesNftType: [
-        { required: true, message: "请选择NFT类型", trigger: ["blur", "change"] },
-      ],
-      contractAddress: [
-        { required: true, message: "请输入合约地址", trigger: ["blur", "change"] },
-      ],
-      keywords: [
-        { required: true, message: "请输入关键字", trigger: ["blur", "change"] },
-      ],
-      issuanceNumber: [
-        { required: true, message: "请输入发行数量", trigger: ["blur", "change"] },
-      ]
-    }
+      chainId: [{ required: true, message: "请选择链", trigger: ["blur", "change"] }],
+      marketNames: [{ required: true, message: "请选择市场", trigger: ["blur", "change"] }],
+      seriesName: [{ required: true, message: "请输入系列名称", trigger: ["blur", "change"] }],
+      seriesImg: [{ required: true, message: "请选择NFT图片", trigger: ["blur", "change"] }],
+      seriesNftType: [{ required: true, message: "请选择NFT类型", trigger: ["blur", "change"] }],
+      contractAddress: [{ required: true, message: "请输入合约地址", trigger: ["blur", "change"] }],
+      keywords: [{ required: true, message: "请输入关键字", trigger: ["blur", "change"] }],
+      issuanceNumber: [{ required: true, message: "请输入发行数量", trigger: ["blur", "change"] }],
+    };
   },
   // 计算属性
   computed: {
@@ -571,11 +546,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -606,7 +581,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
