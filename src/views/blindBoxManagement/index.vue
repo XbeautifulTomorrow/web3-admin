@@ -246,7 +246,7 @@
               </template>
             </el-input>
           </el-form-item>
-          <el-form-item label="盲盒描述">
+          <el-form-item label="盲盒描述" prop="boxDesc">
             <el-input type="textarea" :autosize="{ minRows: 4 }" placeholder="请输入描述" v-model="ruleForm.boxDesc"></el-input>
           </el-form-item>
           <div class="blood_pool">
@@ -308,7 +308,11 @@
                   <div class="number-box">
                     <el-input type="number" class="number" v-model.number="scope.row.number"></el-input>
                     <el-tooltip
-                      v-if="scope.row.totalNumber && Number(scope.row.totalNumber || 0) < Number(scope.row.number || 0)"
+                      v-if="
+                        scope.row.totalNumber &&
+                        Number(scope.row.totalNumber || 0) < Number(scope.row.number || 0) &&
+                        scope.row.type == 'NFT'
+                      "
                       class="item"
                       effect="dark"
                       :content="`该NFT当前最大只能设置为${scope.row.totalNumber}个`"
@@ -936,7 +940,7 @@ export default {
 
           try {
             externalList.forEach((element) => {
-              if (Number(element.totalNumber) < Number(element.number)) {
+              if (Number(element.totalNumber) < Number(element.number) && element.type == "NFT") {
                 console.log("最大数量不对");
                 throw new Error("error");
               }
@@ -1419,6 +1423,7 @@ export default {
       legendNum: [{ required: true, message: "请输入传奇数量", trigger: ["blur", "change"] }],
       epicNum: [{ required: true, message: "请输入史诗数量", trigger: ["blur", "change"] }],
       rareNum: [{ required: true, message: "请输入稀有数量", trigger: ["blur", "change"] }],
+      boxDesc: [{ required: true, message: "请输入盲盒描述", trigger: ["blur", "change"] }],
     };
   },
   computed: {
