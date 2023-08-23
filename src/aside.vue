@@ -86,10 +86,10 @@
             <i class="el-icon-message"></i>
             <span>群发邮件</span>
           </el-menu-item>
-          <el-menu-item index="robotManagement" class="menu-list">
+          <!-- <el-menu-item index="robotManagement" class="menu-list">
             <i class="el-icon-message"></i>
             <span> 机器人管理</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
