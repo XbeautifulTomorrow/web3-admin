@@ -42,7 +42,7 @@
         </div>
         <div class="remittance-item">
           <div class="title">总支出</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.totalExpenditure }}</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalOpenNftPrice }}</div>
         </div>
         <div class="remittance-item">
           <div class="title">总收益</div>
