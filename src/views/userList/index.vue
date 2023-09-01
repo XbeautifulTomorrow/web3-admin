@@ -1,52 +1,43 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、昵称、邮箱、钱包地址" v-model="obscureField"
-        clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入ID、昵称、邮箱、钱包地址" v-model="obscureField" clearable />
       <el-input class="public-input" placeholder="上级ID" type="number" v-model.number="upId" clearable />
-      <el-select v-model="userStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
-        clearable>
-        <el-option label="全部状态" value="">
-        </el-option>
-        <el-option label="封停" value="DISABLE">
-        </el-option>
-        <el-option label="正常" value="NORMAL">
-        </el-option>
+      <el-select v-model="userStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+        <el-option label="全部状态" value=""> </el-option>
+        <el-option label="封停" value="DISABLE"> </el-option>
+        <el-option label="正常" value="NORMAL"> </el-option>
       </el-select>
       <div class="public-date-box">
-        <span class="demonstration">
-          注册时间
-        </span>
-        <el-date-picker v-model="registrationTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 注册时间 </span>
+        <el-date-picker
+          v-model="registrationTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
       <div class="public-date-box">
         <span class="demonstration">最后登录时间:</span>
-        <el-date-picker v-model="loginedTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <el-date-picker
+          v-model="loginedTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchUserlist(true)">
-        查询
-      </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()">
-        导出
-      </el-button>
-      <el-button type="primary" icon="el-icon-upload2" class="public-search" @click="showDialog = true">
-        导入测试号
-      </el-button>
-      <el-link icon="el-icon-download"  type="primary" @click="downloadExcel('SIGN_ACCOUNT')" class="download-module">下载模板</el-link>
-      <el-upload
-        class="upload-demo"
-        action="/"
-        :on-change="importBatchUpAndDownFunc"
-        :auto-upload="false"
-        :show-file-list="false"
-      >
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchUserlist(true)"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()"> 导出 </el-button>
+      <el-button type="primary" icon="el-icon-upload2" class="public-search" @click="showDialog = true"> 导入测试号 </el-button>
+      <el-link icon="el-icon-download" type="primary" @click="downloadExcel('SIGN_ACCOUNT')" class="download-module">下载模板</el-link>
+      <el-upload class="upload-demo" action="/" :on-change="importBatchUpAndDownFunc" :auto-upload="false" :show-file-list="false">
         <el-button icon="el-icon-upload2" type="primary" class="public-search">批量上分</el-button>
       </el-upload>
-      <el-link icon="el-icon-download"  type="primary" @click="downloadExcel('BATCH_UP_AND_DOWN')" class="download-module">下载模板</el-link>
+      <el-link icon="el-icon-download" type="primary" @click="downloadExcel('BATCH_UP_AND_DOWN')" class="download-module">下载模板</el-link>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -71,109 +62,119 @@
           <div class="val">{{ aggregateQuery && aggregateQuery.revenueTotal }}</div>
         </div>
         <div class="remittance-item">
+          <div class="title">总奖励</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalRewards }}</div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总扣款</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.totalDeuctions }}</div>
+        </div>
+        <div class="remittance-item">
           <div class="title">总积分</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.assetPointBalanceTotal }}</div>
         </div>
-
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border @sort-change="sortChange">
       <el-table-column prop="id" sortable="custom" label="用户ID/昵称" align="center" width="110" key="0">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="walletAddress" label="钱包地址" width="300" align="center" key="1">
-      </el-table-column>
-      <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2">
-      </el-table-column>
-      <el-table-column prop="email" label="邮箱" align="center" width="200" key="3">
-      </el-table-column>
-      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="4">
-      </el-table-column>
-      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="5">
-      </el-table-column>
-      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="6">
-      </el-table-column>
-      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(ETH)" align="center" width="120" key="7">
-      </el-table-column>
-      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(ETH)" align="center" width="120" key="8">
-      </el-table-column>
-      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9">
-      </el-table-column>
-      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10">
-      </el-table-column>
-      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11">
-      </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="12">
-      </el-table-column>
+      <el-table-column prop="walletAddress" label="钱包地址" width="300" align="center" key="1"> </el-table-column>
+      <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2"> </el-table-column>
+      <el-table-column prop="email" label="邮箱" align="center" width="200" key="3"> </el-table-column>
+      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="4"> </el-table-column>
+      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="5"> </el-table-column>
+      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="6"> </el-table-column>
+      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(ETH)" align="center" width="120" key="7"> </el-table-column>
+      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(ETH)" align="center" width="120" key="8"> </el-table-column>
+      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
+      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
+      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11"> </el-table-column>
+      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="12"> </el-table-column>
       <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(ETH)" align="center" width="140" key="13">
       </el-table-column>
       <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(ETH)" align="center" width="140" key="14">
       </el-table-column>
-      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15">
-      </el-table-column>
+      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="16">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
       <el-table-column prop="lastLoginTime" sortable="custom" label="最后登录时间" align="center" width="140" key="17">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.lastLoginTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.lastLoginTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginIp" label="最后登录IP" align="center" width="110" key="18">
-      </el-table-column>
+      <el-table-column prop="lastLoginIp" label="最后登录IP" align="center" width="110" key="18"> </el-table-column>
       <el-table-column prop="userStatus" label="状态" align="center" width="110" key="19">
         <template slot-scope="scope">
-          <span style="color:red;" v-if="scope.row.userStatus == 'DISABLE'">封停</span>
-          <span style="color:#21AE04;" v-else>正常</span>
+          <span style="color: red" v-if="scope.row.userStatus == 'DISABLE'">封停</span>
+          <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="140" key="20" fixed="right">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)">
-            上下分
-          </span>
-          <span class="blueColor publick-button cursor">
-            详情
-          </span>
+          <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)"> 上下分 </span>
+          <span class="blueColor publick-button cursor"> 详情 </span>
           <span class="blueColor publick-button cursor" @click="operatingAccount(scope.row)">
-            {{ scope.row.userStatus == 'DISABLE' ? '解禁' : '封停' }}
+            {{ scope.row.userStatus == "DISABLE" ? "解禁" : "封停" }}
           </span>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
-    <el-dialog :title="uploadType == 1 ? '导入测试账号' : '导入结果'" :visible.sync="showDialog"
-      :width="uploadType == 1 ? '440px' : '1200px'" :close-on-click-modal="false" :before-close="handleClose">
+    <el-dialog
+      :title="uploadType == 1 ? '导入测试账号' : '导入结果'"
+      :visible.sync="showDialog"
+      :width="uploadType == 1 ? '440px' : '1200px'"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+    >
       <div v-if="uploadType == 1">
-        <el-upload :action="uploadUrl" :class="{ hide: hideUpload }" :on-change="handleChange" :on-success="handleUpload"
-          :file-list="fileExcel" :multiple="false" :limit="1" accept=".xls,.xlsx" list-type="picture-card"
-          :before-upload="handleBefore" :on-remove="handleRemove" :on-exceed="handExceed" :headers="uploadHeader">
+        <el-upload
+          :action="uploadUrl"
+          :class="{ hide: hideUpload }"
+          :on-change="handleChange"
+          :on-success="handleUpload"
+          :file-list="fileExcel"
+          :multiple="false"
+          :limit="1"
+          accept=".xls,.xlsx"
+          list-type="picture-card"
+          :before-upload="handleBefore"
+          :on-remove="handleRemove"
+          :on-exceed="handExceed"
+          :headers="uploadHeader"
+        >
           <i class="el-icon-plus" />
         </el-upload>
       </div>
       <el-table :data="testData" v-else style="width: auto" border>
-        <el-table-column prop="chainId" label="链ID" align="center" width="110" key="1">
-        </el-table-column>
-        <el-table-column prop="walletAddress" label="钱包地址" align="center" key="2">
-        </el-table-column>
-        <el-table-column prop="walletName" label="钱包名称" align="center" width="110" key="3">
-        </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center" key="4">
-        </el-table-column>
+        <el-table-column prop="chainId" label="链ID" align="center" width="110" key="1"> </el-table-column>
+        <el-table-column prop="walletAddress" label="钱包地址" align="center" key="2"> </el-table-column>
+        <el-table-column prop="walletName" label="钱包名称" align="center" width="110" key="3"> </el-table-column>
+        <el-table-column prop="remark" label="备注" align="center" key="4"> </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false"
-      :before-close="handleClose">
+    <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false" :before-close="handleClose">
       <div>
-        <el-input-number v-model="score" style="width: 100%;"></el-input-number>
+        <el-input-number v-model="score" style="width: 100%"></el-input-number>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -184,23 +185,20 @@
       <div>
         <div class="amount-input">
           <p>数量</p>
-          <el-input type="number" v-model="upscoreNum" style="width: 100%;"></el-input>
+          <el-input type="number" v-model="upscoreNum" style="width: 100%"></el-input>
         </div>
         <div class="total-box">
           <p>总人数：{{ upscoreList?.length }}</p>
-          <p>总上分：{{ upscoreList?.length*upscoreNum }}</p>
+          <p>总上分：{{ upscoreList?.length * upscoreNum }}</p>
         </div>
         <el-table :data="upscoreList" style="width: auto" border>
-          <el-table-column prop="id" label="ID" align="center" width="110" key="1">
-          </el-table-column>
-          <el-table-column prop="email" label="邮箱" align="center" key="2">
-          </el-table-column>
-          <el-table-column prop="balance" label="余额" align="center" width="110" key="3">
-          </el-table-column>
+          <el-table-column prop="id" label="ID" align="center" width="110" key="1"> </el-table-column>
+          <el-table-column prop="email" label="邮箱" align="center" key="2"> </el-table-column>
+          <el-table-column prop="balance" label="余额" align="center" width="110" key="3"> </el-table-column>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible=false">取 消</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="batchUpAndDownSave">确 定</el-button>
       </span>
     </el-dialog>
@@ -208,15 +206,14 @@
 </template>
 
 <script>
-import { timeForStr, exportExcel } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { timeForStr, exportExcel } from "@/utils";
+import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 
 export default {
-  name: 'UserList',
+  name: "UserList",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -233,7 +230,7 @@ export default {
       userStatus: null,
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
@@ -250,8 +247,8 @@ export default {
         certificate: sessionStorage.getItem("token"),
       },
       dialogVisible: false,
-      upscoreList:[],
-      upscoreNum:""
+      upscoreList: [],
+      upscoreNum: "",
     };
   },
   mixins: [pagination],
@@ -265,16 +262,16 @@ export default {
       let lastLoginStartTime = null;
       let lastLoginEndTime = null;
       if (registrationTime && registrationTime[0]) {
-        regStartTime = timeForStr(registrationTime[0], 'YYYY-MM-DD HH:mm:ss');
+        regStartTime = timeForStr(registrationTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (registrationTime && registrationTime[1]) {
-        regEndTime = timeForStr(registrationTime[1], 'YYYY-MM-DD HH:mm:ss');
+        regEndTime = timeForStr(registrationTime[1], "YYYY-MM-DD HH:mm:ss");
       }
       if (loginedTime && loginedTime[0]) {
-        lastLoginStartTime = timeForStr(loginedTime[0], 'YYYY-MM-DD HH:mm:ss');
+        lastLoginStartTime = timeForStr(loginedTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (loginedTime && loginedTime[1]) {
-        lastLoginEndTime = timeForStr(loginedTime[1], 'YYYY-MM-DD HH:mm:ss');
+        lastLoginEndTime = timeForStr(loginedTime[1], "YYYY-MM-DD HH:mm:ss");
       }
       return {
         obscureField: this.obscureField,
@@ -334,72 +331,72 @@ export default {
     // 用户列表导出
     onExport() {
       const search = this.searchFun();
-      const urlStr = config.api + '/user/exportExcel';
+      const urlStr = config.api + "/user/exportExcel";
       const { coin, userType } = this;
       const data = {
         ...{
           coin: coin,
-          userType: userType
+          userType: userType,
         },
         ...search,
       };
 
-      exportExcel(urlStr, data, "用户列表导出")
+      exportExcel(urlStr, data, "用户列表导出");
     },
     // 下载模板
     downloadExcel(name) {
-      const urlStr = config.api + '/file/template/download';
+      const urlStr = config.api + "/file/template/download";
       const data = {
-        name
+        name,
       };
-      exportExcel(urlStr, data, "用户导入模板")
+      exportExcel(urlStr, data, "用户导入模板");
     },
     async importBatchUpAndDownFunc(file) {
       const formData = new FormData();
-      formData.append('file', file.raw); 
+      formData.append("file", file.raw);
       const res = await this.$http.importBatchUpAndDown(formData);
       if (res) {
         this.upscoreList = res;
         if (this.upscoreList?.length > 0) {
           this.dialogVisible = true;
         } else {
-          this.$message.error('上传数据不正确，请确认后重新上传！')
+          this.$message.error("上传数据不正确，请确认后重新上传！");
         }
       } else {
-        this.upscoreList = []
+        this.upscoreList = [];
       }
     },
     async batchUpAndDownSave() {
       if (!this.upscoreNum) {
-        this.$message.error('请输入数量')
-        return
+        this.$message.error("请输入数量");
+        return;
       }
-      const ids = this.upscoreList.map(x=>x.id)
-      const res = await this.$http.batchUpAndDown({ids,amount:this.upscoreNum,coin:'ETH'});
+      const ids = this.upscoreList.map((x) => x.id);
+      const res = await this.$http.batchUpAndDown({ ids, amount: this.upscoreNum, coin: "ETH" });
       if (res) {
         this.dialogVisible = false;
         this.fetchUserlist();
-        this.$message.success('操作成功！')
+        this.$message.success("操作成功！");
       }
     },
     // 封停/解禁
     operatingAccount(row) {
-      this.$confirm(`确定要${row.userStatus == 'DISABLE' ? '解禁' : '封停'}用户『${row.userName || row.id}』吗?`, "提示", {
+      this.$confirm(`确定要${row.userStatus == "DISABLE" ? "解禁" : "封停"}用户『${row.userName || row.id}』吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
       })
         .then(async () => {
           let res = null;
-          if (row.userStatus == 'DISABLE') {
+          if (row.userStatus == "DISABLE") {
             // 解禁
             res = await this.$http.accountThaw({
-              id: row.id
+              id: row.id,
             });
           } else {
             // 封停
             res = await this.$http.accountFreeze({
-              id: row.id
+              id: row.id,
             });
           }
           if (res) {
@@ -421,7 +418,7 @@ export default {
       const res = await this.$http.upAndDown({
         id: this.scoreId,
         amount: this.score,
-        coin: this.coin
+        coin: this.coin,
       });
 
       if (res) {
@@ -436,8 +433,8 @@ export default {
       this.scoreId = "";
       this.testData = [];
       if (done) {
-        done()
-        return
+        done();
+        return;
       }
 
       this.showDialog = false;
@@ -496,11 +493,11 @@ export default {
     this.uploadUrl = config.api + "/user/importInner";
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -531,7 +528,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
@@ -539,27 +536,27 @@ export default {
 .remittance-more {
   display: flex;
 }
-.amount-input{
+.amount-input {
   display: flex;
   align-items: center;
-  p{
+  p {
     width: 50px;
   }
 }
-.total-box{
+.total-box {
   display: flex;
   margin: 15px 0;
   margin-bottom: 20px;
-  p{
+  p {
     margin-right: 20px;
     font-size: 18px;
     font-weight: bold;
   }
 }
-.upload-demo{
+.upload-demo {
   margin-left: 20px;
 }
-.download-module{
+.download-module {
   position: relative;
   top: -4px;
 }
