@@ -109,11 +109,15 @@
           {{ `${accurateDecimal(new bigNumber(scope.row.deviseRate || 0).multipliedBy(100), 4)}%` }}
         </template>
       </el-table-column>
-      <!-- <el-table-column prop="reduceThreshold" width="100" sortable="custom" label="盲盒衰减率" align="center" key="18">
+      <el-table-column prop="reduceThreshold" width="100" sortable="custom" label="盲盒衰减率" align="center" key="18">
         <template slot-scope="scope">
-          {{ `${accurateDecimal(new bigNumber(scope.row.reduceThreshold || 0).multipliedBy(100), 4)}%` }}
+          {{
+            scope.row.reduceThreshold != null && scope.row.reduceThreshold !== ""
+              ? `${accurateDecimal(new bigNumber(scope.row.reduceThreshold).multipliedBy(100), 4)}%`
+              : "--"
+          }}
         </template>
-      </el-table-column> -->
+      </el-table-column>
       <el-table-column prop="adjust" width="100" sortable="custom" label="中奖修正" align="center" key="19"> </el-table-column>
       <el-table-column prop="adjustRate" width="100" sortable="custom" label="修正返还率" align="center" key="20">
         <template slot-scope="scope">
@@ -214,10 +218,11 @@
               <template slot="append">%</template></el-input
             >
           </el-form-item>
-          <!-- <el-form-item label="盲盒衰减率" prop="reduceThreshold">
+          <el-form-item label="盲盒衰减率" prop="reduceThreshold">
             <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入盲盒衰减率">
-              <template slot="append">%</template></el-input>
-          </el-form-item> -->
+              <template slot="append">%</template></el-input
+            >
+          </el-form-item>
           <el-form-item label="传奇数量" prop="legendNum">
             <el-input type="number" v-model="ruleForm.legendNum" style="width: 300px" placeholder="请输入传奇数量">
               <template slot="append">
@@ -275,12 +280,6 @@
             <div class="blood_pool_item">
               <span>修正值强制更新快照阈值：</span>
               <el-input type="number" v-model="bloodPool.adjustCompulsionUpdateThreshold" style="flex: 1">
-                <template slot="append">%</template>
-              </el-input>
-            </div>
-            <div class="blood_pool_item">
-              <span>盲盒衰减阈值：</span>
-              <el-input type="number" v-model="bloodPool.reduceThreshold" style="flex: 1">
                 <template slot="append">%</template>
               </el-input>
             </div>
@@ -562,7 +561,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
-        // reduceThreshold: null, // 盲盒衰减率
+        reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
@@ -581,7 +580,6 @@ export default {
         adjustCompulsionUpdateThreshold: null, // 修正阈值
         realRate: null, // 实际返还率
         adjustRate: null, // 修正返还率
-        reduceThreshold: null, //盲盒衰减阈值
       }, //血池相关
       chainList: chainList,
       rules: {},
@@ -797,7 +795,10 @@ export default {
         ...this.ruleForm,
         ...row,
         deviseRate: new bigNumber(row.deviseRate).multipliedBy(100).toFixed(4),
-        // reduceThreshold: new bigNumber(row.reduceThreshold).multipliedBy(100).toFixed(4),
+        reduceThreshold:
+          row.reduceThreshold != null && row.reduceThreshold !== ""
+            ? new bigNumber(row.reduceThreshold).multipliedBy(100).toFixed(4)
+            : null,
       };
 
       this.operatingType = 2;
@@ -813,7 +814,6 @@ export default {
         bloodPoolsStatus: row.bloodPoolsStatus, // 血池开关
         adjust: row.adjust, // 修正值
         adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(row.adjustCompulsionUpdateThreshold || 0).multipliedBy(100), 4), // 修正阈值
-        reduceThreshold: accurateDecimal(new bigNumber(row.reduceThreshold || 0).multipliedBy(100), 4), // 盲盒衰减阈值
         realRate: row.realRate, // 实际返还率
         adjustRate: row.adjustRate, // 修正返还率
       };
@@ -950,7 +950,7 @@ export default {
             externalList.forEach((element) => {
               if (Number(element.totalNumber) < Number(element.number) && element.type == "NFT") {
                 console.log("最大数量不对");
-                throw new Error("error");
+                // throw new Error("error");
               }
 
               if (!element.number || Number(element.number) <= 0) {
@@ -990,15 +990,16 @@ export default {
               new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100),
               4
             ), // 修正阈值
-            reduceThreshold: accurateDecimal(new bigNumber(bloodPool.reduceThreshold || 0).dividedBy(100), 4), // 盲盒衰减阈值
             coin: this.coin,
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
-            // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
+            reduceThreshold:
+              this.ruleForm.reduceThreshold != null && this.ruleForm.reduceThreshold !== ""
+                ? accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6)
+                : null,
             platformList: platformNftData,
             externalList: externalNftData,
             externalCoinList: externalCoinData,
           };
-
           let res = null;
           if (!this.ruleForm.id) {
             res = await this.$http.boxManagerAdd({ ...ruleForm });
@@ -1225,9 +1226,11 @@ export default {
               new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100),
               4
             ), // 修正阈值
-            reduceThreshold: accurateDecimal(new bigNumber(bloodPool.reduceThreshold || 0).dividedBy(100), 4), // 盲盒衰减阈值
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
-            // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
+            reduceThreshold:
+              this.ruleForm.reduceThreshold != null && this.ruleForm.reduceThreshold !== ""
+                ? accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6)
+                : null,
             platformList: platformNftList,
             externalList: externalNftList,
             externalCoinList: externalCoinList,
@@ -1335,7 +1338,7 @@ export default {
         fivePrice: null, //五连单价
         tenPrice: null, //十连单价
         deviseRate: null, //设计返还率
-        // reduceThreshold: null, // 盲盒衰减率
+        reduceThreshold: null, // 盲盒衰减率
         legendNum: null, //传奇数量
         epicNum: null, //史诗数量
         rareNum: null, //稀有数量
