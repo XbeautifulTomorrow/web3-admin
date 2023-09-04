@@ -279,6 +279,12 @@
               </el-input>
             </div>
             <div class="blood_pool_item">
+              <span>盲盒衰减阈值：</span>
+              <el-input type="number" v-model="bloodPool.reduceThreshold" style="flex: 1">
+                <template slot="append">%</template>
+              </el-input>
+            </div>
+            <div class="blood_pool_item">
               <div class="blood_pool_item_l">
                 {{ `实际返还率:${accurateDecimal(new bigNumber(bloodPool.realRate || 0).multipliedBy(100), 4)}%` }}
               </div>
@@ -575,6 +581,7 @@ export default {
         adjustCompulsionUpdateThreshold: null, // 修正阈值
         realRate: null, // 实际返还率
         adjustRate: null, // 修正返还率
+        reduceThreshold: null, //盲盒衰减阈值
       }, //血池相关
       chainList: chainList,
       rules: {},
@@ -806,6 +813,7 @@ export default {
         bloodPoolsStatus: row.bloodPoolsStatus, // 血池开关
         adjust: row.adjust, // 修正值
         adjustCompulsionUpdateThreshold: accurateDecimal(new bigNumber(row.adjustCompulsionUpdateThreshold || 0).multipliedBy(100), 4), // 修正阈值
+        reduceThreshold: accurateDecimal(new bigNumber(row.reduceThreshold || 0).multipliedBy(100), 4), // 盲盒衰减阈值
         realRate: row.realRate, // 实际返还率
         adjustRate: row.adjustRate, // 修正返还率
       };
@@ -982,6 +990,7 @@ export default {
               new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100),
               4
             ), // 修正阈值
+            reduceThreshold: accurateDecimal(new bigNumber(bloodPool.reduceThreshold || 0).dividedBy(100), 4), // 盲盒衰减阈值
             coin: this.coin,
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
             // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
@@ -1216,6 +1225,7 @@ export default {
               new bigNumber(bloodPool.adjustCompulsionUpdateThreshold || 0).dividedBy(100),
               4
             ), // 修正阈值
+            reduceThreshold: accurateDecimal(new bigNumber(bloodPool.reduceThreshold || 0).dividedBy(100), 4), // 盲盒衰减阈值
             deviseRate: accurateDecimal(new bigNumber(this.ruleForm.deviseRate).dividedBy(100), 6),
             // reduceThreshold: accurateDecimal(new bigNumber(this.ruleForm.reduceThreshold).dividedBy(100), 6),
             platformList: platformNftList,
