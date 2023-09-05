@@ -770,12 +770,14 @@ export default {
           res = await this.$http.withdrawalApproved({
             id: this.reviewData.id,
           });
+        } else {
+          const data = {
+            ids: [row.id], //提款ID集合
+            appleHash: "test", //申请hash
+          };
+          res = await this.$http.withdrawawSign(data);
         }
-        const data = {
-          ids: [row.id], //提款ID集合
-          appleHash: "test", //申请hash
-        };
-        res = await this.$http.withdrawawSign(data);
+
         // this.withdrawNft(row);
       } else {
         // 拒绝
