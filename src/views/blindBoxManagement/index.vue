@@ -348,7 +348,7 @@
                   {{ chainFormat(scope.row.chain || scope.row.chainId) }}
                 </template>
               </el-table-column>
-              <el-table-column prop="number" label="期望数量" width="120px" align="center" key="3">
+              <el-table-column prop="number" label="期望数量" width="140px" align="center" key="3">
                 <template slot-scope="scope">
                   <div class="number-box">
                     <el-input type="number" class="number" v-model.number="scope.row.number"></el-input>
@@ -364,6 +364,15 @@
                       placement="top-start"
                     >
                       <i class="icon-warning el-icon-warning-outline"></i>
+                    </el-tooltip>
+                    <el-tooltip
+                      v-if="scope.row.dwindleNumber"
+                      class="item"
+                      effect="dark"
+                      :content="`${scope.row.dwindleNumber}个NFT超出阈值`"
+                      placement="top-start"
+                    >
+                      <i class="icon-warning icon-warning-color el-icon-warning-outline"></i>
                     </el-tooltip>
                   </div>
                 </template>
@@ -1349,6 +1358,7 @@ export default {
                   this.externalList[i].nftType = "EXTERNAL";
                   this.externalList[i].totalNumber = this.calculationNft[j].totalNumber;
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
+                  this.externalList[i].dwindleNumber = this.calculationNft[j].dwindleNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
                   externalCount.push(this.externalList[i]);
@@ -1359,6 +1369,7 @@ export default {
                   this.externalList[i].nftType = "EXT_COIN";
                   this.externalList[i].totalNumber = this.calculationNft[j].totalNumber;
                   this.externalList[i].realNumber = this.calculationNft[j].realNumber;
+                  this.externalList[i].dwindleNumber = this.calculationNft[j].dwindleNumber;
                   this.externalList[i].number = this.calculationNft[j].number;
                   this.externalList[i].floorPrice = this.calculationNft[j].averagePrice;
                   externalCount.push(this.externalList[i]);
@@ -1815,6 +1826,9 @@ export default {
     font-size: 24px;
     color: red;
     margin-left: 4px;
+  }
+  .icon-warning-color {
+    color: #e6a23c;
   }
 }
 
