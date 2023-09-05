@@ -112,6 +112,13 @@ export const routes = [
         name: "WithdrawalReview",
       },
       {
+        /** 强制审核管理 */
+        path: "/mandatoryAudit",
+        component: () => import("@/views/mandatoryAudit/index"),
+        name: "mandatoryAudit",
+      },
+
+      {
         /** 订单管理 */
         path: "/orderManagement",
         component: () => import("@/views/orderManagement/index"),

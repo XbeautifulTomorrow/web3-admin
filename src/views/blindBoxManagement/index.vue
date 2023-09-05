@@ -259,7 +259,7 @@
             >
           </el-form-item>
           <el-form-item label="NFT价格限制" prop="reduceThreshold">
-            <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入盲盒衰减率">
+            <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入NFT价格限制">
               <template slot="append">%</template></el-input
             >
           </el-form-item>

@@ -34,6 +34,10 @@
             <i class="el-icon-coin"></i>
             <span>邀请返佣</span>
           </el-menu-item>
+          <!-- <el-menu-item index="mandatoryAudit" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>强制审核管理</span>
+          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="nftManagement">
           <template slot="title">
@@ -403,6 +407,10 @@ export default {
         {
           label: "机器人管理",
           page: "robotManagement",
+        },
+        {
+          label: "强制审核管理",
+          page: "mandatoryAudit",
         },
       ],
     };
