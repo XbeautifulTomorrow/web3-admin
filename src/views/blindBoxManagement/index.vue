@@ -201,6 +201,46 @@
               <i class="el-icon-plus" />
             </el-upload>
           </el-form-item>
+          <el-form-item label="H5盲盒图片" prop="seriesImg">
+            <div class="flex">
+              <el-upload
+                :action="uploadUrl"
+                :class="{ hide: hideUploadOne }"
+                :on-change="handleChangeOne"
+                :on-success="handleUploadOne"
+                :file-list="fileImgOne"
+                :multiple="false"
+                :limit="limitCount"
+                accept="image/png,image/jpg,image/jpeg,image/svg+xml,image/gif,image/webp"
+                list-type="picture-card"
+                :before-upload="handleBefore"
+                :on-remove="handleRemoveOne"
+                :on-exceed="handExceed"
+                :headers="uploadHeader"
+              >
+                <i class="el-icon-plus" />
+                <div class="tip">logo</div>
+              </el-upload>
+              <el-upload
+                :action="uploadUrl"
+                :class="{ hide: hideUploadTwo }"
+                :on-change="handleChangeTwo"
+                :on-success="handleUploadTwo"
+                :file-list="fileImgTwo"
+                :multiple="false"
+                :limit="limitCount"
+                accept="image/png,image/jpg,image/jpeg,image/svg+xml,image/gif,image/webp"
+                list-type="picture-card"
+                :before-upload="handleBefore"
+                :on-remove="handleRemoveTwo"
+                :on-exceed="handExceed"
+                :headers="uploadHeader"
+              >
+                <i class="el-icon-plus" />
+                <div class="tip">光盘</div>
+              </el-upload>
+            </div>
+          </el-form-item>
           <el-form-item label="推荐顺序" prop="boxIndex">
             <el-input type="number" v-model.number="ruleForm.boxIndex" style="width: 300px" placeholder="请输入推荐顺序"></el-input>
           </el-form-item>
@@ -218,7 +258,7 @@
               <template slot="append">%</template></el-input
             >
           </el-form-item>
-          <el-form-item label="盲盒衰减率" prop="reduceThreshold">
+          <el-form-item label="NFT价格限制" prop="reduceThreshold">
             <el-input type="number" v-model="ruleForm.reduceThreshold" style="width: 300px" placeholder="请输入盲盒衰减率">
               <template slot="append">%</template></el-input
             >
@@ -548,10 +588,14 @@ export default {
       uploadUrl: "",
       limitCount: 1,
       hideUpload: false,
+      hideUploadOne: false,
+      hideUploadTwo: false,
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
       fileImg: [],
+      fileImgOne: [],
+      fileImgTwo: [],
       ruleForm: {
         boxName: null, //盲盒名称
         boxImg: null, //盲盒图片
@@ -803,7 +847,12 @@ export default {
 
       this.operatingType = 2;
       this.hideUpload = true;
+      this.hideUploadOne = row.showImgOne ? true : false;
+      this.hideUploadTwo = row.showImgTwo ? true : false;
+
       this.fileImg = [{ url: row.boxImg }];
+      this.fileImgOne = row.showImgOne ? [{ url: row.showImgOne }] : [];
+      this.fileImgTwo = row.showImgTwo ? [{ url: row.showImgTwo }] : [];
 
       const platformLists = row.platformList;
       const externalLists = row.externalList;
@@ -903,6 +952,36 @@ export default {
     },
     handExceed(fiel) {
       this.$message.error("文件只能上传一个");
+    },
+    handleUploadOne(res) {
+      if (res.code == 200) {
+        this.fileImgOne.push({ url: res.data });
+        this.ruleForm.showImgOne = res.data;
+        return;
+      }
+      this.$message.error("上传失败");
+    },
+    handleChangeOne(file, fileList) {
+      this.hideUploadOne = fileList.length >= this.limitCount;
+    },
+    handleRemoveOne(file, fileList) {
+      this.hideUploadOne = fileList.length >= this.limitCount;
+      this.fileImgOne = [];
+    },
+    handleUploadTwo(res) {
+      if (res.code == 200) {
+        this.fileImgTwo.push({ url: res.data });
+        this.ruleForm.showImgTwo = res.data;
+        return;
+      }
+      this.$message.error("上传失败");
+    },
+    handleChangeTwo(file, fileList) {
+      this.hideUploadTwo = fileList.length >= this.limitCount;
+    },
+    handleRemoveTwo(file, fileList) {
+      this.hideUploadTwo = fileList.length >= this.limitCount;
+      this.fileImgTwo = [];
     },
     // 提交盲盒数据
     submitForm() {
@@ -1364,7 +1443,11 @@ export default {
       this.platformList = [];
       this.externalList = [];
       this.fileImg = [];
+      this.fileImgOne = [];
+      this.fileImgTwo = [];
       this.hideUpload = false;
+      this.hideUploadOne = false;
+      this.hideUploadTwo = false;
 
       this.$forceUpdate();
 
@@ -1611,6 +1694,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.flex {
+  display: flex;
+  gap: 10px;
+  height: 161px;
+  overflow: hidden;
+}
+/deep/ .el-upload {
+  position: relative;
+}
+.tip {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .hide {
   /deep/ .el-upload--picture-card {
     display: none;
