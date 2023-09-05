@@ -771,7 +771,12 @@ export default {
             id: this.reviewData.id,
           });
         }
-        this.withdrawNft(row);
+        const data = {
+          ids: [row.id], //提款ID集合
+          appleHash: "test", //申请hash
+        };
+        res = await this.$http.withdrawawSign(data);
+        // this.withdrawNft(row);
       } else {
         // 拒绝
         if (!this.remark) {
