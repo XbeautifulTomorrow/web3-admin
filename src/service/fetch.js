@@ -28,7 +28,7 @@ export const batchUpAndDown = (obj) => S.post("/user/batch/upAndDown", obj); // 
 export const getNftExternalList = (obj) => S.get("/nft-external-series/pageList", obj); // 外部nft列表
 export const getNftExternalStatistics = (obj) => S.get("/nft-external-series/headerDataTotal", obj); // 外部nft统计
 export const nftExternalAdd = (obj) => S.post("/nft-external-series/add", obj); // 外部nft新增
-export const nftExternalUpdate = (obj) => S.post("/nft-external-series/update", obj); // 外部nft新增
+export const nftExternalUpdate = (obj) => S.post("/nft-external-series/update", obj, true); // 外部nft新增
 export const nftExternalDel = (obj) => S.get("/nft-external-series/delete", obj); // 外部nft删除
 
 export const getNftPlatformList = (obj) => S.get("/nft-platform-series/pageList", obj); // 平台nft列表
@@ -71,7 +71,7 @@ export const marketThaw = (obj) => S.get("/market-manager/thaw", obj); // 市场
 export const getBoxManagerList = (obj) => S.get("/box-manager/pageList", obj); // 盲盒管理列表
 export const getBoxManagerStatistics = (obj) => S.get("/box-manager/headerDataTotal", obj); // 盲盒管理统计
 export const boxManagerAdd = (obj) => S.post("/box-manager/add", obj); // 盲盒新增
-export const boxManagerUpdate = (obj) => S.post("/box-manager/update", obj); // 盲盒更新
+export const boxManagerUpdate = (obj) => S.post("/box-manager/update", obj, true); // 盲盒更新
 export const boxManagerFreeze = (obj) => S.get("/box-manager/freeze", obj); // 盲盒管理冻结
 export const boxManagerThaw = (obj) => S.get("/box-manager/thaw", obj); // 盲盒管理解禁
 export const boxManagerDelete = (obj) => S.get("/box-manager/delete", obj); // 盲盒管理删除

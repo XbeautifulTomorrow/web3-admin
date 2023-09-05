@@ -201,7 +201,7 @@
               <i class="el-icon-plus" />
             </el-upload>
           </el-form-item>
-          <el-form-item label="H5盲盒图片" prop="seriesImg">
+          <!-- <el-form-item label="H5盲盒图片" prop="seriesImg">
             <div class="flex">
               <el-upload
                 :action="uploadUrl"
@@ -240,7 +240,7 @@
                 <div class="tip">光盘</div>
               </el-upload>
             </div>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="推荐顺序" prop="boxIndex">
             <el-input type="number" v-model.number="ruleForm.boxIndex" style="width: 300px" placeholder="请输入推荐顺序"></el-input>
           </el-form-item>
@@ -976,6 +976,7 @@ export default {
     handleRemoveOne(file, fileList) {
       this.hideUploadOne = fileList.length >= this.limitCount;
       this.fileImgOne = [];
+      this.ruleForm.showImgOne = "";
     },
     handleUploadTwo(res) {
       if (res.code == 200) {
@@ -991,6 +992,7 @@ export default {
     handleRemoveTwo(file, fileList) {
       this.hideUploadTwo = fileList.length >= this.limitCount;
       this.fileImgTwo = [];
+      this.ruleForm.showImgTwo = "";
     },
     // 提交盲盒数据
     submitForm() {
