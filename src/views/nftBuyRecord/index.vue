@@ -1,9 +1,9 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入订单号" v-model="orderNum" clearable />
-      <el-input class="public-input" style="width: 220px;" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
-      <el-input class="public-input" style="width: 220px;" placeholder="输入票号" v-model="num" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入订单号" v-model="orderNum" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入票号" v-model="num" clearable />
       <el-select class="public-input" v-model="winningStatus" placeholder="中奖状态" clearable style="width: 120px">
         <el-option label="已中奖" value="YES" />
         <el-option label="未中奖" value="NO" />
@@ -14,24 +14,34 @@
         <el-option label="已退款" value="REFUNDED" />
       </el-select>
       <div class="public-date-box">
-        <span class="demonstration">
-          消费区间
-        </span>
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最低价"
-          v-model.number="startPrice" clearable />
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最高价"
-          v-model.number="endPrice" clearable />
+        <span class="demonstration"> 消费区间 </span>
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最低价"
+          v-model.number="startPrice"
+          clearable
+        />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最高价"
+          v-model.number="endPrice"
+          clearable
+        />
       </div>
       <div class="public-date-box">
-        <span class="demonstration">
-          交易时间
-        </span>
-        <el-date-picker v-model="transactionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 交易时间 </span>
+        <el-date-picker
+          v-model="transactionTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search"
-        @click="fetchOneNftLotteryOrdersManagerList()">
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOneNftLotteryOrdersManagerList()">
         查询
       </el-button>
     </div>
@@ -59,14 +69,12 @@
         </div> -->
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%"  @sort-change="sortChange" class="public-table" border>
-      <el-table-column sortable="custom" prop="orderNum" label="订单号" align="center" key="1">
-      </el-table-column>
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column sortable="custom" prop="orderNum" label="订单号" align="center" key="1"> </el-table-column>
       <el-table-column prop="nftImage" label="NFT图" align="center" key="3">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%;" :src="scope.row.nftImage" :preview-src-list="[scope.row.nftImg]">
-            </el-image>
+            <el-image style="height: 100%" :src="scope.row.nftImage" :preview-src-list="[scope.row.nftImg]"> </el-image>
           </div>
         </template>
       </el-table-column>
@@ -75,8 +83,7 @@
           {{ `${scope.row.name} ${scope.row.orderId}` }}
         </template>
       </el-table-column>
-      <el-table-column sortable="custom" prop="tickets" label="票数" align="center" key="5">
-      </el-table-column>
+      <el-table-column sortable="custom" prop="tickets" label="票数" align="center" key="5"> </el-table-column>
       <el-table-column sortable="custom" label="票号" align="center" key="6">
         <template slot-scope="scope">
           {{ `${scope.row.startNumbers}-${scope.row.endNumbers}` }}
@@ -84,53 +91,57 @@
       </el-table-column>
       <el-table-column prop="userId" label="下单用户" align="center" key="7">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
-          <p :style="{ color: scope.row.userIsTest ? 'red' : '#000' }">{{ scope.row.username || '--' }}</p>
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.username || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="8">
-      </el-table-column>
+      <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="8"> </el-table-column>
       <el-table-column sortable="custom" prop="winningStatus" label="中奖" align="center" key="9">
         <template slot-scope="scope">
-          <span v-if="scope.row.winningStatus == 'YES'" style="color: #67C23A;">已中奖</span>
+          <span v-if="scope.row.winningStatus == 'YES'" style="color: #67c23a">已中奖</span>
           <span v-else>未中奖</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paymentChannel" label="消费渠道" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="expenditureSerialId" label="消费流水号" align="center" key="14">
-      </el-table-column>
-      <el-table-column prop="refundSerialId" label="退款流水号" align="center" key="15">
-      </el-table-column>
+      <el-table-column prop="paymentChannel" label="消费渠道" align="center" key="10"> </el-table-column>
+      <el-table-column prop="expenditureSerialId" label="消费流水号" align="center" key="14"> </el-table-column>
+      <el-table-column prop="refundSerialId" label="退款流水号" align="center" key="15"> </el-table-column>
       <el-table-column sortable="custom" prop="status" label="状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
-          <span style="color: #05A8F0;" v-if="scope.row.status == 'TO_BE_AWARDED'">待开奖</span>
-          <span style="color: #31CE0B;" v-if="scope.row.status == 'REFUNDED'">已退款</span>
-          <span style="color: #BBBBBB;" v-if="scope.row.status == 'AWARDED'">已开奖</span>
+          <span style="color: #05a8f0" v-if="scope.row.status == 'TO_BE_AWARDED'">待开奖</span>
+          <span style="color: #31ce0b" v-if="scope.row.status == 'REFUNDED'">已退款</span>
+          <span style="color: #bbbbbb" v-if="scope.row.status == 'AWARDED'">已开奖</span>
         </template>
       </el-table-column>
       <el-table-column sortable="custom" prop="paymentTime" width="140px" label="交易时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.paymentTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.paymentTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
 import bigNumber from "bignumber.js";
-import { accurateDecimal, timeForStr } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { accurateDecimal, timeForStr } from "@/utils";
+import pagination from "@/mixins/pagination";
 export default {
-  name: 'NftBuyRecord',
+  name: "NftBuyRecord",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -151,7 +162,7 @@ export default {
       baseUserPage: null,
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
     };
   },
@@ -169,10 +180,10 @@ export default {
       let endConfirmTime = null;
 
       if (transactionTime && transactionTime[0]) {
-        startTxtime = timeForStr(transactionTime[0], 'YYYY-MM-DD HH:mm:ss');
+        startTxtime = timeForStr(transactionTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (transactionTime && transactionTime[1]) {
-        endTxTime = timeForStr(transactionTime[1], 'YYYY-MM-DD HH:mm:ss');
+        endTxTime = timeForStr(transactionTime[1], "YYYY-MM-DD HH:mm:ss");
       }
       return {
         orderNum: this.orderNum,
@@ -191,7 +202,7 @@ export default {
     // 加载列表
     async fetchOneNftLotteryOrdersManagerList(isSearch = true) {
       const search = this.searchFun();
-      const {sortData, size, userType } = this;
+      const { sortData, size, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -230,7 +241,7 @@ export default {
     },
     // 上架和下架
     operatingNft(row) {
-      this.$confirm(`确定要${row.upAndDown == 'down' ? '上架' : '下架'}一元购活动『${row.seriesName || row.id}』吗?`, "提示", {
+      this.$confirm(`确定要${row.upAndDown == "down" ? "上架" : "下架"}一元购活动『${row.seriesName || row.id}』吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
@@ -238,7 +249,7 @@ export default {
         .then(async () => {
           let res = await this.$http.updateOneNftOrders({
             id: row.id,
-            upAndDown: row.upAndDown == "down" ? "up" : "down"
+            upAndDown: row.upAndDown == "down" ? "up" : "down",
           });
           if (res) {
             this.fetchOneNftLotteryOrdersManagerList();
@@ -272,11 +283,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -301,7 +312,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
