@@ -82,7 +82,6 @@
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="walletAddress" label="钱包地址" width="300" align="center" key="1"> </el-table-column>
       <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2"> </el-table-column>
       <el-table-column prop="email" label="邮箱" align="center" width="200" key="3"> </el-table-column>
       <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="4"> </el-table-column>

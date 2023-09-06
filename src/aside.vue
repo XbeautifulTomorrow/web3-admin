@@ -34,10 +34,6 @@
             <i class="el-icon-coin"></i>
             <span>邀请返佣</span>
           </el-menu-item>
-          <!-- <el-menu-item index="mandatoryAudit" class="menu-list">
-            <i class="el-icon-stopwatch"></i>
-            <span>强制审核管理</span>
-          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="nftManagement">
           <template slot="title">
@@ -93,6 +89,10 @@
           <el-menu-item index="robotManagement" class="menu-list">
             <i class="el-icon-message"></i>
             <span> 机器人管理</span>
+          </el-menu-item>
+          <el-menu-item index="mandatoryAudit" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>强制审核管理</span>
           </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
@@ -463,7 +463,7 @@ export default {
         "externalTokenManagement",
       ];
 
-      const platformManagement = ["marketManagement", "setting", "email", "robotManagement", "lotteryChainManagement"];
+      const platformManagement = ["marketManagement", "setting", "email", "robotManagement", "lotteryChainManagement", "mandatoryAudit"];
 
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
 

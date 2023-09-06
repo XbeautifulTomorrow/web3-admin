@@ -225,3 +225,10 @@ export const lotteryChainPageList = (obj) => S.get("/lottery-chain/pageList", ob
 export const lotteryChainUpdateStatus = (obj) => S.get("/lottery-chain/updateStatus", obj);
 export const lotteryChainGetIsBreak = (obj) => S.get("/lottery-chain/getIsBreak", obj);
 export const lotteryChainIsBreak = (obj) => S.get("/lottery-chain/setIsBreak", obj);
+
+/**
+ * @description 强制审核管理
+ */
+export const mandatoryReviewPageList = (obj) => S.get("/mandatory-review/pageList", obj);
+export const mandatoryReviewAdd = (obj) => S.post("/mandatory-review/add", obj);
+export const mandatoryReviewRemove = (obj) => S.get("/mandatory-review/remove", obj);

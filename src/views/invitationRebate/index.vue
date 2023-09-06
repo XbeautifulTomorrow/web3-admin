@@ -1,23 +1,22 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="email" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入邀请码" v-model="inviteCode" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入email" v-model="email" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入邀请码" v-model="inviteCode" clearable />
       <div class="public-date-box">
-        <span class="demonstration">
-          最后领取时间
-        </span>
-        <el-date-picker v-model="lastPickUpTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 最后领取时间 </span>
+        <el-date-picker
+          v-model="lastPickUpTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseList()">
-        查询
-      </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()">
-        导出
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()"> 导出 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -38,10 +37,6 @@
           <div class="val">{{ aggregateQuery && aggregateQuery.receiveAmounts }}</div>
         </div>
         <div class="remittance-item">
-          <div class="title">领取数量</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.receiveNumber }}</div>
-        </div>
-        <div class="remittance-item">
           <div class="title">总积分</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.pointAmountTotal }}</div>
         </div>
@@ -54,14 +49,12 @@
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
       <el-table-column prop="userName" sortable="custom" width="120" label="用户" align="center" key="1">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="email" width="120" label="邮箱" align="center" key="2">
-      </el-table-column>
-      <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3">
-      </el-table-column>
+      <el-table-column prop="email" width="120" label="邮箱" align="center" key="2"> </el-table-column>
+      <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3"> </el-table-column>
       <el-table-column prop="downIdNumber" sortable="custom" width="120" label="下级数量" align="center" key="4">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="showDown(scope.row)">
@@ -69,26 +62,20 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="totalConsumption" sortable="custom" width="120" label="总消费" align="center" key="5">
-      </el-table-column>
+      <el-table-column prop="totalConsumption" sortable="custom" width="120" label="总消费" align="center" key="5"> </el-table-column>
       <el-table-column prop="rebateRate" sortable="custom" width="120" label="分佣比例" align="center" key="6">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="7">
-      </el-table-column>
-      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="8">
-      </el-table-column>
-      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="9">
-      </el-table-column>
-      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="11">
-      </el-table-column>
+      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="7"> </el-table-column>
+      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="8"> </el-table-column>
+      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="9"> </el-table-column>
+      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="10"> </el-table-column>
+      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="11"> </el-table-column>
       <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="12">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.lastReceiveTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.lastReceiveTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="13">
@@ -97,23 +84,26 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
-    <el-dialog title="下级详情" :visible.sync="showDownDialog" width="1200px" :close-on-click-modal="false"
-      :before-close="handleClose">
+    <el-dialog title="下级详情" :visible.sync="showDownDialog" width="1200px" :close-on-click-modal="false" :before-close="handleClose">
       <div class="public-list-inputs">
-        <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="downObscureField"
-          clearable />
-        <el-input class="public-input" style="width: 140px;" placeholder="输入email" v-model="downEmail" clearable />
-        <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseDownList()">
-          查询
-        </el-button>
+        <el-input class="public-input" style="width: 140px" placeholder="输入用户ID/昵称" v-model="downObscureField" clearable />
+        <el-input class="public-input" style="width: 140px" placeholder="输入email" v-model="downEmail" clearable />
+        <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchRebatesBaseDownList()"> 查询 </el-button>
 
-        <el-button type="primary" icon="el-icon-download" class="public-search" @click="onDownExport()">
-          导出
-        </el-button>
+        <el-button type="primary" icon="el-icon-download" class="public-search" @click="onDownExport()"> 导出 </el-button>
       </div>
       <div class="remittance-box">
         <div class="remittance-amount remittance-more">
@@ -138,46 +128,53 @@
       <el-table :data="downData" style="width: auto" height="400px" border>
         <el-table-column prop="userName" width="120" label="用户" align="center" key="1">
           <template slot-scope="scope">
-            <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || '--' }}</p>
-            <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
+            <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+            <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
           </template>
         </el-table-column>
-        <el-table-column prop="email" width="120" label="邮箱" align="center" key="2">
-        </el-table-column>
-        <el-table-column prop="inviteCode" label="邀请码" align="center" key="3">
-        </el-table-column>
-        <el-table-column prop="traNumber" label="交易笔数" align="center" key="4">
-        </el-table-column>
-        <el-table-column prop="consumeTotal" label="消费金额" align="center" key="5">
-        </el-table-column>
+        <el-table-column prop="email" width="120" label="邮箱" align="center" key="2"> </el-table-column>
+        <el-table-column prop="inviteCode" label="邀请码" align="center" key="3"> </el-table-column>
+        <el-table-column prop="traNumber" label="交易笔数" align="center" key="4"> </el-table-column>
+        <el-table-column prop="consumeTotal" label="消费金额" align="center" key="5"> </el-table-column>
         <el-table-column prop="rebateRate" label="返佣比例" align="center" key="6">
           <template slot-scope="scope">
             {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
           </template>
         </el-table-column>
-        <el-table-column prop="totalAmount" label="佣金" align="center" key="7">
-        </el-table-column>
-        <el-table-column prop="pointAmountTotal" label="注册积分" align="center" key="8">
-        </el-table-column>
-        <el-table-column prop="extraPointAmountTotal" label="额外积分" align="center" key="9">
-        </el-table-column>
+        <el-table-column prop="totalAmount" label="佣金" align="center" key="7"> </el-table-column>
+        <el-table-column prop="pointAmountTotal" label="注册积分" align="center" key="8"> </el-table-column>
+        <el-table-column prop="extraPointAmountTotal" label="额外积分" align="center" key="9"> </el-table-column>
         <el-table-column prop="createTime" width="140" label="注册时间" align="center" key="10">
           <template slot-scope="scope">
-            {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+            {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination v-if="downBaseUserPage && downBaseUserPage.total" background @size-change="handleDownSizeChange"
-        @current-change="handleDownCurrentChange" :current-page="downPage" :page-sizes="pagination.pageSizes"
-        :page-size="downSize" layout=" sizes, prev, pager, next, jumper" :total="downBaseUserPage.total"
-        class="public-pagination">
+      <el-pagination
+        v-if="downBaseUserPage && downBaseUserPage.total"
+        background
+        @size-change="handleDownSizeChange"
+        @current-change="handleDownCurrentChange"
+        :current-page="downPage"
+        :page-sizes="pagination.pageSizes"
+        :page-size="downSize"
+        layout=" sizes, prev, pager, next, jumper"
+        :total="downBaseUserPage.total"
+        class="public-pagination"
+      >
       </el-pagination>
     </el-dialog>
-    <el-dialog width="440px" :close-on-click-modal="false" title="设置分佣比例" :visible.sync="showSetRatio" append-to-body
-      :before-close="handleClose">
+    <el-dialog
+      width="440px"
+      :close-on-click-modal="false"
+      title="设置分佣比例"
+      :visible.sync="showSetRatio"
+      append-to-body
+      :before-close="handleClose"
+    >
       <el-form ref="seriesForm" class="add-form" :model="ratioForm" label-width="80px">
         <el-form-item label="比例" prop="ratio">
-          <el-input style="width: 300px;" type="number" v-model="ratioForm.ratio">
+          <el-input style="width: 300px" type="number" v-model="ratioForm.ratio">
             <template slot="append">%</template>
           </el-input>
         </el-form-item>
@@ -192,15 +189,14 @@
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr, exportExcel, accurateDecimal } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { timeForStr, exportExcel, accurateDecimal } from "@/utils";
+import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 
 export default {
-  name: 'invitationRebate',
+  name: "invitationRebate",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -210,7 +206,7 @@ export default {
       lastPickUpTime: null, // 交易时间
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
@@ -221,7 +217,7 @@ export default {
       /** 设置分佣比例 */
       showSetRatio: false,
       ratioForm: {
-        ratio: null
+        ratio: null,
       },
       userSet: {},
       timer: null,
@@ -250,10 +246,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (lastPickUpTime && lastPickUpTime[0]) {
-        startTime = timeForStr(lastPickUpTime[0], 'YYYY-MM-DD HH:mm:ss');
+        startTime = timeForStr(lastPickUpTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (lastPickUpTime && lastPickUpTime[1]) {
-        endTime = timeForStr(lastPickUpTime[1], 'YYYY-MM-DD HH:mm:ss');
+        endTime = timeForStr(lastPickUpTime[1], "YYYY-MM-DD HH:mm:ss");
       }
 
       return {
@@ -263,7 +259,7 @@ export default {
         startPrice: this.startPrice,
         endPrice: this.endPrice,
         startTime,
-        endTime
+        endTime,
       };
     },
     /**
@@ -322,7 +318,7 @@ export default {
         obscureField: this.downObscureField,
         email: this.downEmail,
         inviteCode: this.downInviteCode,
-        upId: this.upId
+        upId: this.upId,
       };
 
       const { downSize, coin, userType } = this;
@@ -356,25 +352,27 @@ export default {
     setRatio(event) {
       this.showSetRatio = true;
       this.userSet = event;
-      this.ratioForm.ratio = accurateDecimal(Number(new bigNumber(event.rebateRate).multipliedBy(100)), 4)
+      this.ratioForm.ratio = accurateDecimal(Number(new bigNumber(event.rebateRate).multipliedBy(100)), 4);
     },
     async submitRatio() {
-      const { ratioForm: { ratio }, userSet: { id }
+      const {
+        ratioForm: { ratio },
+        userSet: { id },
       } = this;
 
       if (ratio == null || ratio == "" || ratio == undefined) {
         this.$message.error("请输入分佣比例");
-        return
+        return;
       }
 
       if (ratio <= 0) {
         this.$message.error("分佣比例不能为0或以下");
-        return
+        return;
       }
 
       const res = await this.$http.setRebateRate({
         rebateRate: accurateDecimal(Number(new bigNumber(ratio).div(100)), 4),
-        userId: id
+        userId: id,
       });
 
       if (res) {
@@ -386,45 +384,45 @@ export default {
     // 列表导出
     onExport() {
       const search = this.searchFun();
-      const urlStr = config.api + '/rebates-base/exportExcel';
+      const urlStr = config.api + "/rebates-base/exportExcel";
       const { coin, userType } = this;
       const data = {
         ...{
           coin: coin,
-          userType: userType
+          userType: userType,
         },
         ...search,
       };
 
-      exportExcel(urlStr, data, "邀请列表导出")
+      exportExcel(urlStr, data, "邀请列表导出");
     },
     // 下级列表导出
     onDownExport() {
       const search = {
         obscureField: this.downObscureField,
         email: this.downEmail,
-        upId: this.upId
+        upId: this.upId,
       };
-      const urlStr = config.api + '/rebates-base/down/exportExcel';
+      const urlStr = config.api + "/rebates-base/down/exportExcel";
       const { coin, userType } = this;
       const data = {
         ...{
           coin: coin,
-          userType: userType
+          userType: userType,
         },
         ...search,
       };
 
-      exportExcel(urlStr, data, "邀请下级列表导出")
+      exportExcel(urlStr, data, "邀请下级列表导出");
     },
     handleClose(done) {
       this.userSet = {};
       this.ratioForm = {
-        ratio: null
-      }
+        ratio: null,
+      };
       if (done) {
-        done()
-        return
+        done();
+        return;
       }
 
       this.showDownDialog = false;
@@ -453,9 +451,9 @@ export default {
   },
   watch: {
     "ratioForm.ratio"(newV, oldV) {
-      if (!newV) return
+      if (!newV) return;
       if (this.timer) {
-        clearTimeout(this.timer)
+        clearTimeout(this.timer);
       }
       this.timer = setTimeout(() => {
         if (newV < 0) {
@@ -464,7 +462,6 @@ export default {
           this.ratioForm.ratio = 100;
         }
       }, 300);
-
     },
   },
   computed: {
@@ -476,11 +473,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -505,7 +502,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
