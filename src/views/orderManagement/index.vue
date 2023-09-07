@@ -496,6 +496,7 @@ export default {
       };
       if(search.startTime == null){
         alert("交易时间起始时间必填")
+        return
       }
 
       exportExcel(urlStr, data, "每日数据统计");
