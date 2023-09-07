@@ -76,6 +76,8 @@
       >
         查询
       </el-button>
+      
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="dailyStatsExcel()"> 每日统计数据导出 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -388,9 +390,11 @@
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr } from "@/utils";
+import { timeForStr , exportExcel} from "@/utils";
 import pagination from "@/mixins/pagination";
 import chainExplorerSkip from "@/components/chainExplorerSkip";
+import config from "@/config/env";
+
 export default {
   name: "OrderManagement",
   // 模板引入
@@ -476,6 +480,25 @@ export default {
       }
 
       this.fetchOrderManagerList();
+    },
+     // 用户列表导出
+    dailyStatsExcel() {
+      const search = this.searchFun();
+      const urlStr = config.api + "/user/dailyStatsExcel";
+      const { coin, userType } = this;
+      const data = {
+        ...{
+          startDate: search.startTime,
+          endDate: search.endTime,
+          userType: userType,
+        },
+        ...search,
+      };
+      if(search.startTime == null){
+        alert("交易时间起始时间必填")
+      }
+
+      exportExcel(urlStr, data, "每日数据统计");
     },
     // 加载列表
     async fetchOrderManagerList(isSearch = true) {
