@@ -108,6 +108,21 @@
         </div>
       </div>
       <div class="setting-item">
+        <div class="setting-title">提币免费次数</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入下浮汇率"
+            v-model="withdrawals.freeFeeCoinNumber"
+            clearable
+          >
+            <template slot="append">次</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">单次审核阈值</div>
         <div class="setting-val">
           <el-input
@@ -177,21 +192,7 @@
           </el-input>
         </div>
       </div>
-      <div class="setting-item">
-        <div class="setting-title">提币免费次数</div>
-        <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入下浮汇率"
-            v-model="withdrawals.freeFeeCoinNumber"
-            clearable
-          >
-            <template slot="append">次</template>
-          </el-input>
-        </div>
-      </div>
+
       <el-button type="primary" style="width: 160px" size="medium" @click="submitWithdrawal()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
