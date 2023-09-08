@@ -232,3 +232,4 @@ export const lotteryChainIsBreak = (obj) => S.get("/lottery-chain/setIsBreak", o
 export const mandatoryReviewPageList = (obj) => S.get("/mandatory-review/pageList", obj);
 export const mandatoryReviewAdd = (obj) => S.post("/mandatory-review/add", obj);
 export const mandatoryReviewRemove = (obj) => S.get("/mandatory-review/remove", obj);
+export const mandatoryReviwUpdate = (obj) => S.get("/mandatory-review/update", obj);

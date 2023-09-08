@@ -10,6 +10,54 @@
       <el-table-column prop="userName" label="昵称" align="center" key="2"> </el-table-column>
       <el-table-column prop="email" label="邮箱" align="center" key="3"> </el-table-column>
       <el-table-column prop="assetBalance" label="余额" align="center" key="4"> </el-table-column>
+      <el-table-column prop="assetBalance" label="禁止提款" align="center" key="4">
+        <template slot-scope="scope">
+          <el-switch
+            style="display: block"
+            v-model="scope.row.isWithdrawal"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="可用"
+            inactive-text="禁止"
+            active-value="TRUE"
+            inactive-value="FALSE"
+            @change="mandatoryReviwUpdateFunc(scope.row)"
+          >
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="assetBalance" label="禁止take" align="center" key="4">
+        <template slot-scope="scope">
+          <el-switch
+            style="display: block"
+            v-model="scope.row.isTake"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="可用"
+            inactive-text="禁止"
+            active-value="TRUE"
+            inactive-value="FALSE"
+            @change="mandatoryReviwUpdateFunc(scope.row)"
+          >
+          </el-switch>
+        </template>
+      </el-table-column>
+      <el-table-column prop="assetBalance" label="禁止一元购" align="center" key="4">
+        <template slot-scope="scope">
+          <el-switch
+            style="display: block"
+            v-model="scope.row.isOneDollarBuy"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="可用"
+            inactive-text="禁止"
+            active-value="TRUE"
+            inactive-value="FALSE"
+            @change="mandatoryReviwUpdateFunc(scope.row)"
+          >
+          </el-switch>
+        </template>
+      </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="5">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)"> 移除 </span>
@@ -163,6 +211,18 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    async mandatoryReviwUpdateFunc(row) {
+      const res = await this.$http.mandatoryReviwUpdate({
+        id: row.id,
+        isWithdrawal: row.isWithdrawal,
+        isTake: row.isTake,
+        isOneDollarBuy: row.isOneDollarBuy,
+      });
+      if (res) {
+        this.fetchMarketManagerList();
+        this.$message.success("操作成功");
+      }
     },
     handleSelectionChange(val) {
       this.multipleSelection = val;
