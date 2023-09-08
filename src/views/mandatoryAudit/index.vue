@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 220px" placeholder="输入ID、昵称、邮箱搜索" v-model="obscureField" clearable />
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchMarketManagerList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="getTableListFunc()"> 查询 </el-button>
       <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="dialogVisible = true"> 添加 </el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
@@ -10,7 +10,7 @@
       <el-table-column prop="userName" label="昵称" align="center" key="2"> </el-table-column>
       <el-table-column prop="email" label="邮箱" align="center" key="3"> </el-table-column>
       <el-table-column prop="assetBalance" label="余额" align="center" key="4"> </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止提款" align="center" key="4">
+      <el-table-column prop="assetBalance" label="禁止提款" align="center" key="5">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -26,7 +26,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止take" align="center" key="4">
+      <el-table-column prop="assetBalance" label="禁止take" align="center" key="6">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -42,7 +42,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止一元购" align="center" key="4">
+      <el-table-column prop="assetBalance" label="禁止一元购" align="center" key="7">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -58,7 +58,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="5">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="8">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)"> 移除 </span>
         </template>
@@ -152,7 +152,7 @@ export default {
   methods: {
     onSearch() {},
     // 加载列表
-    async fetchMarketManagerList(isSearch = true) {
+    async getTableListFunc(isSearch = true) {
       const { size, obscureField } = this;
       let _page = this.page;
       if (isSearch) {
@@ -168,6 +168,9 @@ export default {
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
+        if (_page > 1 && this.tableData?.length == 0) {
+          this.getTableListFunc(true);
+        }
       }
     },
 
@@ -204,7 +207,7 @@ export default {
             id: row.id,
           });
           if (res) {
-            this.fetchMarketManagerList();
+            this.getTableListFunc(false);
             this.$message.success("操作成功");
           }
         })
@@ -220,7 +223,7 @@ export default {
         isOneDollarBuy: row.isOneDollarBuy,
       });
       if (res) {
-        this.fetchMarketManagerList();
+        this.getTableListFunc(false);
         this.$message.success("操作成功");
       }
     },
@@ -242,16 +245,16 @@ export default {
         this.$message.success("操作成功");
         this.dialogVisible = false;
         this.toggleSelection();
-        this.fetchMarketManagerList();
+        this.getTableListFunc();
       }
     },
     handleSizeChange(val) {
       this.size = val;
-      this.fetchMarketManagerList();
+      this.getTableListFunc();
     },
     handleCurrentChange(val) {
       this.page = val;
-      this.fetchMarketManagerList(false);
+      this.getTableListFunc(false);
     },
     searchHandleSizeChange(val) {
       this.sizeTwo = val;
@@ -264,7 +267,7 @@ export default {
   },
   // 创建后
   created() {
-    this.fetchMarketManagerList();
+    this.getTableListFunc();
     this.getSearchTableData();
   },
   // 挂载后
