@@ -198,6 +198,15 @@
       >
       </el-table-column>
       <el-table-column
+        prop="refundPrice"
+        width="120"
+        sortable="custom"
+        :label="`退款金额(${coin})`"
+        align="center"
+        key="9"
+      >
+      </el-table-column>
+      <el-table-column
         prop="rebatesPrice"
         width="120"
         sortable="custom"
