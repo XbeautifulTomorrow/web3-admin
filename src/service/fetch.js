@@ -233,3 +233,5 @@ export const mandatoryReviewPageList = (obj) => S.get("/mandatory-review/pageLis
 export const mandatoryReviewAdd = (obj) => S.post("/mandatory-review/add", obj);
 export const mandatoryReviewRemove = (obj) => S.get("/mandatory-review/remove", obj);
 export const mandatoryReviwUpdate = (obj) => S.get("/mandatory-review/update", obj);
+export const mandatoryReviwTransferTestAccount = (obj) => S.get("/mandatory-review/transferTestAccount", obj);
+export const mandatoryReviwHeaderDataTotal = (obj) => S.get("/mandatory-review/headerDataTotal", obj);

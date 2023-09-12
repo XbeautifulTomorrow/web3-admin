@@ -5,12 +5,31 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="getTableListFunc()"> 查询 </el-button>
       <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="dialogVisible = true"> 添加 </el-button>
     </div>
+    <div class="remittance-box">
+      <div class="remittance-amount remittance-more">
+        <div class="remittance-item">
+          <div class="title">总上下分</div>
+          <div class="val">
+            {{ statisticsData?.scores }}
+          </div>
+        </div>
+      </div>
+    </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="userId" label="ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="userId" label="ID" align="center" key="1">
+        <template slot-scope="scope">
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="userName" label="昵称" align="center" key="2"> </el-table-column>
       <el-table-column prop="email" label="邮箱" align="center" key="3"> </el-table-column>
       <el-table-column prop="assetBalance" label="余额" align="center" key="4"> </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止提款" align="center" key="5">
+      <el-table-column prop="score" label="总上下分" align="center" key="5">
+        <template slot-scope="scope">
+          <p>{{ scope.row.score || "--" }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="assetBalance" label="禁止提款" align="center" key="6">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -26,7 +45,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止take" align="center" key="6">
+      <el-table-column prop="assetBalance" label="禁止take" align="center" key="7">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -42,7 +61,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" label="禁止一元购" align="center" key="7">
+      <el-table-column prop="assetBalance" label="禁止一元购" align="center" key="8">
         <template slot-scope="scope">
           <el-switch
             style="display: block"
@@ -58,9 +77,13 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="8">
+      <el-table-column prop="id" label="操作" align="center" width="180" key="9">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)"> 移除 </span>
+          <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)"> 上下分 </span>
+          <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row, 'remove')"> 移除 </span>
+          <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)" v-if="scope.row.userType !== 'INNER'">
+            转测试账号
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -97,7 +120,11 @@
         @selection-change="handleSelectionChange"
       >
         <el-table-column type="selection" width="55"> </el-table-column>
-        <el-table-column prop="id" label="ID" align="center" key="1"> </el-table-column>
+        <el-table-column prop="id" label="ID" align="center" key="1">
+          <template slot-scope="scope">
+            <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+          </template>
+        </el-table-column>
         <el-table-column prop="userName" label="昵称" align="center" key="2"> </el-table-column>
         <el-table-column prop="email" label="邮箱" align="center" key="3"> </el-table-column>
         <el-table-column prop="assetBalance" label="余额" align="center" key="4"> </el-table-column>
@@ -118,6 +145,15 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveFunc">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false" :before-close="handleClose">
+      <div>
+        <el-input-number v-model="score" style="width: 100%"></el-input-number>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="updateScore()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -145,6 +181,11 @@ export default {
       searchBaseUserPage: null,
       dialogVisible: false,
       multipleSelection: [],
+      statisticsData: {},
+      userId: null,
+      showUpDownDialog: false,
+      score: null,
+      coin: "ETH",
     };
   },
   mixins: [pagination],
@@ -172,6 +213,12 @@ export default {
           this.getTableListFunc(true);
         }
       }
+      delete data.size;
+      delete data.page;
+      const statisticsData = await this.$http.mandatoryReviwHeaderDataTotal(data);
+      if (statisticsData) {
+        this.statisticsData = statisticsData;
+      }
     },
 
     async getSearchTableData(isSearch = true) {
@@ -184,7 +231,7 @@ export default {
       const data = {
         size: sizeTwo,
         page: _page,
-        coin: "ETH",
+        coin: this.coin,
         obscureField: searchObscureField,
       };
       const res = await this.$http.getUserlist(data);
@@ -196,16 +243,53 @@ export default {
     searchAddData() {
       debounce(this.getSearchTableData(true), 1000);
     },
-    operatingMarket(row) {
-      this.$confirm(`确定要移除${row.userName}吗?`, "提示", {
+    // 打开上下分弹窗
+    operatingScore(row) {
+      this.userId = row.userId;
+      this.showUpDownDialog = true;
+    },
+    handleClose(done) {
+      this.score = null;
+      this.userId = "";
+      if (done) {
+        done();
+        return;
+      }
+      this.showUpDownDialog = false;
+    },
+    // 更新分数
+    async updateScore() {
+      const res = await this.$http.upAndDown({
+        id: this.userId,
+        amount: this.score,
+        coin: this.coin,
+      });
+
+      if (res) {
+        this.getTableListFunc();
+        this.handleClose();
+        this.$message.success("操作成功");
+      }
+    },
+    operatingMarket(row, type) {
+      let tip = type == "remove" ? `确定要移除${row.userName}吗?` : `确定要将${row.userName}转为测试账号吗?转后不可逆，请谨慎操作`;
+      this.$confirm(tip, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
       })
         .then(async () => {
-          const res = await this.$http.mandatoryReviewRemove({
-            id: row.id,
-          });
+          let res = null;
+          if (type == "remove") {
+            res = await this.$http.mandatoryReviewRemove({
+              id: row.id,
+            });
+          } else {
+            res = await this.$http.mandatoryReviwTransferTestAccount({
+              userId: row.userId,
+            });
+          }
+          console.log(res);
           if (res) {
             this.getTableListFunc(false);
             this.$message.success("操作成功");
@@ -279,4 +363,29 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.remittance-box {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.remittance-amount {
+  padding: 20px 0;
+  border: 1px solid #666;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 16px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+
+  .val {
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
+  & > div {
+    min-width: 200px;
+  }
+}
+</style>
