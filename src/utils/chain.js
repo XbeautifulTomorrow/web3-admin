@@ -118,7 +118,7 @@ export const chainUrlList = {
     { chainName: "OKT", blockExplorerUrls: "https://www.oklink.com/cn/oktc/" },
   ],
   main: [
-    { chainName: "polygon", blockExplorerUrls: "https://polygonscan.com/tx/" },
+    { chainName: "polygon", blockExplorerUrls: "https://polygonscan.com/" },
     { chainName: "BASE", blockExplorerUrls: "https://basescan.org/" },
     { chainName: "BSC", blockExplorerUrls: "https://bscscan.com/" },
     { chainName: "OKT", blockExplorerUrls: "https://www.oklink.com/cn/oktc/" },
