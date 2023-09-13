@@ -29,6 +29,11 @@
           <p>{{ scope.row.score || "--" }}</p>
         </template>
       </el-table-column>
+      <el-table-column prop="score" label="中奖系数" align="center" key="5">
+        <template slot-scope="scope">
+          <p>{{ scope.row.lotteryCoefficient || "--" }}</p>
+        </template>
+      </el-table-column>
       <el-table-column prop="assetBalance" label="禁止提款" align="center" key="6">
         <template slot-scope="scope">
           <el-switch
@@ -77,9 +82,10 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="180" key="9">
+      <el-table-column prop="id" label="操作" align="center" width="220" key="9">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)"> 上下分 </span>
+          <span class="blueColor publick-button cursor" @click="operatingCoefficient(scope.row)"> 中奖系数 </span>
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row, 'remove')"> 移除 </span>
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)" v-if="scope.row.userType !== 'INNER'">
             转测试账号
@@ -156,6 +162,21 @@
         <el-button type="primary" @click="updateScore()">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog
+      title="中奖系数"
+      :visible.sync="dialogCoefficientVisible"
+      width="440px"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+    >
+      <div>
+        <el-input v-model="lotteryCoefficient" placeholder="请输入中奖系数" style="width: 100%"></el-input>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="updateCoefficient()">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -180,11 +201,14 @@ export default {
       searchTableData: null,
       searchBaseUserPage: null,
       dialogVisible: false,
+      showUpDownDialog: false,
+      dialogCoefficientVisible: false,
       multipleSelection: [],
       statisticsData: {},
       userId: null,
-      showUpDownDialog: false,
+      row: {},
       score: null,
+      lotteryCoefficient: null,
       coin: "ETH",
     };
   },
@@ -248,6 +272,11 @@ export default {
       this.userId = row.userId;
       this.showUpDownDialog = true;
     },
+    operatingCoefficient(row) {
+      this.row = row;
+      this.lotteryCoefficient = row.lotteryCoefficient;
+      this.dialogCoefficientVisible = true;
+    },
     handleClose(done) {
       this.score = null;
       this.userId = "";
@@ -256,6 +285,7 @@ export default {
         return;
       }
       this.showUpDownDialog = false;
+      this.dialogCoefficientVisible = false;
     },
     // 更新分数
     async updateScore() {
@@ -271,6 +301,7 @@ export default {
         this.$message.success("操作成功");
       }
     },
+
     operatingMarket(row, type) {
       let tip = type == "remove" ? `确定要移除${row.userName}吗?` : `确定要将${row.userName}转为测试账号吗?转后不可逆，请谨慎操作`;
       this.$confirm(tip, "提示", {
@@ -298,6 +329,18 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    async updateCoefficient() {
+      const res = await this.$http.mandatoryReviwUpdate({
+        id: this.row?.id,
+        lotteryCoefficient: this.lotteryCoefficient,
+      });
+
+      if (res) {
+        this.getTableListFunc();
+        this.handleClose();
+        this.$message.success("操作成功");
+      }
     },
     async mandatoryReviwUpdateFunc(row) {
       const res = await this.$http.mandatoryReviwUpdate({
