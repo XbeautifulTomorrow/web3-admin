@@ -113,6 +113,9 @@ export const chainUrlList = {
     { chainName: "Mumbai", blockExplorerUrls: "https://mumbai.polygonscan.com/" },
     { chainName: "BSC_TEST", blockExplorerUrls: "https://testnet.bscscan.com/" },
     { chainName: "OKT_TEST", blockExplorerUrls: "https://www.oklink.com/oktc-test/" },
+    { chainName: "BASE", blockExplorerUrls: "https://basescan.org/" },
+    { chainName: "BSC", blockExplorerUrls: "https://bscscan.com/" },
+    { chainName: "OKT", blockExplorerUrls: "https://www.oklink.com/cn/oktc/" },
   ],
   main: [{ chainName: "polygon", blockExplorerUrls: "https://polygonscan.com/tx/" }],
 }[config.ENV != "main" ? "test" : "main"];

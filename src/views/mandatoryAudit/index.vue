@@ -171,6 +171,7 @@
     >
       <div>
         <el-input v-model="lotteryCoefficient" placeholder="请输入中奖系数" style="width: 100%"></el-input>
+        <p class="tip">系数不能小于1</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -331,6 +332,10 @@ export default {
         });
     },
     async updateCoefficient() {
+      if (this.lotteryCoefficient < 1) {
+        this.$message.error("系数不能小于1");
+        return;
+      }
       const res = await this.$http.mandatoryReviwUpdate({
         id: this.row?.id,
         lotteryCoefficient: this.lotteryCoefficient,
@@ -430,5 +435,10 @@ export default {
   & > div {
     min-width: 200px;
   }
+}
+.tip {
+  font-size: 12px;
+  color: #909399;
+  margin-top: 8px;
 }
 </style>
