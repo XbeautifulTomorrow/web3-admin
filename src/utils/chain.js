@@ -122,6 +122,7 @@ export const chainUrlList = {
     { chainName: "BASE", blockExplorerUrls: "https://basescan.org/" },
     { chainName: "BSC", blockExplorerUrls: "https://bscscan.com/" },
     { chainName: "OKT", blockExplorerUrls: "https://www.oklink.com/cn/oktc/" },
+    { chainName: "ThunderCore", blockExplorerUrls: "https://viewblock.io/thundercore/" },
   ],
 }[config.ENV != "main" ? "test" : "main"];
 
