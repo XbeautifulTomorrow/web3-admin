@@ -346,7 +346,7 @@ export default {
     // 用户国家导出
     onExportCountry() {
       const search = this.searchFun();
-      const urlStr = config.api + "/user/exportExcel";
+      const urlStr = config.api + "/user/dailyCountryStatsExcel";
       const { coin, userType } = this;
       const data = {
         ...{
