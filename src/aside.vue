@@ -94,6 +94,10 @@
             <i class="el-icon-stopwatch"></i>
             <span>强制审核管理</span>
           </el-menu-item>
+          <!-- <el-menu-item index="activityManagement" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>活动管理</span>
+          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
@@ -412,6 +416,10 @@ export default {
           label: "强制审核管理",
           page: "mandatoryAudit",
         },
+        {
+          label: "活动管理",
+          page: "activityManagement",
+        },
       ],
     };
   },
@@ -463,7 +471,15 @@ export default {
         "externalTokenManagement",
       ];
 
-      const platformManagement = ["marketManagement", "setting", "email", "robotManagement", "lotteryChainManagement", "mandatoryAudit"];
+      const platformManagement = [
+        "marketManagement",
+        "setting",
+        "email",
+        "robotManagement",
+        "lotteryChainManagement",
+        "mandatoryAudit",
+        "activityManagement",
+      ];
 
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
 

@@ -117,7 +117,12 @@ export const routes = [
         component: () => import("@/views/mandatoryAudit/index"),
         name: "mandatoryAudit",
       },
-
+      {
+        /** 活动管理 */
+        path: "/activityManagement",
+        component: () => import("@/views/activityManagement/index"),
+        name: "activityManagement",
+      },
       {
         /** 订单管理 */
         path: "/orderManagement",
