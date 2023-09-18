@@ -83,110 +83,191 @@
       v-if="showDialog"
       :title="operatingType == 1 ? '添加活动' : '编辑活动'"
       :visible.sync="showDialog"
-      width="540px"
+      width="940px"
       :close-on-click-modal="false"
       :before-close="handleClose"
+      top="5vh"
     >
-      <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="140px">
-        <el-form-item label="活动类型" prop="chainId" :rules="rules.select">
-          <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 350px">
-            <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label" :value="item.value"> </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="活动名称" prop="seriesName" :rules="rules.blur">
-          <el-input v-model="ruleForm.seriesName" style="width: 350px" placeholder="请输入名称" />
-        </el-form-item>
-        <el-form-item label="活动横幅" prop="coinImage" :rules="rules.select">
-          <el-upload
-            :action="uploadUrl"
-            :disabled="operatingType != 1"
-            :class="{ hide: hideUpload }"
-            :on-change="handleChange"
-            :on-success="handleUpload"
-            :file-list="fileImg"
-            :multiple="false"
-            :limit="1"
-            accept="image/png,image/jpg,image/jpeg,image/gif,image/webp"
-            list-type="picture-card"
-            :before-upload="handleBefore"
-            :on-remove="handleRemove"
-            :on-exceed="handExceed"
-            :headers="uploadHeader"
-          >
-            <i class="el-icon-plus" />
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="一句话介绍" prop="seriesName" :rules="rules.blur">
-          <el-input v-model="ruleForm.seriesName" style="width: 350px" placeholder="请输入名称" />
-        </el-form-item>
-        <el-form-item label="最低充值" prop="price" :rules="rules.blur">
-          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 350px" placeholder="请输入最低充值">
-            <template slot="append">{{ ruleForm.coin }}</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="奖金比率" prop="price" :rules="rules.blur">
-          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 350px" placeholder="请输入奖金比率">
-            <template slot="append">倍</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="最大奖金" prop="price" :rules="rules.blur">
-          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 350px" placeholder="请输入最低充值">
-            <template slot="append">{{ ruleForm.coin }}</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="解锁所需流水倍率" prop="price" :rules="rules.blur">
-          <el-input :disabled="operatingType != 1" type="number" v-model="ruleForm.price" style="width: 350px" placeholder="请输入奖金比率">
-            <template slot="append">倍</template>
-          </el-input>
-        </el-form-item>
-        <div class="flex">
-          <el-form-item label="解锁轮次" prop="price" :rules="rules.blur">
-            <el-input type="number" v-model="ruleForm.price" style="width: 150px" placeholder="请输入解锁轮次">
-              <template slot="append">次</template>
+      <div class="add-form-box">
+        <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="140px">
+          <el-form-item label="活动类型" prop="chainId" :rules="rules.select">
+            <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 350px">
+              <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label" :value="item.value"> </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="活动名称" prop="seriesName" :rules="rules.blur">
+            <el-input v-model="ruleForm.seriesName" style="width: 350px" placeholder="请输入名称" />
+          </el-form-item>
+          <el-form-item label="活动横幅" prop="coinImage" :rules="rules.select">
+            <el-upload
+              :action="uploadUrl"
+              :disabled="operatingType != 1"
+              :class="{ hide: hideUpload }"
+              :on-change="handleChange"
+              :on-success="handleUpload"
+              :file-list="fileImg"
+              :multiple="false"
+              :limit="1"
+              accept="image/png,image/jpg,image/jpeg,image/gif,image/webp"
+              list-type="picture-card"
+              :before-upload="handleBefore"
+              :on-remove="handleRemove"
+              :on-exceed="handExceed"
+              :headers="uploadHeader"
+            >
+              <i class="el-icon-plus" />
+            </el-upload>
+          </el-form-item>
+          <el-form-item label="一句话介绍" prop="seriesName" :rules="rules.blur">
+            <el-input v-model="ruleForm.seriesName" style="width: 350px" placeholder="请输入名称" />
+          </el-form-item>
+          <el-form-item label="最低充值" prop="price" :rules="rules.blur">
+            <el-input
+              :disabled="operatingType != 1"
+              type="number"
+              v-model="ruleForm.price"
+              style="width: 350px"
+              placeholder="请输入最低充值"
+            >
+              <template slot="append">{{ ruleForm.coin }}</template>
             </el-input>
           </el-form-item>
-          <el-form-item label="解锁比率"> {{ 10 }}% </el-form-item>
-        </div>
-        <el-form-item label="起止时间" prop="coinName" :rules="rules.select">
-          <el-date-picker
-            style="width: 350px"
-            v-model="fromToTime"
-            type="datetimerange"
-            range-separator="到"
-            start-placeholder="开始时间"
-            end-placeholder="结束时间"
-          >
-          </el-date-picker>
-        </el-form-item>
-
-        <el-form-item label="所在链" prop="chainId" :rules="rules.select">
-          <el-select :disabled="operatingType != 1" v-model="ruleForm.chainId" style="width: 350px">
-            <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainId">
-              <span style="float: left">{{ item.chainName }}</span>
-              <span style="float: right; color: #8492a6">{{ item.type }}</span>
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="价值" prop="price" :rules="rules.blur">
-          <el-input
-            :disabled="ruleForm.seriesType !== 'COIN' && operatingType != 1"
-            type="number"
-            v-model="ruleForm.price"
-            style="width: 350px"
-            placeholder="请输入价值"
-          >
-            <template slot="append">{{ ruleForm.coin }}</template>
-          </el-input>
-        </el-form-item>
-        <el-form-item label="回收比例" prop="reclaimRate" :rules="rules.blur">
-          <el-input type="number" v-model="ruleForm.reclaimRate" style="width: 350px" placeholder="请输入回收比例">
-            <template slot="append">%</template>
-          </el-input>
-        </el-form-item>
-      </el-form>
+          <el-form-item label="奖金比率" prop="price" :rules="rules.blur">
+            <el-input
+              :disabled="operatingType != 1"
+              type="number"
+              v-model="ruleForm.price"
+              style="width: 350px"
+              placeholder="请输入奖金比率"
+            >
+              <template slot="append">倍</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="最大奖金" prop="price" :rules="rules.blur">
+            <el-input
+              :disabled="operatingType != 1"
+              type="number"
+              v-model="ruleForm.price"
+              style="width: 350px"
+              placeholder="请输入最低充值"
+            >
+              <template slot="append">{{ ruleForm.coin }}</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="解锁所需流水倍率" prop="price" :rules="rules.blur">
+            <el-input
+              :disabled="operatingType != 1"
+              type="number"
+              v-model="ruleForm.price"
+              style="width: 350px"
+              placeholder="请输入奖金比率"
+            >
+              <template slot="append">倍</template>
+            </el-input>
+          </el-form-item>
+          <div class="flex">
+            <el-form-item label="解锁轮次" prop="price" :rules="rules.blur">
+              <el-input type="number" v-model="ruleForm.price" style="width: 150px" placeholder="请输入解锁轮次">
+                <template slot="append">次</template>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="解锁比率">
+              <p style="line-height: 28px">{{ 10 }}%</p>
+            </el-form-item>
+          </div>
+          <el-form-item label="起止时间" prop="coinName" :rules="rules.select">
+            <el-date-picker
+              style="width: 350px"
+              v-model="fromToTime"
+              type="datetimerange"
+              range-separator="到"
+              start-placeholder="开始时间"
+              end-placeholder="结束时间"
+            >
+            </el-date-picker>
+          </el-form-item>
+          <el-form-item label="活动描述" prop="chainId" :rules="rules.select">
+            <quillEditor :content="ruleForm.detail" @change="editorDetailFunc"></quillEditor>
+          </el-form-item>
+          <el-form-item label="条款与条件" prop="chainId" :rules="rules.select">
+            <quillEditor :content="ruleForm.detail" @change="editorDetailFunc"></quillEditor>
+          </el-form-item>
+        </el-form>
+      </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="submitForm()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog v-if="showDetailDialog" title="奖励记录" :visible.sync="showDetailDialog" width="1200px" :close-on-click-modal="false">
+      <div class="page-wrapper showDetailDialog">
+        <div class="public-list-inputs">
+          <el-input class="public-input" style="width: 140px" placeholder="输入玩家昵称/ID" v-model="Id" clearable />
+          <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchAssetFlowList()"> 查询 </el-button>
+        </div>
+        <div class="remittance-box">
+          <div class="remittance-amount remittance-more">
+            <div class="remittance-item">
+              <div class="title">参与人数</div>
+              <div class="val">{{ aggregateQuery?.flowNumberTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总充值</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总奖金</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总流水</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总解锁</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总领取</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+            <div class="remittance-item">
+              <div class="title">总未领</div>
+              <div class="val">{{ aggregateQuery?.amountTotal }}</div>
+            </div>
+          </div>
+        </div>
+        <el-table :data="tableData" style="width: 100%" border>
+          <el-table-column prop="id" label="玩家ID/昵称" align="center" width="110" key="0">
+            <template slot-scope="scope">
+              <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+              <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
+            </template>
+          </el-table-column>
+          <el-table-column prop="userId" width="120" label="充值金额" align="center" key="3"> </el-table-column>
+          <el-table-column prop="createTime" label="充值时间" align="center" key="13">
+            <template slot-scope="scope">
+              {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="flowType" label="总奖金" align="center" key="4">
+            <template slot-scope="scope">
+              {{ formatType(scope.row.flowType) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="flowSource" label="已打流水" align="center" key="5">
+            <template slot-scope="scope">
+              {{ formatSource(scope.row.flowSource) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="flashId" label="解锁奖金" align="center" key="6"> </el-table-column>
+          <el-table-column prop="hash" label="领取奖金" align="center" key="7"> </el-table-column>
+          <el-table-column prop="walletAddress" label="未领奖金" align="center" key="8"> </el-table-column>
+        </el-table>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="showDetailDialog = false">取 消</el-button>
         <el-button type="primary" @click="submitForm()">确 定</el-button>
       </span>
     </el-dialog>
@@ -199,10 +280,11 @@ import { timeForStr } from "@/utils";
 import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 import { chainList } from "@/utils/chain";
+import quillEditor from "@/components/quillEditor";
 export default {
   name: "ExternalTokenManagement",
   // 模板引入
-  components: {},
+  components: { quillEditor },
   // 数据
   data() {
     return {
@@ -212,6 +294,7 @@ export default {
         { label: "夺宝赢积分", value: 3 },
       ],
       showDialog: false,
+      showDetailDialog: true,
       page: 1,
       size: 20,
       tableData: null,
@@ -315,6 +398,10 @@ export default {
       this.operatingType = 2;
       this.hideUpload = true;
       this.showDialog = true;
+    },
+    editorDetailFunc(data) {
+      this.ruleForm.detail = data;
+      console.log(data, "-------------------");
     },
     // 删除
     handleDel(row) {
@@ -516,5 +603,17 @@ export default {
 .flex {
   display: flex;
   align-items: center;
+}
+.add-form-box {
+  max-height: 75vh;
+  overflow-y: auto;
+}
+.showDetailDialog .remittance-amount > div {
+  min-width: 150px;
+}
+</style>
+<style>
+.ql-container.ql-snow {
+  background: rgb(36, 21, 55);
 }
 </style>

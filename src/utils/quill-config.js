@@ -2,7 +2,7 @@ import config from "@/config/env";
 const baseUrl = config.api;
 /* 富文本编辑图片上传配置*/
 const uploadConfig = {
-  action: baseUrl + "/advertis/uploadImage",
+  action: baseUrl + "file/upload/image",
   methods: "POST", // 必填参数 图片上传方式
   token: sessionStorage.getItem("token"), // 可选参数 如果需要token验证，假设你的token有存放在sessionStorage
   name: "file", // 必填参数 文件的参数名
@@ -43,7 +43,7 @@ const handlers = {
       fileInput.setAttribute("accept", uploadConfig.accept);
       fileInput.classList.add("ql-image");
       // 监听选择文件
-      fileInput.addEventListener("change", async function() {
+      fileInput.addEventListener("change", async function () {
         // 创建formData
         var formData = new FormData();
         formData.append(uploadConfig.name, fileInput.files[0]);
@@ -53,7 +53,7 @@ const handlers = {
         xhr.open(uploadConfig.methods, uploadConfig.action, true);
         xhr.setRequestHeader("certificate", uploadConfig.token);
         // 上传数据成功，会触发
-        xhr.onload = function(e) {
+        xhr.onload = function (e) {
           if (xhr.status === 200) {
             var res = JSON.parse(xhr.responseText);
             const length = self.quill.getSelection(true).index;
@@ -64,13 +64,13 @@ const handlers = {
           fileInput.value = "";
         };
         // 开始上传数据
-        xhr.upload.onloadstart = function(e) {
+        xhr.upload.onloadstart = function (e) {
           fileInput.value = "";
         };
         // 当发生网络异常的时候会触发，如果上传数据的过程还未结束
-        xhr.upload.onerror = function(e) {};
+        xhr.upload.onerror = function (e) {};
         // 上传数据完成（成功或者失败）时会触发
-        xhr.upload.onloadend = function(e) {
+        xhr.upload.onloadend = function (e) {
           // console.log('上传结束')
         };
         xhr.send(formData);
@@ -79,7 +79,7 @@ const handlers = {
     }
     fileInput.click();
   },
-  video: function(value) {
+  video: function (value) {
     if (value) {
       // 触发input框选择视频文件
       document.querySelector(".avatar-uploader-editor-video input").click();

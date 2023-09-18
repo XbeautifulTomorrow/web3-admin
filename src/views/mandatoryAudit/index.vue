@@ -82,7 +82,7 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="220" key="9">
+      <el-table-column prop="id" label="操作" align="center" width="280" key="9">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)"> 上下分 </span>
           <span class="blueColor publick-button cursor" @click="operatingCoefficient(scope.row)"> 中奖系数 </span>
@@ -90,6 +90,7 @@
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)" v-if="scope.row.userType !== 'INNER'">
             转测试账号
           </span>
+          <span class="blueColor publick-button cursor" @click="operatingPwd(scope.row)"> 修改密码 </span>
         </template>
       </el-table-column>
     </el-table>
@@ -178,6 +179,17 @@
         <el-button type="primary" @click="updateCoefficient()">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="修改密码" :visible.sync="dialogVisiblePwd" width="30%">
+      <el-form ref="ruleFormPwd" :model="ruleFormPwd" label-width="120px" :rules="rules">
+        <el-form-item label="新密码" prop="password" :rules="rules.blur">
+          <el-input v-model="ruleFormPwd.password" placeholder="请输入新密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePwd = false">取 消</el-button>
+        <el-button type="primary" @click="savePwdFunc">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -204,6 +216,7 @@ export default {
       dialogVisible: false,
       showUpDownDialog: false,
       dialogCoefficientVisible: false,
+      dialogVisiblePwd: false,
       multipleSelection: [],
       statisticsData: {},
       userId: null,
@@ -211,6 +224,12 @@ export default {
       score: null,
       lotteryCoefficient: null,
       coin: "ETH",
+      ruleFormPwd: {
+        password: "",
+      },
+      rules: {
+        blur: [{ required: true, message: "请输入", trigger: "blur" }],
+      },
     };
   },
   mixins: [pagination],
@@ -288,6 +307,10 @@ export default {
       this.showUpDownDialog = false;
       this.dialogCoefficientVisible = false;
     },
+    operatingPwd(row) {
+      this.row = row;
+      this.dialogVisiblePwd = true;
+    },
     // 更新分数
     async updateScore() {
       const res = await this.$http.upAndDown({
@@ -303,6 +326,21 @@ export default {
       }
     },
 
+    savePwdFunc() {
+      this.$refs.ruleFormPwd.validate(async (valid) => {
+        if (valid) {
+          let res = await this.$http.mandatoryReviwUpdatePassword({ id: this.row.id, ...this.ruleFormPwd });
+          if (res) {
+            this.dialogVisiblePwd = false;
+            this.$refs["ruleFormPwd"].resetFields();
+            this.getTableListFunc();
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     operatingMarket(row, type) {
       let tip = type == "remove" ? `确定要移除${row.userName}吗?` : `确定要将${row.userName}转为测试账号吗?转后不可逆，请谨慎操作`;
       this.$confirm(tip, "提示", {

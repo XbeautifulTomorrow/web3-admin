@@ -17,7 +17,10 @@
           </div>
         </div>
       </div>
-      <el-button type="primary" icon="el-icon-plus" class="public-search" @click="dialogVisiblePoint = true"> 批量上下分 </el-button>
+      <div>
+        <el-button type="primary" icon="el-icon-plus" class="public-search" @click="dialogVisiblePoint = true"> 批量上下分 </el-button>
+        <el-button type="primary" icon="el-icon-edit" class="public-search" @click="dialogVisiblePwd = true"> 批量修改密码 </el-button>
+      </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
       <el-table-column prop="boxId" label="盲盒ID" align="center"> </el-table-column>
@@ -108,6 +111,17 @@
         <el-button type="primary" @click="savePointerFunc">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog title="批量修改密码" :visible.sync="dialogVisiblePwd" width="30%">
+      <el-form ref="ruleFormPwd" :model="ruleFormPwd" label-width="120px" :rules="rules">
+        <el-form-item label="新密码" prop="password" :rules="rules.blur">
+          <el-input v-model="ruleFormPwd.password" placeholder="请输入新密码"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisiblePwd = false">取 消</el-button>
+        <el-button type="primary" @click="savePwdFunc">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -128,9 +142,13 @@ export default {
       baseUserPage: null,
       dialogVisible: false,
       dialogVisiblePoint: false,
+      dialogVisiblePwd: false,
       ruleForm: {},
       ruleFormPoint: {
         amount: "",
+      },
+      ruleFormPwd: {
+        password: "",
       },
       rules: {
         blur: [{ required: true, message: "请输入", trigger: "blur" }],
@@ -221,6 +239,21 @@ export default {
           if (res) {
             this.dialogVisiblePoint = false;
             this.$refs["ruleFormPoint"].resetFields();
+            this.getTableList();
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    savePwdFunc() {
+      this.$refs.ruleFormPwd.validate(async (valid) => {
+        if (valid) {
+          let res = await this.$http.boxBotUpdatePassword({ ...this.ruleFormPwd });
+          if (res) {
+            this.dialogVisiblePwd = false;
+            this.$refs["ruleFormPwd"].resetFields();
             this.getTableList();
           }
         } else {

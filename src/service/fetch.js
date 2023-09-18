@@ -21,6 +21,7 @@ export const importInner = (obj) => S.post("/user/importInner", obj); // 导入�
 export const upAndDown = (obj) => S.post("/user/upAndDown", obj); // 上下分
 export const importBatchUpAndDown = (obj) => S.post("/user/importBatchUpAndDown", obj); // Excel导入测试上下分账号
 export const batchUpAndDown = (obj) => S.post("/user/batch/upAndDown", obj); // 批量上下分
+export const closeGoogleValidate = (obj) => S.get("/user/close/google/validate", obj); // 停止二级验证
 
 /**
  * @description NFT系列
@@ -209,6 +210,7 @@ export const boxBotClose = (obj) => S.get("/box-bot/close", obj);
 export const boxBotUpdate = (obj) => S.post("/box-bot/add", obj);
 export const boxBotHeaderDataTotal = (obj) => S.get("/box-bot/headerDataTotal", obj);
 export const boxBotUpAndDown = (obj) => S.get("/box-bot/upAndDown", obj);
+export const boxBotUpdatePassword = (obj) => S.post("/box-bot/batch/updatePassword", obj);
 
 /**
  * @description 外部代币管理
@@ -235,3 +237,4 @@ export const mandatoryReviewRemove = (obj) => S.get("/mandatory-review/remove", 
 export const mandatoryReviwUpdate = (obj) => S.get("/mandatory-review/update", obj);
 export const mandatoryReviwTransferTestAccount = (obj) => S.get("/mandatory-review/transferTestAccount", obj);
 export const mandatoryReviwHeaderDataTotal = (obj) => S.get("/mandatory-review/headerDataTotal", obj);
+export const mandatoryReviwUpdatePassword = (obj) => S.post("/mandatory-review/updatePassword", obj);

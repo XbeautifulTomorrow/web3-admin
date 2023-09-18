@@ -122,6 +122,9 @@
           <span class="blueColor publick-button cursor" @click="operatingAccount(scope.row)">
             {{ scope.row.userStatus == "DISABLE" ? "解禁" : "封停" }}
           </span>
+          <span class="blueColor publick-button cursor" @click="closeGoogle(scope.row)" v-if="scope.row.googleValidateStatus == 'TRUE'">
+            关闭谷歌验证
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -398,6 +401,26 @@ export default {
               id: row.id,
             });
           }
+          if (res) {
+            this.fetchUserlist();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    // 关闭谷歌验证
+    closeGoogle(row) {
+      this.$confirm(`确定要关闭用户『${row.userName || row.id}』谷歌二级验证吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          const res = await this.$http.closeGoogleValidate({
+            id: row.id,
+          });
           if (res) {
             this.fetchUserlist();
             this.$message.success("操作成功");
