@@ -38,6 +38,7 @@
         <el-button icon="el-icon-upload2" type="primary" class="public-search">批量上分</el-button>
       </el-upload>
       <el-link icon="el-icon-download" type="primary" @click="downloadExcel('BATCH_UP_AND_DOWN')" class="download-module">下载模板</el-link>
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExportCountry()"> 导出国家数据 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -344,6 +345,27 @@ export default {
       };
 
       exportExcel(urlStr, data, "用户列表导出");
+    },
+    // 用户国家导出
+    onExportCountry() {
+      const search = this.searchFun();
+      const urlStr = config.api + "/user/dailyCountryStatsExcel";
+      const { coin, userType } = this;
+      const data = {
+        ...{
+          startDate: search.lastLoginStartTime,
+          endDate: search.lastLoginEndTime,
+          userType: userType,
+        },
+        ...search,
+      };
+
+      if(search.lastLoginStartTime == null){
+        alert("最后登录时间起始时间必填")
+        return
+      }
+
+      exportExcel(urlStr, data, "每日国家统计数据导出");
     },
     // 下载模板
     downloadExcel(name) {
