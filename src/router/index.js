@@ -118,6 +118,12 @@ export const routes = [
         name: "mandatoryAudit",
       },
       {
+        /** 活动列表 */
+        path: "/activityList",
+        component: () => import("@/views/activityList/index"),
+        name: "activityList",
+      },
+      {
         /** 活动管理 */
         path: "/activityManagement",
         component: () => import("@/views/activityManagement/index"),

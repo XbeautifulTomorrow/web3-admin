@@ -238,3 +238,18 @@ export const mandatoryReviwUpdate = (obj) => S.get("/mandatory-review/update", o
 export const mandatoryReviwTransferTestAccount = (obj) => S.get("/mandatory-review/transferTestAccount", obj);
 export const mandatoryReviwHeaderDataTotal = (obj) => S.get("/mandatory-review/headerDataTotal", obj);
 export const mandatoryReviwUpdatePassword = (obj) => S.post("/mandatory-review/updatePassword", obj);
+
+/**
+ * @description 活动管理
+ */
+export const activityManagerPageList = (obj) => S.get("/activity-manager/pageList", obj);
+export const activityHeaderDataTotal = (obj) => S.get("/activity-manager/headerDataTotal", obj);
+export const activityManagerAdd = (obj) => S.post("/activity-manager/add", obj);
+export const activityManagerUpdate = (obj) => S.post("/activity-manager/update", obj);
+export const activityManagerAdvanceStart = (obj) => S.get("/activity-manager/advanceStart", obj);
+export const activityManagerAdvanceEnd = (obj) => S.get("/activity-manager/advanceEnd", obj);
+
+/**
+ * @description 活动列表
+ */
+export const activityFindList = (obj) => S.get("/activity/findList", obj);

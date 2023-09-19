@@ -94,7 +94,11 @@
             <i class="el-icon-stopwatch"></i>
             <span>强制审核管理</span>
           </el-menu-item>
-          <!-- <el-menu-item index="activityManagement" class="menu-list">
+          <!-- <el-menu-item index="activityList" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>活动列表</span>
+          </el-menu-item>
+          <el-menu-item index="activityManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
           </el-menu-item> -->
@@ -417,6 +421,10 @@ export default {
           page: "mandatoryAudit",
         },
         {
+          label: "活动列表",
+          page: "activityList",
+        },
+        {
           label: "活动管理",
           page: "activityManagement",
         },
@@ -479,6 +487,7 @@ export default {
         "lotteryChainManagement",
         "mandatoryAudit",
         "activityManagement",
+        "activityList",
       ];
 
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
