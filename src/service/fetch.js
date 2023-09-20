@@ -248,6 +248,8 @@ export const activityManagerAdd = (obj) => S.post("/activity-manager/add", obj);
 export const activityManagerUpdate = (obj) => S.post("/activity-manager/update", obj);
 export const activityManagerAdvanceStart = (obj) => S.get("/activity-manager/advanceStart", obj);
 export const activityManagerAdvanceEnd = (obj) => S.get("/activity-manager/advanceEnd", obj);
+export const activityManagerDetailPageList = (obj) => S.get("/activity-manager/detail/pageList", obj);
+export const activityManagerDetailHeaderDataTotal = (obj) => S.get("/activity-manager/detail/headerDataTotal", obj);
 
 /**
  * @description 活动列表

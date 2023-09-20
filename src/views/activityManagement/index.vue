@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div class="page-wrapper activity-management-box">
     <div class="public-list-inputs">
       <div class="remittance-box">
         <div class="remittance-amount remittance-more">
@@ -264,27 +264,27 @@
           <div class="remittance-amount remittance-more">
             <div class="remittance-item">
               <div class="title">参与人数</div>
-              <div class="val">{{ rewardRecordStatic?.flowNumberTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.joinPeopleNum }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总充值</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.totalRecharge }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总奖金</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.totalBonus }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总流水</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.totalFlowNums }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总解锁</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.totalUnlocks }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总领取</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+              <div class="val">{{ rewardRecordStatic?.totalReceive }}</div>
             </div>
             <div class="remittance-item">
               <div class="title">总未领</div>
@@ -295,20 +295,20 @@
         <el-table :data="rewardRecordList" style="width: 100%" border>
           <el-table-column prop="id" label="玩家ID/昵称" align="center" width="110" key="0">
             <template slot-scope="scope">
-              <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
+              <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
               <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="userId" width="120" label="充值金额" align="center" key="3"> </el-table-column>
-          <el-table-column prop="createTime" label="充值时间" align="center" key="13">
+          <el-table-column prop="rechargeAmount" width="120" label="充值金额" align="center" key="3"> </el-table-column>
+          <el-table-column prop="rechargeTime" label="充值时间" align="center" key="13">
             <template slot-scope="scope">
-              {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
+              {{ timeForStr(scope.row.rechargeTime, "YYYY-MM-DD HH:mm:ss") }}
             </template>
           </el-table-column>
-          <el-table-column prop="flowType" label="总奖金" align="center" key="4"> </el-table-column>
-          <el-table-column prop="flowSource" label="已打流水" align="center" key="5"> </el-table-column>
-          <el-table-column prop="flashId" label="解锁奖金" align="center" key="6"> </el-table-column>
-          <el-table-column prop="hash" label="领取奖金" align="center" key="7"> </el-table-column>
+          <el-table-column prop="totalRewards" label="总奖金" align="center" key="4"> </el-table-column>
+          <el-table-column prop="flowAmount" label="已打流水" align="center" key="5"> </el-table-column>
+          <el-table-column prop="unlockReward" label="解锁奖金" align="center" key="6"> </el-table-column>
+          <el-table-column prop="receivedReward" label="领取奖金" align="center" key="7"> </el-table-column>
           <el-table-column prop="walletAddress" label="未领奖金" align="center" key="8"> </el-table-column>
         </el-table>
       </div>
@@ -434,10 +434,10 @@ export default {
       this.getAwardsRecords();
     },
     async getAwardsRecords() {
-      const res = await this.$http.activityManagerPageList({ id: this.row.id, obscureField: this.obscureField });
+      const res = await this.$http.activityManagerDetailPageList({ id: this.row.id, obscureField: this.obscureField });
       if (res) {
         this.rewardRecordList = res.records;
-        const data = await this.$http.activityManagerPageList({ id: this.row.id, obscureField: this.obscureField });
+        const data = await this.$http.activityManagerDetailHeaderDataTotal({ id: this.row.id, obscureField: this.obscureField });
         if (data) {
           this.rewardRecordStatic = data;
           this.showDetailDialog = true;
@@ -539,6 +539,8 @@ export default {
             this.$message.success("操作成功！");
             this.getTableList();
             this.fileImg = [];
+            this.ruleForm.activityDesc = null;
+            this.ruleForm.conditionRule = null;
           }
         } else {
           console.log("error submit!!");
@@ -620,5 +622,8 @@ export default {
 <style>
 .ql-container.ql-snow {
   background: rgb(36, 21, 55);
+}
+.activity-management-box .el-upload-list--picture-card .el-upload-list__item-thumbnail {
+  object-fit: contain;
 }
 </style>
