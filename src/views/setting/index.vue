@@ -4,27 +4,15 @@
       <div class="setting-item">
         <div class="setting-title">注册拉新开始时间</div>
         <div class="setting-val">
-          <el-date-picker
-            class="public-input"
-            style="width: 300px"
-            value-format="yyyy-MM-dd HH:mm:ss"
-            v-model="points.regCountdownTime"
-            type="datetime"
-            placeholder="Select time"
-          />
+          <el-date-picker class="public-input" style="width: 300px" value-format="yyyy-MM-dd HH:mm:ss"
+            v-model="points.regCountdownTime" type="datetime" placeholder="Select time" />
         </div>
       </div>
       <div class="setting-item">
         <div class="setting-title">下级佣金比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入下级佣金比例"
-            v-model="points.downCommissionRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入下级佣金比例"
+            v-model="points.downCommissionRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -32,14 +20,8 @@
       <div class="setting-item">
         <div class="setting-title">下级空投积分额外比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入下级空投积分额外比例"
-            v-model="points.downPointRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入下级空投积分额外比例"
+            v-model="points.downPointRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -47,14 +29,8 @@
       <div class="setting-item">
         <div class="setting-title">消费积分系数</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入消费积分系数"
-            v-model="points.consumePointRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入消费积分系数"
+            v-model="points.consumePointRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -62,14 +38,8 @@
       <div class="setting-item">
         <div class="setting-title">流水佣金比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入流水佣金比率"
-            v-model="points.flowCommissionRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入流水佣金比率"
+            v-model="points.flowCommissionRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -80,14 +50,8 @@
       <div class="setting-item">
         <div class="setting-title">代币提现手续费</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入代币提现手续费"
-            v-model="withdrawals.withdrawalFees"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入代币提现手续费"
+            v-model="withdrawals.withdrawalFees" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
@@ -95,14 +59,8 @@
       <div class="setting-item">
         <div class="setting-title">NFT提现手续费</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入NFT提现手续费"
-            v-model="withdrawals.nftWithdrawalFees"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入NFT提现手续费"
+            v-model="withdrawals.nftWithdrawalFees" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
@@ -110,14 +68,8 @@
       <div class="setting-item">
         <div class="setting-title">提币免费次数</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入下浮汇率"
-            v-model="withdrawals.freeFeeCoinNumber"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入下浮汇率"
+            v-model="withdrawals.freeFeeCoinNumber" clearable>
             <template slot="append">次</template>
           </el-input>
         </div>
@@ -125,14 +77,8 @@
       <div class="setting-item">
         <div class="setting-title">单次审核阈值</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入审核阈值"
-            v-model="withdrawals.auditThresholds"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入审核阈值"
+            v-model="withdrawals.auditThresholds" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
@@ -145,17 +91,12 @@
           </el-tooltip>
         </div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入提现总量"
-            v-model="withdrawals.withdrawalLimits"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入提现总量"
+            v-model="withdrawals.withdrawalLimits" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
-          <el-select style="width: 200px" v-model="withdrawals.withdrawalDayLimits" class="public-select-box" placeholder="选择时段">
+          <el-select style="width: 200px" v-model="withdrawals.withdrawalDayLimits" class="public-select-box"
+            placeholder="选择时段">
             <el-option label="每日" :value="1" />
             <el-option label="每周" :value="7" />
             <el-option label="每月" :value="30" />
@@ -165,14 +106,8 @@
       <div class="setting-item">
         <div class="setting-title">闪兑入金上浮比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入上浮汇率"
-            v-model="withdrawals.upRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入上浮汇率"
+            v-model="withdrawals.upRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -180,14 +115,8 @@
       <div class="setting-item">
         <div class="setting-title">闪兑出金下浮比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入下浮汇率"
-            v-model="withdrawals.downRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入下浮汇率"
+            v-model="withdrawals.downRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -199,7 +128,8 @@
       <div class="setting-item">
         <div class="setting-title">外部NFT回收比例</div>
         <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入回收比例" v-model="nftReclaimRate" clearable>
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入回收比例" v-model="nftReclaimRate"
+            clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -210,12 +140,49 @@
       <div class="setting-item">
         <div class="setting-title">一元购服务费</div>
         <div class="setting-val">
-          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入服务费" v-model="serviceFee" clearable>
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入服务费" v-model="serviceFee"
+            clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
       </div>
       <el-button type="primary" style="width: 160px" size="medium" @click="submitServiceFee()">确认修改</el-button>
+    </div>
+    <div class="recycling-settings">
+      <div class="setting-item">
+        <div class="setting-title">一元购溢价上限</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入一元购溢价上限"
+            v-model="ticketExceeding" clearable>
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketExceeding()">确认修改</el-button>
+    </div>
+    <div class="recycling-settings">
+      <div class="setting-item">
+        <div class="setting-title">一元购NFT天数上限</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入NFT天数上限"
+            v-model="ticketNftDays" clearable>
+            <template slot="append">天</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketNftDays()">确认修改</el-button>
+    </div>
+    <div class="recycling-settings">
+      <div class="setting-item">
+        <div class="setting-title">一元购币种天数上限</div>
+        <div class="setting-val">
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入一元购币种天数上限"
+            v-model="ticketCoinDays" clearable>
+            <template slot="append">天</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketCoinDays()">确认修改</el-button>
     </div>
     <div class="wallet-settings">
       <div class="operating-box">
@@ -244,18 +211,9 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        v-if="baseUserPage && baseUserPage.total"
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="page"
-        :page-sizes="pagination.pageSizes"
-        :page-size="size"
-        layout=" sizes, prev, pager, next, jumper"
-        :total="baseUserPage.total"
-        class="public-pagination"
-      >
+      <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
+        @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
+        layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
       </el-pagination>
     </div>
     <div class="invite-settings">
@@ -278,14 +236,8 @@
       </div>
       <el-button type="primary" style="width: 160px" size="medium" @click="submitInvite()">确认修改</el-button>
     </div>
-    <el-dialog
-      v-if="showDialog"
-      title="新增归集钱包"
-      :visible.sync="showDialog"
-      width="440px"
-      :close-on-click-modal="false"
-      :before-close="handleClose"
-    >
+    <el-dialog v-if="showDialog" title="新增归集钱包" :visible.sync="showDialog" width="440px" :close-on-click-modal="false"
+      :before-close="handleClose">
       <el-form ref="ruleForm" class="add-form" label-width="80px">
         <el-form-item label="钱包地址" prop="reclaimRate">
           <el-input v-model="walletAddr" style="width: 300px" placeholder="请输入钱包地址"></el-input>
@@ -338,6 +290,10 @@ export default {
 
       /** 一元购服务费 */
       serviceFee: null,
+      ticketExceeding: null, // 溢价
+      ticketNftDays: null, // NFT天数上限
+      ticketCoinDays: null, // 币种天数上限
+      timer: null, // 计时器
 
       /** 钱包相关 */
       showDialog: false,
@@ -350,10 +306,32 @@ export default {
       size: 20,
       tableData: null,
       baseUserPage: null,
-      aggregateQuery: null,
+      aggregateQuery: null
     };
   },
   mixins: [pagination],
+  watch: {
+    ticketNftDays(newV, oldV) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+
+      this.timer = setTimeout(() => {
+        this.ticketNftDays = Math.floor(newV);
+      }, 300);
+    },
+    ticketCoinDays(newV, oldV) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+
+      this.timer = setTimeout(() => {
+        this.ticketCoinDays = Math.floor(newV);
+      }, 300);
+    }
+  },
   // 方法
   methods: {
     bigNumber: bigNumber,
@@ -520,6 +498,84 @@ export default {
         this.$message.success("操作成功");
       }
     },
+    // 一元购溢价
+    async fetchTicketExceeding() {
+      const res = await this.$http.getTicketExceeding({ coin: this.coin });
+      if (res) {
+        this.ticketExceeding = accurateDecimal(new bigNumber(res || 0).multipliedBy(100) || 0, 2);
+        this.$forceUpdate();
+      }
+    },
+    // 一元购溢价更新
+    async submitTicketExceeding() {
+      const { ticketExceeding } = this;
+
+      if (!ticketExceeding) {
+        this.$message.error("请输入一元购溢价上限");
+        return;
+      }
+
+      const res = await this.$http.updateTicketExceeding({
+        servicePrice: accurateDecimal(new bigNumber(ticketExceeding).dividedBy(100), 4),
+      });
+
+      if (res) {
+        this.fetchTicketExceeding();
+        this.$message.success("操作成功");
+      }
+    },
+    // 一元购NFT天数上限
+    async fetchTicketNftDays() {
+      const res = await this.$http.getTicketNftDays();
+      if (res) {
+        this.ticketNftDays = res;
+        this.$forceUpdate();
+      }
+    },
+    // 一元购NFT天数上限更新
+    async submitTicketNftDays() {
+      const { ticketNftDays } = this;
+
+      if (!ticketNftDays) {
+        this.$message.error("请输入一元购NFT天数上限");
+        return;
+      }
+
+      const res = await this.$http.updateTicketNftDays({
+        day: Math.floor(ticketNftDays),
+      });
+
+      if (res) {
+        this.fetchTicketNftDays();
+        this.$message.success("操作成功");
+      }
+    },
+    // 一元购币种天数上限
+    async fetchTicketCoinDays() {
+      const res = await this.$http.getTicketCoinDays();
+      if (res) {
+        this.ticketCoinDays = res;
+        this.$forceUpdate();
+      }
+    },
+    // 一元购币种天数上限更新
+    async submitTicketCoinDays() {
+      const { ticketCoinDays } = this;
+
+      if (!ticketCoinDays) {
+        this.$message.error("请输入一元购NFT天数上限");
+        return;
+      }
+
+      const res = await this.$http.updateTicketCoinDays({
+        day: Math.floor(ticketCoinDays),
+      });
+
+      if (res) {
+        this.fetchTicketCoinDays();
+        this.$message.success("操作成功");
+      }
+    },
     // 新增归集钱包
     async submitForm() {
       if (!this.walletAddr) {
@@ -651,6 +707,9 @@ export default {
     this.fetchWithdrawalConfig();
     this.fetchRecycleConfig();
     this.fetchServiceCharge();
+    this.fetchTicketExceeding();
+    this.fetchTicketNftDays();
+    this.fetchTicketCoinDays();
     this.fetchInviteSetting();
   },
   computed: {
@@ -662,11 +721,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() {},
+  mounted() { },
   // 更新后
-  updated() {},
+  updated() { },
   // 销毁
-  beforeDestroy() {},
+  beforeDestroy() { },
 };
 </script>
 
@@ -691,7 +750,7 @@ export default {
     padding-bottom: 0;
   }
 
-  & > div {
+  &>div {
     min-width: 200px;
   }
 }
@@ -709,7 +768,7 @@ export default {
     font-weight: bold;
     min-width: 200px;
 
-    & > span {
+    &>span {
       margin-right: 8px;
     }
   }
@@ -724,16 +783,16 @@ export default {
 }
 
 .page-wrapper {
-  & > div + div {
+  &>div+div {
     margin-top: 40px;
   }
 }
 
-.setting-item + .setting-item {
+.setting-item+.setting-item {
   margin-top: 10px;
 }
 
-.setting-item + .el-button {
+.setting-item+.el-button {
   margin-top: 10px;
 }
 
