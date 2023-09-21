@@ -256,60 +256,72 @@
     </el-dialog>
     <el-dialog v-if="showDetailDialog" title="奖励记录" :visible.sync="showDetailDialog" width="1200px" :close-on-click-modal="false">
       <div class="page-wrapper showDetailDialog">
-        <div class="public-list-inputs">
-          <el-input class="public-input" style="width: 200px" placeholder="输入玩家昵称/ID" v-model="obscureField" clearable />
-          <el-button type="primary" icon="el-icon-search" class="public-search" @click="getAwardsRecords()"> 查询 </el-button>
-        </div>
-        <div class="remittance-box">
-          <div class="remittance-amount remittance-more">
-            <div class="remittance-item">
-              <div class="title">参与人数</div>
-              <div class="val">{{ rewardRecordStatic?.joinPeopleNum }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总充值</div>
-              <div class="val">{{ rewardRecordStatic?.totalRecharge }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总奖金</div>
-              <div class="val">{{ rewardRecordStatic?.totalBonus }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总流水</div>
-              <div class="val">{{ rewardRecordStatic?.totalFlowNums }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总解锁</div>
-              <div class="val">{{ rewardRecordStatic?.totalUnlocks }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总领取</div>
-              <div class="val">{{ rewardRecordStatic?.totalReceive }}</div>
-            </div>
-            <div class="remittance-item">
-              <div class="title">总未领</div>
-              <div class="val">{{ rewardRecordStatic?.amountTotal }}</div>
+        <template v-if="row.activityType == 'WELCOME_BONUS'">
+          <div class="public-list-inputs">
+            <el-input class="public-input" style="width: 200px" placeholder="输入玩家昵称/ID" v-model="obscureField" clearable />
+            <el-button type="primary" icon="el-icon-search" class="public-search" @click="getAwardsRecords()"> 查询 </el-button>
+          </div>
+          <div class="remittance-box">
+            <div class="remittance-amount remittance-more">
+              <div class="remittance-item">
+                <div class="title">参与人数</div>
+                <div class="val">{{ rewardRecordStatic?.joinPeopleNum }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总充值</div>
+                <div class="val">{{ rewardRecordStatic?.totalRecharge }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总奖金</div>
+                <div class="val">{{ rewardRecordStatic?.totalBonus }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总流水</div>
+                <div class="val">{{ rewardRecordStatic?.totalFlowNums }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总解锁</div>
+                <div class="val">{{ rewardRecordStatic?.totalUnlocks }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总领取</div>
+                <div class="val">{{ rewardRecordStatic?.totalReceive }}</div>
+              </div>
+              <div class="remittance-item">
+                <div class="title">总未领</div>
+                <div class="val">{{ accurateDecimal(rewardRecordStatic?.totalUnlocks - rewardRecordStatic?.totalReceive) }}</div>
+              </div>
             </div>
           </div>
-        </div>
+        </template>
         <el-table :data="rewardRecordList" style="width: 100%" border>
-          <el-table-column prop="id" label="玩家ID/昵称" align="center" width="110" key="0">
+          <el-table-column prop="id" label="玩家ID/昵称" align="center" key="0">
             <template slot-scope="scope">
               <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
               <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
             </template>
           </el-table-column>
-          <el-table-column prop="rechargeAmount" width="120" label="充值金额" align="center" key="3"> </el-table-column>
-          <el-table-column prop="rechargeTime" label="充值时间" align="center" key="13">
-            <template slot-scope="scope">
-              {{ timeForStr(scope.row.rechargeTime, "YYYY-MM-DD HH:mm:ss") }}
-            </template>
-          </el-table-column>
-          <el-table-column prop="totalRewards" label="总奖金" align="center" key="4"> </el-table-column>
-          <el-table-column prop="flowAmount" label="已打流水" align="center" key="5"> </el-table-column>
-          <el-table-column prop="unlockReward" label="解锁奖金" align="center" key="6"> </el-table-column>
-          <el-table-column prop="receivedReward" label="领取奖金" align="center" key="7"> </el-table-column>
-          <el-table-column prop="walletAddress" label="未领奖金" align="center" key="8"> </el-table-column>
+          <template v-if="row.activityType == 'WELCOME_BONUS'">
+            <el-table-column prop="rechargeAmount" width="120" label="充值金额" align="center" key="1"> </el-table-column>
+            <el-table-column prop="rechargeTime" label="充值时间" align="center" key="2">
+              <template slot-scope="scope">
+                {{ timeForStr(scope.row.rechargeTime, "YYYY-MM-DD HH:mm:ss") }}
+              </template>
+            </el-table-column>
+            <el-table-column prop="totalRewards" label="总奖金" align="center" key="4"> </el-table-column>
+            <el-table-column prop="flowAmount" label="已打流水" align="center" key="5"> </el-table-column>
+            <el-table-column prop="unlockReward" label="解锁奖金" align="center" key="6"> </el-table-column>
+            <el-table-column prop="receivedReward" label="领取奖金" align="center" key="7"> </el-table-column>
+            <el-table-column prop="walletAddress" label="未领奖金" align="center" key="8">
+              <template slot-scope="scope">
+                {{ accurateDecimal(scope.row.unlockReward - scope.row.receivedReward) }}
+              </template>
+            </el-table-column>
+          </template>
+          <template v-else>
+            <el-table-column prop="flowAmount" label="流水" align="center" key="9"> </el-table-column>
+            <el-table-column prop="totalPoints" label="总积分" align="center" key="10"> </el-table-column>
+          </template>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -322,7 +334,7 @@
 
 <script>
 import axios from "axios";
-import { timeForStr } from "@/utils";
+import { timeForStr, accurateDecimal } from "@/utils";
 import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 import quillEditor from "@/components/quillEditor";
@@ -384,6 +396,7 @@ export default {
   // 方法
   methods: {
     timeForStr: timeForStr,
+    accurateDecimal: accurateDecimal,
     getActivityName(type) {
       let filterRes = this.typeOptions.filter((x) => x.value == type);
       return filterRes && filterRes?.length > 0 ? filterRes[0].label : "";
@@ -437,6 +450,7 @@ export default {
       const res = await this.$http.activityManagerDetailPageList({ id: this.row.id, obscureField: this.obscureField });
       if (res) {
         this.rewardRecordList = res.records;
+        this.showDetailDialog = true;
         const data = await this.$http.activityManagerDetailHeaderDataTotal({ id: this.row.id, obscureField: this.obscureField });
         if (data) {
           this.rewardRecordStatic = data;
@@ -446,6 +460,7 @@ export default {
     },
     editorDetailFunc(data) {
       this.ruleForm.activityDesc = data;
+      console.log(data);
     },
     editorRuleFunc(data) {
       this.ruleForm.conditionRule = data;
