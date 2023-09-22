@@ -89,14 +89,21 @@
           <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.username || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="8"> </el-table-column>
-      <el-table-column sortable="custom" prop="winningStatus" label="中奖" align="center" key="9">
+      <el-table-column prop="expenditure" label="推广信息" align="center" key="8">
+        <template slot-scope="scope">
+          <span v-if="scope.row.twitterInfo" @click="openPromotion(scope.row)"
+            style="color: #05a8f0;cursor: pointer;">查看</span>
+          <span v-else>--</span>
+        </template>
+      </el-table-column>
+      <el-table-column sortable="custom" prop="expenditure" label="消费" align="center" key="9"> </el-table-column>
+      <el-table-column sortable="custom" prop="winningStatus" label="中奖" align="center" key="10">
         <template slot-scope="scope">
           <span v-if="scope.row.winningStatus == 'YES'" style="color: #67c23a">已中奖</span>
           <span v-else>未中奖</span>
         </template>
       </el-table-column>
-      <el-table-column prop="paymentChannel" label="消费渠道" align="center" key="10"> </el-table-column>
+      <el-table-column prop="paymentChannel" label="消费渠道" align="center" key="11"> </el-table-column>
       <el-table-column prop="expenditureSerialId" label="消费流水号" align="center" key="14"> </el-table-column>
       <el-table-column prop="refundSerialId" label="退款流水号" align="center" key="15"> </el-table-column>
       <el-table-column sortable="custom" prop="status" label="状态" align="center" key="17" fixed="right">
@@ -117,12 +124,35 @@
       @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
       layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
     </el-pagination>
+    <el-dialog title="推广信息" :visible.sync="dialogVisible" width="30%">
+      <el-form ref="ruleForm" label-width="80px">
+        <el-form-item label="ID" prop="address">
+          <el-input readonly v-model="twitterData.tweetId" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="用户" prop="address">
+          <el-input readonly v-model="twitterData.userName" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="链接" prop="address">
+          <el-input readonly v-model="twitterData.tweetUrl" autocomplete="off">
+            <template slot="append">
+              <el-button @click="openUrl(twitterData.tweetUrl)">前往</el-button>
+            </template>
+          </el-input>
+        </el-form-item>
+        <el-form-item label="内容" prop="address">
+          <div v-html="twitterData.content"></div>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">关 闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import bigNumber from "bignumber.js";
-import { accurateDecimal, timeForStr } from "@/utils";
+import { accurateDecimal, timeForStr, openUrl } from "@/utils";
 import pagination from "@/mixins/pagination";
 export default {
   name: "NftBuyRecord",
@@ -150,7 +180,9 @@ export default {
         orderBy: null,
         orderType: null,
       },
-      ethPic: require("@/assets/images/create_eth.webp")
+      ethPic: require("@/assets/images/create_eth.webp"),
+      dialogVisible: false,
+      twitterData: {}
     };
   },
   mixins: [pagination],
@@ -159,6 +191,7 @@ export default {
     accurateDecimal: accurateDecimal,
     bigNumber: bigNumber,
     timeForStr: timeForStr,
+    openUrl: openUrl,
     searchFun() {
       let { transactionTime } = this;
       let startTxtime = null;
@@ -246,6 +279,11 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    openPromotion(event) {
+      const { twitterInfo } = event;
+      this.twitterData = twitterInfo;
+      this.dialogVisible = true;
     },
     handleSizeChange(val) {
       this.size = val;
