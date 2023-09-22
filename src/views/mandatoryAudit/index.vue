@@ -320,7 +320,7 @@ export default {
       });
 
       if (res) {
-        this.getTableListFunc();
+        this.getTableListFunc(false);
         this.handleClose();
         this.$message.success("操作成功");
       }
@@ -333,7 +333,7 @@ export default {
           if (res) {
             this.dialogVisiblePwd = false;
             this.$refs["ruleFormPwd"].resetFields();
-            this.getTableListFunc();
+            this.getTableListFunc(false);
           }
         } else {
           console.log("error submit!!");
@@ -380,7 +380,7 @@ export default {
       });
 
       if (res) {
-        this.getTableListFunc();
+        this.getTableListFunc(false);
         this.handleClose();
         this.$message.success("操作成功");
       }
