@@ -94,14 +94,14 @@
             <i class="el-icon-stopwatch"></i>
             <span>强制审核管理</span>
           </el-menu-item>
-          <el-menu-item index="activityList" class="menu-list">
+          <!-- <el-menu-item index="activityList" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>活动列表</span>
           </el-menu-item>
           <el-menu-item index="activityManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
-          </el-menu-item>
+          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
