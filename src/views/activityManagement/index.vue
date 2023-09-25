@@ -389,6 +389,7 @@ export default {
         activityDesc: null, //活动描述
         conditionRule: null, //活动与条款
       },
+      ruleFormClone:{},
       rules: {
         select: [{ required: true, message: "请选择", trigger: ["blur", "change"] }],
         blur: [{ required: true, message: "请输入", trigger: ["blur", "change"] }],
@@ -439,6 +440,8 @@ export default {
     handleAdd() {
       this.operatingType = 1;
       this.hideUpload = false;
+      this.fileImg = [];
+      this.ruleForm=JSON.parse(JSON.stringify(this.ruleFormClone))
       this.showDialog = true;
     },
     handleEdit(row) {
@@ -582,6 +585,7 @@ export default {
   },
   // 创建后
   created() {
+    this.ruleFormClone=JSON.parse(JSON.stringify(this.ruleForm))
     this.getTableList();
     this.uploadUrl = config.api + "/file/upload/image";
   },
