@@ -38,7 +38,8 @@
       <el-table-column prop="joinNum" label="参与人数" align="center" key="5"> </el-table-column>
       <el-table-column label="已领取/总奖金" align="center" key="6">
         <template slot-scope="scope">
-          <p>{{ scope.row.receivedBonus }}</p>
+          <p v-if="scope.row.totalBonus">{{ scope.row.receivedBonus+' / '+scope.row.totalBonus }}</p>
+          <p v-else>--</p>
         </template>
       </el-table-column>
       <el-table-column prop="points" label="总积分" align="center" key="8"> </el-table-column>

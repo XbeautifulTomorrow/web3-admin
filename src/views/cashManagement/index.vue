@@ -40,8 +40,10 @@
         </el-option>
         <el-option label="一元购" value="ONE_DOLLAR">
         </el-option>
-        <!-- <el-option label="提现" value="WITHDRAWALS">
-        </el-option> -->
+        <el-option label="提现" value="WITHDRAWALS">
+        </el-option>
+        <el-option label="活动" value="ACTIVITY">
+        </el-option>
       </el-select>
       <div class="public-date-box">
         <span class="demonstration">
@@ -252,6 +254,8 @@ export default {
         return "提现"
       } else if (event == "ONE_DOLLAR") {
         return "一元购"
+      } else if (event == "ACTIVITY") {
+        return "活动"
       }
     },
     handleSizeChange(val) {
