@@ -212,8 +212,8 @@
                   <template slot="append">次</template>
                 </el-input>
               </el-form-item>
-              <el-form-item label="解锁比率">
-                <p style="line-height: 28px">{{ 10 }}%</p>
+              <el-form-item label="解锁比率" v-if="ruleForm.unlockNum>0">
+                <p style="line-height: 28px">{{ (1/ruleForm.unlockNum*100).toFixed(2) }}%</p>
               </el-form-item>
             </div>
           </template>
@@ -256,12 +256,12 @@
     </el-dialog>
     <el-dialog v-if="showDetailDialog" title="奖励记录" :visible.sync="showDetailDialog" width="1200px" :close-on-click-modal="false">
       <div class="page-wrapper showDetailDialog">
-        <template v-if="row.activityType == 'WELCOME_BONUS'">
+        <template>
           <div class="public-list-inputs">
             <el-input class="public-input" style="width: 200px" placeholder="输入玩家昵称/ID" v-model="obscureField" clearable />
             <el-button type="primary" icon="el-icon-search" class="public-search" @click="getAwardsRecords()"> 查询 </el-button>
           </div>
-          <div class="remittance-box">
+          <div class="remittance-box" v-if="row.activityType == 'WELCOME_BONUS'">
             <div class="remittance-amount remittance-more">
               <div class="remittance-item">
                 <div class="title">参与人数</div>
@@ -289,7 +289,7 @@
               </div>
               <div class="remittance-item">
                 <div class="title">总未领</div>
-                <div class="val">{{ accurateDecimal(rewardRecordStatic?.totalUnlocks - rewardRecordStatic?.totalReceive) }}</div>
+                <div class="val">{{ accurateDecimal(new bigNumber((rewardRecordStatic?.totalUnlocks - rewardRecordStatic?.totalReceive) || 0), 4) }}</div>
               </div>
             </div>
           </div>
@@ -314,7 +314,7 @@
             <el-table-column prop="receivedReward" label="领取奖金" align="center" key="7"> </el-table-column>
             <el-table-column prop="walletAddress" label="未领奖金" align="center" key="8">
               <template slot-scope="scope">
-                {{ accurateDecimal(scope.row.unlockReward - scope.row.receivedReward) }}
+                {{ accurateDecimal(new bigNumber(scope.row.unlockReward - scope.row.receivedReward || 0), 4) }}
               </template>
             </el-table-column>
           </template>
@@ -325,8 +325,7 @@
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="showDetailDialog = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm()">确 定</el-button>
+        <el-button type="primary" @click="showDetailDialog = false">关闭</el-button>
       </span>
     </el-dialog>
   </div>
@@ -338,6 +337,7 @@ import { timeForStr, accurateDecimal } from "@/utils";
 import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 import quillEditor from "@/components/quillEditor";
+import bigNumber from "bignumber.js";
 export default {
   name: "ExternalTokenManagement",
   // 模板引入
@@ -396,6 +396,7 @@ export default {
   // 方法
   methods: {
     timeForStr: timeForStr,
+    bigNumber: bigNumber,
     accurateDecimal: accurateDecimal,
     getActivityName(type) {
       let filterRes = this.typeOptions.filter((x) => x.value == type);
