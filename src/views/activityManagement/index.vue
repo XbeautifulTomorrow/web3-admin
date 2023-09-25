@@ -35,8 +35,9 @@
           {{ getActivityName(scope.row.activityType) }}
         </template>
       </el-table-column>
-      <el-table-column prop="joinNum" label="参与人数" align="center" key="5"> </el-table-column>
-      <el-table-column label="已领取/总奖金" align="center" key="6">
+      <el-table-column prop="activityIndex" label="排序" align="center" key="5"> </el-table-column>
+      <el-table-column prop="joinNum" label="参与人数" align="center" key="6"> </el-table-column>
+      <el-table-column label="已领取/总奖金" align="center" key="7">
         <template slot-scope="scope">
           <p v-if="scope.row.totalBonus">{{ scope.row.receivedBonus+' / '+scope.row.totalBonus }}</p>
           <p v-else>--</p>
@@ -120,6 +121,7 @@
               <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label" :value="item.value"> </el-option>
             </el-select>
           </el-form-item>
+          
           <el-form-item label="活动名称" prop="name" :rules="rules.blur">
             <el-input v-model="ruleForm.name" style="width: 350px" placeholder="请输入名称" />
           </el-form-item>
@@ -143,6 +145,9 @@
               <i class="el-icon-plus" />
             </el-upload>
           </el-form-item>
+          <el-form-item label="排序" prop="activityIndex" :rules="rules.blur">
+            <el-input v-model="ruleForm.activityIndex" style="width: 350px" placeholder="请输入名称" />
+          </el-form-item>
           <el-form-item label="一句话介绍" prop="shortWord" :rules="rules.blur">
             <el-input v-model="ruleForm.shortWord" style="width: 350px" placeholder="请输入名称" />
           </el-form-item>
@@ -165,7 +170,7 @@
                 style="width: 350px"
                 placeholder="请输入最低充值"
               >
-                <template slot="append">{{ ruleForm.coin }}</template>
+                <template slot="append">{{ coin }}</template>
               </el-input>
             </el-form-item>
             <el-form-item label="奖金比率" prop="bonusRate" :rules="rules.blur">
@@ -187,7 +192,7 @@
                 style="width: 350px"
                 placeholder="请输入最大奖金"
               >
-                <template slot="append">{{ ruleForm.coin }}</template>
+                <template slot="append">{{ coin }}</template>
               </el-input>
             </el-form-item>
             <el-form-item label="解锁所需流水倍率" prop="unlockFlowRate" :rules="rules.blur">
@@ -365,10 +370,12 @@ export default {
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
+      coin: "ETH",
       ruleForm: {
         name: null, //活动名称
         activityType: null, //活动类型(WELCOME_BONUS-欢迎奖金,OPEN_BOX_WIN_POINTS-开盒赢积分,TREASURES_WIN_POINTS-夺宝赢积分)
         banner: null, //banner
+        activityIndex:null,//排序
         shortWord: null, //一句话的事
         lowRecharge: null, //最低充值
         bonusRate: null, //奖金比率
@@ -381,7 +388,6 @@ export default {
         endTime: null,
         activityDesc: null, //活动描述
         conditionRule: null, //活动与条款
-        coin: "ETH",
       },
       rules: {
         select: [{ required: true, message: "请选择", trigger: ["blur", "change"] }],
