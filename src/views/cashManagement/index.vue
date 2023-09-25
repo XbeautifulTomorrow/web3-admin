@@ -38,6 +38,8 @@
         </el-option>
         <el-option label="挂单" value="PENDING_ORDERS">
         </el-option>
+        <el-option label="一元购" value="ONE_DOLLAR">
+        </el-option>
         <!-- <el-option label="提现" value="WITHDRAWALS">
         </el-option> -->
       </el-select>
@@ -248,6 +250,8 @@ export default {
         return "挂单"
       } else if (event == "WITHDRAWALS") {
         return "提现"
+      } else if (event == "ONE_DOLLAR") {
+        return "一元购"
       }
     },
     handleSizeChange(val) {
