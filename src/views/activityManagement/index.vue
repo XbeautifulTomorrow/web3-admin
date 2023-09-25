@@ -146,7 +146,7 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="排序" prop="activityIndex" :rules="rules.blur">
-            <el-input v-model="ruleForm.activityIndex" style="width: 350px" placeholder="请输入名称" />
+            <el-input v-model="ruleForm.activityIndex" style="width: 350px" placeholder="数字越大越靠前" />
           </el-form-item>
           <el-form-item label="一句话介绍" prop="shortWord" :rules="rules.blur">
             <el-input v-model="ruleForm.shortWord" style="width: 350px" placeholder="请输入名称" />
