@@ -39,7 +39,7 @@
       <el-table-column prop="joinNum" label="参与人数" align="center" key="6"> </el-table-column>
       <el-table-column label="已领取/总奖金" align="center" key="7">
         <template slot-scope="scope">
-          <p v-if="scope.row.totalBonus">{{ scope.row.receivedBonus+' / '+scope.row.totalBonus }}</p>
+          <p v-if="scope.row.totalBonus">{{ scope.row.receivedBonus + " / " + scope.row.totalBonus }}</p>
           <p v-else>--</p>
         </template>
       </el-table-column>
@@ -66,7 +66,7 @@
           {{ timeForStr(scope.row.endTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" key="13">
+      <el-table-column label="操作" align="center" key="13" width="140">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)">
             {{ scope.row.acticityStatus == "ENDED" ? "详情" : "编辑" }}
@@ -84,6 +84,9 @@
             v-if="scope.row.acticityStatus == 'IN_PROGRESS'"
           >
             提前结束
+          </span>
+          <span class="blueColor publick-button cursor" @click="handleDel(scope.row)" v-if="scope.row.acticityStatus != 'IN_PROGRESS'">
+            删除
           </span>
         </template>
       </el-table-column>
@@ -121,7 +124,7 @@
               <el-option v-for="(item, index) in typeOptions" :key="index" :label="item.label" :value="item.value"> </el-option>
             </el-select>
           </el-form-item>
-          
+
           <el-form-item label="活动名称" prop="name" :rules="rules.blur">
             <el-input v-model="ruleForm.name" style="width: 350px" placeholder="请输入名称" />
           </el-form-item>
@@ -218,8 +221,8 @@
                   <template slot="append">次</template>
                 </el-input>
               </el-form-item>
-              <el-form-item label="解锁比率" v-if="ruleForm.unlockNum>0">
-                <p style="line-height: 28px">{{ (1/ruleForm.unlockNum*100).toFixed(2) }}%</p>
+              <el-form-item label="解锁比率" v-if="ruleForm.unlockNum > 0">
+                <p style="line-height: 28px">{{ ((1 / ruleForm.unlockNum) * 100).toFixed(2) }}%</p>
               </el-form-item>
             </div>
           </template>
@@ -295,7 +298,9 @@
               </div>
               <div class="remittance-item">
                 <div class="title">总未领</div>
-                <div class="val">{{ accurateDecimal(new bigNumber((rewardRecordStatic?.totalUnlocks - rewardRecordStatic?.totalReceive) || 0), 4) }}</div>
+                <div class="val">
+                  {{ accurateDecimal(new bigNumber(rewardRecordStatic?.totalUnlocks - rewardRecordStatic?.totalReceive || 0), 4) }}
+                </div>
               </div>
             </div>
           </div>
@@ -375,7 +380,7 @@ export default {
         name: null, //活动名称
         activityType: null, //活动类型(WELCOME_BONUS-欢迎奖金,OPEN_BOX_WIN_POINTS-开盒赢积分,TREASURES_WIN_POINTS-夺宝赢积分)
         banner: null, //banner
-        activityIndex:null,//排序
+        activityIndex: null, //排序
         shortWord: null, //一句话的事
         lowRecharge: null, //最低充值
         bonusRate: null, //奖金比率
@@ -389,7 +394,7 @@ export default {
         activityDesc: null, //活动描述
         conditionRule: null, //活动与条款
       },
-      ruleFormClone:{},
+      ruleFormClone: {},
       rules: {
         select: [{ required: true, message: "请选择", trigger: ["blur", "change"] }],
         blur: [{ required: true, message: "请输入", trigger: ["blur", "change"] }],
@@ -441,7 +446,7 @@ export default {
       this.operatingType = 1;
       this.hideUpload = false;
       this.fileImg = [];
-      this.ruleForm=JSON.parse(JSON.stringify(this.ruleFormClone))
+      this.ruleForm = JSON.parse(JSON.stringify(this.ruleFormClone));
       this.showDialog = true;
     },
     handleEdit(row) {
@@ -493,6 +498,25 @@ export default {
               id: row.id,
             });
           }
+          if (res) {
+            this.getTableList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    handleDel(row) {
+      this.$confirm(`确定要删除『${row.name}』吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          let res = await this.$http.activityManagerRemove({
+            id: row.id,
+          });
           if (res) {
             this.getTableList();
             this.$message.success("操作成功");
@@ -585,7 +609,7 @@ export default {
   },
   // 创建后
   created() {
-    this.ruleFormClone=JSON.parse(JSON.stringify(this.ruleForm))
+    this.ruleFormClone = JSON.parse(JSON.stringify(this.ruleForm));
     this.getTableList();
     this.uploadUrl = config.api + "/file/upload/image";
   },
