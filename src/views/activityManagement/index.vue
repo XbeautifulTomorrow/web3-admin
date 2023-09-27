@@ -579,7 +579,7 @@ export default {
             res = await this.$http.activityManagerAdd({ ...ruleForm });
           } else {
             ruleForm.startTime = timeForStr(ruleForm.startTime, "YYYY-MM-DD HH:mm:ss");
-            ruleForm.endTime = timeForStr(ruleForm.endTime, "YYYY-MM-DD HH:mm:ss");
+            ruleForm.endTime = ruleForm.endTime ? timeForStr(ruleForm.endTime, "YYYY-MM-DD HH:mm:ss") : null;
             res = await this.$http.activityManagerUpdate({ ...ruleForm });
           }
           if (res) {
