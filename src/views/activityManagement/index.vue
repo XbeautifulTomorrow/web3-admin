@@ -131,7 +131,6 @@
           <el-form-item label="活动横幅" prop="banner" :rules="rules.select">
             <el-upload
               :action="uploadUrl"
-              :disabled="operatingType != 1"
               :class="{ hide: hideUpload }"
               :on-change="handleChange"
               :on-success="handleUpload"
