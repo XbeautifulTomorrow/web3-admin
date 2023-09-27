@@ -5,7 +5,7 @@
       <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID、钱包地址" v-model="userId" clearable />
       <el-input class="public-input" style="width: 140px;" placeholder="输入闪兑ID，hash，金流流水号" v-model="keyword" clearable />
       <el-select v-model="coin" class="public-select-box" popper-class="public-select-box" placeholder="全部币种" clearable>
-        <el-option v-for="(item, index) in coinDrop" :key="index" :label="item.coinName" :value="item.coinName">
+        <el-option v-for="(item, index) in coinDrop" :key="index" :label="item.oldCoinName" :value="item.oldCoinName">
         </el-option>
       </el-select>
       <el-select v-model="chainType" class="public-select-box" popper-class="public-select-box" placeholder="全部充值链"
@@ -186,7 +186,7 @@ export default {
         let coin = [];
         const { records } = res;
         records.forEach(element => {
-          if (coin.findIndex(e => e.coinName == element.coinName) <= -1) {
+          if (coin.findIndex(e => e.oldCoinName == element.oldCoinName) <= -1) {
             coin.push(element);
           }
         })
