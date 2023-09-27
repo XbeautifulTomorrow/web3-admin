@@ -266,6 +266,22 @@ export const routes = [
         component: () => import("@/views/lotteryChainManagement/index"),
         name: "lotteryChainManagement",
       },
+      //系统管理
+      {
+        path: "/accountList",
+        name: "accountList",
+        component: () => import("@/views/systemManage/accountList"),
+      },
+      {
+        path: "/roleList",
+        name: "roleList",
+        component: () => import("@/views/systemManage/roleList"),
+      },
+      {
+        path: "/permissionAssign",
+        name: "permissionAssign",
+        component: () => import("@/views/systemManage/permissionAssign"),
+      },
     ],
   },
 ];

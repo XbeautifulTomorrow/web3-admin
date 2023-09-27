@@ -159,6 +159,24 @@
             <span>积分流水</span>
           </el-menu-item>
         </el-submenu>
+        <el-submenu index="systemManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">系统管理</span>
+          </template>
+          <el-menu-item index="accountList" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>用户管理</span>
+          </el-menu-item>
+          <el-menu-item index="permissionAssign" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>权限管理</span>
+          </el-menu-item>
+          <el-menu-item index="roleList" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>角色管理</span>
+          </el-menu-item>
+        </el-submenu>
         <el-submenu index="walletManagement">
           <template slot="title">
             <i class="el-icon-wallet"></i>
@@ -428,6 +446,18 @@ export default {
           label: "活动管理",
           page: "activityManagement",
         },
+        {
+          label: "用户管理",
+          page: "accountList",
+        },
+        {
+          label: "权限管理",
+          page: "permissionAssign",
+        },
+        {
+          label: "角色管理",
+          page: "roleList",
+        },
       ],
     };
   },
@@ -513,6 +543,11 @@ export default {
         "walletNFTBuyStat",
         "walletGASStat",
       ];
+      const systemManagement = [
+        "accountList",
+        "permissionAssign",
+        "roleList",
+      ]
 
       if (path === "/") {
         this.title = "数据管理";
@@ -538,6 +573,9 @@ export default {
               this.page = item.label;
             } else if (walletManagement.includes(item.page)) {
               this.title = "钱包管理";
+              this.page = item.label;
+            }  else if (systemManagement.includes(item.page)) {
+              this.title = "系统管理";
               this.page = item.label;
             } else {
               this.title = item.label;
