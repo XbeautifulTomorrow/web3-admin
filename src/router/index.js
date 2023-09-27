@@ -106,6 +106,12 @@ export const routes = [
         name: "CashManagement",
       },
       {
+        /** 充值管理 */
+        path: "/rechargeRecord",
+        component: () => import("@/views/rechargeRecord/index"),
+        name: "rechargeRecord",
+      },
+      {
         /** 提现审核 */
         path: "/withdrawalReview",
         component: () => import("@/views/withdrawalReview/index"),

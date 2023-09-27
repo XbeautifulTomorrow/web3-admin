@@ -16,7 +16,8 @@
           </el-select>
         </div>
       </div>
-      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse" class="nav-ul">
+      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
+        class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
@@ -138,6 +139,10 @@
             <i class="el-icon-s-finance"></i>
             <span>金流管理</span>
           </el-menu-item>
+          <el-menu-item index="rechargeRecord" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>充值管理</span>
+          </el-menu-item>
           <el-menu-item index="nftTransactionManagement" class="menu-list">
             <i class="el-icon-s-finance"></i>
             <span>NFT 交易管理</span>
@@ -227,11 +232,9 @@
           <span class="title">{{ page }}</span>
         </div>
       </el-header>
-      <el-main
-        :class="{
-          'report-main': path === '/report',
-        }"
-      >
+      <el-main :class="{
+        'report-main': path === '/report',
+      }">
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -323,6 +326,10 @@ export default {
         {
           label: "金流管理",
           page: "cashManagement",
+        },
+        {
+          label: "充值管理",
+          page: "rechargeRecord",
         },
         {
           label: "提款审核",
@@ -490,10 +497,17 @@ export default {
         "activityList",
       ];
 
-      const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
+      const mallManagement = [
+        "blindBoxManagement",
+        "orderManagement",
+        "blindBoxTest",
+        "nftBuyManagement",
+        "nftBuyRecord"
+      ];
 
       const fundingStatistics = [
         "cashManagement",
+        "rechargeRecord",
         "nftTransactionManagement",
         "withdrawalReview",
         "flashManagement",
@@ -555,11 +569,11 @@ export default {
     this.pageFun();
   },
   // 挂载后
-  mounted() {},
+  mounted() { },
   // 更新后
-  updated() {},
+  updated() { },
   // 销毁
-  beforeDestroy() {},
+  beforeDestroy() { },
   watch: {
     path: function () {
       this.pageFun();
@@ -621,7 +635,7 @@ export default {
   align-items: center;
   justify-content: center;
 
-  & > .el-select + .el-select {
+  &>.el-select+.el-select {
     margin-top: 10px;
   }
 }
