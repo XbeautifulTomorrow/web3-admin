@@ -106,6 +106,14 @@ export const getAssetFlowList = (obj) => S.get("/asset-flow/pageList", obj); // 
 export const getAssetFlowStatistics = (obj) => S.get("/asset-flow/headerDataTotal", obj); // 金流管理统计
 
 /**
+ * @description 充值管理
+ */
+export const getChainList = (obj) => S.get("/transfer-chain-config/pageList", obj); // 链列表
+export const getCoinList = (obj) => S.get("/transfer-coin-config/pageList", obj); // 币种列表
+export const getRechargeList = (obj) => S.get("/wallet-withdrawal/getAddressRechargePage", obj); // 金流管理列表
+export const getRechargeStatistics = (obj) => S.get("/wallet-withdrawal/getAddressRechargeStatistics", obj); // 金流管理统计
+
+/**
  * @description 提款审核
  */
 export const getAssetWithdrawalList = (obj) => S.get("/asset-withdrawal/pageList", obj); // 提款审核列表
