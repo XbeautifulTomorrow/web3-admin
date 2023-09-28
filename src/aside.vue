@@ -16,8 +16,7 @@
           </el-select>
         </div>
       </div>
-      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse"
-        class="nav-ul">
+      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse" class="nav-ul">
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
@@ -71,6 +70,10 @@
             <i class="el-icon-data-line"></i>
             <span slot="title">平台管理</span>
           </template>
+          <!-- <el-menu-item index="bannerManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>banner管理</span>
+          </el-menu-item> -->
           <el-menu-item index="marketManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>市场管理</span>
@@ -232,9 +235,11 @@
           <span class="title">{{ page }}</span>
         </div>
       </el-header>
-      <el-main :class="{
-        'report-main': path === '/report',
-      }">
+      <el-main
+        :class="{
+          'report-main': path === '/report',
+        }"
+      >
         <router-view></router-view>
       </el-main>
     </el-container>
@@ -306,6 +311,10 @@ export default {
         {
           label: "一元购售票记录",
           page: "nftBuyRecord",
+        },
+        {
+          label: "banner管理",
+          page: "bannerManagement",
         },
         {
           label: "市场管理",
@@ -495,15 +504,10 @@ export default {
         "mandatoryAudit",
         "activityManagement",
         "activityList",
+        "bannerManagement",
       ];
 
-      const mallManagement = [
-        "blindBoxManagement",
-        "orderManagement",
-        "blindBoxTest",
-        "nftBuyManagement",
-        "nftBuyRecord"
-      ];
+      const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
 
       const fundingStatistics = [
         "cashManagement",
@@ -569,11 +573,11 @@ export default {
     this.pageFun();
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
   watch: {
     path: function () {
       this.pageFun();
@@ -635,7 +639,7 @@ export default {
   align-items: center;
   justify-content: center;
 
-  &>.el-select+.el-select {
+  & > .el-select + .el-select {
     margin-top: 10px;
   }
 }

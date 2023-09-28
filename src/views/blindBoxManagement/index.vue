@@ -677,6 +677,56 @@ export default {
         return this.platformList.some((item) => item.seriesId === id);
       }
     },
+    // 产品相册
+    handleUpload(res) {
+      if (res.status == 200) {
+        this.fileImg.push({ url: res.data });
+        return;
+      }
+      this.$message.error("上传失败");
+    },
+    handleBefore(file) {
+      const _this = this;
+      const is1M = file.size / 1024 / 1024 < 2; // 限制小于2M
+      if (!is1M) {
+        _this.$message.error("图片过大，文件大小小于2M");
+      }
+      return is1M;
+    },
+    handleRemove(file, fileList) {
+      this.fileImg = [];
+    },
+    handExceed(fiel) {
+      this.$message.error("Banner图片只能上传一张");
+    },
+    submitCofirm() {
+      this.$refs.ruleForm.validate(async (valid) => {
+        if (valid) {
+          if (this.fileImg.length == 0) {
+            this.$message.error("请上传图片！");
+            return;
+          }
+          let ruleForm = { ...this.ruleForm };
+          ruleForm.imageUrl = this.fileImg[0].url;
+          let res = null;
+          if (this.ruleForm.id) {
+            res = await this.$http.updateBanner({ ...ruleForm });
+            this.$router.go(-1);
+          } else {
+            res = await this.$http.saveBanner({ ...ruleForm });
+            this.$router.go(-1);
+          }
+          if (res) {
+            this.$refs["ruleForm"].resetFields();
+            this.$message.success("操作成功！");
+            this.fileImg = [];
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
     // 搜索条件
     searchFun() {
       return {

@@ -272,6 +272,12 @@ export const routes = [
         component: () => import("@/views/lotteryChainManagement/index"),
         name: "lotteryChainManagement",
       },
+      {
+        /** 平台管理-banner管理 */
+        path: "/bannerManagement",
+        component: () => import("@/views/bannerManagement/index"),
+        name: "bannerManagement",
+      },
     ],
   },
 ];
