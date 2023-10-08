@@ -171,6 +171,8 @@ export const systemWalletDel = (obj) => S.get("/system-wallet/delete", obj); // 
 export const getInviteSetting = (obj) => S.get("/system-setting/findBaseSetting", obj); // 邀请文本查询
 export const inviteSet = (obj) => S.post("/system-setting/baseSetting", obj); // 邀请文本设置
 
+export const setWarGameSetting = (obj) => S.post("/system-setting/warGameSetting", obj); // 邀请文本设置
+export const getWarGameSetting = (obj) => S.get("/system-setting/findWarGameSetting", obj); // 邀请文本设置
 /**
  * @description 群发邮件
  */
