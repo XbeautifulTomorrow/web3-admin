@@ -275,3 +275,11 @@ export const activityManagerRemove = (obj) => S.get("/activity-manager/remove", 
  * @description 活动列表
  */
 export const activityFindList = (obj) => S.get("/activity/findList", obj);
+
+/**
+ * @description banner
+ */
+export const bannerAdd = (obj) => S.post("/banner-data/add", obj);
+export const bannerUpdate = (obj) => S.post("/banner-data/update", obj);
+export const bannerList = (obj) => S.get("/banner-data/pageList", obj);
+export const bannerDelete = (obj) => S.get("/banner-data/delete", obj);

@@ -70,10 +70,10 @@
             <i class="el-icon-data-line"></i>
             <span slot="title">平台管理</span>
           </template>
-          <!-- <el-menu-item index="bannerManagement" class="menu-list">
+          <el-menu-item index="bannerManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>banner管理</span>
-          </el-menu-item> -->
+          </el-menu-item>
           <el-menu-item index="marketManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>市场管理</span>
@@ -106,6 +106,14 @@
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
           </el-menu-item>
+          <!-- <el-menu-item index="chargeChainManagement" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>充提链管理</span>
+          </el-menu-item>
+          <el-menu-item index="chargeCoinManagement" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span> 充提币管理</span>
+          </el-menu-item> -->
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">
@@ -444,6 +452,14 @@ export default {
           label: "活动管理",
           page: "activityManagement",
         },
+        {
+          label: "充提链管理",
+          page: "chargeChainManagement",
+        },
+        {
+          label: "充提币管理",
+          page: "chargeCoinManagement",
+        },
       ],
     };
   },
@@ -505,6 +521,8 @@ export default {
         "activityManagement",
         "activityList",
         "bannerManagement",
+        "chargeChainManagement",
+        "chargeCoinManagement",
       ];
 
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
