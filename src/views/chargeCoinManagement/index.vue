@@ -9,7 +9,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="coinName" label="链名" align="center" key="3"> </el-table-column>
+      <el-table-column prop="coinName" label="币种名" align="center" key="3"> </el-table-column>
       <el-table-column prop="chainName" label="支持链" align="center" key="5"> </el-table-column>
       <el-table-column prop="gasWalletAddress" label="状态" align="center">
         <template slot-scope="scope">
@@ -50,7 +50,7 @@
     >
       <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="120px">
         <el-form-item label="代币">
-          <p style="line-height: 28px">ETH</p>
+          <p style="line-height: 28px">{{ row.coinName }}</p>
         </el-form-item>
         <el-form-item label="图标" prop="coinImage" :rules="rules.select">
           <el-upload
