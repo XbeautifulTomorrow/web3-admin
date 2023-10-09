@@ -1,26 +1,26 @@
 <template>
   <div class="page-wrapper">
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="id" sortable="custom" label="链ID" align="center" key="1"> </el-table-column>
-      <el-table-column prop="coinImage" label="图标" width="120px" align="center" key="2">
+      <el-table-column prop="id" label="币ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="img" label="图标" width="120px" align="center" key="2">
         <template slot-scope="scope">
           <div style="width: 40px; height: 40px">
-            <el-image style="height: 100%" :src="scope.row.coinImage" :preview-src-list="[scope.row.coinImage]"> </el-image>
+            <el-image style="height: 100%" :src="scope.row.img" :preview-src-list="[scope.row.img]"> </el-image>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" label="链名" align="center" key="3"> </el-table-column>
+      <el-table-column prop="coinName" label="链名" align="center" key="3"> </el-table-column>
       <el-table-column prop="chainName" label="支持链" align="center" key="5"> </el-table-column>
       <el-table-column prop="gasWalletAddress" label="状态" align="center">
         <template slot-scope="scope">
-          <p v-if="scope.row.botStatus == 'TRUE'" style="color: #67c23a">启用</p>
+          <p v-if="scope.row.isDisable == false" style="color: #67c23a">启用</p>
           <p v-else style="color: #f56c6c">禁用</p>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" key="15">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="handleEdit(scope.row)">编辑</span>
-          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-if="scope.row.botStatus == 'TRUE'">
+          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-if="scope.row.isDisable == false">
             禁用
           </span>
           <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'open')" v-else>启用 </span>
@@ -48,7 +48,7 @@
       :close-on-click-modal="false"
       :before-close="handleClose"
     >
-      <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="80px">
+      <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="120px">
         <el-form-item label="代币">
           <p style="line-height: 28px">ETH</p>
         </el-form-item>
@@ -71,27 +71,43 @@
             <i class="el-icon-plus" />
           </el-upload>
         </el-form-item>
-        <el-table :data="tableData" style="width: 100%" border>
-          <el-table-column prop="id" label="链" align="center" key="1"> </el-table-column>
-          <el-table-column prop="id" label="gas" align="center" key="1"> </el-table-column>
-          <el-table-column prop="assetBalance" label="操作" align="center" key="6">
-            <template slot-scope="scope">
-              <el-switch
-                style="display: block"
-                v-model="scope.row.isWithdrawal"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                active-text="开"
-                inactive-text="关"
-                active-value="TRUE"
-                inactive-value="FALSE"
-                @change="mandatoryReviwUpdateFunc(scope.row)"
-              >
-              </el-switch>
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form-item label="默认归集阈值" prop="intervalTime" :rules="rules.blur">
+          <el-input v-model.number="ruleForm.intervalTime" type="number" autocomplete="off"> </el-input>
+        </el-form-item>
+        <el-form-item label="强制归集阈值" prop="oneOrder" :rules="rules.blur">
+          <el-input v-model.number="ruleForm.oneOrder" type="number" autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
+      <el-table :data="tableData" style="width: 100%" border>
+        <el-table-column prop="id" label="链" align="center" key="1"> </el-table-column>
+        <el-table-column prop="id" label="默认归集阈值" align="center" key="1">
+          <template slot-scope="scope">
+            <p style="color: #f56c6c">{{ scope.row.dd }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="id" label="强制归集阈值" align="center" key="1">
+          <template slot-scope="scope">
+            <p style="color: #f56c6c">{{ scope.row.dd }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="id" label="gas" align="center" key="1"> </el-table-column>
+        <el-table-column prop="assetBalance" label="操作" align="center" key="6">
+          <template slot-scope="scope">
+            <el-switch
+              style="display: block"
+              v-model="scope.row.isWithdrawal"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              active-text="开"
+              inactive-text="关"
+              active-value="TRUE"
+              inactive-value="FALSE"
+              @change="mandatoryReviwUpdateFunc(scope.row)"
+            >
+            </el-switch>
+          </template>
+        </el-table-column>
+      </el-table>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -158,7 +174,7 @@ export default {
           page: _page,
         },
       };
-      const res = await this.$http.externalCoinPageList(data);
+      const res = await this.$http.transferCoinPageList(data);
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
@@ -269,6 +285,36 @@ export default {
       this.page = val;
       this.getTableList(false);
     },
+  },
+  operatingFunc(row, type) {
+    this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    })
+      .then(async () => {
+        let res = null;
+        if (type == "open") {
+          // 开启
+          res = await this.$http.transferCoinModifyState({
+            coin: row.boxId,
+            isDisable: false,
+          });
+        } else {
+          // 关闭
+          res = await this.$http.transferCoinModifyState({
+            coin: row.boxId,
+            isDisable: true,
+          });
+        }
+        if (res) {
+          this.getTableList();
+          this.$message.success("操作成功");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   },
   async mandatoryReviwUpdateFunc(row) {
     const res = await this.$http.mandatoryReviwUpdate({

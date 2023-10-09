@@ -49,7 +49,7 @@
             <el-input v-model="ruleForm.bannerUrl" style="width: 300px" placeholder="请输入跳转地址" />
           </el-form-item>
           <el-form-item label="排序" prop="orderByNumber" :rules="rules.blur">
-            <el-input v-model="ruleForm.orderByNumber" style="width: 300px" placeholder="请输入排序，数字大的靠前" />
+            <el-input v-model="ruleForm.orderByNumber" style="width: 300px" placeholder="请输入排序，数字小的靠前" />
           </el-form-item>
         </el-form>
       </div>

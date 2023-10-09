@@ -285,3 +285,13 @@ export const bannerAdd = (obj) => S.post("/banner-data/add", obj);
 export const bannerUpdate = (obj) => S.post("/banner-data/update", obj);
 export const bannerList = (obj) => S.get("/banner-data/pageList", obj);
 export const bannerDelete = (obj) => S.get("/banner-data/delete", obj);
+
+/**
+ * @description 充提链/币
+ */
+export const transferChainPageList = (obj) => S.get("/transfer-chain-config/pageList", obj);
+export const transferChainUpdate = (obj) => S.post("/transfer-chain-config/update", obj);
+export const transferCoinPageList = (obj) => S.get("/transfer-coin-config/pageList", obj);
+export const transferCoinUpdate = (obj) => S.post("/transfer-coin-config/updateInfo", obj);
+export const transferCoinPageInfo = (obj) => S.post("/transfer-coin-config/pageInfo", obj);
+export const transferCoinModifyState = (obj) => S.post("/transfer-coin-config/modifyState", obj);

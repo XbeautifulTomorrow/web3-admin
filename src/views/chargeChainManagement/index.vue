@@ -1,12 +1,22 @@
 <template>
   <div class="page-wrapper">
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="boxId" label="链ID" align="center"> </el-table-column>
-      <el-table-column prop="boxName" label="链名" align="center"> </el-table-column>
-      <el-table-column prop="price" label="全称" align="center"> </el-table-column>
-      <el-table-column prop="boxOpenNumber" label="gas" align="center"> </el-table-column>
-      <el-table-column prop="boxOpenExpenditure" label="几次确认" align="center"> </el-table-column>
-      <el-table-column prop="gasWalletAddress" label="状态" align="center">
+      <el-table-column prop="id" label="链ID" align="center"> </el-table-column>
+      <el-table-column prop="chain" label="链名" align="center"> </el-table-column>
+      <!-- <el-table-column prop="price" label="全称" align="center"> </el-table-column> -->
+      <el-table-column prop="rpc" label="rpc" align="center">
+        <template slot-scope="scope">
+          <span class="blueColor publick-button cursor" @click="openRpc(scope.row)">{{ scope.row.rpc }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="gas" label="提款手续费" align="center"> </el-table-column>
+      <el-table-column prop="confirmTheHeight" label="几次确认" align="center"> </el-table-column>
+      <el-table-column prop="minGasForce" label="触发强制归集gas(USDT）" align="center" width="120px">
+        <template slot-scope="scope">
+          <p style="color: #f56c6c">{{ scope.row.minGasForce }}</p>
+        </template>
+      </el-table-column>
+      <el-table-column label="状态" align="center">
         <template slot-scope="scope">
           <p v-if="scope.row.botStatus == 'TRUE'" style="color: #67c23a">已启用</p>
           <p v-else style="color: #f56c6c">已停止</p>
@@ -36,17 +46,40 @@
       class="public-pagination"
     >
     </el-pagination>
-    <el-dialog title="充提链配置" :visible.sync="dialogVisible" width="30%">
-      <el-form ref="ruleForm" :model="ruleForm" label-width="120px" :rules="rules">
-        <el-form-item label="配置gas" prop="intervalTime" :rules="rules.blur">
-          <el-input v-model.number="ruleForm.intervalTime" type="number" autocomplete="off"> </el-input>
+    <el-dialog title="充提链配置" :visible.sync="dialogVisible" width="40%">
+      <el-form ref="ruleForm" :model="ruleForm" label-width="150px" :rules="rules">
+        <el-form-item label="提款手续费gas" prop="gas" :rules="rules.blur">
+          <el-input v-model="ruleForm.gas" type="number" autocomplete="off"> </el-input>
         </el-form-item>
-        <el-form-item label="配置确认次数" prop="oneOrder" :rules="rules.blur">
-          <el-input v-model.number="ruleForm.oneOrder" type="number" autocomplete="off"></el-input>
+        <el-form-item label="确认次数" prop="confirmTheHeight" :rules="rules.blur">
+          <el-input v-model.number="ruleForm.confirmTheHeight" type="number" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="触发强制归集GAS" prop="minGasForce" :rules="rules.blur">
+          <el-input v-model="ruleForm.minGasForce" type="number" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="saveFunc">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog title="切换rpc" :visible.sync="rpcDialogVisible" width="30%">
+      <div class="rpc-box">
+        <p>主要</p>
+        <div class="rpc-item">
+          <el-radio v-model="rpcVal" label="1">{{ row?.rpc }}</el-radio>
+        </div>
+        <p class="mgr-t">备用</p>
+        <div class="rpc-item">
+          <div>
+            <el-radio v-model="rpcVal" label="1">{{ row?.rpcUrl1 }}</el-radio>
+            <el-radio v-model="rpcVal" label="2">{{ row?.rpcUrl2 }}</el-radio>
+            <el-radio v-model="rpcVal" label="3">{{ row?.rpcUrl3 }}</el-radio>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="rpcDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveFunc">确 定</el-button>
       </span>
     </el-dialog>
@@ -69,10 +102,13 @@ export default {
       tableData: null,
       baseUserPage: null,
       dialogVisible: false,
+      rpcDialogVisible: false,
       ruleForm: {},
       rules: {
         blur: [{ required: true, message: "请输入", trigger: "blur" }],
       },
+      row: null,
+      rpcVal: null,
     };
   },
   mixins: [pagination],
@@ -94,15 +130,9 @@ export default {
           page: _page,
         },
       };
-      const res = await this.$http.getBoxBotPageList(data);
+      const res = await this.$http.transferChainPageList(data);
       if (res) {
         this.tableData = res.records;
-      }
-      delete data.size;
-      delete data.page;
-      const statisticsData = await this.$http.boxBotHeaderDataTotal(data);
-      if (statisticsData) {
-        this.statisticsData = statisticsData;
       }
     },
     setFun(row) {
@@ -140,7 +170,7 @@ export default {
     saveFunc() {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
-          let res = await this.$http.boxBotUpdate({ ...this.ruleForm });
+          let res = await this.$http.transferChainUpdate({ ...this.ruleForm });
           if (res) {
             this.dialogVisible = false;
             this.getTableList();
@@ -150,6 +180,10 @@ export default {
           return false;
         }
       });
+    },
+    openRpc(row) {
+      this.row = row;
+      this.rpcDialogVisible = true;
     },
     handleSizeChange(val) {
       this.size = val;
@@ -212,5 +246,20 @@ export default {
 }
 .infor {
   line-height: 28px;
+}
+.rpc-box {
+  .mgr-t {
+    margin-top: 20px;
+  }
+  .rpc-item {
+    background: #eee;
+    padding: 10px;
+    label {
+      margin-bottom: 10px;
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 </style>
