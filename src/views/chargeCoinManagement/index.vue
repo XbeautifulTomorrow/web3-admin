@@ -1,6 +1,6 @@
 <template>
   <div class="page-wrapper">
-    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+    <el-table :data="tableData" style="width: 100%" class="public-table" border>
       <el-table-column prop="id" label="币ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="img" label="图标" width="120px" align="center" key="2">
         <template slot-scope="scope">
@@ -142,17 +142,7 @@ export default {
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
-      ruleForm: {
-        seriesName: null, //系列名称
-        coinName: null, //币种名称
-        coinImage: null, //币种图片
-        contractAddress: null, //合约地址
-        chainId: null, //链ID
-        chainName: null, //链名称
-        reclaimRate: null, //回收比率
-        price: null, //ETH价格
-        coin: "ETH", //ETH币种
-      },
+      ruleForm: {},
       rules: {
         select: [{ required: true, message: "请选择", trigger: ["blur", "change"] }],
         blur: [{ required: true, message: "请输入", trigger: ["blur", "change"] }],
@@ -180,11 +170,8 @@ export default {
         this.tableData = res.records;
       }
     },
-    handleAdd() {
-      this.hideUpload = false;
-      this.showDialog = true;
-    },
     handleEdit(row) {
+      this.row = row;
       this.ruleForm = {
         ...row,
       };
@@ -285,49 +272,50 @@ export default {
       this.page = val;
       this.getTableList(false);
     },
-  },
-  operatingFunc(row, type) {
-    this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning",
-    })
-      .then(async () => {
-        let res = null;
-        if (type == "open") {
-          // 开启
-          res = await this.$http.transferCoinModifyState({
-            coin: row.boxId,
-            isDisable: false,
-          });
-        } else {
-          // 关闭
-          res = await this.$http.transferCoinModifyState({
-            coin: row.boxId,
-            isDisable: true,
-          });
-        }
-        if (res) {
-          this.getTableList();
-          this.$message.success("操作成功");
-        }
+    operatingFunc(row, type) {
+      this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
-      .catch((err) => {
-        console.error(err);
+        .then(async () => {
+          let res = null;
+          if (type == "open") {
+            // 开启
+            res = await this.$http.transferCoinModifyState({
+              coin: row.coinName,
+              isDisable: false,
+            });
+          } else {
+            // 关闭
+            res = await this.$http.transferCoinModifyState({
+              coin: row.coinName,
+              isDisable: true,
+            });
+          }
+          if (res) {
+            this.getTableList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    async mandatoryReviwUpdateFunc(row) {
+      const res = await this.$http.mandatoryReviwUpdate({
+        id: row.id,
+        isWithdrawal: row.isWithdrawal,
+        isTake: row.isTake,
+        isOneDollarBuy: row.isOneDollarBuy,
       });
+      if (res) {
+        this.getTableListFunc(false);
+        this.$message.success("操作成功");
+      }
+    },
   },
-  async mandatoryReviwUpdateFunc(row) {
-    const res = await this.$http.mandatoryReviwUpdate({
-      id: row.id,
-      isWithdrawal: row.isWithdrawal,
-      isTake: row.isTake,
-      isOneDollarBuy: row.isOneDollarBuy,
-    });
-    if (res) {
-      this.getTableListFunc(false);
-      this.$message.success("操作成功");
-    }
-  },
+
   // 创建后
   created() {
     this.getTableList();
