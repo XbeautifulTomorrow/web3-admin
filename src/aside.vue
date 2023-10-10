@@ -106,14 +106,14 @@
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
           </el-menu-item>
-          <!-- <el-menu-item index="chargeChainManagement" class="menu-list">
+          <el-menu-item index="chargeChainManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>充提链管理</span>
           </el-menu-item>
           <el-menu-item index="chargeCoinManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span> 充提币管理</span>
-          </el-menu-item> -->
+          </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
           <template slot="title">

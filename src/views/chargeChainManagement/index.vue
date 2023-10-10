@@ -18,14 +18,14 @@
       </el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <p v-if="scope.row.botStatus == 'TRUE'" style="color: #67c23a">已启用</p>
+          <p v-if="scope.row.isDisplay == false" style="color: #67c23a">已启用</p>
           <p v-else style="color: #f56c6c">已停止</p>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="setFun(scope.row)">配置</span>
-          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-if="scope.row.botStatus == 'TRUE'">
+          <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'close')" v-if="scope.row.isDisplay == false">
             停用
           </span>
           <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'open')" v-else>启用 </span>
@@ -67,12 +67,11 @@
       <div class="rpc-box">
         <p>主要</p>
         <div class="rpc-item">
-          <el-radio v-model="rpcVal" label="1">{{ row?.rpc }}</el-radio>
+          <el-radio v-model="rpcVal" label="1">{{ row?.rpcUrl1 }}</el-radio>
         </div>
         <p class="mgr-t">备用</p>
         <div class="rpc-item">
           <div>
-            <el-radio v-model="rpcVal" label="1">{{ row?.rpcUrl1 }}</el-radio>
             <el-radio v-model="rpcVal" label="2">{{ row?.rpcUrl2 }}</el-radio>
             <el-radio v-model="rpcVal" label="3">{{ row?.rpcUrl3 }}</el-radio>
           </div>
@@ -80,7 +79,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="rpcDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="saveFunc">确 定</el-button>
+        <el-button type="primary" @click="rpcSaveFunc">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -146,18 +145,10 @@ export default {
         type: "warning",
       })
         .then(async () => {
-          let res = null;
-          if (type == "open") {
-            // 开启
-            res = await this.$http.boxBotOpen({
-              boxId: row.boxId,
-            });
-          } else {
-            // 关闭
-            res = await this.$http.boxBotClose({
-              boxId: row.boxId,
-            });
-          }
+          let res = await this.$http.transferChainUpdate({
+            id: row.id,
+            isDisplay: type == "open" ? false : true,
+          });
           if (res) {
             this.getTableList();
             this.$message.success("操作成功");
@@ -181,8 +172,16 @@ export default {
         }
       });
     },
+    async rpcSaveFunc(row) {
+      let res = await this.$http.transferChainUpdate({ id: this.row.id, rpcNum: this.rpcVal });
+      if (res) {
+        this.rpcDialogVisible = false;
+        this.getTableList();
+      }
+    },
     openRpc(row) {
       this.row = row;
+      this.rpcVal = String(row.rpcNum);
       this.rpcDialogVisible = true;
     },
     handleSizeChange(val) {
@@ -255,6 +254,7 @@ export default {
     background: #eee;
     padding: 10px;
     label {
+      display: block;
       margin-bottom: 10px;
       &:last-child {
         margin-bottom: 0;
