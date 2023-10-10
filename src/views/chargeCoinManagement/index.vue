@@ -95,12 +95,12 @@
           <template slot-scope="scope">
             <span
               class="blueColor publick-button cursor"
-              @click="operatingFunc(scope.row, 'close', scope.$index)"
+              @click="saveFunc(scope.row, 'close', scope.$index)"
               v-if="scope.row.isDisplay == false"
             >
               停用
             </span>
-            <span class="blueColor publick-button cursor" @click="operatingFunc(scope.row, 'open', scope.$index)" v-else>启用 </span>
+            <span class="blueColor publick-button cursor" @click="saveFunc(scope.row, 'open', scope.$index)" v-else>启用 </span>
           </template>
         </el-table-column>
       </el-table>
@@ -276,7 +276,7 @@ export default {
       this.page = val;
       this.getTableList(false);
     },
-    operatingFunc(row, type) {
+    saveFunc(row, type) {
       this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -284,6 +284,23 @@ export default {
       })
         .then(async () => {
           let res = await this.$http.transferCoinUpdate({ ...row });
+          if (res) {
+            this.getTableList();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    operatingFunc(row, type) {
+      this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await this.$http.transferCoinModifyState({ coin: row.coinName, isDisable: type == "open" ? false : true });
           if (res) {
             this.getTableList();
             this.$message.success("操作成功");
