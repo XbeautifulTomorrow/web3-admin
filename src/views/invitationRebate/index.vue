@@ -55,30 +55,31 @@
       </el-table-column>
       <el-table-column prop="email" width="120" label="邮箱" align="center" key="2"> </el-table-column>
       <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="3"> </el-table-column>
-      <el-table-column prop="downIdNumber" sortable="custom" width="120" label="下级数量" align="center" key="4">
+      <el-table-column prop="clickNumber" sortable="custom" width="120" label="点击次数" align="center" key="4"> </el-table-column>
+      <el-table-column prop="downIdNumber" sortable="custom" width="120" label="下级数量" align="center" key="5">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="showDown(scope.row)">
             {{ scope.row.downIdNumber || 0 }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="totalConsumption" sortable="custom" width="120" label="总消费" align="center" key="5"> </el-table-column>
-      <el-table-column prop="rebateRate" sortable="custom" width="120" label="分佣比例" align="center" key="6">
+      <el-table-column prop="totalConsumption" sortable="custom" width="120" label="总消费" align="center" key="6"> </el-table-column>
+      <el-table-column prop="rebateRate" sortable="custom" width="120" label="分佣比例" align="center" key="7">
         <template slot-scope="scope">
           {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
         </template>
       </el-table-column>
-      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="7"> </el-table-column>
-      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="8"> </el-table-column>
-      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="9"> </el-table-column>
-      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="10"> </el-table-column>
-      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="11"> </el-table-column>
-      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="12">
+      <el-table-column prop="totalAmount" sortable="custom" width="120" label="总佣金" align="center" key="8"> </el-table-column>
+      <el-table-column prop="receiveAmount" sortable="custom" width="120" label="已领取佣金" align="center" key="9"> </el-table-column>
+      <el-table-column prop="noReceiveAmount" sortable="custom" width="120" label="未领取佣金" align="center" key="10"> </el-table-column>
+      <el-table-column prop="pointAmount" sortable="custom" width="120" label="总注册积分" align="center" key="11"> </el-table-column>
+      <el-table-column prop="extraPointAmount" sortable="custom" width="120" label="总额外积分" align="center" key="12"> </el-table-column>
+      <el-table-column prop="lastReceiveTime" sortable="custom" width="140" label="最后领取时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastReceiveTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="13">
+      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="14">
         <template slot-scope="scope">
           <el-button @click="setRatio(scope.row)">设置分佣比例</el-button>
         </template>

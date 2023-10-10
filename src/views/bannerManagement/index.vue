@@ -10,12 +10,12 @@
       <el-table-column prop="banner" label="图片">
         <template slot-scope="scope">
           <div style="width: 100px; height: 50px">
-            <el-image style="height: 100%" :src="scope.row.banner" :preview-src-list="[scope.row.banner]"> </el-image>
+            <el-image style="height: 100%" :src="scope.row.bannerImage" :preview-src-list="[scope.row.bannerImage]"> </el-image>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" label="位置" />
-      <el-table-column prop="sort" label="链接" />
+      <el-table-column prop="orderByNumber" label="位置" />
+      <el-table-column prop="bannerUrl" label="链接" />
       <el-table-column prop="scope" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleEditor(scope.row)">编辑</el-button>
@@ -46,10 +46,10 @@
             </el-upload>
           </el-form-item>
           <el-form-item label="链接">
-            <el-input v-model="ruleForm.jumpUrl" style="width: 300px" placeholder="请输入跳转地址" />
+            <el-input v-model="ruleForm.bannerUrl" style="width: 300px" placeholder="请输入跳转地址" />
           </el-form-item>
-          <el-form-item label="排序" prop="sort" :rules="rules.blur">
-            <el-input v-model="ruleForm.sort" style="width: 300px" placeholder="请输入排序，数字大的靠前" />
+          <el-form-item label="排序" prop="orderByNumber" :rules="rules.blur">
+            <el-input v-model="ruleForm.orderByNumber" style="width: 300px" placeholder="请输入排序，数字小的靠前" />
           </el-form-item>
         </el-form>
       </div>
@@ -66,11 +66,11 @@ export default {
   data() {
     return {
       protocolList: [],
-      showDialog: true,
+      showDialog: false,
       ruleForm: {
-        banner: "",
-        jumpUrl: "",
-        sort: "",
+        bannerImage: "",
+        bannerUrl: "",
+        orderByNumber: "",
       },
       fileImg: [], // 图片
       limitCount: 1,
@@ -95,18 +95,24 @@ export default {
       this.protocolList = [];
       let res = await this.$http.bannerList();
       if (res) {
-        this.protocolList = res;
+        this.protocolList = res.records;
       }
     },
     handleAdd() {
-      this.showDialog = true;
       this.fileImg = [];
       this.hideUpload = false;
+      this.ruleForm.id = "";
+      this.ruleForm.bannerImage = "";
+      this.ruleForm.bannerUrl = "";
+      this.ruleForm.orderByNumber = "";
+      this.showDialog = true;
     },
-    handleEditor(row) {
-      this.fileImg = [{ url: row.banner }];
+    handleEditor(data) {
+      const row = { ...data };
+      this.fileImg = [{ url: row.bannerImage }];
       this.showDialog = true;
       this.hideUpload = true;
+      this.ruleForm = row;
     },
     handleClose(done) {
       if (done) {
@@ -122,8 +128,8 @@ export default {
         type: "info",
       })
         .then(async () => {
-          const res = await this.$http.bannerOnOff({
-            bannerId: row.id,
+          const res = await this.$http.bannerDelete({
+            id: row.id,
           });
           if (res) {
             this.fetchGetBanner();
@@ -137,7 +143,7 @@ export default {
     handleUpload(res) {
       if (res.code == 200) {
         this.fileImg.push({ url: res.data });
-        this.ruleForm.banner = res.data;
+        this.ruleForm.bannerImage = res.data;
         return;
       }
       this.$message.error("上传失败");
@@ -168,16 +174,16 @@ export default {
             return;
           }
           let ruleForm = { ...this.ruleForm };
-          ruleForm.banner = this.fileImg[0].url;
+          ruleForm.bannerImage = this.fileImg[0].url;
           let res = null;
           if (this.ruleForm.id) {
-            res = await this.$http.updateBanner({ ...ruleForm });
-            this.$router.go(-1);
+            res = await this.$http.bannerUpdate({ ...ruleForm });
           } else {
-            res = await this.$http.saveBanner({ ...ruleForm });
-            this.$router.go(-1);
+            res = await this.$http.bannerAdd({ ...ruleForm });
           }
           if (res) {
+            this.fetchGetBanner();
+            this.showDialog = false;
             this.$refs["ruleForm"].resetFields();
             this.$message.success("操作成功！");
             this.fileImg = [];

@@ -30,4 +30,53 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 
+.searchBox {
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.searchBox .el-input {
+  width: 180px !important;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.searchRIcon {
+  display: flex;
+  align-items: center;
+}
+
+.handler {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  font-size: 16px;
+  color: #999;
+}
+
+.searchRight .exportBox {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+.searchRIcon p {
+  margin-left: 10px;
+}
+
+.searchRight .exportBox i {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+
 

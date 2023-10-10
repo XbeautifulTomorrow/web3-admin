@@ -284,6 +284,34 @@ export const routes = [
         component: () => import("@/views/bannerManagement/index"),
         name: "bannerManagement",
       },
+      {
+        /** 平台管理-充提链管理 */
+        path: "/chargeChainManagement",
+        component: () => import("@/views/chargeChainManagement/index"),
+        name: "chargeChainManagement",
+      },
+      {
+        /** 平台管理-充提币管理 */
+        path: "/chargeCoinManagement",
+        component: () => import("@/views/chargeCoinManagement/index"),
+        name: "chargeCoinManagement",
+      },
+      //系统管理
+      {
+        path: "/accountList",
+        name: "accountList",
+        component: () => import("@/views/systemManage/accountList"),
+      },
+      {
+        path: "/roleList",
+        name: "roleList",
+        component: () => import("@/views/systemManage/roleList"),
+      },
+      {
+        path: "/permissionAssign",
+        name: "permissionAssign",
+        component: () => import("@/views/systemManage/permissionAssign"),
+      },
     ],
   },
 ];

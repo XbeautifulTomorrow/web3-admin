@@ -70,10 +70,10 @@
             <i class="el-icon-data-line"></i>
             <span slot="title">平台管理</span>
           </template>
-          <!-- <el-menu-item index="bannerManagement" class="menu-list">
+          <el-menu-item index="bannerManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>banner管理</span>
-          </el-menu-item> -->
+          </el-menu-item>
           <el-menu-item index="marketManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>市场管理</span>
@@ -105,6 +105,14 @@
           <el-menu-item index="activityManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
+          </el-menu-item>
+          <el-menu-item index="chargeChainManagement" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>充提链管理</span>
+          </el-menu-item>
+          <el-menu-item index="chargeCoinManagement" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span> 充提币管理</span>
           </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
@@ -171,6 +179,24 @@
             <span>积分流水</span>
           </el-menu-item>
         </el-submenu>
+        <!-- <el-submenu index="systemManagement">
+          <template slot="title">
+            <i class="el-icon-data-line"></i>
+            <span slot="title">系统管理</span>
+          </template>
+          <el-menu-item index="accountList" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>用户管理</span>
+          </el-menu-item>
+          <el-menu-item index="permissionAssign" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>权限管理</span>
+          </el-menu-item>
+          <el-menu-item index="roleList" class="menu-list">
+            <i class="el-icon-stopwatch"></i>
+            <span>角色管理</span>
+          </el-menu-item>
+        </el-submenu> -->
         <el-submenu index="walletManagement">
           <template slot="title">
             <i class="el-icon-wallet"></i>
@@ -452,6 +478,22 @@ export default {
           label: "活动管理",
           page: "activityManagement",
         },
+        {
+          label: "充提链管理",
+          page: "chargeChainManagement",
+        },
+        {
+          label: "充提币管理",
+          page: "chargeCoinManagement",
+        },
+        {
+          label: "权限管理",
+          page: "permissionAssign",
+        },
+        {
+          label: "角色管理",
+          page: "roleList",
+        },
       ],
     };
   },
@@ -513,6 +555,8 @@ export default {
         "activityManagement",
         "activityList",
         "bannerManagement",
+        "chargeChainManagement",
+        "chargeCoinManagement",
       ];
 
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
@@ -540,6 +584,7 @@ export default {
         "walletNFTBuyStat",
         "walletGASStat",
       ];
+      const systemManagement = ["accountList", "permissionAssign", "roleList"];
 
       if (path === "/") {
         this.title = "数据管理";
@@ -565,6 +610,9 @@ export default {
               this.page = item.label;
             } else if (walletManagement.includes(item.page)) {
               this.title = "钱包管理";
+              this.page = item.label;
+            } else if (systemManagement.includes(item.page)) {
+              this.title = "系统管理";
               this.page = item.label;
             } else {
               this.title = item.label;
