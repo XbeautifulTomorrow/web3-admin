@@ -247,12 +247,16 @@ export default {
   line-height: 28px;
 }
 .rpc-box {
+  p {
+    margin-bottom: 5px;
+  }
   .mgr-t {
     margin-top: 20px;
   }
   .rpc-item {
     background: #eee;
     padding: 10px;
+
     label {
       display: block;
       margin-bottom: 10px;
