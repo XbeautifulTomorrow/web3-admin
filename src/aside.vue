@@ -142,6 +142,10 @@
             <i class="el-icon-s-finance"></i>
             <span>金流管理</span>
           </el-menu-item>
+          <el-menu-item index="finance" class="menu-list">
+            <i class="el-icon-s-finance"></i>
+            <span>财务数据</span>
+          </el-menu-item>
           <el-menu-item index="rechargeRecord" class="menu-list">
             <i class="el-icon-s-finance"></i>
             <span>充值管理</span>
@@ -337,6 +341,10 @@ export default {
           page: "cashManagement",
         },
         {
+          label: "财务数据",
+          page: "finance",
+        },
+        {
           label: "充值管理",
           page: "rechargeRecord",
         },
@@ -510,6 +518,7 @@ export default {
       const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
 
       const fundingStatistics = [
+        "finance",
         "cashManagement",
         "rechargeRecord",
         "nftTransactionManagement",

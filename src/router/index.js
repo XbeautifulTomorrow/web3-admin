@@ -106,6 +106,12 @@ export const routes = [
         name: "CashManagement",
       },
       {
+        /** 财务数据 */
+        path: "/finance",
+        component: () => import("@/views/finance/index"),
+        name: "Finance",
+      },
+      {
         /** 充值管理 */
         path: "/rechargeRecord",
         component: () => import("@/views/rechargeRecord/index"),

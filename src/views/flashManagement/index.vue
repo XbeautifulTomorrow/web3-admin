@@ -26,6 +26,9 @@
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerList()">
         查询
       </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerListExport()">
+        导出
+      </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -95,7 +98,8 @@
 
 <script>
 import bigNumber from "bignumber.js";
-import { timeForStr } from '@/utils';
+import { timeForStr, exportExcel } from "@/utils";
+import config from "@/config/env";
 import pagination from '@/mixins/pagination';
 export default {
   name: 'FlashManagement',
@@ -190,6 +194,20 @@ export default {
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }
+    },
+    async fetchFlashManagerListExport(isSearch = true) {
+      const search = this.searchFun();
+      const { sortData, userType } = this;
+      const data = {
+        ...{
+          userType: userType,
+        },
+        ...sortData,
+        ...search,
+      };
+      
+      const urlStr = config.api + "/flash-manager/pageListExport";
+      exportExcel(urlStr, data, "闪兑管理导出");
     },
     handleSizeChange(val) {
       this.size = val;
