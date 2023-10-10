@@ -276,14 +276,19 @@ export default {
       this.page = val;
       this.getTableList(false);
     },
-    saveFunc(row, type) {
+    saveFunc(row, type, index) {
       this.$confirm(`确定要${type == "open" ? `启用` : "停用"}吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(async () => {
-          let res = await this.$http.transferCoinUpdate({ ...row });
+          row.isDisplay = type == "open" ? false : true;
+          let ruleForm = {
+            ...this.ruleForm,
+            id: this.row.id,
+          };
+          let res = await this.$http.transferCoinUpdate({ ...ruleForm });
           if (res) {
             this.getTableList();
             this.$message.success("操作成功");

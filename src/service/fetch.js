@@ -295,3 +295,21 @@ export const transferCoinPageList = (obj) => S.get("/transfer-coin-config/pageLi
 export const transferCoinUpdate = (obj) => S.post("/transfer-coin-config/updateInfo", obj);
 export const transferCoinPageInfo = (obj) => S.get("/transfer-coin-config/pageInfo", obj);
 export const transferCoinModifyState = (obj) => S.post("/transfer-coin-config/modifyState", obj);
+
+/**
+ * @description 权限
+ */
+export const userList = (obj) => S.get("/sys-user/list", obj);
+export const userDelete = (obj) => S.get("/sys-user/delete", obj);
+export const userAdd = (obj) => S.post("/sys-user/add", obj);
+export const userEdit = (obj) => S.post("/sys-user/update", obj);
+export const roleList = (obj) => S.get("/sys-role/list", obj);
+export const roleAdd = (obj) => S.post("/sys-role/add", obj);
+export const roleUpdate = (obj) => S.post("/sys-role/update", obj);
+export const roleDown = (obj) => S.get("/sys-role/downBox", obj);
+export const menuList = (obj) => S.get("/sys-menu/treeList", obj);
+export const addMenu = (obj) => S.post("/sys-menu/add", obj);
+export const deleteMenu = (obj) => S.get("/sys-menu/delete", obj);
+export const updateMenu = (obj) => S.post("/sys-menu/update", obj, true);
+export const roleAuth = (obj) => S.post("/sys-role/addRoleMenuCorr", obj);
+export const getMenuList = (obj) => S.get("/sys-menu/tree", obj);
