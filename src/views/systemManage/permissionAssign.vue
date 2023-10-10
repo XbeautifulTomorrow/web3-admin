@@ -2,11 +2,11 @@
   <div>
     <div class="searchBox">
       <div class="searchLeft">
-        <el-select size="medium" clearable v-model="searchForm.menuType" placeholder="请选择类型" @change="getTableList">
+        <!-- <el-select size="medium" clearable v-model="searchForm.menuType" placeholder="请选择类型" @change="getTableList">
           <el-option label="菜单/栏目" value=""></el-option>
           <el-option label="菜单" :value="1"></el-option>
           <el-option label="栏目" :value="2"></el-option>
-        </el-select>
+        </el-select> -->
         <!-- <el-button size="medium" type="primary" icon="el-icon-search" @click="getTableList">搜索</el-button> -->
       </div>
       <div class="searchRight">

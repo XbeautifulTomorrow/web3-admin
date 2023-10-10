@@ -283,5 +283,5 @@ export const menuList = (obj) => S.get("/sys-menu/treeList", obj);
 export const addMenu = (obj) => S.post("/sys-menu/add", obj);
 export const deleteMenu = (obj) => S.get("/sys-menu/delete", obj);
 export const updateMenu = (obj) => S.post("/sys-menu/update", obj, true);
-export const roleAuth = (obj) => S.post("/sys-role/downBox", obj);
+export const roleAuth = (obj) => S.post("/sys-role/addRoleMenuCorr", obj);
 export const getMenuList = (obj) => S.get("/sys-menu/tree", obj);
