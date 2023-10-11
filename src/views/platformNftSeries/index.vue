@@ -292,7 +292,7 @@ export default {
       const accounts = await window.ethereum.request({
         method: "eth_requestAccounts",
       });
-      console.log(item,"item======")
+      console.log(item, "item======");
       const is1155 = item.seriesNftType == "ERC1155";
       const web3 = new Web3(window.ethereum);
       const token = item.contractAddress; //nft合约地址
@@ -301,11 +301,11 @@ export default {
       const nftHelpAddress = contractInfo.nftHelpAddress;
       // 授权判断
       let isApproved = await nftContract.methods.isApprovedForAll(walletAddress, nftHelpAddress).call();
-      console.log(isApproved,"isApproved===")
+      console.log(isApproved, "isApproved===");
       if (!isApproved) {
         //授权
         await nftContract.methods.setApprovalForAll(nftHelpAddress, true).send({ from: walletAddress });
-      }else{
+      } else {
         this.$message.success("isApproved");
       }
     },
@@ -423,9 +423,9 @@ export default {
         return;
       }
 
-      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
+      let getUrl = config.api + "nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = config.api + "/nft-external-series/assetContract/eth/";
+        getUrl = config.api + "nft-external-series/assetContract/eth/";
       }
 
       axios

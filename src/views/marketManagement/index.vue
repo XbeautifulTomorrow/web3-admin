@@ -1,50 +1,49 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px;" placeholder="输入ID、名称" v-model="Id" clearable />
-      <el-input class="public-input" style="width: 220px;" placeholder="输入市场名称" v-model="marketName" clearable />
-      <el-select v-model="marketStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
-        clearable>
-        <el-option label="封停" value="DISABLE">
-        </el-option>
-        <el-option label="正常" value="NORMAL">
-        </el-option>
+      <el-input class="public-input" style="width: 220px" placeholder="输入ID、名称" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入市场名称" v-model="marketName" clearable />
+      <el-select v-model="marketStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+        <el-option label="封停" value="DISABLE"> </el-option>
+        <el-option label="正常" value="NORMAL"> </el-option>
       </el-select>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchMarketManagerList()">
-        查询
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchMarketManagerList()"> 查询 </el-button>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border>
-      <el-table-column prop="id" label="市场ID" align="center" key="1">
-      </el-table-column>
-      <el-table-column prop="marketName" label="市场名称" align="center" key="2">
-      </el-table-column>
-      <el-table-column prop="chainName" label="所在链" align="center" key="3">
-      </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="4">
-      </el-table-column>
+      <el-table-column prop="id" label="市场ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="marketName" label="市场名称" align="center" key="2"> </el-table-column>
+      <el-table-column prop="chainName" label="所在链" align="center" key="3"> </el-table-column>
+      <el-table-column prop="contractAddress" label="合约" align="center" key="4"> </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="17">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="operatingMarket(scope.row)">
-            {{ scope.row.marketStatus == 'DISABLE' ? '解禁' : '冻结' }}
+            {{ scope.row.marketStatus == "DISABLE" ? "解禁" : "冻结" }}
           </span>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
-import pagination from '@/mixins/pagination';
+import pagination from "@/mixins/pagination";
 export default {
-  name: 'MarketManagement',
+  name: "MarketManagement",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -60,7 +59,7 @@ export default {
   mixins: [pagination],
   // 方法
   methods: {
-    onSearch() { },
+    onSearch() {},
     // 加载列表
     async fetchMarketManagerList(isSearch = true) {
       const { size } = this;
@@ -84,22 +83,22 @@ export default {
     },
     // 冻结/解禁
     operatingMarket(row) {
-      this.$confirm(`确定要${row.marketStatus == 'DISABLE' ? '解禁' : '冻结'}市场『${row.marketName || row.id}』吗?`, "提示", {
+      this.$confirm(`确定要${row.marketStatus == "DISABLE" ? "解禁" : "冻结"}市场『${row.marketName || row.id}』吗?`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "info",
       })
         .then(async () => {
           let res = null;
-          if (row.userStatus == 'DISABLE') {
+          if (row.marketStatus == "DISABLE") {
             // 解禁
             res = await this.$http.marketThaw({
-              id: row.id
+              id: row.id,
             });
           } else {
             // 冻结
             res = await this.$http.marketFreeze({
-              id: row.id
+              id: row.id,
             });
           }
           if (res) {
@@ -125,11 +124,11 @@ export default {
     this.fetchMarketManagerList();
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 

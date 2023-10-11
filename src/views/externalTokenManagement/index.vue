@@ -393,9 +393,9 @@ export default {
         return;
       }
 
-      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
+      let getUrl = config.api + "nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = config.api + "/nft-external-series/assetContract/eth/";
+        getUrl = config.api + "nft-external-series/assetContract/eth/";
       }
 
       axios
