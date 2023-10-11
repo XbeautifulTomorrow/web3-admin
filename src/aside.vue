@@ -246,7 +246,7 @@
       </el-menu>
     </el-aside>
     <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
-      <el-header style="text-align: left; font-size: 12px">
+      <el-header style="text-align: left; display: flex; justify-content: space-between; align-items: center">
         <div class="header-title">
           <div class="header-title-buttons cursor">
             <span @click="foldFun(false)" v-if="isCollapse">
@@ -259,6 +259,15 @@
           <span class="title">{{ title }}</span>
           <span class="title title-middle colorNine" v-if="page">/</span>
           <span class="title">{{ page }}</span>
+        </div>
+        <div class="headerR">
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link"> 基本操作<i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <el-dropdown-menu slot="dropdown">
+              <!-- <el-dropdown-item command="a">修改密码</el-dropdown-item> -->
+              <el-dropdown-item command="b">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-header>
       <el-main
@@ -621,6 +630,21 @@ export default {
         // this.getSubNavFunc(url);
         console.log(url, "url------------");
         this.$router.push({ name: url });
+      }
+    },
+    exit() {
+      sessionStorage.clear();
+      localStorage.clear();
+      this.$router.push({ name: "login" });
+    },
+    handleCommand(command) {
+      if (command == "a") {
+        // this.dialogVisible = true;
+        // this.ruleForm.oldpass = "";
+        // this.ruleForm.orgpass = "";
+        // this.ruleForm.confirmpass = "";
+      } else if (command == "b") {
+        this.exit();
       }
     },
   },
