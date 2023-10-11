@@ -19,25 +19,25 @@ export const routes = [
       {
         path: "",
         component: UserList,
-        name: "UserList",
+        name: "userList",
       },
       {
         /** 用户列表 */
         path: "/userList",
         component: UserList,
-        name: "UserList",
+        name: "userList",
       },
       {
         /** 平台NFT系列 */
         path: "/platformNftSeries",
         component: () => import("@/views/platformNftSeries/index"),
-        name: "PlatformNftSeries",
+        name: "platformNftSeries",
       },
       {
         /** 外部NFT系列 */
         path: "/externalNftSeries",
         component: () => import("@/views/externalNftSeries/index"),
-        name: "ExternalNftSeries",
+        name: "externalNftSeries",
       },
       {
         /** 外部代币管理 */
@@ -49,61 +49,61 @@ export const routes = [
         /** 外部NFT管理 */
         path: "/externalNftManagement",
         component: () => import("@/views/externalNftManagement/index"),
-        name: "ExternalNftManagement",
+        name: "externalNftManagement",
       },
       {
         /** 平台NFT管理 */
         path: "/platformNftManagement",
         component: () => import("@/views/platformNftManagement/index"),
-        name: "PlatformNftManagement",
+        name: "platformNftManagement",
       },
       {
         /** 平台NFT管理 */
         path: "/userNftList",
         component: () => import("@/views/userNftList/index"),
-        name: "UserNftList",
+        name: "userNftList",
       },
       {
         /** 一元购管理 */
         path: "/nftBuyManagement",
         component: () => import("@/views/nftBuyManagement/index"),
-        name: "NftBuyManagement",
+        name: "nftBuyManagement",
       },
       {
         /** 一元购收票记录 */
         path: "/nftBuyRecord",
         component: () => import("@/views/nftBuyRecord/index"),
-        name: "NftBuyRecord",
+        name: "nftBuyRecord",
       },
       {
         /** 市场管理 */
         path: "/marketManagement",
         component: () => import("@/views/marketManagement/index"),
-        name: "MarketManagement",
+        name: "marketManagement",
       },
       {
         /** 盲盒管理 */
         path: "/blindBoxManagement",
         component: () => import("@/views/blindBoxManagement/index"),
-        name: "BlindBoxManagement",
+        name: "blindBoxManagement",
       },
       {
         /** 血池管理 */
         path: "/bloodPoolManagement",
         component: () => import("@/views/bloodPoolManagement/index"),
-        name: "BloodPoolManagement",
+        name: "bloodPoolManagement",
       },
       {
         /** 血池管理 */
         path: "/blindBoxTest",
         component: () => import("@/views/blindBoxTest/index"),
-        name: "BlindBoxTest",
+        name: "blindBoxTest",
       },
       {
         /** 金流管理 */
         path: "/cashManagement",
         component: () => import("@/views/cashManagement/index"),
-        name: "CashManagement",
+        name: "cashManagement",
       },
       {
         /** 充值管理 */
@@ -115,7 +115,7 @@ export const routes = [
         /** 提现审核 */
         path: "/withdrawalReview",
         component: () => import("@/views/withdrawalReview/index"),
-        name: "WithdrawalReview",
+        name: "withdrawalReview",
       },
       {
         /** 强制审核管理 */
@@ -139,13 +139,13 @@ export const routes = [
         /** 订单管理 */
         path: "/orderManagement",
         component: () => import("@/views/orderManagement/index"),
-        name: "OrderManagement",
+        name: "orderManagement",
       },
       {
         /** 闪兑管理 */
         path: "/flashManagement",
         component: () => import("@/views/flashManagement/index"),
-        name: "FlashManagement",
+        name: "flashManagement",
       },
       {
         /** 邀请返佣 */
@@ -157,24 +157,24 @@ export const routes = [
         /** 返佣记录 */
         path: "/rebateRecord",
         component: () => import("@/views/rebateRecord/index"),
-        name: "RebateRecord",
+        name: "rebateRecord",
       },
       {
         /** 积分流水 */
         path: "/integralTurnover",
         component: () => import("@/views/integralTurnover/index"),
-        name: "IntegralTurnover",
+        name: "integralTurnover",
       },
       {
         /** 系统设置 */
         path: "/setting",
         component: () => import("@/views/setting/index"),
-        name: "Setting",
+        name: "setting",
       },
       {
         path: "/report",
         component: () => import("@/views/report/index"),
-        name: "Report",
+        name: "report",
       },
       {
         /** 群发邮件 */
