@@ -1,22 +1,41 @@
 <template>
   <el-container>
-    <el-aside :width="`${asideWidth}px`" style="background-color: rgb(238, 241, 246)" class="width-animation nav">
+    <el-aside
+      :width="`${asideWidth}px`"
+      style="background-color: rgb(238, 241, 246)"
+      class="width-animation nav"
+    >
       <div class="logoBox" style="background-color: #304156">
         <div class="logo-box"></div>
         <div class="config-box">
-          <el-select v-model="accountType" @change="changeAccount" placeholder="展示测试账号" clearable>
+          <el-select
+            v-model="accountType"
+            @change="changeAccount"
+            placeholder="展示测试账号"
+            clearable
+          >
             <el-option label="展示测试账号" value=""> </el-option>
             <el-option label="不展示测试账号" value="NORMAL"> </el-option>
             <el-option label="只展示测试账号" value="INNER"> </el-option>
           </el-select>
-          <el-select v-model="coinConfig" @change="changeConfig" placeholder="结算币种">
+          <el-select
+            v-model="coinConfig"
+            @change="changeConfig"
+            placeholder="结算币种"
+          >
             <el-option label="ETH" value="ETH"> </el-option>
             <!-- <el-option label="USDT" value="USDT">
             </el-option> -->
           </el-select>
         </div>
       </div>
-      <el-menu :default-openeds="defaultList" :default-active="defaultActive" @select="selectFun" :collapse="isCollapse" class="nav-ul">
+      <el-menu
+        :default-openeds="defaultList"
+        :default-active="defaultActive"
+        @select="selectFun"
+        :collapse="isCollapse"
+        class="nav-ul"
+      >
         <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
@@ -140,6 +159,14 @@
             <i class="el-icon-s-management"></i>
             <span>一元购售票记录</span>
           </el-menu-item>
+          <el-menu-item index="warGameManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>战争游戏管理</span>
+          </el-menu-item>
+          <el-menu-item index="warGameBetManagement" class="menu-list">
+            <i class="el-icon-s-management"></i>
+            <span>战争游戏售票管理</span>
+          </el-menu-item>
         </el-submenu>
         <el-submenu index="fundingStatistics">
           <template slot="title">
@@ -249,7 +276,10 @@
         </el-submenu>
       </el-menu>
     </el-aside>
-    <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
+    <el-container
+      class="width-animation"
+      :style="{ marginLeft: `${asideWidth}px` }"
+    >
       <el-header style="text-align: left; font-size: 12px">
         <div class="header-title">
           <div class="header-title-buttons cursor">
@@ -341,6 +371,14 @@ export default {
         {
           label: "一元购售票记录",
           page: "nftBuyRecord",
+        },
+        {
+          label: "战争游戏管理",
+          page: "warGameManagement",
+        },
+        {
+          label: "战争游戏售票管理",
+          page: "warGameBetManagement",
         },
         {
           label: "banner管理",
@@ -559,7 +597,15 @@ export default {
         "chargeCoinManagement",
       ];
 
-      const mallManagement = ["blindBoxManagement", "orderManagement", "blindBoxTest", "nftBuyManagement", "nftBuyRecord"];
+      const mallManagement = [
+        "blindBoxManagement",
+        "orderManagement",
+        "blindBoxTest",
+        "nftBuyManagement",
+        "nftBuyRecord",
+        "warGameManagement",
+        "warGameBetManagement",
+      ];
 
       const fundingStatistics = [
         "finance",

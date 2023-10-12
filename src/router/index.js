@@ -76,6 +76,18 @@ export const routes = [
         name: "NftBuyRecord",
       },
       {
+        /** 战争游戏管理 */
+        path: "/warGameManagement",
+        component: () => import("@/views/warGameManagement/index"),
+        name: "WarGameManagement",
+      },
+      {
+        /** 战争游戏聚合统计 */
+        path: "/warGameBetManagement",
+        component: () => import("@/views/warGameBetManagement/index"),
+        name: "WarGameBetManagement",
+      },
+      {
         /** 市场管理 */
         path: "/marketManagement",
         component: () => import("@/views/marketManagement/index"),
