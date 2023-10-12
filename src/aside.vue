@@ -473,6 +473,18 @@ export default {
           page: "activityManagement",
         },
         {
+          label: "banner管理",
+          page: "bannerManagement",
+        },
+        {
+          label: "充提链管理",
+          page: "chargeChainManagement",
+        },
+        {
+          label: "充提币管理",
+          page: "chargeCoinManagement",
+        },
+        {
           label: "用户管理",
           page: "accountList",
         },
