@@ -7,23 +7,39 @@
           <!-- <i class="logo"></i> -->
           <span>管理系统</span>
         </p>
-        <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="demo-ruleForm" label-width="0px"
-          style="width: 70%; margin: 0 auto">
+        <el-form
+          :model="ruleForm"
+          status-icon
+          :rules="rules"
+          ref="ruleForm"
+          class="demo-ruleForm"
+          label-width="0px"
+          style="width: 70%; margin: 0 auto"
+        >
           <el-form-item label="" prop="userName" class="inputLogin">
-            <el-input placeholder="请输入您的账号" v-model.trim="ruleForm.userName" autocomplete="off"
-              @keyup.enter.native="handleSubmit">
+            <el-input placeholder="请输入您的账号" v-model.trim="ruleForm.userName" autocomplete="off" @keyup.enter.native="handleSubmit">
             </el-input>
           </el-form-item>
           <el-form-item label="" prop="passWord" class="inputLogin">
-            <el-input type="password" placeholder="请输入账户密码" v-model.trim="ruleForm.passWord" autocomplete="off"
-              @keyup.enter.native="handleSubmit">
+            <el-input
+              type="password"
+              placeholder="请输入账户密码"
+              v-model.trim="ruleForm.passWord"
+              autocomplete="off"
+              @keyup.enter.native="handleSubmit"
+            >
             </el-input>
           </el-form-item>
           <div class="authCodeBox">
             <div class="authCodeInput">
               <el-form-item label="" class="inputLogin" prop="code">
-                <el-input type="text" placeholder="请输入验证码" v-model.trim="ruleForm.code" autocomplete="off"
-                  @keyup.enter.native="handleSubmit">
+                <el-input
+                  type="text"
+                  placeholder="请输入验证码"
+                  v-model.trim="ruleForm.code"
+                  autocomplete="off"
+                  @keyup.enter.native="handleSubmit"
+                >
                 </el-input>
               </el-form-item>
             </div>
@@ -40,21 +56,21 @@
 </template>
 
 <script>
-import config from '@/config/env';
+import config from "@/config/env";
 export default {
   data() {
     return {
-      httpPath: '',
-      codeImg: '',
+      httpPath: "",
+      codeImg: "",
       ruleForm: {
-        userName: '',
-        passWord: '',
-        code: '',
+        userName: "",
+        passWord: "",
+        code: "",
       },
       rules: {
-        userName: [{ required: true, message: '请输入账号', trigger: 'blur' }],
-        passWord: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-        code: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+        userName: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        passWord: [{ required: true, message: "请输入密码", trigger: "blur" }],
+        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
       },
     };
   },
@@ -66,7 +82,7 @@ export default {
   },
   methods: {
     handleSubmit() {
-      this.$refs['ruleForm'].validate(async (valid) => {
+      this.$refs["ruleForm"].validate(async (valid) => {
         if (valid) {
           let res = await this.$http.sysUserLogin({ ...this.ruleForm });
           if (res) {
@@ -78,14 +94,29 @@ export default {
         }
       });
     },
+    // async getUserMenuFunc() {
+    //   this.$router.push({ path: '/' });
+    // },
     async getUserMenuFunc() {
-      this.$router.push({ path: '/' });
+      let res = await this.$http.getMenuList();
+      if (res) {
+        let url = "";
+        if (!res || res.length == 0) {
+          this.$message.error("该账户没有权限，请联系管理员！");
+          return;
+        } else if (res[0].children && res[0].children.length > 0) {
+          url = res[0].children[0].path;
+        } else if (!res[0].children || res[0].children.length == 0) {
+          url = res[0].path;
+        }
+        this.$router.push({ name: url });
+      }
     },
     async refreshCode() {
       const res = await this.$http.sysUserGetCode();
-      
+
       if (res) {
-        sessionStorage.setItem('verify', res.headers.verify);
+        sessionStorage.setItem("verify", res.headers.verify);
         this.codeImg = window.URL.createObjectURL(res.data);
       }
     },
@@ -134,7 +165,7 @@ export default {
         display: inline-block;
         width: 40px;
         height: 20px;
-        background: url('../assets/images/logo.png') no-repeat;
+        background: url("../assets/images/logo.png") no-repeat;
         background-size: 100% 100%;
         position: relative;
         top: 2px;

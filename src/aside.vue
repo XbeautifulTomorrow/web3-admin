@@ -29,14 +29,28 @@
           </el-select>
         </div>
       </div>
-      <el-menu
-        :default-openeds="defaultList"
-        :default-active="defaultActive"
-        @select="selectFun"
-        :collapse="isCollapse"
-        class="nav-ul"
-      >
-        <el-menu-item index="report">
+      <!-- @select="selectFun" -->
+      <el-menu :default-openeds="defaultList" :default-active="defaultActive" :collapse="isCollapse" class="nav-ul">
+        <template v-for="(item, index) in menuList">
+          <el-submenu :index="item.menuName" :key="index" v-if="item.children && item.children.length > 0">
+            <template slot="title">
+              <!-- <i :class="['el-icon-img', menuIcon(index)]"></i> -->
+              <span>{{ item.menuName }}</span>
+            </template>
+            <template v-for="(i, indexs) in item.children">
+              <el-menu-item :index="i.path" v-if="i.path && i.path != 'null'" :key="indexs" @click="goUrl(i.path)">{{
+                i.menuName
+              }}</el-menu-item>
+            </template>
+          </el-submenu>
+          <template v-else>
+            <el-menu-item :index="item.path" :key="index" v-if="item.path" @click="goUrl(item.path)">
+              <!-- <i class="el-icon-menu"></i> -->
+              <span slot="title">{{ item.menuName }}</span>
+            </el-menu-item>
+          </template>
+        </template>
+        <!-- <el-menu-item index="report">
           <i class="el-icon-bank-card"></i>
           <span slot="title">首页</span>
         </el-menu-item>
@@ -75,10 +89,6 @@
             <i class="el-icon-s-management"></i>
             <span>外部NFT管理</span>
           </el-menu-item>
-          <!-- <el-menu-item index="platformNftManagement" class="menu-list">
-            <i class="el-icon-s-management"></i>
-            <span>平台NFT管理</span>
-          </el-menu-item> -->
           <el-menu-item index="userNftList" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>用户NFT管理</span>
@@ -89,10 +99,6 @@
             <i class="el-icon-data-line"></i>
             <span slot="title">平台管理</span>
           </template>
-          <el-menu-item index="bannerManagement" class="menu-list">
-            <i class="el-icon-s-management"></i>
-            <span>banner管理</span>
-          </el-menu-item>
           <el-menu-item index="marketManagement" class="menu-list">
             <i class="el-icon-s-management"></i>
             <span>市场管理</span>
@@ -124,14 +130,6 @@
           <el-menu-item index="activityManagement" class="menu-list">
             <i class="el-icon-stopwatch"></i>
             <span>活动管理</span>
-          </el-menu-item>
-          <el-menu-item index="chargeChainManagement" class="menu-list">
-            <i class="el-icon-stopwatch"></i>
-            <span>充提链管理</span>
-          </el-menu-item>
-          <el-menu-item index="chargeCoinManagement" class="menu-list">
-            <i class="el-icon-stopwatch"></i>
-            <span> 充提币管理</span>
           </el-menu-item>
         </el-submenu>
         <el-submenu index="mallManagement">
@@ -177,14 +175,6 @@
             <i class="el-icon-s-finance"></i>
             <span>金流管理</span>
           </el-menu-item>
-          <el-menu-item index="finance" class="menu-list">
-            <i class="el-icon-s-finance"></i>
-            <span>财务数据</span>
-          </el-menu-item>
-          <el-menu-item index="rechargeRecord" class="menu-list">
-            <i class="el-icon-s-finance"></i>
-            <span>充值管理</span>
-          </el-menu-item>
           <el-menu-item index="nftTransactionManagement" class="menu-list">
             <i class="el-icon-s-finance"></i>
             <span>NFT 交易管理</span>
@@ -206,7 +196,7 @@
             <span>积分流水</span>
           </el-menu-item>
         </el-submenu>
-        <!-- <el-submenu index="systemManagement">
+        <el-submenu index="systemManagement">
           <template slot="title">
             <i class="el-icon-data-line"></i>
             <span slot="title">系统管理</span>
@@ -223,7 +213,7 @@
             <i class="el-icon-stopwatch"></i>
             <span>角色管理</span>
           </el-menu-item>
-        </el-submenu> -->
+        </el-submenu>
         <el-submenu index="walletManagement">
           <template slot="title">
             <i class="el-icon-wallet"></i>
@@ -273,14 +263,11 @@
             <i class="el-icon-bank-card"></i>
             <span>GAS统计</span>
           </el-menu-item>
-        </el-submenu>
+        </el-submenu> -->
       </el-menu>
     </el-aside>
-    <el-container
-      class="width-animation"
-      :style="{ marginLeft: `${asideWidth}px` }"
-    >
-      <el-header style="text-align: left; font-size: 12px">
+    <el-container class="width-animation" :style="{ marginLeft: `${asideWidth}px` }">
+      <el-header style="text-align: left; display: flex; justify-content: space-between; align-items: center">
         <div class="header-title">
           <div class="header-title-buttons cursor">
             <span @click="foldFun(false)" v-if="isCollapse">
@@ -293,6 +280,15 @@
           <span class="title">{{ title }}</span>
           <span class="title title-middle colorNine" v-if="page">/</span>
           <span class="title">{{ page }}</span>
+        </div>
+        <div class="headerR">
+          <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link"> 基本操作<i class="el-icon-arrow-down el-icon--right"></i> </span>
+            <el-dropdown-menu slot="dropdown">
+              <!-- <el-dropdown-item command="a">修改密码</el-dropdown-item> -->
+              <el-dropdown-item command="b">退出</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-header>
       <el-main
@@ -323,6 +319,7 @@ export default {
       asideWidth: 220,
       accountType: "",
       coinConfig: "",
+      menuList: [],
       nav: [
         {
           label: "数据管理",
@@ -517,12 +514,20 @@ export default {
           page: "activityManagement",
         },
         {
+          label: "banner管理",
+          page: "bannerManagement",
+        },
+        {
           label: "充提链管理",
           page: "chargeChainManagement",
         },
         {
           label: "充提币管理",
           page: "chargeCoinManagement",
+        },
+        {
+          label: "用户管理",
+          page: "accountList",
         },
         {
           label: "权限管理",
@@ -592,9 +597,6 @@ export default {
         "mandatoryAudit",
         "activityManagement",
         "activityList",
-        "bannerManagement",
-        "chargeChainManagement",
-        "chargeCoinManagement",
       ];
 
       const mallManagement = [
@@ -610,7 +612,6 @@ export default {
       const fundingStatistics = [
         "finance",
         "cashManagement",
-        "rechargeRecord",
         "nftTransactionManagement",
         "withdrawalReview",
         "flashManagement",
@@ -668,12 +669,54 @@ export default {
         });
       }
     },
+    async getUserMenuFunc() {
+      let res = await this.$http.getMenuList();
+      if (res) {
+        this.menuList = res;
+        this.defaultList = this.menuList.map((x) => x.menuName);
+        console.log(this.defaultActive, "---------------");
+        // this.getSubNavFunc(this.$route.name);
+      }
+    },
+    routeActiveFunc(val) {
+      let pathSplit = val.path.split("/");
+      if (pathSplit.length > 2) {
+        let path = pathSplit[0] + pathSplit[1];
+        this.defaultActive = path;
+      } else {
+        this.defaultActive = val.name;
+      }
+    },
+    goUrl(url) {
+      if (this.$route.name !== url) {
+        // this.getSubNavFunc(url);
+        console.log(url, "url------------");
+        this.$router.push({ name: url });
+      }
+    },
+    exit() {
+      sessionStorage.clear();
+      localStorage.clear();
+      this.$router.push({ name: "login" });
+    },
+    handleCommand(command) {
+      if (command == "a") {
+        // this.dialogVisible = true;
+        // this.ruleForm.oldpass = "";
+        // this.ruleForm.orgpass = "";
+        // this.ruleForm.confirmpass = "";
+      } else if (command == "b") {
+        this.exit();
+      }
+    },
   },
   // 创建后
   created() {
     this.accountType = this.$store.getters.accountConfig;
     this.coinConfig = this.$store.getters.coinConfig;
     this.pageFun();
+    this.routeActiveFunc(this.$route);
+    this.getUserMenuFunc();
   },
   // 挂载后
   mounted() {},
@@ -684,6 +727,9 @@ export default {
   watch: {
     path: function () {
       this.pageFun();
+    },
+    $route(val) {
+      this.routeActiveFunc(val);
     },
   },
 };
