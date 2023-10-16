@@ -13,7 +13,7 @@ const state = {
   introduction: '',
   roles: [],
   accountConfig: '',
-  coinConfig: 'ETH',
+  coinConfig: 'USDT',
 
   // 钱包地址
   account: null,

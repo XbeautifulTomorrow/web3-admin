@@ -85,18 +85,18 @@
       </el-table-column>
       <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2"> </el-table-column>
       <el-table-column prop="email" label="邮箱" align="center" width="200" key="3"> </el-table-column>
-      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(ETH)" align="center" width="120" key="4"> </el-table-column>
-      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(ETH)" align="center" width="120" key="5"> </el-table-column>
-      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(ETH)" align="center" width="120" key="6"> </el-table-column>
-      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(ETH)" align="center" width="120" key="7"> </el-table-column>
-      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(ETH)" align="center" width="120" key="8"> </el-table-column>
+      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(USDT)" align="center" width="120" key="4"> </el-table-column>
+      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(USDT)" align="center" width="120" key="5"> </el-table-column>
+      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(USDT)" align="center" width="120" key="6"> </el-table-column>
+      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(USDT)" align="center" width="120" key="7"> </el-table-column>
+      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(USDT)" align="center" width="120" key="8"> </el-table-column>
       <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
       <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
       <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11"> </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" label="余额(ETH)" align="center" width="110" key="12"> </el-table-column>
-      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(ETH)" align="center" width="140" key="13">
+      <el-table-column prop="assetBalance" sortable="custom" label="余额(USDT)" align="center" width="110" key="12"> </el-table-column>
+      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(USDT)" align="center" width="140" key="13">
       </el-table-column>
-      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(ETH)" align="center" width="140" key="14">
+      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(USDT)" align="center" width="140" key="14">
       </el-table-column>
       <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="16">
@@ -396,7 +396,7 @@ export default {
         return;
       }
       const ids = this.upscoreList.map((x) => x.id);
-      const res = await this.$http.batchUpAndDown({ ids, amount: this.upscoreNum, coin: "ETH" });
+      const res = await this.$http.batchUpAndDown({ ids, amount: this.upscoreNum, coin: "USDT" });
       if (res) {
         this.dialogVisible = false;
         this.fetchUserlist();

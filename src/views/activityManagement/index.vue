@@ -374,7 +374,7 @@ export default {
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
-      coin: "ETH",
+      coin: "USDT",
       ruleForm: {
         name: null, //活动名称
         activityType: null, //活动类型(WELCOME_BONUS-欢迎奖金,OPEN_BOX_WIN_POINTS-开盒赢积分,TREASURES_WIN_POINTS-夺宝赢积分)
