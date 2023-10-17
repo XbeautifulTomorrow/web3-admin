@@ -333,6 +333,19 @@
             <el-table-column prop="totalPoints" label="总积分" align="center" key="10"> </el-table-column>
           </template>
         </el-table>
+        <el-pagination
+          v-if="rewardBaseUserPage && rewardBaseUserPage.total"
+          background
+          @size-change="rewardHandleSizeChange"
+          @current-change="rewardHandleCurrentChange"
+          :current-page="rewardPage"
+          :page-sizes="pagination.pageSizes"
+          :page-size="size"
+          layout=" sizes, prev, pager, next, jumper"
+          :total="rewardBaseUserPage.total"
+          class="public-pagination"
+        >
+        </el-pagination>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="showDetailDialog = false">关闭</el-button>
@@ -400,6 +413,8 @@ export default {
       },
       row: {},
       obscureField: null,
+      rewardPage: 1,
+      rewardBaseUserPage: null,
       rewardRecordList: [],
       rewardRecordStatic: {},
     };
@@ -461,9 +476,18 @@ export default {
       this.row = row;
       this.getAwardsRecords();
     },
-    async getAwardsRecords() {
-      const res = await this.$http.activityManagerDetailPageList({ id: this.row.id, obscureField: this.obscureField });
+    async getAwardsRecords(isSearch = true) {
+      if (isSearch) {
+        this.rewardPage = 1;
+      }
+      const res = await this.$http.activityManagerDetailPageList({
+        id: this.row.id,
+        obscureField: this.obscureField,
+        page: this.rewardPage,
+        size: this.size,
+      });
       if (res) {
+        this.rewardBaseUserPage = res;
         this.rewardRecordList = res.records;
         this.showDetailDialog = true;
         const data = await this.$http.activityManagerDetailHeaderDataTotal({ id: this.row.id, obscureField: this.obscureField });
@@ -604,6 +628,14 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
       this.getTableList(false);
+    },
+    rewardHandleSizeChange(val) {
+      this.size = val;
+      this.getAwardsRecords();
+    },
+    rewardHandleCurrentChange(val) {
+      this.rewardPage = val;
+      this.getAwardsRecords(false);
     },
   },
   // 创建后
