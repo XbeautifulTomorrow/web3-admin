@@ -87,7 +87,7 @@
           </div>
         </div>
         <div class="remittance-item">
-          <div class="title">总Eth金额</div>
+          <div class="title">总USDT金额</div>
           <div class="val">
             {{ aggregateQuery && aggregateQuery.amountTotal }}
           </div>
