@@ -1,27 +1,9 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input
-        class="public-input"
-        style="width: 140px"
-        placeholder="输入流水号"
-        v-model="Id"
-        clearable
-      />
-      <el-input
-        class="public-input"
-        style="width: 140px"
-        placeholder="输入用户ID"
-        v-model="userId"
-        clearable
-      />
-      <el-select
-        v-model="flowType"
-        class="public-select-box"
-        popper-class="public-select-box"
-        placeholder="全部金流状态"
-        clearable
-      >
+      <el-input class="public-input" style="width: 140px" placeholder="输入流水号" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入用户ID" v-model="userId" clearable />
+      <el-select v-model="flowType" class="public-select-box" popper-class="public-select-box" placeholder="全部金流状态" clearable>
         <el-option label="奖励" value="REWARD"> </el-option>
         <el-option label="扣款" value="DEDUCTIONS"> </el-option>
         <el-option label="收入" value="REVENUE"> </el-option>
@@ -33,13 +15,7 @@
         </el-option> -->
         <el-option label="退款" value="REFUND"> </el-option>
       </el-select>
-      <el-select
-        v-model="flowSource"
-        class="public-select-box"
-        popper-class="public-select-box"
-        placeholder="全部来源"
-        clearable
-      >
+      <el-select v-model="flowSource" class="public-select-box" popper-class="public-select-box" placeholder="全部来源" clearable>
         <el-option label="平台" value="PLATFORM"> </el-option>
         <el-option label="钱包" value="WALLET"> </el-option>
         <el-option label="返佣" value="REBATES"> </el-option>
@@ -49,6 +25,7 @@
         <el-option label="一元购" value="ONE_DOLLAR"> </el-option>
         <el-option label="提现" value="WITHDRAWALS"> </el-option>
         <el-option label="活动" value="ACTIVITY"> </el-option>
+        <el-option label="盲盒" value="BOX"> </el-option>
       </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 账变时间 </span>
@@ -61,22 +38,8 @@
         >
         </el-date-picker>
       </div>
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        class="public-search"
-        @click="fetchAssetFlowList()"
-      >
-        查询
-      </el-button>
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        class="public-search"
-        @click="fetchAssetFlowListExport()"
-      >
-        导出
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchAssetFlowList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchAssetFlowListExport()"> 导出 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -94,95 +57,30 @@
         </div>
       </div>
     </div>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      @sort-change="sortChange"
-      class="public-table"
-      border
-    >
-      <el-table-column
-        prop="id"
-        sortable="custom"
-        label="流水号"
-        align="center"
-        key="1"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="userId"
-        sortable="custom"
-        width="120"
-        label="用户ID"
-        align="center"
-        key="3"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="flowType"
-        sortable="custom"
-        label="金流类型"
-        align="center"
-        key="4"
-      >
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="id" sortable="custom" label="流水号" align="center" key="1"> </el-table-column>
+      <el-table-column prop="userId" sortable="custom" width="120" label="用户ID" align="center" key="3"> </el-table-column>
+      <el-table-column prop="flowType" sortable="custom" label="金流类型" align="center" key="4">
         <template slot-scope="scope">
           {{ formatType(scope.row.flowType) }}
         </template>
       </el-table-column>
-      <el-table-column
-        prop="flowSource"
-        sortable="custom"
-        label="金流来源"
-        align="center"
-        key="5"
-      >
+      <el-table-column prop="flowSource" sortable="custom" label="金流来源" align="center" key="5">
         <template slot-scope="scope">
           {{ formatSource(scope.row.flowSource) }}
         </template>
       </el-table-column>
-      <el-table-column prop="flashId" label="闪兑Id" align="center" key="6">
-      </el-table-column>
-      <el-table-column prop="hash" label="Hash" align="center" key="7">
-      </el-table-column>
-      <el-table-column
-        prop="walletAddress"
-        label="钱包地址"
-        align="center"
-        key="8"
-      >
-      </el-table-column>
-      <el-table-column prop="coin" label="金流币种" align="center" key="9">
-      </el-table-column>
-      <el-table-column
-        prop="traPrice"
-        sortable="custom"
-        label="金额"
-        align="center"
-        key="10"
-      >
+      <el-table-column prop="flashId" label="闪兑Id" align="center" key="6"> </el-table-column>
+      <el-table-column prop="hash" label="Hash" align="center" key="7"> </el-table-column>
+      <el-table-column prop="walletAddress" label="钱包地址" align="center" key="8"> </el-table-column>
+      <el-table-column prop="coin" label="金流币种" align="center" key="9"> </el-table-column>
+      <el-table-column prop="traPrice" sortable="custom" label="金额" align="center" key="10">
         <template slot-scope="scope">
-          {{
-            scope.row.traPrice && Number(scope.row.traPrice || 0) > 0
-              ? `+${scope.row.traPrice}`
-              : scope.row.traPrice
-          }}
+          {{ scope.row.traPrice && Number(scope.row.traPrice || 0) > 0 ? `+${scope.row.traPrice}` : scope.row.traPrice }}
         </template>
       </el-table-column>
-      <el-table-column
-        prop="assetBalance"
-        sortable="custom"
-        label="余额"
-        align="center"
-        key="12"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        sortable="custom"
-        label="账变时间"
-        align="center"
-        key="13"
-      >
+      <el-table-column prop="assetBalance" sortable="custom" label="余额" align="center" key="12"> </el-table-column>
+      <el-table-column prop="createTime" sortable="custom" label="账变时间" align="center" key="13">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
@@ -370,6 +268,8 @@ export default {
         return "一元购";
       } else if (event == "ACTIVITY") {
         return "活动";
+      } else if (event == "BOX") {
+        return "盲盒";
       }
     },
     handleSizeChange(val) {
