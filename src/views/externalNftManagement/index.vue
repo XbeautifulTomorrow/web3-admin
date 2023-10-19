@@ -101,7 +101,12 @@
       <el-table-column prop="nftSource" label="来源" align="center" key="7"> </el-table-column>
       <el-table-column prop="userName" label="所属用户" align="center" key="8"> </el-table-column>
       <el-table-column prop="chainName" label="所在链" align="center" key="9"> </el-table-column>
-      <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${coin})`" align="center" key="10"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${'ETH'})`" align="center" key="10"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" :label="`当前价(${coin})`" align="center" key="16" width="100px">
+        <template slot-scope="scope">
+          {{ (scope.row.usdtLastPrice*scope.row.price).toFixed(4) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="11"> </el-table-column>
       <el-table-column prop="openNumber" sortable="custom" label="被开次数" align="center" key="12"> </el-table-column>
       <el-table-column prop="outNumber" sortable="custom" label="提走次数" align="center" key="13"> </el-table-column>

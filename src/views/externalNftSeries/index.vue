@@ -44,7 +44,12 @@
       <el-table-column prop="chainName" label="所在链" align="center" key="7"> </el-table-column>
       <el-table-column prop="issuanceNumber" sortable="custom" label="发行数量" align="center" key="8"> </el-table-column>
       <el-table-column prop="inBoxNumber" sortable="custom" width="120" label="可入盒数量" align="center" key="9"> </el-table-column>
-      <el-table-column prop="floorPrice" sortable="custom" width="120" :label="`地板价(${coin})`" align="center" key="10">
+      <el-table-column prop="floorPrice" sortable="custom" width="120" :label="`地板价(${'ETH'})`" align="center" key="10">
+      </el-table-column>
+      <el-table-column prop="price" sortable="custom" :label="`地板价(${coin})`" align="center" key="16" width="100px">
+        <template slot-scope="scope">
+          {{ (scope.row.usdtLastPrice*scope.row.floorPrice).toFixed(4) }}
+        </template>
       </el-table-column>
       <el-table-column prop="releaseTime" sortable="custom" width="140" label="发行时间" align="center" key="11">
         <template slot-scope="scope">

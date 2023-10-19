@@ -674,8 +674,6 @@ export default {
       if (res) {
         this.menuList = res;
         this.defaultList = this.menuList.map((x) => x.menuName);
-        console.log(this.defaultActive, "---------------");
-        // this.getSubNavFunc(this.$route.name);
       }
     },
     routeActiveFunc(val) {
@@ -689,8 +687,6 @@ export default {
     },
     goUrl(url) {
       if (this.$route.name !== url) {
-        // this.getSubNavFunc(url);
-        console.log(url, "url------------");
         this.$router.push({ name: url });
       }
     },

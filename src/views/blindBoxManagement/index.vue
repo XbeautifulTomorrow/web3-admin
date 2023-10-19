@@ -545,12 +545,12 @@
           </el-form-item>
           <el-form-item :label="seriesForm.type == 'NFT' ? '地板价' : '价值'" v-if="seriesType == 1" prop="adjust">
             <el-input style="width: 300px" type="number" readonly v-model="seriesForm.floorPrice">
-              <template slot="append">{{ coin }}</template>
+              <template slot="append">{{ priceCoin }}</template>
             </el-input>
           </el-form-item>
           <el-form-item label="单价" v-if="seriesType == 2" prop="adjust">
             <el-input style="width: 300px" type="number" readonly v-model="seriesForm.price">
-              <template slot="append">{{ coin }}</template>
+              <template slot="append">{{ priceCoin }}</template>
             </el-input>
           </el-form-item>
         </el-form>
@@ -662,6 +662,7 @@ export default {
         { label: "NFT", value: "NFT" },
         { label: "ETH", value: "ETH" },
       ],
+      priceCoin:'ETH'
     };
   },
   mixins: [pagination],
@@ -979,7 +980,6 @@ export default {
           }
         });
       }
-      console.log(this.externalList, "externalLists--------------");
       this.$forceUpdate();
       this.showDialog = true;
       setTimeout(() => {

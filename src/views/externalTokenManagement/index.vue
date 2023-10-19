@@ -37,6 +37,11 @@
       <el-table-column prop="chainName" label="所在链" align="center" key="5"> </el-table-column>
       <el-table-column prop="price" sortable="custom" label="数量" align="center" key="6"> </el-table-column>
       <el-table-column prop="price" sortable="custom" label="ETH价值" align="center" key="7"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" :label="`${coin}价值`" align="center" key="16">
+        <template slot-scope="scope">
+          {{ (scope.row.usdtLastPrice*scope.row.price).toFixed(4) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="8"> </el-table-column>
       <el-table-column prop="openNumber" sortable="custom" width="120" label="被开次数" align="center" key="9"> </el-table-column>
       <el-table-column prop="reclaimRate" sortable="custom" width="120" label="回收比例" align="center" key="10">
