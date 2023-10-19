@@ -14,6 +14,7 @@
         <!-- <el-option label="挂单" value="PENDING_ORDERS">
         </el-option> -->
         <el-option label="退款" value="REFUND"> </el-option>
+        <el-option label="补偿" value="COMPENSATE"> </el-option>
       </el-select>
       <el-select v-model="flowSource" class="public-select-box" popper-class="public-select-box" placeholder="全部来源" clearable>
         <el-option label="平台" value="PLATFORM"> </el-option>
@@ -245,6 +246,8 @@ export default {
         return "挂单";
       } else if (event == "REFUND") {
         return "退款";
+      } else if (event == "COMPENSATE") {
+        return "补偿";
       }
     },
     // 格式化流水来源
