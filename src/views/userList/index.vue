@@ -93,7 +93,14 @@
       <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
       <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
       <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11"> </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" label="余额(USDT)" align="center" width="110" key="12"> </el-table-column>
+      <el-table-column prop="assetBalanceU" sortable="custom" label="余额(USDT)" align="center" width="110" key="12"> </el-table-column>
+      <el-table-column prop="estimateBanlanceTotal" label="资产预估" align="center" width="110" key="21">
+        <template slot-scope="scope">
+          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row)">
+            {{ scope.row.estimateBanlanceTotal }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(USDT)" align="center" width="140" key="13">
       </el-table-column>
       <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(USDT)" align="center" width="140" key="14">
@@ -205,6 +212,16 @@
         <el-button type="primary" @click="batchUpAndDownSave">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog v-if="assetBalanceDialog" title="资产详情" :visible.sync="assetBalanceDialog" width="500px" :close-on-click-modal="false">
+      <el-table :data="assetBalanceList" style="width: 100%" border>
+        <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
+        <el-table-column prop="assetBalance" label="数量" align="center" key="10"> </el-table-column>
+        <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="10"> </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="assetBalanceDialog = false">关闭</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -252,6 +269,8 @@ export default {
       dialogVisible: false,
       upscoreList: [],
       upscoreNum: "",
+      assetBalanceDialog: false,
+      assetBalanceList: [],
     };
   },
   mixins: [pagination],
@@ -360,9 +379,9 @@ export default {
         ...search,
       };
 
-      if(search.lastLoginStartTime == null){
-        alert("最后登录时间起始时间必填")
-        return
+      if (search.lastLoginStartTime == null) {
+        alert("最后登录时间起始时间必填");
+        return;
       }
 
       exportExcel(urlStr, data, "每日国家统计数据导出");
@@ -402,6 +421,10 @@ export default {
         this.fetchUserlist();
         this.$message.success("操作成功！");
       }
+    },
+    assetBalanceDialogFunc(row) {
+      this.assetBalanceList = row.assetBOS;
+      this.assetBalanceDialog = true;
     },
     // 封停/解禁
     operatingAccount(row) {
