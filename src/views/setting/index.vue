@@ -74,16 +74,10 @@
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitPoints()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitPoints()">确认修改</el-button>
     </div>
     <div class="withdrawal-settings">
-      <div class="setting-item">
+      <!-- <div class="setting-item">
         <div class="setting-title">代币提现手续费</div>
         <div class="setting-val">
           <el-input
@@ -97,7 +91,7 @@
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
-      </div>
+      </div> -->
       <div class="setting-item">
         <div class="setting-title">NFT提现手续费</div>
         <div class="setting-val">
@@ -109,7 +103,7 @@
             v-model="withdrawals.nftWithdrawalFees"
             clearable
           >
-            <template slot="append">{{ coin }}</template>
+            <template slot="append">{{ "ETH" }}</template>
           </el-input>
         </div>
       </div>
@@ -146,12 +140,7 @@
       <div class="setting-item">
         <div class="setting-title">
           <span>累计审核阈值</span>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="用户提款的限制，即无、每天、每周还是每月共能提多少"
-            placement="top-start"
-          >
+          <el-tooltip class="item" effect="dark" content="用户提款的限制，即无、每天、每周还是每月共能提多少" placement="top-start">
             <i class="el-icon-warning-outline"></i>
           </el-tooltip>
         </div>
@@ -166,12 +155,7 @@
           >
             <template slot="append">{{ coin }}</template>
           </el-input>
-          <el-select
-            style="width: 200px"
-            v-model="withdrawals.withdrawalDayLimits"
-            class="public-select-box"
-            placeholder="选择时段"
-          >
+          <el-select style="width: 200px" v-model="withdrawals.withdrawalDayLimits" class="public-select-box" placeholder="选择时段">
             <el-option label="每日" :value="1" />
             <el-option label="每周" :value="7" />
             <el-option label="每月" :value="30" />
@@ -209,61 +193,29 @@
         </div>
       </div>
 
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitWithdrawal()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitWithdrawal()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
       <div class="setting-item">
         <div class="setting-title">外部NFT回收比例</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入回收比例"
-            v-model="nftReclaimRate"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入回收比例" v-model="nftReclaimRate" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitRecycle()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitRecycle()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
       <div class="setting-item">
         <div class="setting-title">一元购服务费</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入服务费"
-            v-model="serviceFee"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入服务费" v-model="serviceFee" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitServiceFee()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitServiceFee()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
       <div class="setting-item">
@@ -281,37 +233,18 @@
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitTicketExceeding()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketExceeding()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
       <div class="setting-item">
         <div class="setting-title">一元购NFT天数上限</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入NFT天数上限"
-            v-model="ticketNftDays"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入NFT天数上限" v-model="ticketNftDays" clearable>
             <template slot="append">天</template>
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitTicketNftDays()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketNftDays()">确认修改</el-button>
     </div>
     <div class="recycling-settings">
       <div class="setting-item">
@@ -329,13 +262,7 @@
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitTicketCoinDays()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitTicketCoinDays()">确认修改</el-button>
     </div>
     <div class="withdrawal-settings">
       <div class="setting-item">
@@ -357,14 +284,7 @@
       <div class="setting-item">
         <div class="setting-title">手续费</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            placeholder="输入手续费"
-            v-model="battle.fee"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入手续费" v-model="battle.fee" clearable>
             <template slot="append">%</template>
           </el-input>
         </div>
@@ -445,86 +365,33 @@
         </div>
       </div>
 
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitWarGameSetting()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitWarGameSetting()">确认修改</el-button>
     </div>
 
     <div class="wallet-settings">
       <div class="operating-box">
         <span>归集钱包设置</span>
-        <el-button
-          type="primary"
-          style="width: 160px"
-          @click="showDialog = true"
-          >新增钱包</el-button
-        >
+        <el-button type="primary" style="width: 160px" @click="showDialog = true">新增钱包</el-button>
       </div>
-      <el-table
-        :data="tableData"
-        style="width: 760px; min-width: 0"
-        class="public-table"
-        border
-      >
-        <el-table-column
-          prop="walletAddress"
-          width="320"
-          label="钱包地址"
-          align="center"
-          key="1"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="flowId"
-          width="200"
-          label="余额"
-          align="center"
-          key="2"
-        >
+      <el-table :data="tableData" style="width: 760px; min-width: 0" class="public-table" border>
+        <el-table-column prop="walletAddress" width="320" label="钱包地址" align="center" key="1"> </el-table-column>
+        <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
           <template slot-scope="scope">
-            <div
-              v-for="(item, index) in scope.row.innetWalletList"
-              :key="index"
-            >
+            <div v-for="(item, index) in scope.row.innetWalletList" :key="index">
               {{ `${item.coin}:${item.assetBalance}` }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="walletStatus"
-          width="100"
-          label="激活状态"
-          align="center"
-          key="3"
-        >
+        <el-table-column prop="walletStatus" width="100" label="激活状态" align="center" key="3">
           <template slot-scope="scope">
-            <span
-              style="color: #04b000"
-              v-if="scope.row.walletStatus == 'NORMAL'"
-            >
-              已激活
-            </span>
+            <span style="color: #04b000" v-if="scope.row.walletStatus == 'NORMAL'"> 已激活 </span>
             <span style="color: red" v-else> 未激活 </span>
           </template>
         </el-table-column>
         <el-table-column label="操作" align="center" key="4" fixed="right">
           <template slot-scope="scope">
-            <span
-              class="blueColor publick-button cursor"
-              @click="walletActive(scope.row)"
-            >
-              激活
-            </span>
-            <span
-              class="blueColor publick-button cursor"
-              @click="walletDel(scope.row)"
-            >
-              删除
-            </span>
+            <span class="blueColor publick-button cursor" @click="walletActive(scope.row)"> 激活 </span>
+            <span class="blueColor publick-button cursor" @click="walletDel(scope.row)"> 删除 </span>
           </template>
         </el-table-column>
       </el-table>
@@ -543,22 +410,12 @@
       </el-pagination>
     </div>
     <div class="invite-settings">
-      <div
-        class="setting-item"
-        v-for="(item, index) in inviteList"
-        :key="index"
-      >
+      <div class="setting-item" v-for="(item, index) in inviteList" :key="index">
         <div class="setting-title">
           <span v-if="index == 0">邀请文本</span>
         </div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            style="width: 100%"
-            placeholder="输入邀请文本（单行）"
-            v-model="item.text"
-            clearable
-          >
+          <el-input class="public-input" style="width: 100%" placeholder="输入邀请文本（单行）" v-model="item.text" clearable>
             <template slot="append">
               <el-button v-if="index == 0" @click="inviteAdd()">
                 <i class="el-icon-plus"></i>
@@ -570,13 +427,7 @@
           </el-input>
         </div>
       </div>
-      <el-button
-        type="primary"
-        style="width: 160px"
-        size="medium"
-        @click="submitInvite()"
-        >确认修改</el-button
-      >
+      <el-button type="primary" style="width: 160px" size="medium" @click="submitInvite()">确认修改</el-button>
     </div>
     <el-dialog
       v-if="showDialog"
@@ -588,11 +439,7 @@
     >
       <el-form ref="ruleForm" class="add-form" label-width="80px">
         <el-form-item label="钱包地址" prop="reclaimRate">
-          <el-input
-            v-model="walletAddr"
-            style="width: 300px"
-            placeholder="请输入钱包地址"
-          ></el-input>
+          <el-input v-model="walletAddr" style="width: 300px" placeholder="请输入钱包地址"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -725,18 +572,10 @@ export default {
       if (res) {
         this.points = {
           ...res,
-          downCommissionRate: new bigNumber(res.downCommissionRate)
-            .multipliedBy(100)
-            .toFixed(2), //下级佣金比例
-          downPointRate: new bigNumber(res.downPointRate)
-            .multipliedBy(100)
-            .toFixed(2), //下级积分比例
-          consumePointRate: new bigNumber(res.consumePointRate)
-            .multipliedBy(100)
-            .toFixed(2), //消费积分
-          flowCommissionRate: new bigNumber(res.flowCommissionRate)
-            .multipliedBy(100)
-            .toFixed(2), //流水佣金比例
+          downCommissionRate: new bigNumber(res.downCommissionRate).multipliedBy(100).toFixed(2), //下级佣金比例
+          downPointRate: new bigNumber(res.downPointRate).multipliedBy(100).toFixed(2), //下级积分比例
+          consumePointRate: new bigNumber(res.consumePointRate).multipliedBy(100).toFixed(2), //消费积分
+          flowCommissionRate: new bigNumber(res.flowCommissionRate).multipliedBy(100).toFixed(2), //流水佣金比例
         };
 
         this.$forceUpdate();
@@ -744,41 +583,19 @@ export default {
     },
     // 积分配置更新
     async submitPoints() {
-      const {
-        downCommissionRate,
-        downPointRate,
-        consumePointRate,
-        flowCommissionRate,
-      } = this.points;
+      const { downCommissionRate, downPointRate, consumePointRate, flowCommissionRate } = this.points;
 
-      if (
-        !downCommissionRate ||
-        !downPointRate ||
-        !consumePointRate ||
-        !flowCommissionRate
-      ) {
+      if (!downCommissionRate || !downPointRate || !consumePointRate || !flowCommissionRate) {
         this.$message.error("积分配置相关参数不完整，请补充完整后重试");
         return;
       }
 
       const res = await this.$http.pointConfigSet({
         ...this.points,
-        downCommissionRate: accurateDecimal(
-          new bigNumber(downCommissionRate).dividedBy(100),
-          4
-        ), //下级佣金比例
-        downPointRate: accurateDecimal(
-          new bigNumber(downPointRate).dividedBy(100),
-          4
-        ), //下级积分比例
-        consumePointRate: accurateDecimal(
-          new bigNumber(consumePointRate).dividedBy(100),
-          4
-        ), //消费积分
-        flowCommissionRate: accurateDecimal(
-          new bigNumber(flowCommissionRate).dividedBy(100),
-          4
-        ), //流水佣金比例
+        downCommissionRate: accurateDecimal(new bigNumber(downCommissionRate).dividedBy(100), 4), //下级佣金比例
+        downPointRate: accurateDecimal(new bigNumber(downPointRate).dividedBy(100), 4), //下级积分比例
+        consumePointRate: accurateDecimal(new bigNumber(consumePointRate).dividedBy(100), 4), //消费积分
+        flowCommissionRate: accurateDecimal(new bigNumber(flowCommissionRate).dividedBy(100), 4), //流水佣金比例
       });
 
       if (res) {
@@ -794,14 +611,8 @@ export default {
           ...res,
         };
 
-        this.withdrawals.upRate = accurateDecimal(
-          new bigNumber(res.upRate).multipliedBy(100),
-          2
-        );
-        this.withdrawals.downRate = accurateDecimal(
-          new bigNumber(res.downRate).multipliedBy(100),
-          2
-        );
+        this.withdrawals.upRate = accurateDecimal(new bigNumber(res.upRate).multipliedBy(100), 2);
+        this.withdrawals.downRate = accurateDecimal(new bigNumber(res.downRate).multipliedBy(100), 2);
 
         this.$forceUpdate();
       }
@@ -849,10 +660,7 @@ export default {
     async fetchRecycleConfig() {
       const res = await this.$http.getRecycleConfig({ coin: this.coin });
       if (res) {
-        this.nftReclaimRate = accurateDecimal(
-          new bigNumber(res.nftReclaimRate).multipliedBy(100),
-          2
-        );
+        this.nftReclaimRate = accurateDecimal(new bigNumber(res.nftReclaimRate).multipliedBy(100), 2);
         this.$forceUpdate();
       }
     },
@@ -866,10 +674,7 @@ export default {
       }
 
       const res = await this.$http.recycleConfigSet({
-        nftReclaimRate: accurateDecimal(
-          new bigNumber(nftReclaimRate).dividedBy(100),
-          4
-        ),
+        nftReclaimRate: accurateDecimal(new bigNumber(nftReclaimRate).dividedBy(100), 4),
       });
 
       if (res) {
@@ -881,10 +686,7 @@ export default {
     async fetchServiceCharge() {
       const res = await this.$http.getServiceCharge({ coin: this.coin });
       if (res) {
-        this.serviceFee = accurateDecimal(
-          new bigNumber(res || 0).multipliedBy(100) || 0,
-          2
-        );
+        this.serviceFee = accurateDecimal(new bigNumber(res || 0).multipliedBy(100) || 0, 2);
         this.$forceUpdate();
       }
     },
@@ -898,10 +700,7 @@ export default {
       }
 
       const res = await this.$http.updateServiceCharge({
-        servicePrice: accurateDecimal(
-          new bigNumber(serviceFee).dividedBy(100),
-          4
-        ),
+        servicePrice: accurateDecimal(new bigNumber(serviceFee).dividedBy(100), 4),
       });
 
       if (res) {
@@ -913,10 +712,7 @@ export default {
     async fetchTicketExceeding() {
       const res = await this.$http.getTicketExceeding({ coin: this.coin });
       if (res) {
-        this.ticketExceeding = accurateDecimal(
-          new bigNumber(res || 0).multipliedBy(100) || 0,
-          2
-        );
+        this.ticketExceeding = accurateDecimal(new bigNumber(res || 0).multipliedBy(100) || 0, 2);
         this.$forceUpdate();
       }
     },
@@ -930,10 +726,7 @@ export default {
       }
 
       const res = await this.$http.updateTicketExceeding({
-        servicePrice: accurateDecimal(
-          new bigNumber(ticketExceeding).dividedBy(100),
-          4
-        ),
+        servicePrice: accurateDecimal(new bigNumber(ticketExceeding).dividedBy(100), 4),
       });
 
       if (res) {
@@ -1001,10 +794,7 @@ export default {
         this.battle = {
           ...res,
           fee: accurateDecimal(new bigNumber(res.fee).multipliedBy(100), 2),
-          awardInvestmentRatio: accurateDecimal(
-            new bigNumber(res.awardInvestmentRatio).multipliedBy(100),
-            2
-          ),
+          awardInvestmentRatio: accurateDecimal(new bigNumber(res.awardInvestmentRatio).multipliedBy(100), 2),
         };
 
         this.$forceUpdate();
@@ -1012,23 +802,9 @@ export default {
     },
     // 战争配置更新
     async submitWarGameSetting() {
-      const {
-        fee,
-        singleTime,
-        fastLimitNumber,
-        ticketPurchaseDelay,
-        awardInvestmentRatio,
-        awardTriggerAmount,
-      } = this.battle;
+      const { fee, singleTime, fastLimitNumber, ticketPurchaseDelay, awardInvestmentRatio, awardTriggerAmount } = this.battle;
 
-      if (
-        !fee ||
-        !singleTime ||
-        !fastLimitNumber ||
-        !ticketPurchaseDelay ||
-        !awardInvestmentRatio ||
-        !awardTriggerAmount
-      ) {
+      if (!fee || !singleTime || !fastLimitNumber || !ticketPurchaseDelay || !awardInvestmentRatio || !awardTriggerAmount) {
         this.$message.error("战争配置相关参数不完整，请补充完整后重试");
         return;
       }
@@ -1036,10 +812,7 @@ export default {
       const res = await this.$http.setWarGameSetting({
         ...this.battle,
         fee: accurateDecimal(new bigNumber(fee).dividedBy(100), 4),
-        awardInvestmentRatio: accurateDecimal(
-          new bigNumber(awardInvestmentRatio).dividedBy(100),
-          4
-        ),
+        awardInvestmentRatio: accurateDecimal(new bigNumber(awardInvestmentRatio).dividedBy(100), 4),
       });
 
       if (res) {
