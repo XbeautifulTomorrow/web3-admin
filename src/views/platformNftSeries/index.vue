@@ -154,7 +154,7 @@
             style="width: 300px"
             placeholder="请输入价值"
           >
-            <template slot="append">{{ coin }}</template>
+            <template slot="append">{{ ruleForm.coin }}</template>
           </el-input>
         </el-form-item>
         <el-form-item label="回收比例" prop="reclaimRate">
