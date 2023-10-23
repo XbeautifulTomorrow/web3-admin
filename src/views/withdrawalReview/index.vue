@@ -135,7 +135,7 @@
       <el-table-column prop="hash" label="HASH" width="300" align="center" key="10"> </el-table-column>
       <el-table-column prop="gas" sortable="custom" label="GAS" align="center" key="11"> </el-table-column>
       <el-table-column prop="withdrawalWalletAddress" width="300" label="提款钱包" align="center" key="12"> </el-table-column>
-      <el-table-column prop="withdrawalType" sortable="custom" label="提款类型" align="center" key="13"> </el-table-column>
+      <!-- <el-table-column prop="withdrawalType" sortable="custom" label="提款类型" align="center" key="13"> </el-table-column> -->
       <el-table-column prop="createTime" sortable="custom" width="140" label="发起时间" align="center" key="14">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
@@ -486,7 +486,7 @@ export default {
       }
       const data = {
         ...{
-          coin: coin,
+          // coin: coin,
           userType: userType,
           size: size,
           page: _page,
@@ -514,7 +514,7 @@ export default {
       const { coin, userType } = this;
       const data = {
         ...{
-          coin: coin,
+          // coin: coin,
           userType: userType,
         },
         ...search,
