@@ -33,7 +33,7 @@
       <el-table-column prop="price" sortable="custom" :label="`价值(${'ETH'})`" align="center" key="7"> </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="8" width="100px">
         <template slot-scope="scope">
-          {{ (scope.row.usdtLastPrice*scope.row.price).toFixed(4) }}
+          {{ (scope.row.usdtLastPrice * scope.row.price).toFixed(4) }}
         </template>
       </el-table-column>
       <el-table-column prop="contractAddress" label="合约" align="center" key="9"> </el-table-column>
@@ -154,7 +154,7 @@
             style="width: 300px"
             placeholder="请输入价值"
           >
-            <template slot="append">{{ ruleForm.seriesType=='COIN'?'ETH':'USDT' }}</template>
+            <template slot="append">{{ ruleForm.seriesType == "COIN" ? "ETH" : "USDT" }}</template>
           </el-input>
         </el-form-item>
         <el-form-item label="回收比例" prop="reclaimRate">
@@ -210,7 +210,7 @@ export default {
       aggregateQuery: {},
       baseUserPage: null,
       uploadUrl: "",
-      fileImg: [{url:'https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp'}],
+      fileImg: [{ url: "https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp" }],
       limitCount: 1,
       hideUpload: false,
       uploadHeader: {
@@ -226,7 +226,7 @@ export default {
         price: null, // 价格
         seriesName: null, // 系列名称
         seriesType: null, // 系列类型(COIN-币，PIC-图)
-        seriesImg: 'https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp', // 系列图片
+        seriesImg: "https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp", // 系列图片
         reclaimRate: null, // 回收比例
       },
       rules: {
@@ -428,9 +428,9 @@ export default {
         return;
       }
 
-      let getUrl = config.api + "nft-external-series/assetContract/goerli/";
+      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = config.api + "nft-external-series/assetContract/eth/";
+        getUrl = config.api + "/nft-external-series/assetContract/eth/";
       }
 
       axios
@@ -471,7 +471,7 @@ export default {
           ruleForm.reclaimRate = new bigNumber(ruleForm.reclaimRate).dividedBy(100);
           let res = null;
           if (!ruleForm.id) {
-            ruleForm.seriesType=='COIN'?ruleForm.coin='ETH':ruleForm.coin='USDT'
+            ruleForm.seriesType == "COIN" ? (ruleForm.coin = "ETH") : (ruleForm.coin = "USDT");
             res = await this.$http.nftPlatformAdd({ ...ruleForm });
           } else {
             res = await this.$http.nftPlatformUpdate({ ...ruleForm });

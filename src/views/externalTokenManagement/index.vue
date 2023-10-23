@@ -39,7 +39,7 @@
       <el-table-column prop="price" sortable="custom" label="ETH价值" align="center" key="7"> </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`${coin}价值`" align="center" key="16">
         <template slot-scope="scope">
-          {{ (scope.row.usdtLastPrice*scope.row.price).toFixed(4) }}
+          {{ (scope.row.usdtLastPrice * scope.row.price).toFixed(4) }}
         </template>
       </el-table-column>
       <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="8"> </el-table-column>
@@ -398,9 +398,9 @@ export default {
         return;
       }
 
-      let getUrl = config.api + "nft-external-series/assetContract/goerli/";
+      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = config.api + "nft-external-series/assetContract/eth/";
+        getUrl = config.api + "/nft-external-series/assetContract/eth/";
       }
 
       axios

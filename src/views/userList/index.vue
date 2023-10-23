@@ -101,9 +101,12 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="withdrawalFees" sortable="custom" label="提款手续费(USDT)" align="center" width="140" key="13">
-      </el-table-column>
-      <el-table-column prop="withdrawalArrived" sortable="custom" label="提款到账(USDT)" align="center" width="140" key="14">
+      <el-table-column prop="estimateBanlanceTotal" sortable="custom" label="提款到账(合并)" align="center" width="110" key="14">
+        <template slot-scope="scope">
+          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row,'withdraw')">
+            {{ scope.row.estimateBanlanceTotal }}
+          </span>
+        </template>
       </el-table-column>
       <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="16">
@@ -214,9 +217,16 @@
     </el-dialog>
     <el-dialog v-if="assetBalanceDialog" title="资产详情" :visible.sync="assetBalanceDialog" width="500px" :close-on-click-modal="false">
       <el-table :data="assetBalanceList" style="width: 100%" border>
-        <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
-        <el-table-column prop="assetBalance" label="数量" align="center" key="10"> </el-table-column>
-        <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="10"> </el-table-column>
+        <template v-if="assetDialogType=='withdraw'">
+          <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
+          <el-table-column prop="assetBalance" label="金额" align="center" key="10"> </el-table-column>
+          <el-table-column prop="conversionUsdtBalance" label="手续费" align="center" key="10"> </el-table-column>
+        </template>
+        <template v-else>
+          <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
+          <el-table-column prop="assetBalance" label="数量" align="center" key="10"> </el-table-column>
+          <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="10"> </el-table-column>
+        </template>
       </el-table>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="assetBalanceDialog = false">关闭</el-button>
@@ -269,6 +279,7 @@ export default {
       dialogVisible: false,
       upscoreList: [],
       upscoreNum: "",
+      assetDialogType:"",
       assetBalanceDialog: false,
       assetBalanceList: [],
     };
@@ -422,8 +433,13 @@ export default {
         this.$message.success("操作成功！");
       }
     },
-    assetBalanceDialogFunc(row) {
-      this.assetBalanceList = row.assetBOS;
+    assetBalanceDialogFunc(row,type) {
+      if(type=='withdraw'){
+        this.assetDialogType=type
+        this.assetBalanceList = row.assetBOS;
+      }else {
+        this.assetBalanceList = row.assetBOS;
+      }
       this.assetBalanceDialog = true;
     },
     // 封停/解禁

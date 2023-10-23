@@ -48,7 +48,7 @@
       </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`地板价(${coin})`" align="center" key="16" width="100px">
         <template slot-scope="scope">
-          {{ (scope.row.usdtLastPrice*scope.row.floorPrice).toFixed(4) }}
+          {{ (scope.row.usdtLastPrice * scope.row.floorPrice).toFixed(4) }}
         </template>
       </el-table-column>
       <el-table-column prop="releaseTime" sortable="custom" width="140" label="发行时间" align="center" key="11">
@@ -487,9 +487,9 @@ export default {
         return;
       }
 
-      let getUrl = config.api + "nft-external-series/assetContract/goerli/";
+      let getUrl = config.api + "/nft-external-series/assetContract/goerli/";
       if (chainId == 1) {
-        getUrl = config.api + "nft-external-series/assetContract/eth/";
+        getUrl = config.api + "/nft-external-series/assetContract/eth/";
       }
 
       axios
