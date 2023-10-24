@@ -30,10 +30,14 @@
       <el-table-column prop="seriesName" label="系列名称" align="center" key="4"> </el-table-column>
       <el-table-column prop="chainType" label="所在链" align="center" key="5"> </el-table-column>
       <el-table-column prop="tokenId" label="tokenId" align="center" key="6"> </el-table-column>
-      <el-table-column prop="price" sortable="custom" :label="`价值(${'ETH'})`" align="center" key="7"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" :label="`价值(${'ETH'})`" align="center" key="7">
+        <template slot-scope="scope">
+          {{ scope.row.seriesType == "COIN" ? scope.row.price :'--' }}
+        </template>
+      </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="8" width="100px">
         <template slot-scope="scope">
-          {{ (scope.row.usdtLastPrice * scope.row.price).toFixed(4) }}
+          {{ scope.row.seriesType == "COIN" ? (scope.row.usdtLastPrice * scope.row.price).toFixed(4): scope.row.price}}
         </template>
       </el-table-column>
       <el-table-column prop="contractAddress" label="合约" align="center" key="9"> </el-table-column>

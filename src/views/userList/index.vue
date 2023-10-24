@@ -101,10 +101,10 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="estimateBanlanceTotal" sortable="custom" label="提款到账(合并)" align="center" width="110" key="14">
+      <el-table-column prop="estimateDrawBanlanceTotal" sortable="custom" label="提款到账" align="center" width="110" key="14">
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row,'withdraw')">
-            {{ scope.row.estimateBanlanceTotal }}
+          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row, 'withdraw')">
+            {{ scope.row.estimateDrawBanlanceTotal }}
           </span>
         </template>
       </el-table-column>
@@ -217,10 +217,10 @@
     </el-dialog>
     <el-dialog v-if="assetBalanceDialog" title="资产详情" :visible.sync="assetBalanceDialog" width="500px" :close-on-click-modal="false">
       <el-table :data="assetBalanceList" style="width: 100%" border>
-        <template v-if="assetDialogType=='withdraw'">
-          <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
-          <el-table-column prop="assetBalance" label="金额" align="center" key="10"> </el-table-column>
-          <el-table-column prop="conversionUsdtBalance" label="手续费" align="center" key="10"> </el-table-column>
+        <template v-if="assetDialogType == 'withdraw'">
+          <el-table-column prop="coin" label="币种" align="center" key="9"> </el-table-column>
+          <el-table-column prop="withdrawalPrice" label="金额" align="center" key="10"> </el-table-column>
+          <el-table-column prop="serviceFee" label="手续费" align="center" key="10"> </el-table-column>
         </template>
         <template v-else>
           <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
@@ -279,7 +279,7 @@ export default {
       dialogVisible: false,
       upscoreList: [],
       upscoreNum: "",
-      assetDialogType:"",
+      assetDialogType: "",
       assetBalanceDialog: false,
       assetBalanceList: [],
     };
@@ -433,11 +433,11 @@ export default {
         this.$message.success("操作成功！");
       }
     },
-    assetBalanceDialogFunc(row,type) {
-      if(type=='withdraw'){
-        this.assetDialogType=type
-        this.assetBalanceList = row.assetBOS;
-      }else {
+    assetBalanceDialogFunc(row, type) {
+      if (type == "withdraw") {
+        this.assetDialogType = type;
+        this.assetBalanceList = row.darwListBOS;
+      } else {
         this.assetBalanceList = row.assetBOS;
       }
       this.assetBalanceDialog = true;
