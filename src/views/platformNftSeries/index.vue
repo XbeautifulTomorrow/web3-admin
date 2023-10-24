@@ -210,7 +210,7 @@ export default {
       aggregateQuery: {},
       baseUserPage: null,
       uploadUrl: "",
-      fileImg: [{ url: "https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp" }],
+      fileImg: [],
       limitCount: 1,
       hideUpload: false,
       uploadHeader: {
@@ -226,7 +226,7 @@ export default {
         price: null, // 价格
         seriesName: null, // 系列名称
         seriesType: null, // 系列类型(COIN-币，PIC-图)
-        seriesImg: "https://www.bitzing.io/prd/mystery/IMAGE/a061a88542404b72862b4a046c7e252c.webp", // 系列图片
+        seriesImg: null, // 系列图片
         reclaimRate: null, // 回收比例
       },
       rules: {

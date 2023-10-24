@@ -602,12 +602,12 @@ export default {
       uploadHeader: {
         certificate: sessionStorage.getItem("token"),
       },
-      fileImg: [],
+      fileImg: [{ url: "https://www.bitzing.io/prd/mystery/IMAGE/8945f0a4b909442395d48718c335a9a8.webp" }],
       fileImgOne: [],
       fileImgTwo: [],
       ruleForm: {
         boxName: null, //盲盒名称
-        boxImg: null, //盲盒图片
+        boxImg: "https://www.bitzing.io/prd/mystery/IMAGE/8945f0a4b909442395d48718c335a9a8.webp", //盲盒图片
         boxIndex: null, //推荐顺序
         price: null, //价格
         coin: "ETH", //币种
@@ -662,7 +662,7 @@ export default {
         { label: "NFT", value: "NFT" },
         { label: "ETH", value: "ETH" },
       ],
-      priceCoin:'ETH'
+      priceCoin: "ETH",
     };
   },
   mixins: [pagination],
