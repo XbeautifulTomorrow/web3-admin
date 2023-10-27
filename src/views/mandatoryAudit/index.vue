@@ -134,7 +134,11 @@
         </el-table-column>
         <el-table-column prop="userName" label="昵称" align="center" key="2"> </el-table-column>
         <el-table-column prop="email" label="邮箱" align="center" key="3"> </el-table-column>
-        <el-table-column prop="assetBalance" label="余额" align="center" key="4"> </el-table-column>
+        <el-table-column prop="assetBalance" label="余额" align="center" key="4">
+          <template slot-scope="scope">
+            <span>{{ (scope.row.usdtLastPrice * scope.row.assetBalance).toFixed(2) }}</span>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         v-if="searchBaseUserPage && searchBaseUserPage.total"
@@ -223,7 +227,6 @@ export default {
       row: {},
       score: null,
       lotteryCoefficient: null,
-      coin: "ETH",
       ruleFormPwd: {
         password: "",
       },
@@ -433,6 +436,11 @@ export default {
     searchHandleCurrentChange(val) {
       this.pageTwo = val;
       this.getSearchTableData(false);
+    },
+  },
+  computed: {
+    coin() {
+      return this.$store.getters.coinConfig;
     },
   },
   // 创建后

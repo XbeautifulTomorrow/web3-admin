@@ -1,34 +1,28 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 140px;" placeholder="输入闪兑ID/订单ID" v-model="Id" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
-      <el-select v-model="sellCoin" class="public-select-box" popper-class="public-select-box" placeholder="全部卖出币种"
-        clearable>
-        <el-option label="ETH" value="ETH">
-        </el-option>
-        <el-option label="USDT" value="USDT">
-        </el-option>
+      <el-input class="public-input" style="width: 140px" placeholder="输入闪兑ID/订单ID" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入用户ID/昵称" v-model="obscureField" clearable />
+      <el-select v-model="sellCoin" class="public-select-box" popper-class="public-select-box" placeholder="全部卖出币种" clearable>
+        <el-option label="ETH" value="ETH"> </el-option>
+        <el-option label="USDT" value="USDT"> </el-option>
       </el-select>
-      <el-select v-model="flashPlaform" class="public-select-box" popper-class="public-select-box" placeholder="全部闪兑平台"
-        clearable>
-        <el-option label="OK" value="OK">
-        </el-option>
+      <el-select v-model="flashPlaform" class="public-select-box" popper-class="public-select-box" placeholder="全部闪兑平台" clearable>
+        <el-option label="OKX" value="OKX"> </el-option>
       </el-select>
       <div class="public-date-box">
-        <span class="demonstration">
-          交易时间
-        </span>
-        <el-date-picker v-model="changeTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 交易时间 </span>
+        <el-date-picker
+          v-model="changeTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerList()">
-        查询
-      </el-button>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerListExport()">
-        导出
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerList()"> 查询 </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchFlashManagerListExport()"> 导出 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -55,43 +49,41 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="id" label="流水号" align="center" key="1">
-      </el-table-column>
+      <el-table-column prop="id" label="流水号" align="center" key="1"> </el-table-column>
       <el-table-column prop="userName" width="120" sortable="custom" label="用户" align="center" key="2">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || '--' }}</p>
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || '--' }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="sellCoin" label="卖出币种" align="center" key="3">
-      </el-table-column>
-      <el-table-column prop="sellNum" sortable="custom" label="卖出币数" align="center" key="4">
-      </el-table-column>
-      <el-table-column prop="realRate" sortable="custom" label="实际汇率" align="center" key="5">
-      </el-table-column>
-      <el-table-column prop="showRate" sortable="custom" label="展示汇率" align="center" key="6">
-      </el-table-column>
-      <el-table-column prop="buyCoin" label="买入币种" align="center" key="7">
-      </el-table-column>
-      <el-table-column prop="buyNum" sortable="custom" label="买入数量" align="center" key="8">
-      </el-table-column>
-      <el-table-column prop="fee" sortable="custom" label="手续费" align="center" key="9">
-      </el-table-column>
-      <el-table-column prop="feeCoin" label="手续费币种" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="flashPlaform" label="闪兑平台" align="center" key="11">
-      </el-table-column>
-      <el-table-column prop="plaformOrderId" label="平台订单ID" align="center" key="12">
-      </el-table-column>
+      <el-table-column prop="sellCoin" label="卖出币种" align="center" key="3"> </el-table-column>
+      <el-table-column prop="sellNum" sortable="custom" label="卖出币数" align="center" key="4"> </el-table-column>
+      <el-table-column prop="realRate" sortable="custom" label="实际汇率" align="center" key="5"> </el-table-column>
+      <el-table-column prop="showRate" sortable="custom" label="展示汇率" align="center" key="6"> </el-table-column>
+      <el-table-column prop="buyCoin" label="买入币种" align="center" key="7"> </el-table-column>
+      <el-table-column prop="buyNum" sortable="custom" label="买入数量" align="center" key="8"> </el-table-column>
+      <el-table-column prop="fee" sortable="custom" label="手续费" align="center" key="9"> </el-table-column>
+      <el-table-column prop="feeCoin" label="手续费币种" align="center" key="10"> </el-table-column>
+      <el-table-column prop="flashPlaform" label="闪兑平台" align="center" key="11"> </el-table-column>
+      <el-table-column prop="plaformOrderId" label="平台订单ID" align="center" key="12"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="交易时间" align="center" key="13">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
   </div>
 </template>
@@ -100,12 +92,11 @@
 import bigNumber from "bignumber.js";
 import { timeForStr, exportExcel } from "@/utils";
 import config from "@/config/env";
-import pagination from '@/mixins/pagination';
+import pagination from "@/mixins/pagination";
 export default {
-  name: 'FlashManagement',
+  name: "FlashManagement",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -116,13 +107,13 @@ export default {
       changeTime: null, // 账变时间
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
       tableData: null,
       baseUserPage: null,
-      aggregateQuery: null
+      aggregateQuery: null,
     };
   },
   mixins: [pagination],
@@ -136,10 +127,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (changeTime && changeTime[0]) {
-        startTime = timeForStr(changeTime[0], 'YYYY-MM-DD HH:mm:ss');
+        startTime = timeForStr(changeTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (changeTime && changeTime[1]) {
-        endTime = timeForStr(changeTime[1], 'YYYY-MM-DD HH:mm:ss');
+        endTime = timeForStr(changeTime[1], "YYYY-MM-DD HH:mm:ss");
       }
 
       return {
@@ -148,7 +139,7 @@ export default {
         sellCoin: this.sellCoin, // 币种
         flashPlaform: this.flashPlaform, // 流水状态
         startTime,
-        endTime
+        endTime,
       };
     },
     /**
@@ -205,7 +196,7 @@ export default {
         ...sortData,
         ...search,
       };
-      
+
       const urlStr = config.api + "/flash-manager/pageListExport";
       exportExcel(urlStr, data, "闪兑管理导出");
     },
@@ -231,11 +222,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -260,7 +251,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }

@@ -10,6 +10,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="gas" label="提款手续费" align="center"> </el-table-column>
+      <el-table-column prop="chainCoin" label="手续费币种" align="center"> </el-table-column>
       <el-table-column prop="confirmTheHeight" label="几次确认" align="center"> </el-table-column>
       <el-table-column prop="minGasForce" label="触发强制归集gas(USDT）" align="center" width="120px">
         <template slot-scope="scope">

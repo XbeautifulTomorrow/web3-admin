@@ -15,6 +15,11 @@
         </el-option> -->
         <el-option label="退款" value="REFUND"> </el-option>
         <el-option label="补偿" value="COMPENSATE"> </el-option>
+        <el-option label="消耗" value="CONSUME_COIN"> </el-option>
+        <el-option label="获得" value="OBTAIN"> </el-option>
+      </el-select>
+      <el-select v-model="coin" class="public-select-box" popper-class="public-select-box" placeholder="全部币种" clearable>
+        <el-option v-for="(item, index) in coinDrop" :key="index" :label="item.coinName" :value="item.coinName"> </el-option>
       </el-select>
       <el-select v-model="flowSource" class="public-select-box" popper-class="public-select-box" placeholder="全部来源" clearable>
         <el-option label="平台" value="PLATFORM"> </el-option>
@@ -27,6 +32,7 @@
         <el-option label="提现" value="WITHDRAWALS"> </el-option>
         <el-option label="活动" value="ACTIVITY"> </el-option>
         <el-option label="盲盒" value="BOX"> </el-option>
+        <el-option label="闪兑" value="FLASH_EXCHANGE"> </el-option>
       </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 账变时间 </span>
@@ -51,7 +57,7 @@
           </div>
         </div>
         <div class="remittance-item">
-          <div class="title">总USDT金额</div>
+          <div class="title">总金额</div>
           <div class="val">
             {{ aggregateQuery && aggregateQuery.amountTotal }}
           </div>
@@ -248,6 +254,10 @@ export default {
         return "退款";
       } else if (event == "COMPENSATE") {
         return "补偿";
+      } else if (event == "CONSUME_COIN") {
+        return "消耗";
+      } else if (event == "OBTAIN") {
+        return "获得";
       }
     },
     // 格式化流水来源
@@ -273,6 +283,17 @@ export default {
         return "活动";
       } else if (event == "BOX") {
         return "盲盒";
+      } else if (event == "FLASH_EXCHANGE") {
+        return "闪兑";
+      }
+    },
+    // 获取充值币种
+    async fetchCoin() {
+      const res = await this.$http.getCoinList({ page: 1, size: 999 });
+      if (res) {
+        let coin = [];
+        const { records } = res;
+        this.coinDrop = records;
       }
     },
     handleSizeChange(val) {
@@ -287,6 +308,7 @@ export default {
   // 创建后
   created() {
     this.fetchAssetFlowList();
+    this.fetchCoin();
   },
   computed: {
     userType() {

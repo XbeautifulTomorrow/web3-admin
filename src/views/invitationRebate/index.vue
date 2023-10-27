@@ -79,7 +79,7 @@
           {{ timeForStr(scope.row.lastReceiveTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" label="操作" align="center" key="14">
+      <el-table-column prop="createTime" width="120" sortable="custom" label="操作" align="center" key="14" fixed="right">
         <template slot-scope="scope">
           <el-button @click="setRatio(scope.row)">设置分佣比例</el-button>
         </template>
@@ -118,7 +118,7 @@
           </div>
           <div class="remittance-item">
             <div class="title">总消费</div>
-            <div class="val">{{ downAggregateQuery && downAggregateQuery.consumeTotal }}</div>
+            <div class="val">{{ downAggregateQuery && downAggregateQuery.totalConsumptions }}</div>
           </div>
           <div class="remittance-item">
             <div class="title">总佣金</div>
