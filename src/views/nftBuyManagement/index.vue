@@ -66,7 +66,7 @@
       <el-table-column prop="id" sortable="custom" label="挂单ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="seriesName" label="系列名" align="center" key="2">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">{{ `${scope.row.price} ${scope.row.coinName}` }}</span>
+          <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">{{ `${scope.row.price} ${'ETH'||scope.row.coinName}` }}</span>
           <span v-else>{{ `${scope.row.seriesName || "--"}` }}</span>
         </template>
       </el-table-column>
