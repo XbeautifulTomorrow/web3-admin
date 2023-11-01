@@ -71,7 +71,7 @@
         <template slot-scope="scope">
           <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">
             {{
-              scope.row.price ? `${scope.row.price} ${scope.row.coinName}` : "--"
+              scope.row.price ? `${scope.row.price} ${'ETH'||scope.row.coinName}` : "--"
             }}
           </span>
           <span v-else>{{ `${scope.row.name} #${scope.row.orderId}` }}</span>
