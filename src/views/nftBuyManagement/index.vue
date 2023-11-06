@@ -7,13 +7,22 @@
       <el-input class="public-input" style="width: 220px" placeholder="输入中奖用户" v-model="winningUsers" clearable />
       <div class="public-date-box">
         <span class="demonstration"> 价格区间 </span>
-        <el-input type="number" style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px" placeholder="最低价"
-          v-model.number="startPrice" clearable />
-        <el-input type="number" style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px" placeholder="最高价"
-          v-model.number="endPrice" clearable />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最低价"
+          v-model.number="startPrice"
+          clearable
+        />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最高价"
+          v-model.number="endPrice"
+          clearable
+        />
       </div>
-      <el-select v-model="statusStr" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
-        clearable>
+      <el-select v-model="statusStr" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
         <el-option label="进行中" value="IN_PROGRESS"> </el-option>
         <el-option label="已开奖" value="DRAWN"> </el-option>
         <el-option label="已取消" value="CANCELLED"> </el-option>
@@ -21,18 +30,27 @@
       </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 上架时间 </span>
-        <el-date-picker v-model="addedTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <el-date-picker
+          v-model="addedTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
       <div class="public-date-box">
         <span class="demonstration"> 结束时间 </span>
-        <el-date-picker v-model="endTimes" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <el-date-picker
+          v-model="endTimes"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOneNftOrdersManagerList()"> 查询
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOneNftOrdersManagerList()"> 查询 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -66,17 +84,16 @@
       <el-table-column prop="id" sortable="custom" label="挂单ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="seriesName" label="系列名" align="center" key="2">
         <template slot-scope="scope">
-          <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">{{ `${scope.row.price} ${'ETH'||scope.row.coinName}` }}</span>
+          <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">{{ `${scope.row.price} ${"ETH" || scope.row.coinName}` }}</span>
           <span v-else>{{ `${scope.row.seriesName || "--"}` }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="nftImage" label="NFT图" align="center" width="120" key="3">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%" v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'" :src="ethPic"
-              :preview-src-list="[ethPic]"> </el-image>
-            <el-image style="height: 100%" v-else :src="scope.row.nftImage" :preview-src-list="[scope.row.nftImg]">
+            <el-image style="height: 100%" v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'" :src="ethPic" :preview-src-list="[ethPic]">
             </el-image>
+            <el-image style="height: 100%" v-else :src="scope.row.nftImage" :preview-src-list="[scope.row.nftImg]"> </el-image>
           </div>
         </template>
       </el-table-column>
@@ -85,10 +102,8 @@
       <el-table-column prop="details" label="NFT信息" align="center" key="6"> </el-table-column>
       <el-table-column prop="userId" label="挂单用户" align="center" key="7">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.pendingOrderUserIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--"
-          }}</p>
-          <p :style="{ color: scope.row.pendingOrderUserIsTest == 'INNER' ? 'red' : '#000' }">{{
-            scope.row.pendingOrderUser || "--" }}</p>
+          <p :style="{ color: scope.row.pendingOrderUserIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
+          <p :style="{ color: scope.row.pendingOrderUserIsTest == 'INNER' ? 'red' : '#000' }">{{ scope.row.pendingOrderUser || "--" }}</p>
         </template>
       </el-table-column>
       <el-table-column prop="orderType" sortable="custom" label="挂单类型" align="center" key="8">
@@ -97,7 +112,7 @@
           <span v-if="scope.row.orderType == 'LIMITED_PRICE'">限价</span>
         </template>
       </el-table-column>
-      <el-table-column prop="price" sortable="custom" label="价值" align="center" key="9"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" label="价值(USDT)" align="center" key="9"> </el-table-column>
       <el-table-column prop="ticketPrice" sortable="custom" label="票单价" align="center" key="10"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="限制" align="center" key="11"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="免费票" align="center" key="12">
@@ -115,15 +130,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="userTotal" sortable="custom" label="参与用户数" align="center" key="14"> </el-table-column>
-      <el-table-column prop="numberOfTicketsSold" sortable="custom" label="售出票数" align="center" key="15">
-      </el-table-column>
+      <el-table-column prop="numberOfTicketsSold" sortable="custom" label="售出票数" align="center" key="15"> </el-table-column>
       <el-table-column prop="txid" label="链上hash" align="center" key="16"> </el-table-column>
       <el-table-column prop="winningAddress" label="中奖用户" align="center" key="17">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUserId || "--" }}
-          </p>
-          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUsername || "--" }}
-          </p>
+          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUserId || "--" }}</p>
+          <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUsername || "--" }}</p>
         </template>
       </el-table-column>
       <el-table-column prop="currentStatus" sortable="custom" label="当前状态" align="center" key="18" fixed="right">
@@ -134,8 +146,7 @@
           <span style="color: #ff0000" v-if="scope.row.currentStatus == 'CLOSED'">已结束</span>
         </template>
       </el-table-column>
-      <el-table-column prop="listingTime" sortable="custom" width="140px" label="上架时间" align="center" key="19"
-        fixed="right">
+      <el-table-column prop="listingTime" sortable="custom" width="140px" label="上架时间" align="center" key="19" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.listingTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
@@ -147,18 +158,29 @@
       </el-table-column>
       <el-table-column prop="id" label="操作" align="center" width="110" key="21" fixed="right">
         <template slot-scope="scope">
-          <span v-if="scope.row.currentStatus == 'IN_PROGRESS' && scope.row.currentStatus !== 'CANCELLED'"
-            class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
+          <span
+            v-if="scope.row.currentStatus == 'IN_PROGRESS' && scope.row.currentStatus !== 'CANCELLED'"
+            class="blueColor publick-button cursor"
+            @click="operatingNft(scope.row)"
+          >
             {{ scope.row.upAndDown == "down" ? "" : "下架" }}
           </span>
-          <chainExplorerSkip :chain="scope.row.chainType" :address="`tx/${scope.row.txid}`"
-            v-if="scope.row.currentStatus == 'DRAWN'" />
+          <chainExplorerSkip :chain="scope.row.chainType" :address="`tx/${scope.row.txid}`" v-if="scope.row.currentStatus == 'DRAWN'" />
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
   </div>
 </template>
@@ -197,7 +219,7 @@ export default {
         orderBy: null,
         orderType: null,
       },
-      ethPic: require("@/assets/images/create_eth.webp")
+      ethPic: require("@/assets/images/create_eth.webp"),
     };
   },
   mixins: [pagination],
@@ -338,11 +360,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -367,7 +389,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }

@@ -136,7 +136,7 @@
         <el-table-column prop="email" width="120" label="邮箱" align="center" key="2"> </el-table-column>
         <el-table-column prop="inviteCode" label="邀请码" align="center" key="3"> </el-table-column>
         <el-table-column prop="traNumber" label="交易笔数" align="center" key="4"> </el-table-column>
-        <el-table-column prop="consumeTotal" label="消费金额" align="center" key="5"> </el-table-column>
+        <el-table-column prop="totalConsumptions" label="消费金额" align="center" key="5"> </el-table-column>
         <el-table-column prop="rebateRate" label="返佣比例" align="center" key="6">
           <template slot-scope="scope">
             {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
