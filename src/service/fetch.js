@@ -322,5 +322,5 @@ export const getMenuList = (obj) => S.get("/sys-menu/tree", obj);
 export const getWarGameList = (obj) => S.get("/token-war-base/pageList", obj); // 战争游戏管理
 export const getWarGameStatistics = (obj) => S.get("/token-war-base/headerDataTotal", obj); // 战争游戏聚合统计
 export const getWarGameTicketSalesList = (obj) => S.get("/token-war-detail/pageList", obj); // 战争游戏售票管理
-export const getWarGameTicketSalesStatistics = (obj) => S.get("/token-war-base/headerDataTotal", obj); // 战争游戏售票聚合统计
+export const getWarGameTicketSalesStatistics = (obj) => S.get("/token-war-detail/headerDataTotal", obj); // 战争游戏售票聚合统计
 export const getWarGameParticipant = (obj) => S.get("/token-war-detail/findList", obj); // 参与者信息

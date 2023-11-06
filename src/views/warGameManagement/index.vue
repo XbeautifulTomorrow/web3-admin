@@ -1,41 +1,11 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入局数"
-        v-model.number.trim="gameNum"
-        clearable
-      />
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入订单号"
-        v-model="orderNum"
-        clearable
-      />
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入 用户ID/昵称"
-        v-model="userName"
-        clearable
-      />
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入hash"
-        v-model="transactionId"
-        clearable
-      />
-      <el-select
-        class="public-input"
-        v-model="status"
-        placeholder="全部状态"
-        clearable
-        style="width: 120px"
-      >
+      <el-input class="public-input" style="width: 220px" placeholder="输入局数" v-model.number.trim="gameNum" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入订单号" v-model="orderNum" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入hash" v-model="transactionId" clearable />
+      <el-select class="public-input" v-model="status" placeholder="全部状态" clearable style="width: 120px">
         <el-option label="待开奖" value="WAIT" />
         <el-option label="已开奖" value="OPEN" />
         <el-option label="已退款" value="REFUNDED" />
@@ -52,14 +22,7 @@
         >
         </el-date-picker>
       </div>
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        class="public-search"
-        @click="fetchWarGameList()"
-      >
-        查询
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchWarGameList()"> 查询 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -89,154 +52,48 @@
         </div>
       </div>
     </div>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      @sort-change="sortChange"
-      class="public-table"
-      border
-    >
-      <el-table-column
-        sortable="custom"
-        prop="id"
-        label="局数"
-        align="center"
-        key="1"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="orderNumber"
-        width="140px"
-        label="订单号"
-        align="center"
-        key="3"
-      ></el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="jackpot"
-        label="奖池"
-        align="center"
-        key="4"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="participant"
-        label="参与者"
-        align="center"
-        key="5"
-      >
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column sortable="custom" prop="id" label="局数" align="center" key="1"> </el-table-column>
+      <el-table-column prop="orderNumber" width="140px" label="订单号" align="center" key="3"></el-table-column>
+      <el-table-column sortable="custom" prop="jackpot" label="奖池" align="center" key="4"> </el-table-column>
+      <el-table-column sortable="custom" prop="participant" label="参与者" align="center" key="5">
         <template slot-scope="scope">
-          <div
-            style="cursor: pointer; color: #00bdff"
-            @click="openParticipant(scope.row)"
-          >
+          <div style="cursor: pointer; color: #00bdff" @click="openParticipant(scope.row)">
             {{ scope.row.participant }}
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="openId" label="中奖ID" align="center" key="6">
-      </el-table-column>
+      <el-table-column prop="openId" label="中奖ID" align="center" key="6"> </el-table-column>
       <el-table-column prop="userId" label="中奖用户" align="center" key="7">
         <template slot-scope="scope">
-          <p
-            :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }"
-          >
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.winerUserId || "--" }}
           </p>
-          <p
-            :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }"
-          >
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.winerUserName || "--" }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="winerBuyPrice"
-        label="冠军消费"
-        sortable="custom"
-        align="center"
-        key="8"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="winerMultipleRate"
-        label="中奖倍率"
-        align="center"
-        key="9"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="winerIncome"
-        label="冠军收入"
-        align="center"
-        key="10"
-      >
-      </el-table-column>
-      <el-table-column prop="warFee" label="战争手续费" align="center" key="11">
-      </el-table-column>
-      <el-table-column prop="inBigPrize" label="入奖池" align="center" key="14">
-      </el-table-column>
-      <el-table-column
-        prop="totalBigPrize"
-        label="大奖累计"
-        sortable="custom"
-        align="center"
-        key="15"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="currentStatus"
-        label="状态"
-        align="center"
-        key="17"
-        fixed="right"
-      >
+      <el-table-column prop="winerBuyPrice" label="冠军消费" sortable="custom" align="center" key="8"> </el-table-column>
+      <el-table-column sortable="custom" prop="winerMultipleRate" label="中奖倍率" align="center" key="9"> </el-table-column>
+      <el-table-column sortable="custom" prop="winerIncome" label="冠军收入" align="center" key="10"> </el-table-column>
+      <el-table-column prop="warFee" label="战争手续费" align="center" key="11"> </el-table-column>
+      <el-table-column prop="inBigPrize" label="入奖池" align="center" key="14"> </el-table-column>
+      <el-table-column prop="totalBigPrize" label="大奖累计" sortable="custom" align="center" key="15"> </el-table-column>
+      <el-table-column sortable="custom" prop="currentStatus" label="状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
-          <span style="color: #00bdff" v-if="scope.row.currentStatus == 'WAIT'">
-            待开奖
-          </span>
-          <span style="color: #05ac04" v-if="scope.row.currentStatus == 'OPEN'">
-            已开奖
-          </span>
-          <span
-            style="color: #ff0000"
-            v-if="scope.row.currentStatus == 'REFUNDED'"
-          >
-            已退款
-          </span>
-          <span
-            style="color: #b7b7b7"
-            v-if="scope.row.currentStatus == 'CANCELED'"
-          >
-            已取消
-          </span>
+          <span style="color: #00bdff" v-if="scope.row.currentStatus == 'WAIT'"> 待开奖 </span>
+          <span style="color: #05ac04" v-if="scope.row.currentStatus == 'OPEN'"> 已开奖 </span>
+          <span style="color: #ff0000" v-if="scope.row.currentStatus == 'REFUNDED'"> 已退款 </span>
+          <span style="color: #b7b7b7" v-if="scope.row.currentStatus == 'CANCELED'"> 已取消 </span>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="lotteryTime"
-        width="140px"
-        label="开奖时间"
-        align="center"
-        key="18"
-        fixed="right"
-      >
+      <el-table-column prop="lotteryTime" width="140px" label="开奖时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lotteryTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column
-        prop="hash"
-        width="140px"
-        label="开奖hash"
-        align="center"
-        key="19"
-        fixed="right"
-      >
-      </el-table-column>
+      <el-table-column prop="hash" width="140px" label="开奖hash" align="center" key="19" fixed="right"> </el-table-column>
     </el-table>
     <el-pagination
       v-if="baseUserPage && baseUserPage.total"
@@ -253,12 +110,8 @@
     </el-pagination>
     <el-dialog title="参与者信息" :visible.sync="dialogVisible" width="30%">
       <el-table :data="participantData" style="width: 100%" border>
-        <el-table-column
-          prop="userId"
-          label="参与者信息"
-          align="center"
-          key="1"
-        >
+        <el-table-column prop="userId" label="ID" align="center" key="11"> </el-table-column>
+        <el-table-column prop="userId" label="参与者信息" align="center" key="1">
           <template slot-scope="scope">
             <p
               :style="{
@@ -276,14 +129,8 @@
             </p>
           </template>
         </el-table-column>
-        <el-table-column prop="buyPrice" label="投注额" align="center" key="2">
-        </el-table-column>
-        <el-table-column
-          prop="createTime"
-          label="购买时间"
-          align="center"
-          key="3"
-        >
+        <el-table-column prop="buyPrice" label="投注额" align="center" key="2"> </el-table-column>
+        <el-table-column prop="createTime" label="购买时间" align="center" key="3">
           <template slot-scope="scope">
             {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
           </template>

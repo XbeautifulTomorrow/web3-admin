@@ -1,27 +1,9 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入 用户ID/昵称"
-        v-model="userName"
-        clearable
-      />
-      <el-input
-        class="public-input"
-        style="width: 220px"
-        placeholder="输入订单号、金流流水号"
-        v-model="orderNum"
-        clearable
-      />
-      <el-select
-        class="public-input"
-        v-model="status"
-        placeholder="全部状态"
-        clearable
-        style="width: 120px"
-      >
+      <el-input class="public-input" style="width: 220px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入订单号、金流流水号" v-model="orderNum" clearable />
+      <el-select class="public-input" v-model="status" placeholder="全部状态" clearable style="width: 120px">
         <el-option label="待开奖" value="WAIT" />
         <el-option label="已开奖" value="OPEN" />
         <el-option label="已退款" value="REFUNDED" />
@@ -38,14 +20,7 @@
         >
         </el-date-picker>
       </div>
-      <el-button
-        type="primary"
-        icon="el-icon-search"
-        class="public-search"
-        @click="fetchWarGameTicketSalesList()"
-      >
-        查询
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchWarGameTicketSalesList()"> 查询 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -63,116 +38,36 @@
         </div>
       </div>
     </div>
-    <el-table
-      :data="tableData"
-      style="width: 100%"
-      @sort-change="sortChange"
-      class="public-table"
-      border
-    >
-      <el-table-column
-        sortable="custom"
-        prop="flowId"
-        label="金流流水号"
-        align="center"
-        key="1"
-      >
-      </el-table-column>
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column sortable="custom" prop="flowId" label="金流流水号" align="center" key="1"> </el-table-column>
       <el-table-column prop="userId" label="投注用户" align="center" key="7">
         <template slot-scope="scope">
-          <p
-            :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }"
-          >
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userId || "--" }}
           </p>
-          <p
-            :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }"
-          >
-            {{ scope.row.username || "--" }}
+          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
+            {{ scope.row.userName || "--" }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="warBaseId"
-        label="局数"
-        align="center"
-        key="9"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="buyPrice"
-        label="消费金额"
-        align="center"
-        key="10"
-      >
-      </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="totalBuyPrice"
-        label="本局总消费"
-        align="center"
-        key="11"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="orderNumber"
-        label="订单号"
-        align="center"
-        key="15"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="currentStatus"
-        label="状态"
-        align="center"
-        key="17"
-        fixed="right"
-      >
+      <el-table-column sortable="custom" prop="warBaseId" label="局数" align="center" key="9"> </el-table-column>
+      <el-table-column sortable="custom" prop="buyPrice" label="消费金额" align="center" key="10"> </el-table-column>
+      <el-table-column sortable="custom" prop="totalBuyPrice" label="本局总消费" align="center" key="11"> </el-table-column>
+      <el-table-column prop="orderNumber" label="订单号" align="center" key="15"> </el-table-column>
+      <el-table-column prop="currentStatus" label="状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
-          <span style="color: #00bdff" v-if="scope.row.currentStatus == 'WAIT'">
-            待开奖
-          </span>
-          <span style="color: #05ac04" v-if="scope.row.currentStatus == 'OPEN'">
-            已开奖
-          </span>
-          <span
-            style="color: #ff0000"
-            v-if="scope.row.currentStatus == 'REFUNDED'"
-          >
-            已退款
-          </span>
-          <span
-            style="color: #b7b7b7"
-            v-if="scope.row.currentStatus == 'CANCELED'"
-          >
-            已取消
-          </span>
+          <span style="color: #00bdff" v-if="scope.row.currentStatus == 'WAIT'"> 待开奖 </span>
+          <span style="color: #05ac04" v-if="scope.row.currentStatus == 'OPEN'"> 已开奖 </span>
+          <span style="color: #ff0000" v-if="scope.row.currentStatus == 'REFUNDED'"> 已退款 </span>
+          <span style="color: #b7b7b7" v-if="scope.row.currentStatus == 'CANCELED'"> 已取消 </span>
         </template>
       </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="lotteryTime"
-        width="140px"
-        label="开奖时间"
-        align="center"
-        key="18"
-        fixed="right"
-      >
+      <el-table-column sortable="custom" prop="lotteryTime" width="140px" label="开奖时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lotteryTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column
-        sortable="custom"
-        prop="createTime"
-        width="140px"
-        label="交易时间"
-        align="center"
-        key="18"
-        fixed="right"
-      >
+      <el-table-column sortable="custom" prop="createTime" width="140px" label="交易时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
@@ -218,7 +113,7 @@ export default {
         orderBy: null,
         orderType: null,
       },
-      ethPic: require("@/assets/images/create_eth.webp")
+      ethPic: require("@/assets/images/create_eth.webp"),
     };
   },
   mixins: [pagination],
@@ -273,8 +168,7 @@ export default {
 
       delete data.size;
       delete data.page;
-      const resAggregateQuery =
-        await this.$http.getWarGameTicketSalesStatistics(data);
+      const resAggregateQuery = await this.$http.getWarGameTicketSalesStatistics(data);
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }

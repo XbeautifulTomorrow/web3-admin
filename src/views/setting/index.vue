@@ -268,15 +268,7 @@
       <div class="setting-item">
         <div class="setting-title">票单价</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            type="number"
-            style="width: 300px"
-            readonly="readonly"
-            placeholder="输入票单价"
-            v-model="unitPrice"
-            clearable
-          >
+          <el-input class="public-input" type="number" style="width: 300px" placeholder="输入票单价" v-model="battle.singlePrice" clearable>
             <template slot="append">{{ coin }}</template>
           </el-input>
         </div>
@@ -495,14 +487,14 @@ export default {
       timer: null, // 计时器
 
       /** 战争配置 */
-      unitPrice: 0.001, // 单价
       battle: {
-        fee: 0.05, //手续费
-        singleTime: 300, //单局时长
-        fastLimitNumber: 3, // 加速人数
-        ticketPurchaseDelay: 15, // 购票延时
-        awardInvestmentRatio: 0.01, // 大奖投入比
-        awardTriggerAmount: 1, // 大奖触发金额
+        singlePrice: null, //票单价
+        fee: null, //手续费
+        singleTime: null, //单局时长
+        fastLimitNumber: null, // 加速人数
+        ticketPurchaseDelay: null, // 购票延时
+        awardInvestmentRatio: null, // 大奖投入比
+        awardTriggerAmount: null, // 大奖触发金额
       },
 
       /** 钱包相关 */

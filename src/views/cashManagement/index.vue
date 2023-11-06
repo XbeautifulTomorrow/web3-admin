@@ -33,6 +33,7 @@
         <el-option label="活动" value="ACTIVITY"> </el-option>
         <el-option label="盲盒" value="BOX"> </el-option>
         <el-option label="闪兑" value="FLASH_EXCHANGE"> </el-option>
+        <el-option label="货币战争" value="WAR_GAME"> </el-option>
       </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 账变时间 </span>
@@ -285,6 +286,8 @@ export default {
         return "盲盒";
       } else if (event == "FLASH_EXCHANGE") {
         return "闪兑";
+      } else if (event == "WAR_GAME") {
+        return "货币战争";
       }
     },
     // 获取充值币种
