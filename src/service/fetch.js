@@ -232,6 +232,8 @@ export const boxBotUpdate = (obj) => S.post("/box-bot/add", obj);
 export const boxBotHeaderDataTotal = (obj) => S.get("/box-bot/headerDataTotal", obj);
 export const boxBotUpAndDown = (obj) => S.get("/box-bot/upAndDown", obj);
 export const boxBotUpdatePassword = (obj) => S.post("/box-bot/batch/updatePassword", obj);
+export const getTokenWarPageList = (obj) => S.get("/token-war-bot/findOne", obj);
+export const tokenWarConfig = (obj) => S.post("/token-war-bot/config", obj);
 
 /**
  * @description 外部代币管理
@@ -313,7 +315,6 @@ export const deleteMenu = (obj) => S.get("/sys-menu/delete", obj);
 export const updateMenu = (obj) => S.post("/sys-menu/update", obj, true);
 export const roleAuth = (obj) => S.post("/sys-role/addRoleMenuCorr", obj);
 export const getMenuList = (obj) => S.get("/sys-menu/tree", obj);
-
 
 /**
  * @description 战争游戏管理

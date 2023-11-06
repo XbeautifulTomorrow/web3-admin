@@ -363,12 +363,6 @@ export default {
         res.maxBuyTotalDiff = res.maxBuyTotalDiff * 100;
         this.watTableData = [{ ...res }];
       }
-      delete data.size;
-      delete data.page;
-      const statisticsData = await this.$http.boxBotHeaderDataTotal(data);
-      if (statisticsData) {
-        this.statisticsData = statisticsData;
-      }
     },
     warSetFun(row) {
       this.warRuleForm = row;

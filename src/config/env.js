@@ -1,6 +1,6 @@
 const config = {
   dev: {
-    api: "http://172.16.10.10:16080/mystery-web-admin",
+    api: "/mystery-web-admin",
   },
   test: {
     api: "http://221.236.31.34:6599/mystery-web-admin",
