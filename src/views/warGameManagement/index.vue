@@ -66,10 +66,10 @@
       <el-table-column prop="openId" label="中奖ID" align="center" key="6"> </el-table-column>
       <el-table-column prop="userId" label="中奖用户" align="center" key="7">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
+          <p :style="{ color: scope.row.winerUserType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.winerUserId || "--" }}
           </p>
-          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
+          <p :style="{ color: scope.row.winerUserType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.winerUserName || "--" }}
           </p>
         </template>
@@ -108,10 +108,13 @@
       class="public-pagination"
     >
     </el-pagination>
-    <el-dialog title="参与者信息" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="参与者" :visible.sync="dialogVisible" width="30%">
+      <div class="public-list-inputs">
+        <el-input class="public-input" style="width: 200px" placeholder="输入玩家昵称/ID" v-model="openId" clearable />
+        <el-button type="primary" icon="el-icon-search" class="public-search" @click="openParticipant()"> 查询 </el-button>
+      </div>
       <el-table :data="participantData" style="width: 100%" border>
-        <el-table-column prop="userId" label="ID" align="center" key="11"> </el-table-column>
-        <el-table-column prop="userId" label="参与者信息" align="center" key="1">
+        <el-table-column prop="userId" label="参与者" align="center" key="1">
           <template slot-scope="scope">
             <p
               :style="{
@@ -130,9 +133,9 @@
           </template>
         </el-table-column>
         <el-table-column prop="buyPrice" label="投注额" align="center" key="2"> </el-table-column>
-        <el-table-column prop="createTime" label="购买时间" align="center" key="3">
+        <el-table-column prop="createTime" label="中奖ID" align="center" key="3">
           <template slot-scope="scope">
-            {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
+            <span>{{ `${scope.row.startNumber} - ${scope.row.endNumber}` }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -172,6 +175,8 @@ export default {
       ethPic: require("@/assets/images/create_eth.webp"),
       dialogVisible: false,
       participantData: {},
+      openId: null,
+      row: {},
     };
   },
   mixins: [pagination],
@@ -245,9 +250,12 @@ export default {
     },
     // 参与者列表
     async openParticipant(row) {
+      if (row) {
+        this.row = row;
+      }
       let res = await this.$http.getWarGameParticipant({
-        id: row.id,
-        openId: row.openId,
+        id: this.row.id,
+        openId: this.openId,
       });
       if (res) {
         this.participantData = res;

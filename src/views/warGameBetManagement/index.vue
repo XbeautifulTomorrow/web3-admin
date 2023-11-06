@@ -2,6 +2,7 @@
   <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 220px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
+      <el-input class="public-input" style="width: 220px" placeholder="输入 局数" v-model="warBaseId" clearable />
       <el-input class="public-input" style="width: 220px" placeholder="输入订单号、金流流水号" v-model="orderNum" clearable />
       <el-select class="public-input" v-model="status" placeholder="全部状态" clearable style="width: 120px">
         <el-option label="待开奖" value="WAIT" />
@@ -42,10 +43,10 @@
       <el-table-column sortable="custom" prop="flowId" label="金流流水号" align="center" key="1"> </el-table-column>
       <el-table-column prop="userId" label="投注用户" align="center" key="7">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userId || "--" }}
           </p>
-          <p :style="{ color: scope.row.userIsTest == 'INNER' ? 'red' : '#000' }">
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userName || "--" }}
           </p>
         </template>
@@ -102,6 +103,7 @@ export default {
     return {
       orderNum: null,
       userName: null,
+      warBaseId: null,
       status: null,
       transactionTime: null,
       page: 1,
@@ -136,6 +138,7 @@ export default {
       }
       return {
         orderNumber: this.orderNum,
+        warBaseId: this.warBaseId,
         obscureField: this.userName,
         currentStatus: this.status,
         startTime,
