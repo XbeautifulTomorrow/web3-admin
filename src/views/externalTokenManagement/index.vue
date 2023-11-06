@@ -408,6 +408,7 @@ export default {
           responseType: "json",
           headers: {
             "X-API-KEY": "3eb9844d094945f288c104c770365ac8",
+            "certificate":sessionStorage.getItem('token'),
           },
         })
         .then((res) => {

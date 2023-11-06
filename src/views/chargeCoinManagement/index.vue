@@ -61,7 +61,7 @@
             :file-list="fileImg"
             :multiple="false"
             :limit="1"
-            accept="image/png,image/jpg,image/jpeg,image/gif,image/webp"
+            accept="image/png,image/jpg,image/jpeg,image/svg+xml,image/gif,image/webp"
             list-type="picture-card"
             :before-upload="handleBefore"
             :on-remove="handleRemove"
