@@ -32,12 +32,12 @@
       <el-table-column prop="tokenId" label="tokenId" align="center" key="6"> </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`价值(${'ETH'})`" align="center" key="7">
         <template slot-scope="scope">
-          {{ scope.row.seriesType == "COIN" ? scope.row.price :'--' }}
+          {{ scope.row.seriesType == "COIN" ? scope.row.price : "--" }}
         </template>
       </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`价值(${coin})`" align="center" key="8" width="100px">
         <template slot-scope="scope">
-          {{ scope.row.seriesType == "COIN" ? (scope.row.usdtLastPrice * scope.row.price).toFixed(4): scope.row.price}}
+          {{ scope.row.seriesType == "COIN" ? (scope.row.usdtLastPrice * scope.row.price).toFixed(4) : scope.row.price }}
         </template>
       </el-table-column>
       <el-table-column prop="contractAddress" label="合约" align="center" key="9"> </el-table-column>
@@ -442,7 +442,7 @@ export default {
           responseType: "json",
           headers: {
             "X-API-KEY": "3eb9844d094945f288c104c770365ac8",
-            "certificate":sessionStorage.getItem('token'),
+            certificate: sessionStorage.getItem("token"),
           },
         })
         .then((res) => {
