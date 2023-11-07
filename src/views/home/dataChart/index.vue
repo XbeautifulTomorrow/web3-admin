@@ -43,7 +43,7 @@ export default {
     return {
       activeName: "",
       options: options,
-      day: 7,
+      day: "SEVEN",
     };
   },
   watch: {},

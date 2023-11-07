@@ -1,11 +1,11 @@
 <template>
   <div class="report-box">
-    <!-- <card></card>
+    <card></card>
     <dataChart
       class="mg"
       :typeList="[
-        { type: 'balance', name: '余额' },
-        { type: 'integral', name: '积分' },
+        { type: 'BALANCE', name: '余额' },
+        { type: 'POINT', name: '积分' },
       ]"
       @change="changeTypeCash"
       :dataList="dataList"
@@ -45,7 +45,7 @@
       <rankNft class="sub-table"></rankNft>
       <rankRace class="sub-table"></rankRace>
       <rankArea class="sub-table"></rankArea>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -74,11 +74,7 @@ export default {
   // 数据
   data() {
     return {
-      dataList: [
-        { year: "2010", series1: 100, series2: 200, series3: 300 },
-        { year: "2011", series1: 120, series2: 220, series3: 230 },
-        { year: "2012", series1: 140, series2: 240, series3: 260 },
-      ],
+      dataList: [],
       dataList1: [
         { year: "2010", series1: 100, series2: 200, series3: 300 },
         { year: "2011", series1: 120, series2: 220, series3: 230 },
@@ -109,8 +105,52 @@ export default {
   // 方法
   methods: {
     //金流监测
-    changeTypeCash(data) {
-      console.log(data);
+    async changeTypeCash(data) {
+      let assetType = "BALANCE";
+      let timeLimit = "SEVEN";
+      if (data) {
+        assetType = data.type;
+        timeLimit = data.day;
+      }
+      const res = await this.$http.getHomeCashFlowDetection({ assetType, timeLimit });
+      if (res) {
+        let res2 = [
+          {
+            ETH: 109.05970605,
+            USDT: 10979.910939,
+            time: "2023.11.01 03",
+          },
+          {
+            ETH: 0.53343483,
+            USDT: 6718.445961,
+            time: "2023.11.01 04",
+          },
+          {
+            USDT: 8018.81192,
+            time: "2023.11.01 05",
+          },
+          {
+            BTC: 0.12345678,
+            XRP: 987.654321,
+            time: "2023.11.01 06",
+          },
+        ];
+        const newArray = [];
+        res2.forEach((obj) => {
+          for (let key in obj) {
+            if (key !== "time") {
+              const newObject = {
+                type: key,
+                value: obj[key],
+                time: obj.time,
+              };
+              newArray.push(newObject);
+            }
+          }
+        });
+        this.dataList = newArray;
+        console.log(newArray);
+      }
     },
     // 数据图表
     changeTypeChart(data) {
@@ -125,7 +165,9 @@ export default {
     changeTypeKeep(data) {},
   },
   // 创建后
-  created() {},
+  created() {
+    this.changeTypeCash();
+  },
   // 挂载后
   mounted() {},
   // 更新后

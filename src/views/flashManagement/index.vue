@@ -10,6 +10,10 @@
       <el-select v-model="flashPlaform" class="public-select-box" popper-class="public-select-box" placeholder="全部闪兑平台" clearable>
         <el-option label="OKX" value="OKX"> </el-option>
       </el-select>
+      <el-select v-model="flashStatus" class="public-select-box" popper-class="public-select-box" placeholder="状态" clearable>
+        <el-option label="成功" value="TRUE"> </el-option>
+        <el-option label="挂起" value="FALSE"> </el-option>
+      </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 交易时间 </span>
         <el-date-picker
@@ -65,6 +69,18 @@
       <el-table-column prop="fee" sortable="custom" label="手续费" align="center" key="9"> </el-table-column>
       <el-table-column prop="feeCoin" label="手续费币种" align="center" key="10"> </el-table-column>
       <el-table-column prop="flashPlaform" label="闪兑平台" align="center" key="11"> </el-table-column>
+      <el-table-column prop="flashPlaform" label="兑付价格" align="center" key="11">
+        <template slot-scope="scope">
+          {{ scope.row.userNum + " " + scope.row.userCoin }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="flashPlaform" label="状态" align="center" key="11">
+        <template slot-scope="scope">
+          <p v-if="scope.row.flashStatus == TRUE" style="color: #67c23a">成功</p>
+          <p v-else style="color: #f56c6c">挂起</p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="flashPlaform" label="闪兑平台" align="center" key="11"> </el-table-column>
       <el-table-column prop="plaformOrderId" label="平台订单ID" align="center" key="12"> </el-table-column>
       <el-table-column prop="createTime" sortable="custom" label="交易时间" align="center" key="13">
         <template slot-scope="scope">
@@ -103,6 +119,7 @@ export default {
       Id: null, // Id
       obscureField: null, // 用户ID/昵称
       flashPlaform: null, // 闪兑平台
+      flashStatus: null, //状态
       sellCoin: null, // 卖出币种
       changeTime: null, // 账变时间
       sortData: {
@@ -138,6 +155,7 @@ export default {
         obscureField: this.obscureField, // 用户ID/昵称
         sellCoin: this.sellCoin, // 币种
         flashPlaform: this.flashPlaform, // 流水状态
+        flashStatus: this.flashStatus,
         startTime,
         endTime,
       };

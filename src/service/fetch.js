@@ -324,3 +324,17 @@ export const getWarGameStatistics = (obj) => S.get("/token-war-base/headerDataTo
 export const getWarGameTicketSalesList = (obj) => S.get("/token-war-detail/pageList", obj); // 战争游戏售票管理
 export const getWarGameTicketSalesStatistics = (obj) => S.get("/token-war-detail/headerDataTotal", obj); // 战争游戏售票聚合统计
 export const getWarGameParticipant = (obj) => S.get("/token-war-detail/findList", obj); // 参与者信息
+
+/**
+ * @description 首页
+ */
+export const getHomeTodaysData = (obj) => S.get("/home-statistics/todaysData", obj); //今日数据
+export const getHomeCashFlowDetection = (obj) => S.get("/home-statistics/cashFlowDetection", obj); //金流检测曲线图
+export const getHomeDataChart = (obj) => S.get("/home-statistics/dataChart", obj); //数据图表
+export const getHomeRetainedData = (obj) => S.get("/home-statistics/retainedData", obj); //留存数据
+export const getHomeRegisteredUserChart = (obj) => S.get("/home-statistics/registeredUserChart", obj); //注册用户图表
+export const getHomeOrderChart = (obj) => S.get("/home-statistics/orderChart", obj); //订单统计图表
+export const getHomeRegionChart = (obj) => S.get("/home-statistics/regionChart", obj); //地区图表
+export const getHomeBoxRanking = (obj) => S.get("/home-statistics/boxRanking", obj); //盲盒排行榜
+export const getHomeOneNftRanking = (obj) => S.get("/home-statistics/oneNftRanking", obj); //竞赛排行榜
+export const getHomeUserRegionStatisticsChart = (obj) => S.get("/home-statistics/userRegionStatisticsChart", obj); //用户地区统计图表

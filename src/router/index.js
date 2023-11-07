@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import UserList from "@/views/userList/index";
+import Home from "@/views/userList/index";
 import aside from "@/aside.vue";
 
 export const routes = [
@@ -190,9 +191,9 @@ export const routes = [
         name: "setting",
       },
       {
-        path: "/report",
-        component: () => import("@/views/report/index"),
-        name: "report",
+        path: "/home",
+        component: () => import("@/views/home/index"),
+        name: "home",
       },
       {
         /** 群发邮件 */

@@ -39,9 +39,9 @@ export default {
         const mergedData = [];
         data.forEach((d) => {
           Object.keys(d).forEach((key) => {
-            if (key !== "year") {
+            if (key !== "time") {
               mergedData.push({
-                year: d.year,
+                year: d.time,
                 value: d[key],
                 series: key,
                 type: d[key].type || null,
@@ -55,9 +55,9 @@ export default {
         // 创建折线图实例
         this.linePlot = new Line(id, {
           data: mergedData,
-          xField: "year", // x轴字段
+          xField: "time", // x轴字段
           yField: "value", // y轴字段
-          seriesField: "series", // 数据系列字段
+          seriesField: "type", // 数据系列字段
           legend: true, // 是否展示图例
           smooth: true, // 是否平滑连接点
         });

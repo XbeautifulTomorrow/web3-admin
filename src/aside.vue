@@ -1,28 +1,15 @@
 <template>
   <el-container>
-    <el-aside
-      :width="`${asideWidth}px`"
-      style="background-color: rgb(238, 241, 246)"
-      class="width-animation nav"
-    >
+    <el-aside :width="`${asideWidth}px`" style="background-color: rgb(238, 241, 246)" class="width-animation nav">
       <div class="logoBox" style="background-color: #304156">
         <div class="logo-box"></div>
         <div class="config-box">
-          <el-select
-            v-model="accountType"
-            @change="changeAccount"
-            placeholder="展示测试账号"
-            clearable
-          >
+          <el-select v-model="accountType" @change="changeAccount" placeholder="展示测试账号" clearable>
             <el-option label="展示测试账号" value=""> </el-option>
             <el-option label="不展示测试账号" value="NORMAL"> </el-option>
             <el-option label="只展示测试账号" value="INNER"> </el-option>
           </el-select>
-          <el-select
-            v-model="coinConfig"
-            @change="changeConfig"
-            placeholder="结算币种"
-          >
+          <el-select v-model="coinConfig" @change="changeConfig" placeholder="结算币种">
             <el-option label="ETH" value="ETH"> </el-option>
             <!-- <el-option label="USDT" value="USDT">
             </el-option> -->
@@ -31,6 +18,10 @@
       </div>
       <!-- @select="selectFun" -->
       <el-menu :default-openeds="defaultList" :default-active="defaultActive" :collapse="isCollapse" class="nav-ul">
+        <!-- <el-menu-item index="home">
+          <i class="el-icon-bank-card"></i>
+          <span slot="title">首页</span>
+        </el-menu-item> -->
         <template v-for="(item, index) in menuList">
           <el-submenu :index="item.menuName" :key="index" v-if="item.children && item.children.length > 0">
             <template slot="title">
@@ -293,7 +284,7 @@
       </el-header>
       <el-main
         :class="{
-          'report-main': path === '/report',
+          'home-main': path === '/home',
         }"
       >
         <router-view></router-view>
@@ -331,7 +322,7 @@ export default {
         },
         {
           label: "首页",
-          page: "report",
+          page: "home",
         },
         {
           label: "用户管理",
@@ -755,7 +746,7 @@ export default {
   margin-right: 20px;
 }
 
-.report-main {
+.home-main {
   padding: 0;
 }
 
