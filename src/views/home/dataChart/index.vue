@@ -37,6 +37,10 @@ export default {
       type: [],
       required: true,
     },
+    defaultTime: {
+      type: String,
+      required: false,
+    },
   },
   // 数据
   data() {
@@ -61,6 +65,11 @@ export default {
   created() {},
   // 挂载后
   mounted() {
+    if (this.defaultTime) {
+      this.day = this.defaultTime;
+      console.log(this.defaultTime);
+    }
+
     this.activeName = this.typeList[0].type;
   },
   // 更新后

@@ -36,25 +36,12 @@ export default {
       if (container) {
         this.container.clear();
       } else {
-        const mergedData = [];
-        data.forEach((d) => {
-          Object.keys(d).forEach((key) => {
-            if (key !== "time") {
-              mergedData.push({
-                year: d.time,
-                value: d[key],
-                series: key,
-                type: d[key].type || null,
-              });
-            }
-          });
-        });
         if (this.linePlot) {
           this.linePlot.destroy();
         }
         // 创建折线图实例
         this.linePlot = new Line(id, {
-          data: mergedData,
+          data,
           xField: "time", // x轴字段
           yField: "value", // y轴字段
           seriesField: "type", // 数据系列字段
@@ -66,6 +53,43 @@ export default {
         this.linePlot.render();
       }
     },
+    // chartFun() {
+    //   const { container, dataList, id } = this;
+    //   if (dataList.length < 1 && !id) return;
+    //   const data = dataList;
+    //   if (container) {
+    //     this.container.clear();
+    //   } else {
+    //     const mergedData = [];
+    //     data.forEach((d) => {
+    //       Object.keys(d).forEach((key) => {
+    //         if (key !== "time") {
+    //           mergedData.push({
+    //             year: d.time,
+    //             value: d[key],
+    //             series: key,
+    //             type: d[key].type || null,
+    //           });
+    //         }
+    //       });
+    //     });
+    //     if (this.linePlot) {
+    //       this.linePlot.destroy();
+    //     }
+    //     // 创建折线图实例
+    //     this.linePlot = new Line(id, {
+    //       data: mergedData,
+    //       xField: "time", // x轴字段
+    //       yField: "value", // y轴字段
+    //       seriesField: "type", // 数据系列字段
+    //       legend: true, // 是否展示图例
+    //       smooth: true, // 是否平滑连接点
+    //     });
+
+    //     // 渲染图表
+    //     this.linePlot.render();
+    //   }
+    // },
   },
   // 创建后
   created() {},

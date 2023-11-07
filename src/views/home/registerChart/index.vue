@@ -8,7 +8,7 @@
           :placeholder="$t('public.select')"
           style="width: 135px"
           popper-class="public-select-box"
-          @change="dayChangeFun"
+          @change="mainChartDataRegTotalApi"
         >
           <el-option v-for="item in options" :key="`${item.key}-${item.value}`" :label="item.label" :value="item.value"> </el-option>
         </el-select>
@@ -33,41 +33,55 @@ export default {
   data() {
     return {
       options: options,
-      day: 7,
-      dataList: [
-        { stage: "注册人数", number: 5123 },
-        { stage: "充值人数", number: 3234 },
-        { stage: "消费人数", number: 1123 },
+      day: "SEVEN",
+      sortedMap: [
+        { key: "registerNum", title: "注册人数" },
+        { key: "rechargeNum", title: "充值人数" },
+        { key: "consumeNum", title: "消费人数" },
       ],
+      dataList: [],
+      plot: null,
     };
   },
   // 方法
   methods: {
-    dayChangeFun() {},
     chartFun() {
+      if (this.plot) {
+        this.plot.destroy();
+      }
       const data = this.dataList;
-      const plot = new Funnel("container-funnel", {
+      this.plot = new Funnel("container-funnel", {
         data: data,
-        xField: "stage",
-        yField: "number",
+        xField: "title",
+        yField: "count",
         legend: false,
+        style: {
+          fill: "#000",
+        },
       });
 
-      plot.render();
+      this.plot.render();
     },
     clearTimerFun() {
       clearTimeout(this.timer);
       this.timer = null;
     },
-    async mainChartDataRegTotalApi() {},
+    async mainChartDataRegTotalApi() {
+      const res = await this.$http.getHomeRegisteredUserChart({ timeLimit: this.day });
+      if (res) {
+        this.dataList = this.sortedMap.map((x) => {
+          return { ...x, count: res[x.key] };
+        });
+        console.log(this.dataList);
+        this.chartFun();
+      }
+    },
   },
   // 创建后
-  created() {
-    this.mainChartDataRegTotalApi();
-  },
+  created() {},
   // 挂载后
   mounted() {
-    this.chartFun();
+    this.mainChartDataRegTotalApi();
   },
   // 更新后
   updated() {},
