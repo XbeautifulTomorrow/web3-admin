@@ -6,11 +6,11 @@
       </div>
     </div>
     <div class="report-table-box">
-      <el-table :data="dataList" style="width: 100%" border>
-        <el-table-column prop="qualityType" label="国家" align="center" key="1"> </el-table-column>
-        <el-table-column prop="nftName" label="注册" align="center" key="2"> </el-table-column>
-        <el-table-column prop="nftId" label="充值" align="center" key="3"> </el-table-column>
-        <el-table-column prop="price" label="消费" align="center" key="4"> </el-table-column>
+      <el-table :data="dataList" style="width: 100%" height="500" border>
+        <el-table-column prop="country" label="国家" align="center" key="1"> </el-table-column>
+        <el-table-column prop="registerNum" label="注册" align="center" key="2"> </el-table-column>
+        <el-table-column prop="rechargeAmount" label="充值" align="center" key="3"> </el-table-column>
+        <el-table-column prop="consumeAmount" label="消费" align="center" key="4"> </el-table-column>
       </el-table>
     </div>
   </el-card>
@@ -29,14 +29,15 @@ export default {
   // 方法
   methods: {
     async getDataList() {
-      const res = await this.$http.mainChartDataShow({ type: this.type });
+      const res = await this.$http.getHomeUserRegionStatisticsChart();
       if (res) {
+        this.dataList = res;
       }
     },
   },
   // 创建后
   created() {
-    // this.mainChartDataShowApi();
+    this.getDataList();
   },
   // 挂载后
   mounted() {},
@@ -49,7 +50,7 @@ export default {
 
 <style lang="scss" scoped>
 .report-table-box {
-  min-height: 300px;
+  min-height: 500px;
   .title-box {
     display: flex;
     justify-content: space-between;

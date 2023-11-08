@@ -4,7 +4,7 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import UserList from "@/views/userList/index";
-import Home from "@/views/userList/index";
+import Home from "@/views/home/index";
 import aside from "@/aside.vue";
 
 export const routes = [
@@ -19,8 +19,13 @@ export const routes = [
     children: [
       {
         path: "",
-        component: UserList,
-        name: "userList",
+        component: Home,
+        name: "home",
+      },
+      {
+        path: "/home",
+        component: () => import("@/views/home/index"),
+        name: "home",
       },
       {
         /** 用户列表 */
@@ -189,11 +194,6 @@ export const routes = [
         path: "/setting",
         component: () => import("@/views/setting/index"),
         name: "setting",
-      },
-      {
-        path: "/home",
-        component: () => import("@/views/home/index"),
-        name: "home",
       },
       {
         /** 群发邮件 */

@@ -333,7 +333,7 @@ export const getHomeCashFlowDetection = (obj) => S.get("/home-statistics/cashFlo
 export const getHomeDataChart = (obj) => S.get("/home-statistics/dataChart", obj); //数据图表
 export const getHomeRetainedData = (obj) => S.get("/home-statistics/retainedData", obj); //留存数据
 export const getHomeRegisteredUserChart = (obj) => S.get("/home-statistics/registeredUserChart", obj); //注册用户图表
-export const getHomeOrderChart = (obj) => S.get("/home-statistics/orderChart", obj); //订单统计图表
+export const getHomeOrderChart = (obj) => S.get("/home-statistics/orderChart", obj, "", true); //订单统计图表
 export const getHomeRegionChart = (obj) => S.get("/home-statistics/regionChart", obj); //地区图表
 export const getHomeBoxRanking = (obj) => S.get("/home-statistics/boxRanking", obj); //盲盒排行榜
 export const getHomeOneNftRanking = (obj) => S.get("/home-statistics/oneNftRanking", obj); //竞赛排行榜

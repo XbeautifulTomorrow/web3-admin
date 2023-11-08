@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="report-public-content">
-      <div id="container-funnel"></div>
+      <div id="container-funnel" class="funnel-chart-container"></div>
     </div>
   </el-card>
 </template>
@@ -54,9 +54,12 @@ export default {
         data: data,
         xField: "title",
         yField: "count",
-        legend: false,
-        style: {
-          fill: "#000",
+        theme: {
+          label: {
+            style: {
+              fill: "#ff0000", // 设置字体颜色为红色
+            },
+          },
         },
       });
 
@@ -72,7 +75,6 @@ export default {
         this.dataList = this.sortedMap.map((x) => {
           return { ...x, count: res[x.key] };
         });
-        console.log(this.dataList);
         this.chartFun();
       }
     },
@@ -166,5 +168,10 @@ export default {
 .percent-text-two {
   top: 153px;
   left: -30px;
+}
+</style>
+<style>
+.funnel-chart-container canvas {
+  background: #ccc !important;
 }
 </style>

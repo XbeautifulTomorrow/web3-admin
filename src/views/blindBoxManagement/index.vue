@@ -61,7 +61,7 @@
       </el-table-column>
       <el-table-column prop="boxName" width="120" label="盲盒名称" align="center" key="3"> </el-table-column>
       <el-table-column prop="boxIndex" sortable="custom" label="推荐顺序" align="center" key="4"> </el-table-column>
-      <el-table-column prop="sales" label="内容" align="center" key="5"> </el-table-column>
+      <el-table-column prop="nftTotalNumber" label="权重" align="center" key="5"> </el-table-column>
       <el-table-column prop="price" sortable="custom" label="单价" align="center" key="6"> </el-table-column>
       <el-table-column prop="fivePrice" sortable="custom" label="五连价格" align="center" key="7"></el-table-column>
       <el-table-column prop="tenPrice" sortable="custom" label="十连价格" align="center" key="8"></el-table-column>

@@ -3,19 +3,19 @@
     <div slot="header" class="clearfix">
       <div class="title-box">
         <h3>注册地区</h3>
-        <el-select v-model="day" :placeholder="$t('public.select')" @change="dayChangeFun" style="width: 135px">
+        <el-select v-model="day" :placeholder="$t('public.select')" @change="getDataList" style="width: 135px">
           <el-option v-for="item in options" :key="`${item.key}-${item.value}`" :label="item.label" :value="item.value"> </el-option>
         </el-select>
       </div>
     </div>
     <div class="report-table-box">
-      <div id="container-pie"></div>
+      <div id="container-register"></div>
     </div>
   </el-card>
 </template>
 
 <script>
-import { Pie } from "@antv/g2plot";
+import { Pie, Bar } from "@antv/g2plot";
 import { options } from "../day";
 export default {
   // 模板引入
@@ -23,41 +23,54 @@ export default {
   // 数据
   data() {
     return {
-      dataList: [
-        { type: "中国", value: 27 },
-        { type: "美国", value: 25 },
-        { type: "新加坡", value: 18 },
-        { type: "日本", value: 15 },
-        { type: "印度", value: 10 },
-        { type: "其他", value: 5 },
-      ],
+      dataList: [],
       options: options,
-      day: 7,
+      day: "SEVEN",
+      bar: null,
+      piePlot: null,
     };
   },
   // 方法
   methods: {
-    dayChangeFun() {
-      // this.mainChartDataRegTotalApi();
-    },
     async getDataList() {
-      const res = await this.$http.mainChartDataShow({ type: this.type });
+      const res = await this.$http.getHomeRegionChart({ timeLimit: this.day });
       if (res) {
+        this.dataList = res;
+        this.chartFun();
       }
     },
-    chartFunc() {
+    // chartFun() {
+    //   const data = this.dataList;
+    //   if (this.bar) {
+    //     this.bar.destroy();
+    //   }
+    //   this.bar = new Bar("container-register", {
+    //     data,
+    //     xField: "registerNum",
+    //     yField: "country",
+    //     seriesField: "country",
+    //     legend: {
+    //       position: "top-left",
+    //     },
+    //   });
+
+    //   this.bar.render();
+    // },
+    chartFun() {
       const data = this.dataList;
-      const piePlot = new Pie("container-pie", {
+      if (this.piePlot) {
+        this.piePlot.destroy();
+      }
+      this.piePlot = new Pie("container-register", {
         appendPadding: 10,
         data,
-        angleField: "value",
-        colorField: "type",
+        angleField: "registerNum",
+        colorField: "country",
         radius: 1,
         innerRadius: 0.6,
         label: {
           type: "inner",
           offset: "-50%",
-          content: "{value}",
           style: {
             textAlign: "center",
             fontSize: 14,
@@ -75,18 +88,45 @@ export default {
             content: "注册地区",
           },
         },
+        tooltip: {
+          customContent: (title, items) => {
+            if (items && items[0]) {
+              let data = items[0].data;
+              return `
+                <div class="tool-tip">
+                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.country || "未知"}</p>
+                  <ul>
+                    <li>
+                      <p class="label">注册：</p>
+                      <p class="label">${data.registerNum}</p>
+                    </li>
+                    <li>
+                      <p class="label">登录：</p>
+                      <p class="label">${data.loginNum}</p>
+                    </li>
+                    <li>
+                      <p class="label">充值：</p>
+                      <p class="label">${data.rechargeAmount}</p>
+                    </li>
+                    <li>
+                      <p class="label">消费：</p>
+                      <p class="label">${data.consumeAmount}</p>
+                    </li>
+                  </ul>
+                </div>
+            `;
+            }
+          },
+        },
       });
-
-      piePlot.render();
+      this.piePlot.render();
     },
   },
   // 创建后
-  created() {
-    // this.mainChartDataShowApi();
-  },
+  created() {},
   // 挂载后
   mounted() {
-    this.chartFunc();
+    this.getDataList();
   },
   // 更新后
   updated() {},
@@ -103,5 +143,27 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+::v-deep {
+  .tool-tip {
+    width: 160px;
+    .tool-tip-title {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+      i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+    li {
+      display: flex;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+  }
 }
 </style>

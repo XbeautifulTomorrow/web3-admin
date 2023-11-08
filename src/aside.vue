@@ -18,10 +18,6 @@
       </div>
       <!-- @select="selectFun" -->
       <el-menu :default-openeds="defaultList" :default-active="defaultActive" :collapse="isCollapse" class="nav-ul">
-        <!-- <el-menu-item index="home">
-          <i class="el-icon-bank-card"></i>
-          <span slot="title">首页</span>
-        </el-menu-item> -->
         <template v-for="(item, index) in menuList">
           <el-submenu :index="item.menuName" :key="index" v-if="item.children && item.children.length > 0">
             <template slot="title">

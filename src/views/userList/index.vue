@@ -97,6 +97,12 @@
             {{ aggregateQuery && aggregateQuery.assetPointBalanceTotal }}
           </div>
         </div>
+        <div class="remittance-item">
+          <div class="title">累计提款</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.estimateDrawBanlanceTotal }}
+          </div>
+        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" class="public-table" border @sort-change="sortChange">

@@ -9,11 +9,19 @@
       </div>
     </div>
     <div class="report-table-box">
-      <el-table :data="dataList" style="width: 100%" border>
-        <el-table-column prop="qualityType" label="排名" align="center" key="1"> </el-table-column>
-        <el-table-column prop="nftName" label="系列名" align="center" key="2"> </el-table-column>
-        <el-table-column prop="nftId" label="地板价" align="center" key="3"> </el-table-column>
-        <el-table-column prop="price" :label="labelTxt" align="center" key="4"> </el-table-column>
+      <el-table :data="dataList" style="width: 100%" height="500" border>
+        <el-table-column prop="qualityType" label="排名" align="center" key="1">
+          <template slot-scope="scope">
+            {{ scope.$index + 1 }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="seriesName" label="系列名" align="center" key="2"> </el-table-column>
+        <el-table-column prop="floorPrice" label="地板价" align="center" key="3"> </el-table-column>
+        <el-table-column prop="price" :label="labelTxt" align="center" key="4">
+          <template slot-scope="scope">
+            {{ scope.row[type] }}
+          </template>
+        </el-table-column>
       </el-table>
     </div>
   </el-card>
@@ -26,11 +34,11 @@ export default {
   // 数据
   data() {
     return {
-      type: "1",
+      type: "numberOfTicketsSold",
       selectOptions: [
-        { label: "售出票数", value: "1" },
-        { label: "创建数", value: "2" },
-        { label: "完成数", value: "3" },
+        { label: "售出票数", value: "numberOfTicketsSold" },
+        { label: "创建数", value: "createdNum" },
+        { label: "完成数", value: "finishedNum" },
       ],
       dataList: [],
     };
@@ -45,14 +53,15 @@ export default {
   // 方法
   methods: {
     async getDataList() {
-      const res = await this.$http.mainChartDataShow({ type: this.type });
+      const res = await this.$http.getHomeOneNftRanking({ sortBy: this.type, page: 1, size: 200 });
       if (res) {
+        this.dataList = res.records;
       }
     },
   },
   // 创建后
   created() {
-    // this.mainChartDataShowApi();
+    this.getDataList();
   },
   // 挂载后
   mounted() {},
@@ -65,7 +74,7 @@ export default {
 
 <style lang="scss" scoped>
 .report-table-box {
-  min-height: 300px;
+  min-height: 500px;
 }
 .title-box {
   display: flex;

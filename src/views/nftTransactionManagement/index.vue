@@ -41,12 +41,8 @@
       <el-table-column sortable="custom" prop="id" label="流水号" align="center" key="1"> </el-table-column>
       <el-table-column prop="userId" width="120" label="用户ID" align="center" key="3">
         <template slot-scope="scope">
-          <p>
-            {{ scope.row.userId || "--" }}
-          </p>
-          <p>
-            {{ scope.row.userName || "--" }}
-          </p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userId || "--" }}</p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.userName || "--" }}</p>
         </template>
       </el-table-column>
       <el-table-column sortable="custom" prop="flowType" label="金流类型" align="center" key="4">

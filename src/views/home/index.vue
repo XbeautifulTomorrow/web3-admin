@@ -5,7 +5,9 @@
       金流监测
     </dataChart>
     <dataChart class="mg" :typeList="dataDrawSearch" :dataList="dataDrawDataList" @change="changeTypeChart"> 数据图表 </dataChart>
-    <dataChart class="mg" :typeList="retainedSearch" :dataList="retainedDataList" @change="changeTypeKeep"> 留存数据 </dataChart>
+    <dataChart class="mg" :typeList="retainedSearch" :dataList="retainedDataList" :tooltip="retainedChartTooltip" @change="changeTypeKeep">
+      留存数据
+    </dataChart>
     <div class="mg flex">
       <registerChart class="register-chart"></registerChart>
       <orderTotal class="order-total"></orderTotal>
@@ -64,6 +66,7 @@ export default {
         { type: "THIRTY", name: "30日" },
       ],
       retainedDataList: [],
+      retainedChartTooltip: null,
     };
   },
   // 方法
@@ -147,20 +150,37 @@ export default {
       }
       const res = await this.$http.getHomeRetainedData({ retainedDimension, timeLimit });
       if (res) {
-        const newArray = [];
-        res.forEach((obj) => {
-          for (let key in obj) {
-            if (key !== "dayTime") {
-              const newObject = {
-                type: key === "" ? "留存比例" : key === "registerNum" ? "注册人数" : key === "loginNum" ? "登录人数" : "其他",
-                value: obj[key],
-                time: obj.dayTime,
-              };
-              newArray.push(newObject);
-            }
-          }
+        this.retainedDataList = res.map((x) => {
+          let obj = {
+            type: "留存比例",
+            value: x.proportion,
+            time: x.dayTime,
+            ...x,
+          };
+          return obj;
         });
-        this.retainedDataList = newArray;
+        this.retainedChartTooltip = {
+          customContent: (title, items) => {
+            if (items && items[0]) {
+              let data = items[0].data;
+              return `
+                <div class="tool-tip">
+                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.value + "%"}</p>
+                  <ul>
+                    <li>
+                      <p class="label">注册人数：</p>
+                      <p class="label">${data.registerNum}</p>
+                    </li>
+                    <li>
+                      <p class="label">登录人数：</p>
+                      <p class="label">${data.loginNum}</p>
+                    </li>
+                  </ul>
+                </div>
+            `;
+            }
+          },
+        };
       }
     },
   },

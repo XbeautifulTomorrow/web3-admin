@@ -19,6 +19,10 @@ export default {
       type: String,
       required: true,
     },
+    tooltip: {
+      required: false,
+      default: null,
+    },
   },
   // 数据
   data() {
@@ -30,6 +34,7 @@ export default {
   // 方法
   methods: {
     chartFun() {
+      console.log(this.tooltip, "tooltip---");
       const { container, dataList, id } = this;
       if (dataList.length < 1 && !id) return;
       const data = dataList;
@@ -47,49 +52,13 @@ export default {
           seriesField: "type", // 数据系列字段
           legend: true, // 是否展示图例
           smooth: true, // 是否平滑连接点
+          tooltip: this.tooltip,
         });
 
         // 渲染图表
         this.linePlot.render();
       }
     },
-    // chartFun() {
-    //   const { container, dataList, id } = this;
-    //   if (dataList.length < 1 && !id) return;
-    //   const data = dataList;
-    //   if (container) {
-    //     this.container.clear();
-    //   } else {
-    //     const mergedData = [];
-    //     data.forEach((d) => {
-    //       Object.keys(d).forEach((key) => {
-    //         if (key !== "time") {
-    //           mergedData.push({
-    //             year: d.time,
-    //             value: d[key],
-    //             series: key,
-    //             type: d[key].type || null,
-    //           });
-    //         }
-    //       });
-    //     });
-    //     if (this.linePlot) {
-    //       this.linePlot.destroy();
-    //     }
-    //     // 创建折线图实例
-    //     this.linePlot = new Line(id, {
-    //       data: mergedData,
-    //       xField: "time", // x轴字段
-    //       yField: "value", // y轴字段
-    //       seriesField: "type", // 数据系列字段
-    //       legend: true, // 是否展示图例
-    //       smooth: true, // 是否平滑连接点
-    //     });
-
-    //     // 渲染图表
-    //     this.linePlot.render();
-    //   }
-    // },
   },
   // 创建后
   created() {},
@@ -123,5 +92,27 @@ export default {
   padding: 10px 10px 20px 20px;
   background-color: #fff;
   border: 1px solid #c6c6c6;
+}
+::v-deep {
+  .tool-tip {
+    width: 160px;
+    .tool-tip-title {
+      display: flex;
+      align-items: center;
+      margin-top: 12px;
+      i {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 8px;
+      }
+    }
+    li {
+      display: flex;
+      margin: 12px 0;
+      font-size: 14px;
+    }
+  }
 }
 </style>

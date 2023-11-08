@@ -13,7 +13,7 @@
         <el-radio-group size="medium" v-model="activeName" @change="changeType" style="margin-bottom: 50px">
           <el-radio-button :label="item.type" v-for="item in typeList" :key="item.type">{{ item.name }}</el-radio-button>
         </el-radio-group>
-        <chart :dataList="dataList" :id="activeName" />
+        <chart :dataList="dataList" :id="activeName" :tooltip="tooltip" />
       </div>
     </div>
   </el-card>
@@ -40,6 +40,10 @@ export default {
     defaultTime: {
       type: String,
       required: false,
+    },
+    tooltip: {
+      required: false,
+      default: null,
     },
   },
   // 数据
