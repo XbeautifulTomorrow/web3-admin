@@ -1,9 +1,10 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
-      <el-input class="public-input" style="width: 220px" placeholder="输入 局数" v-model="warBaseId" clearable />
-      <el-input class="public-input" style="width: 220px" placeholder="输入订单号、金流流水号" v-model="orderNum" clearable />
+      <el-input class="public-input" style="width: 210px" placeholder="输入 用户ID/昵称" v-model="userName" clearable />
+      <el-input class="public-input" style="width: 210px" placeholder="输入 局数" v-model="warBaseId" clearable />
+      <el-input class="public-input" style="width: 210px" placeholder="输入订单号" v-model="orderNum" clearable />
+      <el-input class="public-input" style="width: 210px" placeholder="输入金流流水号" v-model="flowId" clearable />
       <el-select class="public-input" v-model="status" placeholder="全部状态" clearable style="width: 120px">
         <el-option label="待开奖" value="WAIT" />
         <el-option label="已开奖" value="OPEN" />
@@ -102,6 +103,7 @@ export default {
   data() {
     return {
       orderNum: null,
+      flowId: null,
       userName: null,
       warBaseId: null,
       status: null,
@@ -138,6 +140,7 @@ export default {
       }
       return {
         orderNumber: this.orderNum,
+        flowId: this.flowId,
         warBaseId: this.warBaseId,
         obscureField: this.userName,
         currentStatus: this.status,

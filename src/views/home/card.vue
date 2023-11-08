@@ -50,7 +50,6 @@ export default {
           if (x.key != "pendingWithdrawalCount") {
             return { ...x, ...res[x.key] };
           } else {
-            console.log(res[x.key], "-------");
             return { ...x, count: res[x.key] };
           }
         });

@@ -126,7 +126,7 @@
           </div>
         </div>
       </div>
-      <el-table :data="downData" style="width: auto" height="400px" border>
+      <el-table :data="downData" @sort-change="sortSubChange" style="width: auto" height="400px" border>
         <el-table-column prop="userName" width="120" label="用户" align="center" key="1">
           <template slot-scope="scope">
             <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">{{ scope.row.id || "--" }}</p>
@@ -135,17 +135,17 @@
         </el-table-column>
         <el-table-column prop="email" width="120" label="邮箱" align="center" key="2"> </el-table-column>
         <el-table-column prop="inviteCode" label="邀请码" align="center" key="3"> </el-table-column>
-        <el-table-column prop="traNumber" label="交易笔数" align="center" key="4"> </el-table-column>
-        <el-table-column prop="totalConsumptions" label="消费金额" align="center" key="5"> </el-table-column>
+        <el-table-column prop="traNumber" sortable="custom" label="交易笔数" align="center" key="4"> </el-table-column>
+        <el-table-column prop="totalConsumptions" sortable="custom" label="消费金额" align="center" key="5"> </el-table-column>
         <el-table-column prop="rebateRate" label="返佣比例" align="center" key="6">
           <template slot-scope="scope">
             {{ `${new bigNumber(scope.row.rebateRate).multipliedBy(100)}%` }}
           </template>
         </el-table-column>
-        <el-table-column prop="totalAmount" label="佣金" align="center" key="7"> </el-table-column>
-        <el-table-column prop="pointAmountTotal" label="注册积分" align="center" key="8"> </el-table-column>
-        <el-table-column prop="extraPointAmountTotal" label="额外积分" align="center" key="9"> </el-table-column>
-        <el-table-column prop="createTime" width="140" label="注册时间" align="center" key="10">
+        <el-table-column prop="totalAmount" sortable="custom" label="佣金" align="center" key="7"> </el-table-column>
+        <el-table-column prop="pointAmountTotal" sortable="custom" label="注册积分" align="center" key="8"> </el-table-column>
+        <el-table-column prop="extraPointAmountTotal" sortable="custom" label="额外积分" align="center" key="9"> </el-table-column>
+        <el-table-column prop="createTime" width="140" sortable="custom" label="注册时间" align="center" key="10">
           <template slot-scope="scope">
             {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
           </template>
@@ -234,6 +234,10 @@ export default {
       downData: null,
       downBaseUserPage: null,
       downAggregateQuery: null,
+      sortSubData: {
+        orderBy: null,
+        orderType: null,
+      },
     };
   },
   mixins: [pagination],
@@ -276,6 +280,7 @@ export default {
 
       this.fetchRebatesBaseList();
     },
+
     // 加载列表
     async fetchRebatesBaseList(isSearch = true) {
       const search = this.searchFun();
@@ -314,6 +319,16 @@ export default {
       this.fetchRebatesBaseDownList();
       this.showDownDialog = true;
     },
+    sortSubChange({ column, prop, order }) {
+      this.sortSubData.orderBy = prop;
+      this.sortSubData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortSubData.orderType = null;
+      }
+
+      this.fetchRebatesBaseDownList();
+    },
     async fetchRebatesBaseDownList(isSearch = true) {
       const search = {
         obscureField: this.downObscureField,
@@ -322,7 +337,7 @@ export default {
         upId: this.upId,
       };
 
-      const { downSize, coin, userType } = this;
+      const { downSize, coin, userType, sortSubData } = this;
       let _page = this.downPage;
       if (isSearch) {
         this.downPage = 1;
@@ -335,6 +350,7 @@ export default {
           size: downSize,
           page: _page,
         },
+        ...this.sortSubData,
         ...search,
       };
       const res = await this.$http.getRebatesBaseDownList(data);

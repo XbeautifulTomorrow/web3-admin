@@ -120,8 +120,7 @@
       <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
       <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
       <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11"> </el-table-column>
-      <el-table-column prop="assetBalanceUTotal" sortable="custom" label="余额(USDT)" align="center" width="110" key="12">
-      </el-table-column>
+      <el-table-column prop="assetBalanceU" sortable="custom" label="余额(USDT)" align="center" width="110" key="12"> </el-table-column>
       <el-table-column prop="estimateBanlanceTotal" sortable="custom" label="资产预估" align="center" width="110" key="21">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row)">
