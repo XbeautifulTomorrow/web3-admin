@@ -366,6 +366,7 @@
         <el-button type="primary" style="width: 160px" @click="showDialog = true">新增钱包</el-button>
       </div>
       <el-table :data="tableData" style="width: 760px; min-width: 0" class="public-table" border>
+        <el-table-column prop="type" width="320" label="钱包类型" align="center" key="1"> </el-table-column>
         <el-table-column prop="walletAddress" width="320" label="钱包地址" align="center" key="1"> </el-table-column>
         <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
           <template slot-scope="scope">
@@ -430,6 +431,12 @@
       :before-close="handleClose"
     >
       <el-form ref="ruleForm" class="add-form" label-width="80px">
+        <el-form-item label="钱包类型" prop="reclaimRate">
+          <el-select style="width: 300px" v-model="walletAddrType" placeholder="选择钱包类型">
+            <el-option label="EVM" value="EVM" />
+            <el-option label="TRON" value="TRON" />
+          </el-select>
+        </el-form-item>
         <el-form-item label="钱包地址" prop="reclaimRate">
           <el-input v-model="walletAddr" style="width: 300px" placeholder="请输入钱包地址"></el-input>
         </el-form-item>
@@ -500,6 +507,7 @@ export default {
       /** 钱包相关 */
       showDialog: false,
       walletAddr: null,
+      walletAddrType: "EVM",
 
       /** 邀请文本相关 */
       inviteList: [{ text: "" }],
@@ -820,6 +828,7 @@ export default {
       }
 
       const res = await this.$http.systemWalletAdd({
+        type: this.walletAddrType,
         walletAddress: this.walletAddr,
         walletType: "GATHER",
       });

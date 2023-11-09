@@ -251,14 +251,14 @@
     <el-dialog v-if="assetBalanceDialog" title="资产详情" :visible.sync="assetBalanceDialog" width="500px" :close-on-click-modal="false">
       <el-table :data="assetBalanceList" style="width: 100%" border>
         <template v-if="assetDialogType == 'withdraw'">
-          <el-table-column prop="coin" label="币种" align="center" key="9"> </el-table-column>
-          <el-table-column prop="withdrawalPrice" label="金额" align="center" key="10"> </el-table-column>
-          <el-table-column prop="serviceFee" label="手续费" align="center" key="10"> </el-table-column>
+          <el-table-column prop="coin" label="币种" align="center" key="1"> </el-table-column>
+          <el-table-column prop="withdrawalPrice" label="金额" align="center" key="2"> </el-table-column>
+          <el-table-column prop="serviceFee" label="手续费" align="center" key="3"> </el-table-column>
         </template>
         <template v-else>
-          <el-table-column prop="assetType" label="币种" align="center" key="9"> </el-table-column>
-          <el-table-column prop="assetBalance" label="数量" align="center" key="10"> </el-table-column>
-          <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="10"> </el-table-column>
+          <el-table-column prop="assetType" label="币种" align="center" key="4"> </el-table-column>
+          <el-table-column prop="assetBalance" label="数量" align="center" key="5"> </el-table-column>
+          <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="6"> </el-table-column>
         </template>
       </el-table>
       <span slot="footer" class="dialog-footer">

@@ -112,7 +112,11 @@
           <span v-if="scope.row.orderType == 'LIMITED_PRICE'">限价</span>
         </template>
       </el-table-column>
-      <el-table-column prop="price" sortable="custom" label="价值(USDT)" align="center" key="9"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" label="价值(USDT)" align="center" key="9">
+        <template slot-scope="scope">
+          {{ (scope.row.ticketPrice * scope.row.limitNum).toFixed(2) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="ticketPrice" sortable="custom" label="票单价" align="center" key="10"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="限制" align="center" key="11"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="免费票" align="center" key="12">

@@ -44,16 +44,27 @@ export default {
         if (this.linePlot) {
           this.linePlot.destroy();
         }
-        // 创建折线图实例
-        this.linePlot = new Line(id, {
+        let lineOptions = {
+          forceFit: true,
           data,
           xField: "time", // x轴字段
           yField: "value", // y轴字段
+          yAxis: {
+            label: {
+              // 数值格式化为千分位
+              formatter: (v) => `${v}`.replace(/\d{1,3}(?=(\d{3})+$)/g, (s) => `${s},`),
+            },
+          },
           seriesField: "type", // 数据系列字段
           legend: true, // 是否展示图例
           smooth: true, // 是否平滑连接点
-          tooltip: this.tooltip,
-        });
+          responsive: true,
+        };
+        if (this.tooltip) {
+          lineOptions.tooltip = this.tooltip;
+        }
+        // 创建折线图实例
+        this.linePlot = new Line(id, lineOptions);
 
         // 渲染图表
         this.linePlot.render();
