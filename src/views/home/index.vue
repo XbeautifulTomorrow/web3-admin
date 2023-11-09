@@ -65,6 +65,7 @@ export default {
         { type: "FOURTEEN", name: "14日" },
         { type: "THIRTY", name: "30日" },
       ],
+      coin: ["ETH", "USDT"],
       retainedDataList: [],
       retainedChartTooltip: null,
     };
