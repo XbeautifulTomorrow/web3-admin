@@ -200,9 +200,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.report-box {
-  margin: 20px;
-}
 .report-par {
   display: flex;
   justify-content: space-between;
