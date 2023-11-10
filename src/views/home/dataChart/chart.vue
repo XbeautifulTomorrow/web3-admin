@@ -110,6 +110,7 @@ export default {
     .tool-tip-title {
       display: flex;
       align-items: center;
+      // justify-content: center;
       margin-top: 12px;
       i {
         width: 8px;

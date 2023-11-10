@@ -65,13 +65,33 @@ export default {
         { type: "FOURTEEN", name: "14日" },
         { type: "THIRTY", name: "30日" },
       ],
-      coin: ["ETH", "USDT"],
+      coin: ["ETH", "USDT", "WETH", "OKT"],
       retainedDataList: [],
       retainedChartTooltip: null,
     };
   },
   // 方法
   methods: {
+    dataFormat(arrObj) {
+      let allProperties = [];
+      let arr = JSON.parse(JSON.stringify(arrObj));
+      for (let i = 0; i < arr.length; i++) {
+        let properties = Object.keys(arr[i]);
+        allProperties = allProperties.concat(properties);
+      }
+
+      let uniqueProperties = Array.from(new Set(allProperties));
+
+      for (let i = 0; i < arr.length; i++) {
+        for (let j = 0; j < uniqueProperties.length; j++) {
+          let property = uniqueProperties[j];
+          if (!arr[i].hasOwnProperty(property)) {
+            arr[i][property] = 0;
+          }
+        }
+      }
+      return arr;
+    },
     //金流监测
     async changeTypeCash(data) {
       let assetType = this.goldFlowSearch[0].type;
@@ -82,8 +102,9 @@ export default {
       }
       const res = await this.$http.getHomeCashFlowDetection({ assetType, timeLimit });
       if (res) {
+        const formatRes = this.dataFormat(res);
         const newArray = [];
-        res.forEach((obj) => {
+        formatRes.forEach((obj) => {
           for (let key in obj) {
             if (key !== "time") {
               const newObject = {
@@ -101,6 +122,7 @@ export default {
     // 数据图表
     async changeTypeChart(data) {
       let type = this.dataDrawSearch[0].type;
+
       let timeLimit = "SEVEN";
       if (data) {
         type = data.type;
@@ -135,9 +157,21 @@ export default {
           });
           this.dataDrawDataList = newArray;
         } else {
-          this.dataDrawDataList = res.map((x) => {
-            return { value: x.totalAmount, time: x.time };
+          const formatRes = this.dataFormat(res);
+          const newArray = [];
+          formatRes.forEach((obj) => {
+            for (let key in obj) {
+              if (key !== "time") {
+                const newObject = {
+                  type: key === "totalAmount" ? "总计" : key,
+                  value: obj[key],
+                  time: obj.time,
+                };
+                newArray.push(newObject);
+              }
+            }
           });
+          this.dataDrawDataList = newArray;
         }
       }
     },
@@ -166,8 +200,12 @@ export default {
               let data = items[0].data;
               return `
                 <div class="tool-tip">
-                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.value + "%"}</p>
+                  <p class="tool-tip-title">${data.time}</p>
                   <ul>
+                    <li>
+                      <p class="label">留存：</p>
+                      <p class="label">${data.value + "%"}</p>
+                    </li>
                     <li>
                       <p class="label">注册人数：</p>
                       <p class="label">${data.registerNum}</p>
