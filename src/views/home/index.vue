@@ -214,7 +214,7 @@ export default {
   align-items: stretch;
 }
 .register-chart {
-  flex: 1.5;
+  flex: 1;
 }
 .order-total {
   flex: 1;

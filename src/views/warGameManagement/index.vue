@@ -39,6 +39,12 @@
           </div>
         </div>
         <div class="remittance-item">
+          <div class="title">总冠军收入</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.totalWinerIncome }}
+          </div>
+        </div>
+        <div class="remittance-item">
           <div class="title">总手续费</div>
           <div class="val">
             {{ aggregateQuery && aggregateQuery.totalHandlingFee }}

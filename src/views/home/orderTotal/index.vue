@@ -137,7 +137,7 @@ export default {
   justify-content: space-between;
   align-items: center;
   .time-box {
-    width: 348px;
+    width: 360px;
   }
 }
 </style>

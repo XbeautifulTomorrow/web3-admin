@@ -35,27 +35,13 @@ export default {
     async getDataList() {
       const res = await this.$http.getHomeRegionChart({ timeLimit: this.day });
       if (res) {
-        this.dataList = res;
+        this.dataList = res.map((x) => {
+          x.country = x.country || "其他";
+          return x;
+        });
         this.chartFun();
       }
     },
-    // chartFun() {
-    //   const data = this.dataList;
-    //   if (this.bar) {
-    //     this.bar.destroy();
-    //   }
-    //   this.bar = new Bar("container-register", {
-    //     data,
-    //     xField: "registerNum",
-    //     yField: "country",
-    //     seriesField: "country",
-    //     legend: {
-    //       position: "top-left",
-    //     },
-    //   });
-
-    //   this.bar.render();
-    // },
     chartFun() {
       const data = this.dataList;
       if (this.piePlot) {
@@ -94,7 +80,7 @@ export default {
               let data = items[0].data;
               return `
                 <div class="tool-tip">
-                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.country || "未知"}</p>
+                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.country}</p>
                   <ul>
                     <li>
                       <p class="label">注册：</p>
