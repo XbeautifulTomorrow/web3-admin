@@ -22,6 +22,7 @@ const Font = Quill.import("attributors/style/font"); // 引入这个后会把样
 const fonts = ["SimSun", "SimHei", "Microsoft-YaHei", "KaiTi", "FangSong"];
 Font.whitelist = fonts; // 将字体加入到白名单
 Quill.register(Font, true);
+
 // 工具栏
 const toolbarOptions = [
   ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线 -----['bold', 'italic', 'underline', 'strike']
@@ -71,11 +72,15 @@ export default {
   created() {
     this.ruleForm.content = this.content;
   },
+  mounted() {
+    const quill = this.$refs.newEditor.quill;
+    quill.format("color", "#a9a4b4");
+  },
   methods: {
     onEditorChange({ quill, html, text }) {
       this.ruleForm.content = html;
       this.ruleForm.contentText = text;
-      this.$emit("change", this.ruleForm.content);
+      this.$emit("change", this.ruleForm.content, this.ruleForm.contentText);
     },
   },
 };

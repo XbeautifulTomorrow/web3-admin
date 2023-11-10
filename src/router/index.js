@@ -330,11 +330,6 @@ export const routes = [
         name: "noticeManagement",
         component: () => import("@/views/noticeManagement/index"),
       },
-      {
-        path: "/noticeManagement/addNotice",
-        name: "addNotice",
-        component: () => import("@/views/noticeManagement/addNotice"),
-      },
     ],
   },
 ];

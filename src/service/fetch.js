@@ -338,3 +338,14 @@ export const getHomeRegionChart = (obj) => S.get("/home-statistics/regionChart",
 export const getHomeBoxRanking = (obj) => S.get("/home-statistics/boxRanking", obj); //盲盒排行榜
 export const getHomeOneNftRanking = (obj) => S.get("/home-statistics/oneNftRanking", obj); //竞赛排行榜
 export const getHomeUserRegionStatisticsChart = (obj) => S.get("/home-statistics/userRegionStatisticsChart", obj); //用户地区统计图表
+
+/**
+ * @description 公告管理
+ */
+export const getAnnouncementList = (obj) => S.get("/announcement/announcementList", obj); // 公告列表
+export const getAnnouncementInfo = (obj) => S.get("/announcement/queryAnnouncement", obj); // 查询公告详情
+export const saveAnnouncement = (obj) => S.post("/announcement/saveAnnouncement", obj, true); // 保存公告
+export const updateAnnouncement = (obj) => S.post("/announcement/updateAnnouncement", obj, true); // 修改公告
+export const deleteAnnouncement = (obj) => S.get("/announcement/deleteAnnouncement", obj); // 删除公告
+export const setIsForcedSwitch = (obj) => S.get("/announcement/isForcedSwitch", obj); // 是否强提醒
+export const setIsImportantSwitch = (obj) => S.get("/announcement/isImportantSwitch", obj); // 是否是重要公告

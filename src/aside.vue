@@ -18,10 +18,6 @@
       </div>
       <!-- @select="selectFun" -->
       <el-menu :default-openeds="defaultList" :default-active="defaultActive" :collapse="isCollapse" class="nav-ul">
-        <!-- <el-menu-item index="noticeManagement">
-          <i class="el-icon-bank-card"></i>
-          <span slot="title">广告</span>
-        </el-menu-item> -->
         <template v-for="(item, index) in menuList">
           <el-submenu :index="item.menuName" :key="index" v-if="item.children && item.children.length > 0">
             <template slot="title">
@@ -373,6 +369,10 @@ export default {
           page: "bannerManagement",
         },
         {
+          label: "公告管理",
+          page: "noticeManagement",
+        },
+        {
           label: "市场管理",
           page: "marketManagement",
         },
@@ -588,6 +588,8 @@ export default {
         "mandatoryAudit",
         "activityManagement",
         "activityList",
+        "bannerManagement",
+        "noticeManagement",
       ];
 
       const mallManagement = [

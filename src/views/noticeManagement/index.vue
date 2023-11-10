@@ -10,14 +10,7 @@
         @keyup.enter.native="getTableList"
       ></el-input>
 
-      <el-button
-        size="medium"
-        type="primary"
-        style="margin-left: 20px"
-        icon="el-icon-search"
-        @click="getTableList"
-        >搜索</el-button
-      >
+      <el-button type="primary" style="margin-left: 20px" icon="el-icon-search" @click="getTableList">搜索</el-button>
 
       <el-button type="primary" @click="handleAdd">添加公告</el-button>
     </div>
@@ -45,85 +38,65 @@
       <el-table-column prop="forcedSwitch" label="是否强提醒" min-width="100">
         <template slot-scope="scope">
           <div @click="changeSwitch(scope.row)">
-            <el-switch
-              :value="scope.row.forcedSwitch == 0 ? false : true"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            >
-            </el-switch>
+            <el-switch :value="scope.row.forcedSwitch == 0 ? false : true" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
           </div>
         </template>
       </el-table-column>
 
-      <el-table-column
-        prop="importantSwitch"
-        label="是否是重要公告"
-        min-width="100"
-      >
+      <el-table-column prop="importantSwitch" label="是否是重要公告" min-width="100">
         <template slot-scope="scope">
           <div @click="changeSwitch2(scope.row)">
-            <el-switch
-              :value="scope.row.importantSwitch == 0 ? false : true"
-              active-color="#13ce66"
-              inactive-color="#ff4949"
-            >
-            </el-switch>
+            <el-switch :value="scope.row.importantSwitch == 0 ? false : true" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
           </div>
         </template>
       </el-table-column>
-
-      <el-table-column prop="project" label="版块">
-        <template slot-scope="scope">
-          <span> {{ stateFormat(scope.row.project) }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column prop="scope" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
-          <el-button size="mini" type="primary" @click="handleEditor(scope.row)"
-            >编辑</el-button
-          >
-          <el-button size="mini" type="danger" @click="handleDel(scope.row)">
-            删除
-          </el-button>
+          <el-button size="mini" type="primary" @click="handleEditor(scope.row)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDel(scope.row)"> 删除 </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <div class="pageBox">
-      <el-pagination
-        style="margin-top: 12px"
-        layout="total, sizes, prev, pager, next, jumper"
-        background
-        :total="pagination.total"
-        :current-page="pagination.page"
-        :page-sizes="pagination.pageSizes"
-        :page-size="pagination.size"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
+    <el-pagination
+      style="margin-top: 12px"
+      layout="total, sizes, prev, pager, next, jumper"
+      background
+      :total="pagination.total"
+      :current-page="pagination.page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="pagination.size"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      class="public-pagination"
+    />
+    <el-dialog
+      v-if="dialogVisible"
+      :title="!id ? '添加公告' : '编辑公告'"
+      :visible.sync="dialogVisible"
+      width="1200px"
+      top="2vh"
+      :close-on-click-modal="false"
+    >
+      <addNotice :id="id" @close="dialogVisible = false" @refresh="getTableList" />
+      <!-- <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">关闭</el-button>
+      </span> -->
+    </el-dialog>
   </div>
 </template>
 <script>
 import pagination from "@/mixins/pagination";
+import addNotice from "./addNotice";
 
 export default {
   name: "NoticeList",
   mixins: [pagination],
+  components: { addNotice },
   data() {
     return {
       noticeTitle: null,
       protocolList: [],
-
-      ruleForm: {
-        language: "",
-        title: "",
-        content: "",
-        contentHtml: "",
-        forcedSwitch: "",
-        importantSwitch: "",
-      },
       forcedSwitch: "",
       importantSwitch: "",
 
@@ -133,27 +106,20 @@ export default {
         pageSizes: [10, 20, 40, 60],
         total: 0,
       },
+      dialogVisible: false,
+      id: null,
     };
   },
   created() {
     this.getTableList();
-    this.fetchGetBanner();
   },
   methods: {
-    stateFormat(event) {
-      if (event == "cloud_fil") {
-        return "云算力";
-      } else {
-        return "POW";
-      }
-    },
-
     //是否强提醒
     changeSwitch(row) {
       let annId = row.id;
       let isForced = row.forcedSwitch;
       this.$http
-        .isForcedSwitch({
+        .setIsForcedSwitch({
           annId: annId,
           isForced: isForced == 0 ? 1 : 0,
         })
@@ -168,7 +134,7 @@ export default {
       let annId = row.id;
       let isImportant = row.importantSwitch;
       this.$http
-        .isImportantSwitch({
+        .setIsImportantSwitch({
           annId: annId,
           isImportant: isImportant == 1 ? 0 : 1,
         })
@@ -184,14 +150,13 @@ export default {
 
     // 获取 list
     async fetchGetBanner() {
-      this.protocolList = [];
-      let res = await this.$http.getUserLists({
+      let res = await this.$http.getAnnouncementList({
         title: this.noticeTitle,
         page: this.pagination.page,
         size: this.pagination.size,
       });
       if (res) {
-        this.protocolList = res.list;
+        this.protocolList = res.records;
         this.pagination.total = res.total;
       }
     },
@@ -205,12 +170,13 @@ export default {
       this.fetchGetBanner();
     },
     handleAdd() {
-      this.$router.push({ name: "addNotice" });
+      this.id = null;
+      this.dialogVisible = true;
     },
 
     handleEditor(row) {
-      this.ruleForm = { ...row };
-      this.$router.push({ name: "addNotice", query: { id: row.id } });
+      this.id = row.id;
+      this.dialogVisible = true;
     },
 
     handleDel(row) {
@@ -220,9 +186,8 @@ export default {
         type: "info",
       })
         .then(async () => {
-          const res = await this.$http.annOnOff({
+          const res = await this.$http.deleteAnnouncement({
             annId: row.id,
-            status: row.status == 0 ? 1 : 0,
           });
           if (res) {
             this.fetchGetBanner();
