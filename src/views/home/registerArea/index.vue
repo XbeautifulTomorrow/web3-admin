@@ -36,7 +36,7 @@ export default {
       const res = await this.$http.getHomeRegionChart({ timeLimit: this.day });
       if (res) {
         this.dataList = res.map((x) => {
-          x.country = x.country || "其他";
+          x.type = `${x.country || "其他"}:${x.registerNum}`;
           return x;
         });
         this.chartFun();
@@ -51,7 +51,7 @@ export default {
         appendPadding: 10,
         data,
         angleField: "registerNum",
-        colorField: "country",
+        colorField: "type",
         radius: 1,
         innerRadius: 0.6,
         label: {
@@ -80,7 +80,7 @@ export default {
               let data = items[0].data;
               return `
                 <div class="tool-tip">
-                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.country}</p>
+                  <p class="tool-tip-title"><i style="background:${items[0].color}"></i>${data.country || "其他"}</p>
                   <ul>
                     <li>
                       <p class="label">注册：</p>

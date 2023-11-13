@@ -71,7 +71,6 @@ export default {
   mounted() {
     if (this.defaultTime) {
       this.day = this.defaultTime;
-      console.log(this.defaultTime);
     }
 
     this.activeName = this.typeList[0].type;

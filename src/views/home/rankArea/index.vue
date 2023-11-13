@@ -7,7 +7,11 @@
     </div>
     <div class="report-table-box">
       <el-table :data="dataList" style="width: 100%" height="500" border>
-        <el-table-column prop="country" label="国家" align="center" key="1"> </el-table-column>
+        <el-table-column prop="country" label="国家" align="center" key="1">
+          <template slot-scope="scope">
+            {{ scope.row.country || "其他" }}
+          </template>
+        </el-table-column>
         <el-table-column prop="registerNum" label="注册" align="center" key="2"> </el-table-column>
         <el-table-column prop="rechargeAmount" label="充值" align="center" key="3"> </el-table-column>
         <el-table-column prop="consumeAmount" label="消费" align="center" key="4"> </el-table-column>

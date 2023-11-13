@@ -34,7 +34,6 @@ export default {
   // 方法
   methods: {
     chartFun() {
-      console.log(this.tooltip, "tooltip---");
       const { container, dataList, id } = this;
       if (dataList.length < 1 && !id) return;
       const data = dataList;

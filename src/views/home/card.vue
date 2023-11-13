@@ -6,7 +6,7 @@
         <p class="num">{{ i.count }}</p>
         <p :class="['increase', { decrease: !i.increaseOrDecrease }]"><span class="sub-title">昨日：</span>{{ i.yesterdayCount }}</p>
         <p :class="['increase', { decrease: !i.increaseOrDecrease }]">
-          <span class="sub-title">同比上周：</span>{{ i.percentage }}
+          <span class="sub-title">同比上周：</span>{{ i.percentage }}%
           <i class="el-icon-top" v-if="i.increaseOrDecrease"></i>
           <i class="el-icon-bottom" v-else></i>
         </p>
