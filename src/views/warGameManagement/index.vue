@@ -86,6 +86,11 @@
       <el-table-column prop="warFee" label="战争手续费" align="center" key="11"> </el-table-column>
       <el-table-column prop="inBigPrize" label="入奖池" align="center" key="14"> </el-table-column>
       <el-table-column prop="totalBigPrize" label="大奖累计" sortable="custom" align="center" key="15"> </el-table-column>
+      <el-table-column prop="totalBigPrize" label="是否血战到底" sortable="custom" align="center" key="16">
+        <template slot-scope="scope">
+          {{ scope.row.bigPrizeStatus == "TRUE" ? "是" : "否" }}
+        </template>
+      </el-table-column>
       <el-table-column sortable="custom" prop="currentStatus" label="状态" align="center" key="17" fixed="right">
         <template slot-scope="scope">
           <span style="color: #00bdff" v-if="scope.row.currentStatus == 'WAIT'"> 待开奖 </span>
