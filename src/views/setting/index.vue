@@ -647,7 +647,6 @@ export default {
       } = this.withdrawals;
 
       if (
-        !withdrawalFees ||
         !nftWithdrawalFees ||
         !auditThresholds ||
         !withdrawalLimits ||
