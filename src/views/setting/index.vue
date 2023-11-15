@@ -266,6 +266,21 @@
     </div>
     <div class="withdrawal-settings">
       <div class="setting-item">
+        <div class="setting-title">最低消费</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入最低消费"
+            v-model="battle.lowPriceLimit"
+            clearable
+          >
+            <template slot="append">{{ coin }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">票单价</div>
         <div class="setting-val">
           <el-input class="public-input" type="number" style="width: 300px" placeholder="输入票单价" v-model="battle.singlePrice" clearable>
@@ -495,6 +510,7 @@ export default {
 
       /** 战争配置 */
       battle: {
+        lowPriceLimit: null, //最低消费
         singlePrice: null, //票单价
         fee: null, //手续费
         singleTime: null, //单局时长
