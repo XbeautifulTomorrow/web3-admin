@@ -220,7 +220,17 @@
     </el-dialog>
     <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false" :before-close="handleClose">
       <div>
-        <el-input-number v-model="score" style="width: 100%"></el-input-number>
+        <el-form :model="ruleForm" ref="ruleForm" label-width="40px" class="demo-ruleForm">
+          <el-form-item label="币种" prop="coin">
+            <el-select v-model="ruleForm.coin" placeholder="请选择币种" style="width: 300px">
+              <el-option label="USDT" value="USDT"> </el-option>
+              <el-option label="ETH" value="ETH"> </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="上分" prop="score">
+            <el-input-number v-model="ruleForm.score" style="width: 300px"></el-input-number>
+          </el-form-item>
+        </el-form>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -285,7 +295,11 @@ export default {
       testData: [],
 
       showUpDownDialog: false,
-      score: 0,
+      ruleForm: {
+        score: 0,
+        coin: "USDT",
+      },
+
       scoreId: null,
 
       obscureField: null,
@@ -557,8 +571,8 @@ export default {
     async updateScore() {
       const res = await this.$http.upAndDown({
         id: this.scoreId,
-        amount: this.score,
-        coin: this.coin,
+        amount: this.ruleForm.score,
+        coin: this.ruleForm.coin,
       });
 
       if (res) {
@@ -569,7 +583,7 @@ export default {
     },
     handleClose(done) {
       this.uploadType = 1;
-      this.score = 0;
+      this.ruleForm.score = 0;
       this.scoreId = "";
       this.testData = [];
       if (done) {

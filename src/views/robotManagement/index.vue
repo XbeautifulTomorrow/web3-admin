@@ -208,10 +208,16 @@
         <el-button type="primary" @click="warSaveFunc">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="批量上下分" :close-on-click-modal="false" :visible.sync="dialogVisiblePoint" width="30%">
-      <el-form ref="ruleFormPoint" :model="ruleFormPoint" label-width="120px" :rules="rules">
+    <el-dialog title="批量上下分" :close-on-click-modal="false" :visible.sync="dialogVisiblePoint" width="400px">
+      <el-form ref="ruleFormPoint" :model="ruleFormPoint" label-width="50px" :rules="rules">
+        <el-form-item label="币种" prop="coin" :rules="rules.blur">
+          <el-select v-model="ruleFormPoint.coin" placeholder="请选择币种" style="width: 300px">
+            <el-option label="USDT" value="USDT"> </el-option>
+            <el-option label="ETH" value="ETH"> </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="上分" prop="amount" :rules="rules.blur">
-          <el-input v-model.number="ruleFormPoint.amount" type="number" autocomplete="off"></el-input>
+          <el-input v-model="ruleFormPoint.amount" type="number" autocomplete="off" style="width: 300px"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -253,6 +259,7 @@ export default {
       dialogVisiblePwd: false,
       ruleForm: {},
       ruleFormPoint: {
+        coin: "USDT",
         amount: "",
       },
       ruleFormPwd: {
