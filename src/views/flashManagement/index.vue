@@ -12,6 +12,7 @@
       </el-select>
       <el-select v-model="flashStatus" class="public-select-box" popper-class="public-select-box" placeholder="状态" clearable>
         <el-option label="成功" value="TRUE"> </el-option>
+        <el-option label="失败" value="FAIL"> </el-option>
         <el-option label="挂起" value="FALSE"> </el-option>
       </el-select>
       <div class="public-date-box">
@@ -76,8 +77,9 @@
       </el-table-column>
       <el-table-column prop="flashPlaform" label="状态" align="center" key="11">
         <template slot-scope="scope">
-          <p v-if="scope.row.flashStatus == TRUE" style="color: #67c23a">成功</p>
-          <p v-else style="color: #f56c6c">挂起</p>
+          <p v-if="scope.row.flashStatus == 'TRUE'" style="color: #67c23a">成功</p>
+          <p v-if="scope.row.flashStatus == 'FAIL'" style="color: #f56c6c">失败</p>
+          <p v-else style="color: #e6a23c">挂起</p>
         </template>
       </el-table-column>
       <el-table-column prop="flashPlaform" label="闪兑平台" align="center" key="11"> </el-table-column>

@@ -11,6 +11,11 @@
         <el-option label="已退款" value="REFUNDED" />
         <el-option label="已取消" value="CANCELED" />
       </el-select>
+      <el-select class="public-input" v-model="bigPrizeStatus" placeholder="是否大奖" clearable style="width: 120px">
+        <el-option label="是" value="TRUE" />
+        <el-option label="否" value="FALSE" />
+      </el-select>
+
       <div class="public-date-box">
         <span class="demonstration">交易时间</span>
         <el-date-picker
@@ -86,7 +91,7 @@
       <el-table-column prop="warFee" label="战争手续费" align="center" key="11"> </el-table-column>
       <el-table-column prop="inBigPrize" label="入奖池" align="center" key="14"> </el-table-column>
       <el-table-column prop="totalBigPrize" label="大奖累计" sortable="custom" align="center" key="15"> </el-table-column>
-      <el-table-column prop="totalBigPrize" label="是否血战到底" sortable="custom" align="center" key="16">
+      <el-table-column prop="totalBigPrize" label="是否大奖" sortable="custom" align="center" key="16">
         <template slot-scope="scope">
           {{ scope.row.bigPrizeStatus == "TRUE" ? "是" : "否" }}
         </template>
@@ -172,6 +177,7 @@ export default {
       orderNum: null,
       userName: null,
       status: null,
+      bigPrizeStatus: null,
       transactionId: null,
       transactionTime: null,
       page: 1,
@@ -215,6 +221,7 @@ export default {
         obscureField: this.userName,
         hash: this.transactionId,
         currentStatus: this.status,
+        bigPrizeStatus: this.bigPrizeStatus,
         startTime,
         endTime,
       };
