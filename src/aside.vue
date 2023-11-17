@@ -627,8 +627,8 @@ export default {
       const systemManagement = ["accountList", "permissionAssign", "roleList"];
 
       if (path === "/") {
-        this.title = "数据管理";
-        this.page = "用户管理";
+        this.title = "首页";
+        this.page = "";
       } else {
         nav.forEach((item) => {
           if (`/${item.page}` === `${path}`) {

@@ -6,7 +6,7 @@
         v-model="noticeTitle"
         placeholder="请输入公告标题"
         clearable
-        oninput="if(value.length > 30)value=value.slice(0, 30)"
+        oninput="if(value.length > 300)value=value.slice(0, 300)"
         @keyup.enter.native="getTableList"
       ></el-input>
 

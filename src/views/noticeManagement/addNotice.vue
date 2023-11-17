@@ -131,7 +131,7 @@ export default {
           { required: true, message: "请输入活动名称", trigger: "blur" },
           {
             min: 1,
-            max: 30,
+            max: 300,
             message: "长度在 1 到 30 个字符",
             trigger: "blur",
           },
