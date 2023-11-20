@@ -47,7 +47,7 @@ export default {
   // 方法
   methods: {
     async getDataFunc() {
-      const res = await this.$http.getHomeTodaysData();
+      const res = await this.$http.getHomeTodaysData({ userType: this.$store.getters.accountConfig });
       if (res) {
         this.dataList = this.sortedMap.map((x) => {
           if (x.key != "pendingWithdrawalCount") {

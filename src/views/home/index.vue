@@ -70,6 +70,11 @@ export default {
       retainedChartTooltip: null,
     };
   },
+  computed: {
+    userType() {
+      return this.$store.getters.accountConfig;
+    },
+  },
   // 方法
   methods: {
     dataFormat(arrObj) {
@@ -100,7 +105,7 @@ export default {
         assetType = data.type;
         timeLimit = data.day;
       }
-      const res = await this.$http.getHomeCashFlowDetection({ assetType, timeLimit });
+      const res = await this.$http.getHomeCashFlowDetection({ assetType, timeLimit, userType: this.userType });
       if (res) {
         const formatRes = this.dataFormat(res);
         const newArray = [];
@@ -128,7 +133,7 @@ export default {
         type = data.type;
         timeLimit = data.day;
       }
-      const res = await this.$http.getHomeDataChart({ type, timeLimit });
+      const res = await this.$http.getHomeDataChart({ type, timeLimit, userType: this.userType });
       if (res) {
         if (type == this.dataDrawSearch[0].type) {
           const newArray = [];
@@ -183,7 +188,7 @@ export default {
         retainedDimension = data.type;
         timeLimit = data.day;
       }
-      const res = await this.$http.getHomeRetainedData({ retainedDimension, timeLimit });
+      const res = await this.$http.getHomeRetainedData({ retainedDimension, timeLimit, userType: this.userType });
       if (res) {
         this.retainedDataList = res.map((x) => {
           let obj = {

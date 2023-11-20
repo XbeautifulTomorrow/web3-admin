@@ -73,7 +73,7 @@ export default {
       this.timer = null;
     },
     async mainChartDataRegTotalApi() {
-      const res = await this.$http.getHomeRegisteredUserChart({ timeLimit: this.day });
+      const res = await this.$http.getHomeRegisteredUserChart({ timeLimit: this.day, userType: this.$store.getters.accountConfig });
       if (res) {
         this.dataList = this.sortedMap.map((x) => {
           return { ...x, count: res[x.key], ...res };

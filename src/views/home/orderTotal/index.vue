@@ -100,7 +100,7 @@ export default {
       } else {
         var [startDate, endDate] = ["", ""];
       }
-      const res = await this.$http.getHomeOrderChart({ startDate, endDate });
+      const res = await this.$http.getHomeOrderChart({ startDate, endDate, userType: this.$store.getters.accountConfig });
       if (res) {
         this.dataList = this.sortedMap.map((x) => {
           return { ...x, value: res[x.key] };

@@ -53,7 +53,12 @@ export default {
   // 方法
   methods: {
     async getDataList() {
-      const res = await this.$http.getHomeOneNftRanking({ sortBy: this.type, page: 1, size: 200 });
+      const res = await this.$http.getHomeOneNftRanking({
+        sortBy: this.type,
+        page: 1,
+        size: 200,
+        userType: this.$store.getters.accountConfig,
+      });
       if (res) {
         this.dataList = res.records;
       }

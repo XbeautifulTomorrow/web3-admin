@@ -102,10 +102,8 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="assetBalance" sortable="custom" width="130" :label="`用户余额(${coin})`" align="center" key="3">
-      </el-table-column>
-      <el-table-column prop="withdrawalPrice" sortable="custom" width="130" :label="`提款金额(${coin})`" align="center" key="4">
-      </el-table-column>
+      <el-table-column prop="assetBalance" sortable="custom" width="130" :label="`用户余额`" align="center" key="3"> </el-table-column>
+      <el-table-column prop="withdrawalPrice" sortable="custom" width="130" :label="`提款金额`" align="center" key="4"> </el-table-column>
       <el-table-column prop="userName" width="80" label="提出NFT" align="center" key="5">
         <template slot-scope="scope">
           <span
@@ -117,8 +115,7 @@
           <span v-else>--</span>
         </template>
       </el-table-column>
-      <el-table-column prop="serviceFee" width="120" sortable="custom" :label="`手续费(${coin})`" align="center" key="6"> </el-table-column>
-      userCoin
+      <el-table-column prop="serviceFee" width="120" sortable="custom" :label="`手续费`" align="center" key="6"> </el-table-column>
       <el-table-column prop="userCoin" width="120" sortable="custom" label="目标币种" align="center" key="7"> </el-table-column>
       <el-table-column prop="actualArrival" width="120" sortable="custom" label="实际到账" align="center" key="8">
         <template slot-scope="scope">
