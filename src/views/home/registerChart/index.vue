@@ -50,15 +50,18 @@ export default {
         this.plot.destroy();
       }
       const data = this.dataList;
+
       this.plot = new Funnel("container-funnel", {
         data: data,
         xField: "title",
         yField: "count",
-        theme: {
-          label: {
-            style: {
-              fill: "#ff0000", // 设置字体颜色为红色
-            },
+        conversionTag: {
+          formatter: (value, datum) => {
+            if (value.key == "consumeNum") {
+              return `注册-消费转化率:${value.consumeNumProportion.toFixed(2)}%`;
+            } else if (value.key == "rechargeNum") {
+              return `注册-充值转化率:${value.rechargeProportion.toFixed(2)}%`;
+            }
           },
         },
       });
@@ -73,7 +76,7 @@ export default {
       const res = await this.$http.getHomeRegisteredUserChart({ timeLimit: this.day });
       if (res) {
         this.dataList = this.sortedMap.map((x) => {
-          return { ...x, count: res[x.key] };
+          return { ...x, count: res[x.key], ...res };
         });
         this.chartFun();
       }
