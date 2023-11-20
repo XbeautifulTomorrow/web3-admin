@@ -376,27 +376,79 @@
     </div>
 
     <div class="wallet-settings">
+      <!-- <div class="operating-box">
+        <span>游戏流水记录比率</span>
+      </div> -->
+      <div class="setting-item">
+        <div class="setting-title">token war 流水记录比率</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入token war流水记录比率"
+            v-model="gameRatesData.tokenWarFlowRate"
+            clearable
+          >
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">盲盒流水记录比率</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入盲盒流水记录比率"
+            v-model="gameRatesData.boxFlowRate"
+            clearable
+          >
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">一元购流水记录比率</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入一元购流水记录比率"
+            v-model="gameRatesData.oneFlowRate"
+            clearable
+          >
+            <template slot="append">%</template>
+          </el-input>
+        </div>
+      </div>
+      <el-button type="primary" style="width: 160px" size="medium" @click="setActivityGameSettingFunc()">确认修改</el-button>
+    </div>
+
+    <div class="wallet-settings">
       <div class="operating-box">
         <span>归集钱包设置</span>
         <el-button type="primary" style="width: 160px" @click="showDialog = true">新增钱包</el-button>
       </div>
       <el-table :data="tableData" style="width: 760px; min-width: 0" class="public-table" border>
         <el-table-column prop="type" width="320" label="钱包类型" align="center" key="1"> </el-table-column>
-        <el-table-column prop="walletAddress" width="320" label="钱包地址" align="center" key="1"> </el-table-column>
-        <el-table-column prop="flowId" width="200" label="余额" align="center" key="2">
+        <el-table-column prop="walletAddress" width="320" label="钱包地址" align="center" key="2"> </el-table-column>
+        <el-table-column prop="flowId" width="200" label="余额" align="center" key="3">
           <template slot-scope="scope">
             <div v-for="(item, index) in scope.row.innetWalletList" :key="index">
               {{ `${item.coin}:${item.assetBalance}` }}
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="walletStatus" width="100" label="激活状态" align="center" key="3">
+        <el-table-column prop="walletStatus" width="100" label="激活状态" align="center" key="43">
           <template slot-scope="scope">
             <span style="color: #04b000" v-if="scope.row.walletStatus == 'NORMAL'"> 已激活 </span>
             <span style="color: red" v-else> 未激活 </span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" key="4" fixed="right">
+        <el-table-column label="操作" align="center" key="5" fixed="right">
           <template slot-scope="scope">
             <span class="blueColor publick-button cursor" @click="walletActive(scope.row)"> 激活 </span>
             <span class="blueColor publick-button cursor" @click="walletDel(scope.row)"> 删除 </span>
@@ -533,6 +585,7 @@ export default {
       tableData: null,
       baseUserPage: null,
       aggregateQuery: null,
+      gameRatesData: { tokenWarFlowRate: null, boxFlowRate: null, oneFlowRate: null },
     };
   },
   mixins: [pagination],
@@ -579,6 +632,27 @@ export default {
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
+      }
+    },
+    // 游戏活动流水比例设置查询
+    async findActivityGameSettingFunc() {
+      const res = await this.$http.findActivityGameSetting();
+      if (res) {
+        this.gameRatesData.tokenWarFlowRate = res.tokenWarFlowRate * 100;
+        this.gameRatesData.boxFlowRate = res.boxFlowRate * 100;
+        this.gameRatesData.oneFlowRate = res.oneFlowRate * 100;
+      }
+    },
+    // 游戏活动流水比例设置
+    async setActivityGameSettingFunc() {
+      let ruleForm = { ...this.gameRatesData };
+      ruleForm.tokenWarFlowRate = ruleForm.tokenWarFlowRate / 100;
+      ruleForm.boxFlowRate = ruleForm.boxFlowRate / 100;
+      ruleForm.oneFlowRate = ruleForm.oneFlowRate / 100;
+      const res = await this.$http.setActivityGameSetting({ ...ruleForm });
+      if (res) {
+        this.$message.success("操作成功");
+        this.findActivityGameSettingFunc();
       }
     },
     // 积分配置查询
@@ -972,6 +1046,7 @@ export default {
     this.fetchTicketCoinDays();
     this.fetchInviteSetting();
     this.fetchWarGameSetting();
+    this.findActivityGameSettingFunc();
   },
   computed: {
     coin() {

@@ -166,7 +166,7 @@ export default {
     // 加载列表
     async fetchAssetFlowList(isSearch = true) {
       const search = this.searchFun();
-      const { size, sortData } = this;
+      const { size, sortData, userType } = this;
       let _page = this.page;
       if (isSearch) {
         this.page = 1;
@@ -177,6 +177,7 @@ export default {
           size: size,
           page: _page,
         },
+        userType,
         ...sortData,
         ...search,
       };
@@ -199,6 +200,11 @@ export default {
     handleCurrentChange(val) {
       this.page = val;
       this.fetchAssetFlowList(false);
+    },
+  },
+  computed: {
+    userType() {
+      return this.$store.getters.accountConfig;
     },
   },
   // 创建后

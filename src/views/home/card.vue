@@ -4,7 +4,10 @@
       <p class="title">{{ i.title }}</p>
       <template v-if="i.key != 'pendingWithdrawalCount'">
         <p class="num">{{ i.count }}</p>
-        <p :class="['increase', { decrease: !i.increaseOrDecrease }]"><span class="sub-title">昨日：</span>{{ i.yesterdayCount }}</p>
+        <div class="flex">
+          <p :class="['increase', { decrease: !i.increaseOrDecrease }]"><span class="sub-title">昨日：</span>{{ i.yesterdayCount }}</p>
+          <p :class="['increase', { decrease: !i.increaseOrDecrease }]"><span class="sub-title">本周：</span>{{ i.thisWeekCount }}</p>
+        </div>
         <p :class="['increase', { decrease: !i.increaseOrDecrease }]">
           <span class="sub-title">同比上周：</span>{{ i.percentage }}%
           <i class="el-icon-top" v-if="i.increaseOrDecrease"></i>
@@ -109,5 +112,9 @@ export default {
   margin-top: 26px;
   font-size: 18px;
   font-weight: bold;
+}
+.flex {
+  display: flex;
+  gap: 20px;
 }
 </style>

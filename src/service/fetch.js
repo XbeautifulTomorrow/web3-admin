@@ -173,6 +173,9 @@ export const inviteSet = (obj) => S.post("/system-setting/baseSetting", obj); //
 
 export const setWarGameSetting = (obj) => S.post("/system-setting/warGameSetting", obj); // 邀请文本设置
 export const getWarGameSetting = (obj) => S.get("/system-setting/findWarGameSetting", obj); // 邀请文本设置
+
+export const findActivityGameSetting = (obj) => S.get("/system-setting/findActivityGameSetting", obj); // 游戏活动流水比例设置查询
+export const setActivityGameSetting = (obj) => S.post("/system-setting/activityGameSetting", obj); // 游戏活动流水比例设置
 /**
  * @description 群发邮件
  */
