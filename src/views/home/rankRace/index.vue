@@ -57,7 +57,7 @@ export default {
         sortBy: this.type,
         page: 1,
         size: 200,
-        userType: this.$store.getters.accountConfig,
+        userType: this.$store.getters.accountConfig || "",
       });
       if (res) {
         this.dataList = res.records;

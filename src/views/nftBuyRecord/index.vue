@@ -15,19 +15,33 @@
       </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 消费区间 </span>
-        <el-input type="number" style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px" placeholder="最低价"
-          v-model.number="startPrice" clearable />
-        <el-input type="number" style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px" placeholder="最高价"
-          v-model.number="endPrice" clearable />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最低价"
+          v-model="startPrice"
+          clearable
+        />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最高价"
+          v-model="endPrice"
+          clearable
+        />
       </div>
       <div class="public-date-box">
         <span class="demonstration"> 交易时间 </span>
-        <el-date-picker v-model="transactionTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <el-date-picker
+          v-model="transactionTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search"
-        @click="fetchOneNftLotteryOrdersManagerList()">
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOneNftLotteryOrdersManagerList()">
         查询
       </el-button>
     </div>
@@ -60,19 +74,16 @@
       <el-table-column prop="image" label="NFT图" align="center" key="3">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%" v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'" :src="ethPic"
-              :preview-src-list="[ethPic]"> </el-image>
-            <el-image style="height: 100%" v-else :src="scope.row.image" :preview-src-list="[scope.row.image]">
+            <el-image style="height: 100%" v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'" :src="ethPic" :preview-src-list="[ethPic]">
             </el-image>
+            <el-image style="height: 100%" v-else :src="scope.row.image" :preview-src-list="[scope.row.image]"> </el-image>
           </div>
         </template>
       </el-table-column>
       <el-table-column sortable="custom" prop="name" label="商品" align="center" key="4">
         <template slot-scope="scope">
           <span v-if="scope.row.orderType == 'LIMITED_PRICE_COIN'">
-            {{
-              scope.row.price ? `${scope.row.price} ${'ETH'||scope.row.coinName}` : "--"
-            }}
+            {{ scope.row.price ? `${scope.row.price} ${"ETH" || scope.row.coinName}` : "--" }}
           </span>
           <span v-else>{{ `${scope.row.name} #${scope.row.orderId}` }}</span>
         </template>
@@ -91,8 +102,7 @@
       </el-table-column>
       <el-table-column prop="expenditure" label="推广信息" align="center" key="8">
         <template slot-scope="scope">
-          <span v-if="scope.row.twitterInfo" @click="openPromotion(scope.row)"
-            style="color: #05a8f0;cursor: pointer;">查看</span>
+          <span v-if="scope.row.twitterInfo" @click="openPromotion(scope.row)" style="color: #05a8f0; cursor: pointer">查看</span>
           <span v-else>--</span>
         </template>
       </el-table-column>
@@ -113,16 +123,24 @@
           <span style="color: #bbbbbb" v-if="scope.row.status == 'AWARDED'">已开奖</span>
         </template>
       </el-table-column>
-      <el-table-column sortable="custom" prop="paymentTime" width="140px" label="交易时间" align="center" key="18"
-        fixed="right">
+      <el-table-column sortable="custom" prop="paymentTime" width="140px" label="交易时间" align="center" key="18" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.paymentTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
     <el-dialog title="推广信息" :visible.sync="dialogVisible" width="30%">
       <el-form ref="ruleForm" label-width="80px">
@@ -182,7 +200,7 @@ export default {
       },
       ethPic: require("@/assets/images/create_eth.webp"),
       dialogVisible: false,
-      twitterData: {}
+      twitterData: {},
     };
   },
   mixins: [pagination],
@@ -308,11 +326,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -337,7 +355,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }

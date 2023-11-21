@@ -11,14 +11,14 @@
           type="number"
           style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
           placeholder="最低价"
-          v-model.number="startPrice"
+          v-model="startPrice"
           clearable
         />
         <el-input
           type="number"
           style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
           placeholder="最高价"
-          v-model.number="endPrice"
+          v-model="endPrice"
           clearable
         />
       </div>

@@ -33,7 +33,7 @@ export default {
   // 方法
   methods: {
     async getDataList() {
-      const res = await this.$http.getHomeUserRegionStatisticsChart({ userType: this.$store.getters.accountConfig });
+      const res = await this.$http.getHomeUserRegionStatisticsChart({ userType: this.$store.getters.accountConfig || "" });
       if (res) {
         this.dataList = res;
       }

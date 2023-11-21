@@ -14,14 +14,14 @@
           type="number"
           style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
           placeholder="最低价"
-          v-model.number="startPrice"
+          v-model="startPrice"
           clearable
         />
         <el-input
           type="number"
           style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
           placeholder="最高价"
-          v-model.number="endPrice"
+          v-model="endPrice"
           clearable
         />
       </div>
@@ -104,7 +104,7 @@
       <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${'ETH'})`" align="center" key="10"> </el-table-column>
       <el-table-column prop="price" sortable="custom" :label="`当前价(${coin})`" align="center" key="16" width="100px">
         <template slot-scope="scope">
-          {{ (scope.row.usdtLastPrice*scope.row.price).toFixed(4) }}
+          {{ (scope.row.usdtLastPrice * scope.row.price).toFixed(4) }}
         </template>
       </el-table-column>
       <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="11"> </el-table-column>

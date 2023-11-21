@@ -72,7 +72,7 @@ export default {
   },
   computed: {
     userType() {
-      return this.$store.getters.accountConfig;
+      return this.$store.getters.accountConfig || "";
     },
   },
   // 方法

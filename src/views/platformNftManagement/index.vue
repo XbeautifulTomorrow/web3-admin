@@ -1,51 +1,51 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 140px;" placeholder="输入系列名" v-model="seriesName" clearable />
-      <el-input class="public-input" style="width: 140px;" placeholder="输入NFT ID" v-model="Id" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入系列名" v-model="seriesName" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入NFT ID" v-model="Id" clearable />
       <el-select v-model="chainName" class="public-select-box" placeholder="所在链">
         <el-option v-for="(item, index) in chainList" :key="index" :label="item.chainName" :value="item.chainName" />
       </el-select>
       <div class="public-date-box">
-        <span class="demonstration">
-          价格区间
-        </span>
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最低价"
-          v-model.number="startPrice" clearable />
-        <el-input type="number" style="width: 120px;border: 1px solid #DCDFE6;border-radius: 4px;" placeholder="最高价"
-          v-model.number="endPrice" clearable />
+        <span class="demonstration"> 价格区间 </span>
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最低价"
+          v-model="startPrice"
+          clearable
+        />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最高价"
+          v-model="endPrice"
+          clearable
+        />
       </div>
-      <el-select v-model="nftStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态"
-        clearable>
-        <el-option label="已入池" value="IN_POOL">
-        </el-option>
-        <el-option label="未入池" value="NO_POOL">
-        </el-option>
-        <el-option label="待确认" value="WAIT">
-        </el-option>
-        <el-option label="被领取" value="BE_CLAIMED">
-        </el-option>
-        <el-option label="已提走" value="MENTIONED">
-        </el-option>
+      <el-select v-model="nftStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+        <el-option label="已入池" value="IN_POOL"> </el-option>
+        <el-option label="未入池" value="NO_POOL"> </el-option>
+        <el-option label="待确认" value="WAIT"> </el-option>
+        <el-option label="被领取" value="BE_CLAIMED"> </el-option>
+        <el-option label="已提走" value="MENTIONED"> </el-option>
       </el-select>
-      <el-select v-model="enabledStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部入池状态"
-        clearable>
-        <el-option label="冻结" value="DISABLE">
-        </el-option>
-        <el-option label="正常" value="NORMAL">
-        </el-option>
+      <el-select v-model="enabledStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部入池状态" clearable>
+        <el-option label="冻结" value="DISABLE"> </el-option>
+        <el-option label="正常" value="NORMAL"> </el-option>
       </el-select>
       <div class="public-date-box">
-        <span class="demonstration">
-          创建时间
-        </span>
-        <el-date-picker v-model="creationTime" type="datetimerange" range-separator="到" start-placeholder="开始时间"
-          end-placeholder="结束时间">
+        <span class="demonstration"> 创建时间 </span>
+        <el-date-picker
+          v-model="creationTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformManagerList()">
-        查询
-      </el-button>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchNftPlatformManagerList()"> 查询 </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
@@ -60,73 +60,69 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1">
-      </el-table-column>
+      <el-table-column prop="id" sortable="custom" label="NFT ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="nftImg" label="NFT图片" width="120px" align="center" key="2">
         <template slot-scope="scope">
           <div style="width: 100px; height: 100px">
-            <el-image style="height: 100%;" :src="scope.row.nftImg" :preview-src-list="[scope.row.nftImg]">
-            </el-image>
+            <el-image style="height: 100%" :src="scope.row.nftImg" :preview-src-list="[scope.row.nftImg]"> </el-image>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="seriesName" sortable="custom" width="120" label="NFT系列名称" align="center" key="3">
-      </el-table-column>
-      <el-table-column prop="contractAddress" label="合约" align="center" key="4">
-      </el-table-column>
-      <el-table-column prop="projectParty" label="项目方" align="center" key="7">
-      </el-table-column>
-      <el-table-column prop="chainName" label="所在链" align="center" key="8">
-      </el-table-column>
-      <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${coin})`" align="center" key="9">
-      </el-table-column>
-      <el-table-column prop="usdtPrice" sortable="custom" label="U价" align="center" key="10">
-      </el-table-column>
-      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12">
-      </el-table-column>
-      <el-table-column prop="openNumber" sortable="custom" label="被开次数" align="center" key="13">
-      </el-table-column>
-      <el-table-column prop="outNumber" sortable="custom" label="提走次数" align="center" key="14">
-      </el-table-column>
-      <el-table-column prop="refunds" sortable="custom" label="总退款" align="center" key="15">
-      </el-table-column>
+      <el-table-column prop="seriesName" sortable="custom" width="120" label="NFT系列名称" align="center" key="3"> </el-table-column>
+      <el-table-column prop="contractAddress" label="合约" align="center" key="4"> </el-table-column>
+      <el-table-column prop="projectParty" label="项目方" align="center" key="7"> </el-table-column>
+      <el-table-column prop="chainName" label="所在链" align="center" key="8"> </el-table-column>
+      <el-table-column prop="price" sortable="custom" width="120" :label="`当前价(${coin})`" align="center" key="9"> </el-table-column>
+      <el-table-column prop="usdtPrice" sortable="custom" label="U价" align="center" key="10"> </el-table-column>
+      <el-table-column prop="relevancyBoxNumber" sortable="custom" label="关联盲盒" align="center" key="12"> </el-table-column>
+      <el-table-column prop="openNumber" sortable="custom" label="被开次数" align="center" key="13"> </el-table-column>
+      <el-table-column prop="outNumber" sortable="custom" label="提走次数" align="center" key="14"> </el-table-column>
+      <el-table-column prop="refunds" sortable="custom" label="总退款" align="center" key="15"> </el-table-column>
       <el-table-column prop="nftStatus" sortable="custom" label="当前状态" align="center" key="16">
         <template slot-scope="scope">
-          <span style="color: #05A8F0;" v-if="scope.row.nftStatus == 'IN_POOL'">已入池</span>
-          <span style="color: #EC5706;" v-if="scope.row.nftStatus == 'NO_POOL'">未入池</span>
-          <span style="color: #000;" v-if="scope.row.nftStatus == 'WAIT'">待确认</span>
-          <span style="color: #31CE0B;" v-if="scope.row.nftStatus == 'BE_CLAIMED'">被领取</span>
-          <span style="color: #BBBBBB;" v-if="scope.row.nftStatus == 'MENTIONED'">已提出</span>
+          <span style="color: #05a8f0" v-if="scope.row.nftStatus == 'IN_POOL'">已入池</span>
+          <span style="color: #ec5706" v-if="scope.row.nftStatus == 'NO_POOL'">未入池</span>
+          <span style="color: #000" v-if="scope.row.nftStatus == 'WAIT'">待确认</span>
+          <span style="color: #31ce0b" v-if="scope.row.nftStatus == 'BE_CLAIMED'">被领取</span>
+          <span style="color: #bbbbbb" v-if="scope.row.nftStatus == 'MENTIONED'">已提出</span>
         </template>
       </el-table-column>
       <el-table-column prop="createTime" sortable="custom" width="140" label="创建时间" align="center" key="18">
         <template slot-scope="scope">
-          {{ timeForStr(scope.row.createTime, 'YYYY-MM-DD HH:mm:ss') }}
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
       <el-table-column prop="enabledStatus" label="能否入池" align="center" key="19">
         <template slot-scope="scope">
-          <span style="color: #EC5706;" v-if="scope.row.enabledStatus == 'DISABLE'">冻结</span>
-          <span style="color: #21AE04;" v-else>正常</span>
+          <span style="color: #ec5706" v-if="scope.row.enabledStatus == 'DISABLE'">冻结</span>
+          <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination v-if="baseUserPage && baseUserPage.total" background @size-change="handleSizeChange"
-      @current-change="handleCurrentChange" :current-page="page" :page-sizes="pagination.pageSizes" :page-size="size"
-      layout=" sizes, prev, pager, next, jumper" :total="baseUserPage.total" class="public-pagination">
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
     </el-pagination>
   </div>
 </template>
 
 <script>
-import { timeForStr } from '@/utils';
-import pagination from '@/mixins/pagination';
+import { timeForStr } from "@/utils";
+import pagination from "@/mixins/pagination";
 import { chainList } from "@/utils/chain";
 export default {
-  name: 'PlatformNftManagement',
+  name: "PlatformNftManagement",
   // 模板引入
-  components: {
-  },
+  components: {},
   // 数据
   data() {
     return {
@@ -141,14 +137,14 @@ export default {
       creationTime: null, // 创建时间
       sortData: {
         orderBy: null,
-        orderType: null
+        orderType: null,
       },
       page: 1,
       size: 20,
       tableData: null,
       baseUserPage: null,
       aggregateQuery: null,
-      chainList: chainList
+      chainList: chainList,
     };
   },
   mixins: [pagination],
@@ -161,10 +157,10 @@ export default {
       let startTime = null;
       let endTime = null;
       if (creationTime && creationTime[0]) {
-        startTime = timeForStr(creationTime[0], 'YYYY-MM-DD HH:mm:ss');
+        startTime = timeForStr(creationTime[0], "YYYY-MM-DD HH:mm:ss");
       }
       if (creationTime && creationTime[1]) {
-        endTime = timeForStr(creationTime[1], 'YYYY-MM-DD HH:mm:ss');
+        endTime = timeForStr(creationTime[1], "YYYY-MM-DD HH:mm:ss");
       }
 
       return {
@@ -247,11 +243,11 @@ export default {
     },
   },
   // 挂载后
-  mounted() { },
+  mounted() {},
   // 更新后
-  updated() { },
+  updated() {},
   // 销毁
-  beforeDestroy() { },
+  beforeDestroy() {},
 };
 </script>
 
@@ -276,7 +272,7 @@ export default {
     padding-bottom: 0;
   }
 
-  &>div {
+  & > div {
     min-width: 200px;
   }
 }
