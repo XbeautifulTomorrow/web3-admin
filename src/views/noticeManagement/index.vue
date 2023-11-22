@@ -35,7 +35,7 @@
         </template> 
       </el-table-column> -->
 
-      <el-table-column prop="forcedSwitch" label="是否强提醒" min-width="100">
+      <!-- <el-table-column prop="forcedSwitch" label="是否强提醒" min-width="100">
         <template slot-scope="scope">
           <div @click="changeSwitch(scope.row)">
             <el-switch :value="scope.row.forcedSwitch == 0 ? false : true" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
@@ -49,8 +49,12 @@
             <el-switch :value="scope.row.importantSwitch == 0 ? false : true" active-color="#13ce66" inactive-color="#ff4949"> </el-switch>
           </div>
         </template>
+      </el-table-column> -->
+      <el-table-column prop="createTime" label="创建时间">
+        <template slot-scope="scope">
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
+        </template>
       </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"> </el-table-column>
       <el-table-column prop="scope" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleEditor(scope.row)">编辑</el-button>
@@ -88,7 +92,7 @@
 <script>
 import pagination from "@/mixins/pagination";
 import addNotice from "./addNotice";
-
+import { timeForStr } from "@/utils";
 export default {
   name: "NoticeList",
   mixins: [pagination],
@@ -114,6 +118,7 @@ export default {
     this.getTableList();
   },
   methods: {
+    timeForStr: timeForStr,
     //是否强提醒
     changeSwitch(row) {
       let annId = row.id;

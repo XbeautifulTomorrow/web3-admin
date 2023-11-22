@@ -31,7 +31,7 @@
             <quillEditor class="ql-editor" :content="ruleForm.contentHtml" @change="onEditorChange"></quillEditor>
           </el-form-item>
 
-          <el-form-item label="是否强提醒" prop="forcedSwitch">
+          <!-- <el-form-item label="是否强提醒" prop="forcedSwitch">
             <el-radio-group v-model="ruleForm.forcedSwitch" @change="changeForced">
               <el-radio :label="0">否</el-radio>
               <el-radio :label="1">是</el-radio>
@@ -42,7 +42,7 @@
               <el-radio :label="0">否</el-radio>
               <el-radio :label="1">是</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
         </el-form>
       </el-col>
     </el-row>

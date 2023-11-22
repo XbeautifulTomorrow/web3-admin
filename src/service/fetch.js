@@ -121,6 +121,7 @@ export const getAssetWithdrawalStatistics = (obj) => S.get("/asset-withdrawal/he
 export const withdrawalApproved = (obj) => S.get("/asset-withdrawal/approved", obj); // 审核通过统计
 export const withdrawalRefuse = (obj) => S.get("/asset-withdrawal/refuse", obj); // 审核拒绝统计
 export const withdrawawSign = (obj) => S.post("/asset-withdrawal/nft/apple", obj); // 提款签名
+export const withdrawawRetry = (obj) => S.get("/asset-withdrawal/retry", obj); // 提款审核重试
 /**
  * @description 订单管理
  */

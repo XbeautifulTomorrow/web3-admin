@@ -160,6 +160,7 @@
       <el-table-column prop="id" label="操作" align="center" width="180" key="18" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="showReview(scope.row)"> 详情 </span>
+          <span class="blueColor publick-button cursor" v-if="scope.row.auditStatus == 'FAIL'" @click="reTryFunc(scope.row)"> 重试 </span>
           <!-- <span
             class="blueColor publick-button cursor"
             v-if="scope.row.outWithdrawalNftList.length > 0"
@@ -472,6 +473,7 @@ export default {
 
       this.fetchAssetWithdrawalList();
     },
+
     // 加载列表
     async fetchAssetWithdrawalList(isSearch = true) {
       const search = this.searchFun();
@@ -569,6 +571,13 @@ export default {
       this.reviewStatus = event.auditStatus;
       this.reviewData = event;
       this.showReviewDialog = true;
+    },
+    async reTryFunc(row) {
+      let res = await this.$http.withdrawawRetry({ id: row.id });
+      if (res) {
+        this.fetchAssetWithdrawalList();
+        this.$message.success("操作成功");
+      }
     },
     async withdrawNft(item, isExcute = false) {
       await this.connectMetaMask();
