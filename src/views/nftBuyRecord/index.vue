@@ -62,11 +62,11 @@
         <!-- <div class="remittance-item">
           <div class="title">总返奖</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalRebates }}</div>
-        </div>
+        </div> -->
         <div class="remittance-item">
           <div class="title">总佣金</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalCommission }}</div>
-        </div> -->
+        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>

@@ -78,6 +78,14 @@
           <div class="title">总售出金额</div>
           <div class="val">{{ aggregateQuery && aggregateQuery.totalAmountSold }}</div>
         </div>
+        <div class="remittance-item">
+          <div class="title">用户总收入</div>
+          <div class="val">{{ aggregateQuery && (aggregateQuery.totalAmountSold - aggregateQuery.serviceFeeTotal).toFixed(2) }}</div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总手续费</div>
+          <div class="val">{{ aggregateQuery && aggregateQuery.serviceFeeTotal }}</div>
+        </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
@@ -117,7 +125,6 @@
           {{ (scope.row.ticketPrice * scope.row.limitNum).toFixed(2) }}
         </template>
       </el-table-column>
-      <el-table-column prop="ticketPrice" sortable="custom" label="票单价" align="center" key="10"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="限制" align="center" key="11"> </el-table-column>
       <el-table-column prop="limitDay" sortable="custom" label="免费票" align="center" key="12">
         <template slot-scope="scope">
@@ -135,14 +142,22 @@
       </el-table-column>
       <el-table-column prop="userTotal" sortable="custom" label="参与用户数" align="center" key="14"> </el-table-column>
       <el-table-column prop="numberOfTicketsSold" sortable="custom" label="售出票数" align="center" key="15"> </el-table-column>
-      <el-table-column prop="txid" label="链上hash" align="center" key="16"> </el-table-column>
-      <el-table-column prop="winningAddress" label="中奖用户" align="center" key="17">
+      <el-table-column prop="numberOfTicketsSold" sortable="custom" label="用户收入" align="center" key="16">
+        <template slot-scope="scope">
+          <span>
+            {{ (scope.row.expenditure - scope.row.serviceFee).toFixed(2) }}
+          </span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="serviceFee" sortable="custom" label="手续费" align="center" key="17"> </el-table-column>
+      <el-table-column prop="txid" label="链上hash" align="center" key="18"> </el-table-column>
+      <el-table-column prop="winningAddress" label="中奖用户" align="center" key="19">
         <template slot-scope="scope">
           <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUserId || "--" }}</p>
           <p :style="{ color: scope.row.winningUsernameIsTest ? 'red' : '#000' }">{{ scope.row.winningUsername || "--" }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="currentStatus" sortable="custom" label="当前状态" align="center" key="18" fixed="right">
+      <el-table-column prop="currentStatus" sortable="custom" label="当前状态" align="center" key="20" fixed="right">
         <template slot-scope="scope">
           <span style="color: #05a8f0" v-if="scope.row.currentStatus == 'IN_PROGRESS'">进行中</span>
           <span style="color: #31ce0b" v-if="scope.row.currentStatus == 'DRAWN'">已开奖</span>
@@ -150,17 +165,17 @@
           <span style="color: #ff0000" v-if="scope.row.currentStatus == 'CLOSED'">已结束</span>
         </template>
       </el-table-column>
-      <el-table-column prop="listingTime" sortable="custom" width="140px" label="上架时间" align="center" key="19" fixed="right">
+      <el-table-column prop="listingTime" sortable="custom" width="140px" label="上架时间" align="center" key="21" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.listingTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="endTime" width="140px" sortable="custom" label="结束时间" align="center" key="20" fixed="right">
+      <el-table-column prop="endTime" width="140px" sortable="custom" label="结束时间" align="center" key="22" fixed="right">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.endTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="21" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="23" fixed="right">
         <template slot-scope="scope">
           <span
             v-if="scope.row.currentStatus == 'IN_PROGRESS' && scope.row.currentStatus !== 'CANCELLED'"
