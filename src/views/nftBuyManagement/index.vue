@@ -5,6 +5,12 @@
       <el-input class="public-input" style="width: 220px" placeholder="输入NFT ID" v-model="tokenId" clearable />
       <el-input class="public-input" style="width: 220px" placeholder="输入挂单用户" v-model="userName" clearable />
       <el-input class="public-input" style="width: 220px" placeholder="输入中奖用户" v-model="winningUsers" clearable />
+      <el-select v-model="statusStr" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+        <el-option label="进行中" value="IN_PROGRESS"> </el-option>
+        <el-option label="已开奖" value="DRAWN"> </el-option>
+        <el-option label="已取消" value="CANCELLED"> </el-option>
+        <el-option label="已结束" value="CLOSED"> </el-option>
+      </el-select>
       <div class="public-date-box">
         <span class="demonstration"> 价格区间 </span>
         <el-input
@@ -22,12 +28,7 @@
           clearable
         />
       </div>
-      <el-select v-model="statusStr" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
-        <el-option label="进行中" value="IN_PROGRESS"> </el-option>
-        <el-option label="已开奖" value="DRAWN"> </el-option>
-        <el-option label="已取消" value="CANCELLED"> </el-option>
-        <el-option label="已结束" value="CLOSED"> </el-option>
-      </el-select>
+      
       <div class="public-date-box">
         <span class="demonstration"> 上架时间 </span>
         <el-date-picker
