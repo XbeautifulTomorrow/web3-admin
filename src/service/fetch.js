@@ -353,3 +353,17 @@ export const updateAnnouncement = (obj) => S.post("/announcement/updateAnnouncem
 export const deleteAnnouncement = (obj) => S.get("/announcement/deleteAnnouncement", obj); // 删除公告
 export const setIsForcedSwitch = (obj) => S.get("/announcement/isForcedSwitch", obj); // 是否强提醒
 export const setIsImportantSwitch = (obj) => S.get("/announcement/isImportantSwitch", obj); // 是否是重要公告
+
+/**
+ * @description 法币管理
+ */
+export const getLegalPageList = (obj) => S.get("/legal-currency-recharge/pageList", obj); //法币通道管理列表
+export const setLegalupdateStatus = (obj) => S.get("/legal-currency-recharge/updateStatus", obj); //第三方充值启用停用
+
+/**
+ * @description 兑换码管理
+ */
+export const getRedeemPageList = (obj) => S.get("/redeem-code-info/pageList", obj); //兑换码管理列表
+export const getRredeemHeaderDataTotal = (obj) => S.get("/redeem-code-info/headerDataTotal", obj); //兑换码列表数据统计
+export const getRredeemHeaderAdd = (obj) => S.post("/redeem-code-info/add", obj); //创建兑换码
+export const getRredeemHeaderBatchInvalidation = (obj) => S.get("redeem-code-info/batchInvalidation", obj); //批量失效

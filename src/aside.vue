@@ -393,6 +393,10 @@ export default {
           page: "cashManagement",
         },
         {
+          label: "兑换码管理",
+          page: "redeemCodeManagement",
+        },
+        {
           label: "财务数据",
           page: "finance",
         },
@@ -605,6 +609,7 @@ export default {
       const fundingStatistics = [
         "finance",
         "cashManagement",
+        "redeemCodeManagement",
         "nftTransactionManagement",
         "withdrawalReview",
         "flashManagement",

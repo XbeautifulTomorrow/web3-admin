@@ -124,6 +124,12 @@ export const routes = [
         name: "cashManagement",
       },
       {
+        /** 兑换码管理 */
+        path: "/redeemCodeManagement",
+        component: () => import("@/views/redeemCodeManagement/index"),
+        name: "redeemCodeManagement",
+      },
+      {
         /** 财务数据 */
         path: "/finance",
         component: () => import("@/views/finance/index"),
