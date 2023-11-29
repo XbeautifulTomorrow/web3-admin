@@ -103,6 +103,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="assetBalance" sortable="custom" width="130" :label="`用户余额`" align="center" key="3"> </el-table-column>
+      <el-table-column prop="outgoingChainType" sortable="custom" width="130" :label="`链`" align="center" key="3"> </el-table-column>
+      <el-table-column prop="coin" sortable="custom" width="130" :label="`币种`" align="center" key="3"> </el-table-column>
       <el-table-column prop="withdrawalPrice" sortable="custom" width="130" :label="`提款金额`" align="center" key="4"> </el-table-column>
       <el-table-column prop="userName" width="80" label="提出NFT" align="center" key="5">
         <template slot-scope="scope">
