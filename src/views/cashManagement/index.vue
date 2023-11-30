@@ -35,6 +35,8 @@
         <el-option label="补偿" value="COMPENSATE"> </el-option>
         <el-option label="消耗" value="CONSUME_COIN"> </el-option>
         <el-option label="获得" value="OBTAIN"> </el-option>
+        <el-option label="兑换卡" value="REDEEM_CARD"> </el-option>
+        <el-option label="送金" value="REG_BOUNS"> </el-option>
       </el-select>
       <el-select
         v-model="coin"
@@ -383,6 +385,10 @@ export default {
         return "消耗";
       } else if (event == "OBTAIN") {
         return "获得";
+      } else if (event == "REDEEM_CARD") {
+        return "兑换卡";
+      } else if (event == "REG_BOUNS") {
+        return "送金";
       }
     },
     // 格式化流水来源
