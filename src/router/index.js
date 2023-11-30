@@ -336,6 +336,11 @@ export const routes = [
         name: "noticeManagement",
         component: () => import("@/views/noticeManagement/index"),
       },
+      {
+        path: "/registrationStatistics",
+        name: "registrationStatistics",
+        component: () => import("@/views/registrationStatistics/index"),
+      },
     ],
   },
 ];

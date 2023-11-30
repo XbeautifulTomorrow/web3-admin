@@ -22,6 +22,7 @@ export const upAndDown = (obj) => S.post("/user/upAndDown", obj); // 上下分
 export const importBatchUpAndDown = (obj) => S.post("/user/importBatchUpAndDown", obj); // Excel导入测试上下分账号
 export const batchUpAndDown = (obj) => S.post("/user/batch/upAndDown", obj); // 批量上下分
 export const closeGoogleValidate = (obj) => S.get("/user/close/google/validate", obj); // 停止二级验证
+export const userCheckAdopt = (obj) => S.get("/user/checkAdopt", obj); // 验证账号
 
 /**
  * @description NFT系列

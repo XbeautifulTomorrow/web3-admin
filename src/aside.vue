@@ -594,6 +594,7 @@ export default {
         "activityList",
         "bannerManagement",
         "noticeManagement",
+        "registrationStatistics",
       ];
 
       const mallManagement = [

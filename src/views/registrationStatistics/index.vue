@@ -1,0 +1,277 @@
+<template>
+  <div class="page-wrapper">
+    <div class="public-list-inputs">
+      <el-input class="public-input" style="width: 140px" placeholder="输入用户ID、昵称、邮箱" v-model="obscureField" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入金流ID" v-model="boxName" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入来源" v-model="obscureField" clearable />
+      <div class="public-date-box">
+        <span class="demonstration"> 注册时间 </span>
+        <el-date-picker
+          v-model="transactionTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+        >
+        </el-date-picker>
+      </div>
+      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOrderManagerList()"> 查询 </el-button>
+
+      <el-button type="primary" icon="el-icon-download" class="public-search" @click="dailyStatsExcel()"> 导出EXCEL </el-button>
+    </div>
+    <div class="remittance-box">
+      <div class="remittance-amount remittance-more">
+        <div class="remittance-item">
+          <div class="title">总账号数</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.orderNumber }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总送金</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.openBoxNumber }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总充值</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.consumeTotal }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总消费</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.rebatesPrices }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
+      <el-table-column prop="orderNumber" sortable="custom" label="用户ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="boxImg" width="120" label="昵称" align="center" key="2">
+        <template slot-scope="scope">
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
+            {{ scope.row.userId || "--" }}
+          </p>
+          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
+            {{ scope.row.userName || "--" }}
+          </p>
+        </template>
+      </el-table-column>
+      <el-table-column prop="boxName" width="120" sortable="custom" label="来源" align="center" key="3"> </el-table-column>
+      <el-table-column prop="buyNumber" width="120" sortable="custom" label="邮箱" align="center" key="4"> </el-table-column>
+      <el-table-column prop="userName" width="120" sortable="custom" label="上级ID" align="center" key="5"> </el-table-column>
+      <el-table-column prop="buyPrice" width="120" sortable="custom" label="邀请码" align="center" key="6"> </el-table-column>
+      <el-table-column prop="realPrice" width="120" sortable="custom" label="金额" align="center" key="7"> </el-table-column>
+      <el-table-column prop="realPrice" width="120" sortable="custom" label="金流ID" align="center" key="8"> </el-table-column>
+      <el-table-column prop="realPrice" width="120" sortable="custom" label="消费" align="center" key="9"> </el-table-column>
+      <el-table-column prop="createTime" width="140" sortable="custom" label="送金时间" align="center" key="10">
+        <template slot-scope="scope">
+          {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+      v-if="baseUserPage && baseUserPage.total"
+      background
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="page"
+      :page-sizes="pagination.pageSizes"
+      :page-size="size"
+      layout=" sizes, prev, pager, next, jumper"
+      :total="baseUserPage.total"
+      class="public-pagination"
+    >
+    </el-pagination>
+  </div>
+</template>
+
+<script>
+import bigNumber from "bignumber.js";
+import { timeForStr, exportExcel } from "@/utils";
+import pagination from "@/mixins/pagination";
+import chainExplorerSkip from "@/components/chainExplorerSkip";
+import config from "@/config/env";
+
+export default {
+  name: "OrderManagement",
+  // 模板引入
+  components: { chainExplorerSkip },
+  // 数据
+  data() {
+    return {
+      orderNumber: null,
+      boxName: null,
+      obscureField: null,
+      hash: null,
+      startPrice: null,
+      endPrice: null,
+      transactionTime: null, // 交易时间
+      sortData: {
+        orderBy: null,
+        orderType: null,
+      },
+      page: 1,
+      size: 20,
+      tableData: null,
+      baseUserPage: null,
+      aggregateQuery: null,
+    };
+  },
+  mixins: [pagination],
+  // 方法
+  methods: {
+    bigNumber: bigNumber,
+    timeForStr: timeForStr,
+    // 搜索条件
+    searchFun() {
+      let { transactionTime } = this;
+      let startTime = null;
+      let endTime = null;
+      let finishStartTime = null;
+      let finishEndTime = null;
+      if (transactionTime && transactionTime[0]) {
+        startTime = timeForStr(transactionTime[0], "YYYY-MM-DD HH:mm:ss");
+      }
+      if (transactionTime && transactionTime[1]) {
+        endTime = timeForStr(transactionTime[1], "YYYY-MM-DD HH:mm:ss");
+      }
+
+      return {
+        orderNumber: this.orderNumber,
+        boxName: this.boxName,
+        obscureField: this.obscureField,
+        hash: this.hash,
+        startPrice: this.startPrice,
+        endPrice: this.endPrice,
+        startTime,
+        endTime,
+      };
+    },
+    /**
+     * @description: 排序
+     */
+    sortChange({ column, prop, order }) {
+      this.sortData.orderBy = prop;
+      this.sortData.orderType = order == "descending" ? "DESC" : "ASC";
+
+      if (!order) {
+        this.sortData.orderType = null;
+      }
+
+      this.fetchOrderManagerList();
+    },
+    // 用户列表导出
+    dailyStatsExcel() {
+      const search = this.searchFun();
+      const urlStr = config.api + "/user/dailyStatsExcel";
+      const { coin, userType } = this;
+      const data = {
+        ...{
+          startDate: search.startTime,
+          endDate: search.endTime,
+          userType: userType,
+        },
+        ...search,
+      };
+      if (search.startTime == null) {
+        alert("交易时间起始时间必填");
+        return;
+      }
+
+      exportExcel(urlStr, data, "每日数据统计");
+    },
+    // 加载列表
+    async fetchOrderManagerList(isSearch = true) {
+      const search = this.searchFun();
+      const { sortData, size, coin, userType } = this;
+      let _page = this.page;
+      if (isSearch) {
+        this.page = 1;
+        _page = 1;
+      }
+      const data = {
+        ...{
+          userType: userType,
+          coin: coin,
+          size: size,
+          page: _page,
+        },
+        ...sortData,
+        ...search,
+      };
+      const res = await this.$http.getOrderManagerList(data);
+      if (res) {
+        this.baseUserPage = res;
+        this.tableData = res.records;
+      }
+
+      delete data.size;
+      delete data.page;
+      const resAggregateQuery = await this.$http.getOrderManagerStatistics(data);
+      if (resAggregateQuery) {
+        this.aggregateQuery = resAggregateQuery;
+      }
+    },
+    handleSizeChange(val) {
+      this.size = val;
+      this.fetchOrderManagerList();
+    },
+    handleCurrentChange(val) {
+      this.page = val;
+      this.fetchOrderManagerList(false);
+    },
+  },
+  // 创建后
+  created() {
+    this.fetchOrderManagerList();
+  },
+  computed: {
+    coin() {
+      return this.$store.getters.coinConfig;
+    },
+    userType() {
+      return this.$store.getters.accountConfig;
+    },
+  },
+  // 挂载后
+  mounted() {},
+  // 更新后
+  updated() {},
+  // 销毁
+  beforeDestroy() {},
+};
+</script>
+
+<style lang="scss" scoped>
+.remittance-box {
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.remittance-amount {
+  padding: 20px 0;
+  border: 1px solid #666;
+  text-align: center;
+  border-radius: 20px;
+  font-size: 16px;
+  margin-right: 50px;
+  margin-bottom: 10px;
+
+  .val {
+    padding: 10px;
+    padding-bottom: 0;
+  }
+
+  & > div {
+    min-width: 200px;
+  }
+}
+
+.remittance-more {
+  display: flex;
+}
+</style>

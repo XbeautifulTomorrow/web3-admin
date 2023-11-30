@@ -169,6 +169,9 @@
           <span class="blueColor publick-button cursor" @click="closeGoogle(scope.row)" v-if="scope.row.googleValidateStatus == 'TRUE'">
             关闭谷歌验证
           </span>
+          <span class="blueColor publick-button cursor" v-if="scope.row.checkStatus != 'TRUE'" @click="veriftyAccount(scope.row)">
+            验证账号
+          </span>
         </template>
       </el-table-column>
     </el-table>
@@ -551,6 +554,25 @@ export default {
       })
         .then(async () => {
           const res = await this.$http.closeGoogleValidate({
+            id: row.id,
+          });
+          if (res) {
+            this.fetchUserlist();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    veriftyAccount(row) {
+      this.$confirm(`确定要通过验证？`, "提示", {
+        confirmButtonText: "提过验证",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          const res = await this.$http.userCheckAdopt({
             id: row.id,
           });
           if (res) {

@@ -141,13 +141,19 @@
           <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="boxStatus" sortable="custom" label="状态" align="center" key="24">
+      <el-table-column prop="bloodPoolsStatus" sortable="custom" label="是否假盲盒" align="center" key="24">
+        <template slot-scope="scope">
+          <span>{{ scope.row.indexShowStatus == "TRUE" ? "是" : "否" }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column prop="boxStatus" sortable="custom" label="状态" align="center" key="25">
         <template slot-scope="scope">
           <span style="color: #ec5706" v-if="scope.row.boxStatus == 'DISABLE'">冻结</span>
           <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="110" key="25" fixed="right">
+      <el-table-column prop="id" label="操作" align="center" width="110" key="26" fixed="right">
         <template slot-scope="scope">
           <span class="blueColor publick-button cursor" @click="onEbit(scope.row)"> 编辑 </span>
           <span class="blueColor publick-button cursor" @click="operatingNft(scope.row)">
@@ -179,6 +185,16 @@
     >
       <div class="box-setting">
         <el-form ref="ruleForm" style="width: 420px" :rules="rules" :model="ruleForm" label-width="100px">
+          <el-form-item label="是否假盲盒">
+            <el-switch
+              v-model="ruleForm.indexShowStatus"
+              active-value="TRUE"
+              inactive-value="FALSE"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+            >
+            </el-switch>
+          </el-form-item>
           <el-form-item label="盲盒名称" prop="boxName">
             <el-input v-model="ruleForm.boxName" style="width: 300px" placeholder="请输入盲盒名称"> </el-input>
           </el-form-item>
@@ -624,6 +640,7 @@ export default {
         expectRate: null, // 期望返还率
         lossRate: null, // 亏本几率
         innerBaseNumber: null, // 基准NFT数量
+        indexShowStatus: "FALSE", // 是否是假盲盒，TRUE-是，FALSE-否
       },
       bloodPool: {
         grossIncome: 0, // 消费
