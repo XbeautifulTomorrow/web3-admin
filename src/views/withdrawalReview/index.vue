@@ -16,6 +16,10 @@
         <el-option label="USDT" value="USDT"> </el-option>
       </el-select>
 
+      <el-select v-model="outgoingChainType" class="public-select-box" popper-class="public-select-box" placeholder="全部链" clearable>
+        <el-option v-for="(item, index) in chainDrop" :key="index" :label="item.chain" :value="item.chain"> </el-option>
+      </el-select>
+
       <div class="public-date-box">
         <span class="demonstration"> 发起时间 </span>
         <el-date-picker
@@ -389,6 +393,7 @@ export default {
       applicationTime: null, // 发起时间
       reviewTime: null, // 审核时间
       receiptTime: null, // 到账时间
+      outgoingChainType:null,
       sortData: {
         orderBy: null,
         orderType: null,
@@ -411,6 +416,7 @@ export default {
       reviewData: null,
       remark: null,
       walletAddress: "",
+      chainDrop:[]
     };
   },
   mixins: [pagination],
@@ -418,6 +424,12 @@ export default {
   methods: {
     bigNumber: bigNumber,
     timeForStr: timeForStr,
+    async fetchChain() {
+      const res = await this.$http.getChainList({ page: 1, size: 999 });
+      if (res) {
+        this.chainDrop = res.records;
+      }
+    },
     // 搜索条件
     searchFun() {
       let { applicationTime, reviewTime, receiptTime } = this;
@@ -454,6 +466,7 @@ export default {
         userId: this.userId, // 用户Id
         auditStatus: this.auditStatus, // 来源
         withdrawalType: this.withdrawalType, // 提款类型
+        outgoingChainType:this.outgoingChainType,
         createStartTime,
         createEndTime,
         auditStartTime,
@@ -841,6 +854,7 @@ export default {
   // 创建后
   created() {
     this.fetchAssetWithdrawalList();
+    this.fetchChain();
   },
   computed: {
     coin() {

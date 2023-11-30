@@ -38,14 +38,23 @@
         <el-option label="无限制" value="UNLIMITED"> </el-option>
         <el-option label="礼品卡" value="GIFTCARD"> </el-option>
       </el-select>
-      <el-input
-        class="public-input"
-        type="number"
-        style="width: 140px"
-        placeholder="金额"
-        v-model="amount"
-        clearable
-      />
+      <div class="public-date-box">
+        <span class="demonstration"> 金额区间 </span>
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最低价"
+          v-model="amountStart"
+          clearable
+        />
+        <el-input
+          type="number"
+          style="width: 120px; border: 1px solid #dcdfe6; border-radius: 4px"
+          placeholder="最高价"
+          v-model="amountEnd"
+          clearable
+        />
+      </div>
       <div class="public-date-box">
         <span class="demonstration"> 创建时间 </span>
         <el-date-picker
@@ -373,7 +382,8 @@ export default {
       conversionTime: null,
       cardStatus: null,
       cardType: null,
-      amount: null,
+      amountStart: null,
+      amountEnd: null,
       sortData: {
         orderBy: null,
         orderType: null,
@@ -438,7 +448,8 @@ export default {
         userName: this.userName,
         cardStatus: this.cardStatus,
         cardType: this.cardType,
-        amount: this.amount,
+        amountStart: this.amountStart,
+        amountEnd: this.amountEnd,
         createTimeStart,
         createTimeEnd,
         expirationTimeStart,
