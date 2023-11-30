@@ -567,7 +567,7 @@ export default {
     },
     veriftyAccount(row) {
       this.$confirm(`确定要通过验证？`, "提示", {
-        confirmButtonText: "提过验证",
+        confirmButtonText: "通过验证",
         cancelButtonText: "取消",
         type: "info",
       })

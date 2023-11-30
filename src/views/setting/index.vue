@@ -74,6 +74,19 @@
           </el-input>
         </div>
       </div>
+      <div class="setting-item">
+        <div class="setting-title">联系客服链接</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            style="width: 300px"
+            placeholder="输入客服链接"
+            v-model="points.customerLink"
+            clearable
+          >
+          </el-input>
+        </div>
+      </div>
       <el-button type="primary" style="width: 160px" size="medium" @click="submitPoints()">确认修改</el-button>
     </div>
     <div class="withdrawal-settings">
@@ -535,6 +548,7 @@ export default {
         consumePointRate: null, // 消费积分
         regCountdownTime: null, //
         flowCommissionRate: null, //流水佣金比例
+        customerLink:null,//客服链接
       },
 
       /** 提现相关配置 */
