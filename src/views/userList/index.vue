@@ -6,6 +6,7 @@
       <el-select v-model="userStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
         <el-option label="全部状态" value=""> </el-option>
         <el-option label="封停" value="DISABLE"> </el-option>
+        <el-option label="限制提款" value="LIMIT_DRAW"> </el-option>
         <el-option label="正常" value="NORMAL"> </el-option>
       </el-select>
       <div class="public-date-box">
@@ -156,6 +157,7 @@
       <el-table-column prop="userStatus" label="状态" align="center" width="110" key="19">
         <template slot-scope="scope">
           <span style="color: red" v-if="scope.row.userStatus == 'DISABLE'">封停</span>
+          <span style="color: #e6a23c" v-if="scope.row.userStatus == 'LIMIT_DRAW'">限制提款</span>
           <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
@@ -169,7 +171,11 @@
           <span class="blueColor publick-button cursor" @click="closeGoogle(scope.row)" v-if="scope.row.googleValidateStatus == 'TRUE'">
             关闭谷歌验证
           </span>
-          <span class="blueColor publick-button cursor" v-if="scope.row.checkStatus != 'TRUE'" @click="veriftyAccount(scope.row)">
+          <span
+            class="blueColor publick-button cursor"
+            v-if="scope.row.checkStatus != 'TRUE' && scope.row.userStatus == 'LIMIT_DRAW'"
+            @click="veriftyAccount(scope.row)"
+          >
             验证账号
           </span>
         </template>

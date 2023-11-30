@@ -75,15 +75,23 @@
         </div>
       </div>
       <div class="setting-item">
+        <div class="setting-title">联系客服名称</div>
+        <div class="setting-val">
+          <el-input class="public-input" style="width: 300px" placeholder="输入联系客服名称" v-model="points.customerName" clearable>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">联系客服链接</div>
         <div class="setting-val">
-          <el-input
-            class="public-input"
-            style="width: 300px"
-            placeholder="输入客服链接"
-            v-model="points.customerLink"
-            clearable
-          >
+          <el-input class="public-input" style="width: 300px" placeholder="输入客服链接" v-model="points.customerLink" clearable>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">landingPage跳转链接</div>
+        <div class="setting-val">
+          <el-input class="public-input" style="width: 300px" placeholder="输入landingPage跳转链接" v-model="points.jumpAddress" clearable>
           </el-input>
         </div>
       </div>
@@ -548,7 +556,9 @@ export default {
         consumePointRate: null, // 消费积分
         regCountdownTime: null, //
         flowCommissionRate: null, //流水佣金比例
-        customerLink:null,//客服链接
+        customerLink: null, //客服链接
+        customerName: null,
+        jumpAddress: null, //landingpage跳转链接
       },
 
       /** 提现相关配置 */
