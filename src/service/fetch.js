@@ -368,3 +368,7 @@ export const getRedeemPageList = (obj) => S.get("/redeem-code-info/pageList", ob
 export const getRredeemHeaderDataTotal = (obj) => S.get("/redeem-code-info/headerDataTotal", obj); //兑换码列表数据统计
 export const getRredeemHeaderAdd = (obj) => S.post("/redeem-code-info/add", obj); //创建兑换码
 export const getRredeemHeaderBatchInvalidation = (obj) => S.get("redeem-code-info/batchInvalidation", obj); //批量失效
+export const getFindRedeemTextSetting = (obj) => S.get("system-setting/findRedeemTextSetting", obj); //批量失效
+export const setRedeemTextSetting = (obj) => S.post("system-setting/redeemTextSetting", obj); //批量失效
+
+

@@ -1,20 +1,51 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 140px" placeholder="输入卡号" v-model="id" clearable />
-      <el-input class="public-input" style="width: 140px" placeholder="输入兑换账号" v-model="userName" clearable />
-      <el-select v-model="cardStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+      <el-input
+        class="public-input"
+        style="width: 140px"
+        placeholder="输入卡号"
+        v-model="id"
+        clearable
+      />
+      <el-input
+        class="public-input"
+        style="width: 140px"
+        placeholder="输入兑换账号"
+        v-model="userName"
+        clearable
+      />
+      <el-select
+        v-model="cardStatus"
+        class="public-select-box"
+        popper-class="public-select-box"
+        placeholder="全部状态"
+        clearable
+      >
         <el-option label="待兑换" value="1"> </el-option>
         <el-option label="已兑换" value="2"> </el-option>
         <el-option label="失效" value="3"> </el-option>
       </el-select>
-      <el-select v-model="cardType" class="public-select-box" popper-class="public-select-box" placeholder="全部类型" clearable>
+      <el-select
+        v-model="cardType"
+        class="public-select-box"
+        popper-class="public-select-box"
+        placeholder="全部类型"
+        clearable
+      >
         <el-option label="单次" value="SINGLE"> </el-option>
         <el-option label="私聊发码" value="PRIVATE"> </el-option>
         <el-option label="无限制" value="UNLIMITED"> </el-option>
         <el-option label="礼品卡" value="GIFTCARD"> </el-option>
       </el-select>
-      <el-input class="public-input" type="number" style="width: 140px" placeholder="金额" v-model="amount" clearable />
+      <el-input
+        class="public-input"
+        type="number"
+        style="width: 140px"
+        placeholder="金额"
+        v-model="amount"
+        clearable
+      />
       <div class="public-date-box">
         <span class="demonstration"> 创建时间 </span>
         <el-date-picker
@@ -51,35 +82,92 @@
         >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="getTableListFunc()"> 查询 </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()"> 导出 </el-button>
-      <el-button type="primary" icon="el-icon-circle-plus-outline" class="public-search" @click="addFunc()"> 添加 </el-button>
-      <el-button type="danger" icon="el-icon-remove-outline" class="public-search" @click="handleDel()"> 批量失效 </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        class="public-search"
+        @click="getTableListFunc()"
+      >
+        查询
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-download"
+        class="public-search"
+        @click="onExport()"
+      >
+        导出
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        class="public-search"
+        @click="addFunc()"
+      >
+        添加
+      </el-button>
+      <el-button
+        type="danger"
+        icon="el-icon-remove-outline"
+        class="public-search"
+        @click="handleDel()"
+      >
+        批量失效
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-circle-plus-outline"
+        class="public-search"
+        @click="couponsFunc()"
+      >
+        配置获取渠道
+      </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
         <div class="remittance-item">
           <div class="title">总礼品码</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.redeemCodeTotal }}</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.redeemCodeTotal }}
+          </div>
         </div>
         <div class="remittance-item">
           <div class="title">已兑换数</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.redeemedNumber }}</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.redeemedNumber }}
+          </div>
         </div>
         <div class="remittance-item">
           <div class="title">已兑换金额</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.redeemedAmountTotal }}</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.redeemedAmountTotal }}
+          </div>
         </div>
         <div class="remittance-item">
           <div class="title">剩余金额</div>
-          <div class="val">{{ aggregateQuery && aggregateQuery.notRedeemedAmountTotal }}</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.notRedeemedAmountTotal }}
+          </div>
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="id" label="卡号" align="center" key="1"></el-table-column>
-      <el-table-column prop="cardamom" label="卡密" align="center" key="2"> </el-table-column>
-      <el-table-column prop="amount" label="金额" align="center" key="3"> </el-table-column>
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      @sort-change="sortChange"
+      class="public-table"
+      border
+    >
+      <el-table-column
+        prop="id"
+        label="卡号"
+        align="center"
+        key="1"
+      ></el-table-column>
+      <el-table-column prop="cardamom" label="卡密" align="center" key="2">
+      </el-table-column>
+      <el-table-column prop="amount" label="金额" align="center" key="3">
+      </el-table-column>
       <el-table-column prop="cardSource" label="来源" align="center" key="4">
         <template slot-scope="scope">
           <span>
@@ -105,11 +193,18 @@
       <el-table-column prop="cardStatus" label="状态" align="center" key="6">
         <template slot-scope="scope">
           <p v-if="scope.row.cardStatus == 2" style="color: #67c23a">已兑换</p>
-          <p v-else-if="scope.row.cardStatus == 3" style="color: #f56c6c">失效</p>
+          <p v-else-if="scope.row.cardStatus == 3" style="color: #f56c6c">
+            失效
+          </p>
           <p v-else style="color: #888888">待兑换</p>
         </template>
       </el-table-column>
-      <el-table-column prop="rebateRate" label="兑换账号" align="center" key="7">
+      <el-table-column
+        prop="rebateRate"
+        label="兑换账号"
+        align="center"
+        key="7"
+      >
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userId || "--" }}
@@ -119,17 +214,35 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="createTime" width="140" label="创建时间" align="center" key="8">
+      <el-table-column
+        prop="createTime"
+        width="140"
+        label="创建时间"
+        align="center"
+        key="8"
+      >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="expirationTime" width="140" label="失效时间" align="center" key="9">
+      <el-table-column
+        prop="expirationTime"
+        width="140"
+        label="失效时间"
+        align="center"
+        key="9"
+      >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.expirationTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="redeemTime" width="140" label="兑换时间" align="center" key="10">
+      <el-table-column
+        prop="redeemTime"
+        width="140"
+        label="兑换时间"
+        align="center"
+        key="10"
+      >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.redeemTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
@@ -156,14 +269,29 @@
       append-to-body
       :before-close="handleClose"
     >
-      <el-form ref="ruleForm" class="add-form" :rules="rules" :model="ruleForm" label-width="80px">
+      <el-form
+        ref="ruleForm"
+        class="add-form"
+        :rules="rules"
+        :model="ruleForm"
+        label-width="80px"
+      >
         <el-form-item label="金额" prop="amount" :rules="rules.blur">
-          <el-input style="width: 300px" type="number" v-model="ruleForm.amount">
+          <el-input
+            style="width: 300px"
+            type="number"
+            v-model="ruleForm.amount"
+          >
             <template slot="append">U</template>
           </el-input>
         </el-form-item>
         <el-form-item label="数量" prop="number" :rules="rules.blur">
-          <el-input style="width: 300px" type="number" v-model.number="ruleForm.number"> </el-input>
+          <el-input
+            style="width: 300px"
+            type="number"
+            v-model.number="ruleForm.number"
+          >
+          </el-input>
         </el-form-item>
         <el-form-item label="类型" prop="cardType" :rules="rules.select">
           <el-select style="width: 300px" v-model="ruleForm.cardType" clearable>
@@ -174,7 +302,11 @@
           </el-select>
         </el-form-item>
         <el-form-item label="有效期">
-          <el-input style="width: 300px" type="number" v-model.number="ruleForm.validDate">
+          <el-input
+            style="width: 300px"
+            type="number"
+            v-model.number="ruleForm.validDate"
+          >
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
@@ -182,6 +314,39 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
         <el-button type="primary" @click="submitFunc()">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      width="440px"
+      :close-on-click-modal="false"
+      title="渠道配置"
+      :visible.sync="showCouponsFunc"
+      append-to-body
+      :before-close="handleClose"
+    >
+      <el-form
+        ref="couponsForm"
+        class="add-form"
+        :rules="couponsRules"
+        :model="couponsForm"
+        label-width="80px"
+      >
+        <el-form-item
+          label="渠道名称"
+          prop="channelName"
+          :rules="rules.channelName"
+        >
+          <el-input style="width: 300px" v-model="couponsForm.channelName">
+          </el-input>
+        </el-form-item>
+        <el-form-item label="链接" prop="url" :rules="rules.url">
+          <el-input style="width: 300px" v-model.number="couponsForm.url">
+          </el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="handleClose()">取 消</el-button>
+        <el-button type="primary" @click="submitCouponsFunc()">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -227,8 +392,25 @@ export default {
         validDate: 30,
       },
       rules: {
-        select: [{ required: true, message: "请选择", trigger: ["blur", "change"] }],
-        blur: [{ required: true, message: "请输入", trigger: ["blur", "change"] }],
+        select: [
+          { required: true, message: "请选择", trigger: ["blur", "change"] },
+        ],
+        blur: [
+          { required: true, message: "请输入", trigger: ["blur", "change"] },
+        ],
+      },
+      showCouponsFunc: false,
+      couponsForm: {
+        channelName: null,
+        url: null,
+      },
+      couponsRules: {
+        channelName: [
+          { required: true, message: "请输入", trigger: ["blur", "change"] },
+        ],
+        url: [
+          { required: true, message: "请输入", trigger: ["blur", "change"] },
+        ],
       },
     };
   },
@@ -306,7 +488,9 @@ export default {
 
       delete data.size;
       delete data.page;
-      const resAggregateQuery = await this.$http.getRredeemHeaderDataTotal(data);
+      const resAggregateQuery = await this.$http.getRredeemHeaderDataTotal(
+        data
+      );
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }
@@ -319,7 +503,9 @@ export default {
       })
         .then(async () => {
           const search = this.searchFun();
-          const res = await this.$http.getRredeemHeaderBatchInvalidation({ ...search });
+          const res = await this.$http.getRredeemHeaderBatchInvalidation({
+            ...search,
+          });
           if (res) {
             this.getTableListFunc();
             this.$message.success("操作成功");
@@ -361,6 +547,34 @@ export default {
 
       exportExcel(urlStr, data, "兑换码列表导出");
     },
+    // 加载渠道配置
+    async getFindRedeemTextSetting() {
+      const res = await this.$http.getFindRedeemTextSetting();
+      if (res) {
+        this.couponsForm = {
+          ...res,
+        };
+        this.$forceUpdate();
+      }
+    },
+    couponsFunc() {
+      this.getFindRedeemTextSetting();
+      this.showCouponsFunc = true;
+    },
+    async submitCouponsFunc() {
+      this.$refs.couponsForm.validate(async (valid) => {
+        if (valid) {
+          let couponsForm = { ...this.couponsForm };
+          const res = await this.$http.setRedeemTextSetting({ ...couponsForm });
+
+          if (res) {
+            this.handleClose();
+            this.getFindRedeemTextSetting();
+            this.$message.success("操作成功");
+          }
+        }
+      });
+    },
     handleClose(done) {
       if (done) {
         done();
@@ -368,6 +582,7 @@ export default {
       }
 
       this.showAddFunc = false;
+      this.showCouponsFunc = false;
     },
     handleSizeChange(val) {
       this.size = val;
