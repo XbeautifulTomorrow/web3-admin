@@ -318,7 +318,8 @@ export default {
         type: "info",
       })
         .then(async () => {
-          const res = await this.$http.getRredeemHeaderBatchInvalidation({ ...this.search });
+          const search = this.searchFun();
+          const res = await this.$http.getRredeemHeaderBatchInvalidation({ ...search });
           if (res) {
             this.getTableListFunc();
             this.$message.success("操作成功");
