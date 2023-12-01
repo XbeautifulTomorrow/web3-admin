@@ -776,18 +776,18 @@ export default {
         freeFeeCoinNumber,
       } = this.withdrawals;
 
-      if (
-        !nftWithdrawalFees ||
-        !auditThresholds ||
-        !withdrawalLimits ||
-        !withdrawalDayLimits ||
-        !upRate ||
-        !downRate ||
-        !freeFeeCoinNumber
-      ) {
-        this.$message.error("提现配置相关参数不完整，请补充完整后重试");
-        return;
-      }
+      // if (
+      //   !nftWithdrawalFees ||
+      //   !auditThresholds ||
+      //   !withdrawalLimits ||
+      //   !withdrawalDayLimits ||
+      //   !upRate ||
+      //   !downRate ||
+      //   !freeFeeCoinNumber
+      // ) {
+      //   this.$message.error("提现配置相关参数不完整，请补充完整后重试");
+      //   return;
+      // }
 
       const res = await this.$http.withdrawalConfigSet({
         ...this.withdrawals,
