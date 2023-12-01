@@ -521,6 +521,10 @@ export default {
           page: "chargeCoinManagement",
         },
         {
+          label: "法币通道管理",
+          page: "legalCurrencyManagement",
+        },
+        {
           label: "用户管理",
           page: "accountList",
         },

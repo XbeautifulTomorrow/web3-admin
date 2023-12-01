@@ -341,6 +341,11 @@ export const routes = [
         name: "registrationStatistics",
         component: () => import("@/views/registrationStatistics/index"),
       },
+      {
+        path: "/legalCurrencyManagement",
+        name: "legalCurrencyManagement",
+        component: () => import("@/views/legalCurrencyManagement/index"),
+      },
     ],
   },
 ];
