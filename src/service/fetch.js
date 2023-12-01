@@ -371,4 +371,8 @@ export const getRredeemHeaderBatchInvalidation = (obj) => S.get("redeem-code-inf
 export const getFindRedeemTextSetting = (obj) => S.get("system-setting/findRedeemTextSetting", obj); //批量失效
 export const setRedeemTextSetting = (obj) => S.post("system-setting/redeemTextSetting", obj); //批量失效
 
-
+/**
+ * @description 注册送金统计
+ */
+export const getBounsPageList = (obj) => S.get("/bouns/pageList", obj); //注册送金列表
+export const getBounsHeaderDataTotal = (obj) => S.get("/bouns/headerDataTotal", obj); //注册送金数据统计

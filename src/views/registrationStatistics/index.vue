@@ -2,17 +2,11 @@
   <div class="page-wrapper">
     <div class="public-list-inputs">
       <el-input class="public-input" style="width: 140px" placeholder="输入用户ID、昵称、邮箱" v-model="obscureField" clearable />
-      <el-input class="public-input" style="width: 140px" placeholder="输入金流ID" v-model="boxName" clearable />
-      <el-input class="public-input" style="width: 140px" placeholder="输入来源" v-model="obscureField" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入金流ID" v-model="flowId" clearable />
+      <el-input class="public-input" style="width: 140px" placeholder="输入来源" v-model="sourceNum" clearable />
       <div class="public-date-box">
         <span class="demonstration"> 注册时间 </span>
-        <el-date-picker
-          v-model="transactionTime"
-          type="datetimerange"
-          range-separator="到"
-          start-placeholder="开始时间"
-          end-placeholder="结束时间"
-        >
+        <el-date-picker v-model="regTime" type="datetimerange" range-separator="到" start-placeholder="开始时间" end-placeholder="结束时间">
         </el-date-picker>
       </div>
       <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchOrderManagerList()"> 查询 </el-button>
@@ -24,48 +18,62 @@
         <div class="remittance-item">
           <div class="title">总账号数</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.orderNumber }}
+            {{ aggregateQuery && aggregateQuery.totalPeopleNumber }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">总送金</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.openBoxNumber }}
+            {{ aggregateQuery && aggregateQuery.totalBouns }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">总充值</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.consumeTotal }}
+            {{ aggregateQuery && aggregateQuery.totalRecharge }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">总消费</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.rebatesPrices }}
+            {{ aggregateQuery && aggregateQuery.totalCumption }}
           </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">充值率</div>
+          <div class="val" v-if="aggregateQuery.totalPeopleNumber > 0">
+            {{ aggregateQuery && ((aggregateQuery.totalRechargePeopleNumber / aggregateQuery.totalPeopleNumber) * 100).toFixed(2) }}%
+          </div>
+          <div class="val" v-else>0%</div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">消费率</div>
+          <div class="val" v-if="aggregateQuery.totalPeopleNumber > 0">
+            {{ aggregateQuery && ((aggregateQuery.totalCumptionPeopleNumber / aggregateQuery.totalPeopleNumber) * 100).toFixed(2) }}%
+          </div>
+          <div class="val" v-else>0%</div>
         </div>
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="orderNumber" sortable="custom" label="用户ID" align="center" key="1"> </el-table-column>
-      <el-table-column prop="boxImg" width="120" label="昵称" align="center" key="2">
+      <el-table-column prop="userId" sortable="custom" label="用户ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="userName" width="120" label="昵称" align="center" key="2">
         <template slot-scope="scope">
-          <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
+          <!-- <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userId || "--" }}
-          </p>
+          </p> -->
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.userName || "--" }}
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="boxName" width="120" sortable="custom" label="来源" align="center" key="3"> </el-table-column>
-      <el-table-column prop="buyNumber" width="120" sortable="custom" label="邮箱" align="center" key="4"> </el-table-column>
-      <el-table-column prop="userName" width="120" sortable="custom" label="上级ID" align="center" key="5"> </el-table-column>
-      <el-table-column prop="buyPrice" width="120" sortable="custom" label="邀请码" align="center" key="6"> </el-table-column>
-      <el-table-column prop="realPrice" width="120" sortable="custom" label="金额" align="center" key="7"> </el-table-column>
-      <el-table-column prop="realPrice" width="120" sortable="custom" label="金流ID" align="center" key="8"> </el-table-column>
-      <el-table-column prop="realPrice" width="120" sortable="custom" label="消费" align="center" key="9"> </el-table-column>
+      <el-table-column prop="sourceNum" width="120" sortable="custom" label="来源" align="center" key="3"> </el-table-column>
+      <el-table-column prop="email" width="120" sortable="custom" label="邮箱" align="center" key="4"> </el-table-column>
+      <el-table-column prop="upId" width="120" sortable="custom" label="上级ID" align="center" key="5"> </el-table-column>
+      <el-table-column prop="inviteCode" width="120" sortable="custom" label="邀请码" align="center" key="6"> </el-table-column>
+      <el-table-column prop="traPrice" width="120" sortable="custom" label="金额" align="center" key="7"> </el-table-column>
+      <el-table-column prop="flowId" width="120" sortable="custom" label="金流ID" align="center" key="8"> </el-table-column>
+      <el-table-column prop="consumption" width="120" sortable="custom" label="消费" align="center" key="9"> </el-table-column>
       <el-table-column prop="createTime" width="140" sortable="custom" label="送金时间" align="center" key="10">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
@@ -102,13 +110,10 @@ export default {
   // 数据
   data() {
     return {
-      orderNumber: null,
-      boxName: null,
+      flowId: null,
       obscureField: null,
-      hash: null,
-      startPrice: null,
-      endPrice: null,
-      transactionTime: null, // 交易时间
+      sourceNum: null,
+      regTime: null, // 交易时间
       sortData: {
         orderBy: null,
         orderType: null,
@@ -127,27 +132,21 @@ export default {
     timeForStr: timeForStr,
     // 搜索条件
     searchFun() {
-      let { transactionTime } = this;
-      let startTime = null;
-      let endTime = null;
-      let finishStartTime = null;
-      let finishEndTime = null;
-      if (transactionTime && transactionTime[0]) {
-        startTime = timeForStr(transactionTime[0], "YYYY-MM-DD HH:mm:ss");
+      let { regTime } = this;
+      let regStartTime = null;
+      let regEndTime = null;
+      if (regTime && regTime[0]) {
+        regStartTime = timeForStr(regTime[0], "YYYY-MM-DD HH:mm:ss");
       }
-      if (transactionTime && transactionTime[1]) {
-        endTime = timeForStr(transactionTime[1], "YYYY-MM-DD HH:mm:ss");
+      if (regTime && regTime[1]) {
+        regEndTime = timeForStr(regTime[1], "YYYY-MM-DD HH:mm:ss");
       }
-
       return {
-        orderNumber: this.orderNumber,
-        boxName: this.boxName,
         obscureField: this.obscureField,
-        hash: this.hash,
-        startPrice: this.startPrice,
-        endPrice: this.endPrice,
-        startTime,
-        endTime,
+        flowId: this.flowId,
+        sourceNum: this.sourceNum,
+        regStartTime,
+        regEndTime,
       };
     },
     /**
@@ -166,7 +165,7 @@ export default {
     // 用户列表导出
     dailyStatsExcel() {
       const search = this.searchFun();
-      const urlStr = config.api + "/user/dailyStatsExcel";
+      const urlStr = config.api + "/bouns/exportExcel";
       const { coin, userType } = this;
       const data = {
         ...{
@@ -195,14 +194,12 @@ export default {
       const data = {
         ...{
           userType: userType,
-          coin: coin,
           size: size,
           page: _page,
         },
-        ...sortData,
         ...search,
       };
-      const res = await this.$http.getOrderManagerList(data);
+      const res = await this.$http.getBounsPageList(data);
       if (res) {
         this.baseUserPage = res;
         this.tableData = res.records;
@@ -210,7 +207,7 @@ export default {
 
       delete data.size;
       delete data.page;
-      const resAggregateQuery = await this.$http.getOrderManagerStatistics(data);
+      const resAggregateQuery = await this.$http.getBounsHeaderDataTotal(data);
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }

@@ -114,6 +114,36 @@
         </div>
       </div> -->
       <div class="setting-item">
+        <div class="setting-title">最低提款金额</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入最低提款金额"
+            v-model="withdrawals.minWithdrawal"
+            clearable
+          >
+            <template slot="append">{{ "USDT" }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
+        <div class="setting-title">激活返佣阈值</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入激活返佣阈值"
+            v-model="withdrawals.activateRebateThreshold"
+            clearable
+          >
+            <template slot="append">{{ "USDT" }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">NFT提现手续费</div>
         <div class="setting-val">
           <el-input
@@ -572,6 +602,8 @@ export default {
         upRate: null, // 闪兑上浮比率
         downRate: null, // 闪兑下浮比率
         freeFeeCoinNumber: null, //提币免费次数
+        minWithdrawal: null, //最低提款金额
+        activateRebateThreshold: null, //激活返佣阈值字段
       },
 
       /** NFT回收相关配置 */

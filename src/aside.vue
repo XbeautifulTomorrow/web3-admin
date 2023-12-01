@@ -509,6 +509,10 @@ export default {
           page: "activityManagement",
         },
         {
+          label: "注册送金统计",
+          page: "registrationStatistics",
+        },
+        {
           label: "banner管理",
           page: "bannerManagement",
         },
@@ -594,12 +598,12 @@ export default {
         "robotManagement",
         "lotteryChainManagement",
         "mandatoryAudit",
-        "activityManagement",
-        "activityList",
+
         "bannerManagement",
         "noticeManagement",
-        "registrationStatistics",
       ];
+
+      const activityManagement = ["activityManagement", "activityList", "registrationStatistics"];
 
       const mallManagement = [
         "blindBoxManagement",
@@ -657,6 +661,9 @@ export default {
               this.page = item.label;
             } else if (fundingStatistics.includes(item.page)) {
               this.title = "资金统计";
+              this.page = item.label;
+            } else if (activityManagement.includes(item.page)) {
+              this.title = "活动管理";
               this.page = item.label;
             } else if (walletManagement.includes(item.page)) {
               this.title = "钱包管理";
