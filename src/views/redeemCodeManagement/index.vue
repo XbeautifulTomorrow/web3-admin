@@ -119,7 +119,7 @@
         type="danger"
         icon="el-icon-remove-outline"
         class="public-search"
-        @click="handleDel()"
+        @click="handleBatchInvalidation()"
       >
         批量失效
       </el-button>
@@ -254,6 +254,16 @@
       >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.redeemTime, "YYYY-MM-DD HH:mm:ss") }}
+        </template>
+      </el-table-column>
+      <el-table-column prop="id" label="操作" align="center" key="19">
+        <template slot-scope="scope">
+          <span
+            v-if="scope.row.cardStatus == 1"
+            class="blueColor publick-button cursor"
+            @click="handleInvalid(scope.row)"
+            >失效</span
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -499,14 +509,33 @@ export default {
 
       delete data.size;
       delete data.page;
-      const resAggregateQuery = await this.$http.getRredeemHeaderDataTotal(
-        data
-      );
+      const resAggregateQuery = await this.$http.getRedeemHeaderDataTotal(data);
       if (resAggregateQuery) {
         this.aggregateQuery = resAggregateQuery;
       }
     },
-    handleDel() {
+    // 失效
+    handleInvalid(event) {
+      this.$confirm("确定要执行此操作吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "info",
+      })
+        .then(async () => {
+          const res = await this.$http.redeeminvalid({
+            redeemId: event.id,
+          });
+          if (res) {
+            this.getTableListFunc();
+            this.$message.success("操作成功");
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    // 批量失效
+    handleBatchInvalidation() {
       this.$confirm("确定要执行此操作吗?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -514,7 +543,7 @@ export default {
       })
         .then(async () => {
           const search = this.searchFun();
-          const res = await this.$http.getRredeemHeaderBatchInvalidation({
+          const res = await this.$http.redeemBatchInvalidation({
             ...search,
           });
           if (res) {
@@ -533,7 +562,7 @@ export default {
       this.$refs.ruleForm.validate(async (valid) => {
         if (valid) {
           let ruleForm = { ...this.ruleForm };
-          const res = await this.$http.getRredeemHeaderAdd({ ...ruleForm });
+          const res = await this.$http.redeemHeaderAdd({ ...ruleForm });
 
           if (res) {
             this.handleClose();
@@ -572,6 +601,7 @@ export default {
       this.getFindRedeemTextSetting();
       this.showCouponsFunc = true;
     },
+    // 渠道配置
     async submitCouponsFunc() {
       this.$refs.couponsForm.validate(async (valid) => {
         if (valid) {
