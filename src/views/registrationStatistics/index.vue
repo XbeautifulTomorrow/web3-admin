@@ -41,15 +41,15 @@
         </div>
         <div class="remittance-item">
           <div class="title">充值率</div>
-          <div class="val" v-if="aggregateQuery.totalPeopleNumber > 0">
-            {{ aggregateQuery && ((aggregateQuery.totalRechargePeopleNumber / aggregateQuery.totalPeopleNumber) * 100).toFixed(2) }}%
+          <div class="val" v-if="aggregateQuery?.totalPeopleNumber > 0">
+            {{ aggregateQuery && ((aggregateQuery?.totalRechargePeopleNumber / aggregateQuery?.totalPeopleNumber) * 100).toFixed(2) }}%
           </div>
           <div class="val" v-else>0%</div>
         </div>
         <div class="remittance-item">
           <div class="title">消费率</div>
-          <div class="val" v-if="aggregateQuery.totalPeopleNumber > 0">
-            {{ aggregateQuery && ((aggregateQuery.totalCumptionPeopleNumber / aggregateQuery.totalPeopleNumber) * 100).toFixed(2) }}%
+          <div class="val" v-if="aggregateQuery?.totalPeopleNumber > 0">
+            {{ aggregateQuery && ((aggregateQuery?.totalCumptionPeopleNumber / aggregateQuery?.totalPeopleNumber) * 100).toFixed(2) }}%
           </div>
           <div class="val" v-else>0%</div>
         </div>
@@ -74,9 +74,9 @@
       <el-table-column prop="traPrice" width="120" label="金额" align="center" key="7"> </el-table-column>
       <el-table-column prop="flowId" width="120" label="金流ID" align="center" key="8"> </el-table-column>
       <el-table-column prop="recharge" width="120" label="充值" align="center" key="9"> </el-table-column>
-      <el-table-column prop="consumption" width="120" label="消费" align="center" key="9"> </el-table-column>
-      <el-table-column prop="drawing" width="120" label="提款" align="center" key="9"> </el-table-column>
-      <el-table-column prop="createTime" label="送金时间" align="center" key="10">
+      <el-table-column prop="consumption" width="120" label="消费" align="center" key="10"> </el-table-column>
+      <el-table-column prop="drawing" width="120" label="提款" align="center" key="11"> </el-table-column>
+      <el-table-column prop="createTime" label="送金时间" align="center" key="12">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
