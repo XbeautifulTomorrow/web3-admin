@@ -87,6 +87,12 @@
           </div>
         </div>
         <div class="remittance-item">
+          <div class="title">总送金</div>
+          <div class="val">
+            {{ aggregateQuery && aggregateQuery.bounsTotal }}
+          </div>
+        </div>
+        <div class="remittance-item">
           <div class="title">总扣款</div>
           <div class="val">
             {{ aggregateQuery && aggregateQuery.totalDeuctions }}
@@ -123,6 +129,7 @@
       <el-table-column prop="totalConsumps" sortable="custom" label="总消费(USDT)" align="center" width="120" key="5"> </el-table-column>
       <el-table-column prop="totalRevenues" sortable="custom" label="总收入(USDT)" align="center" width="120" key="6"> </el-table-column>
       <el-table-column prop="totalRewards" sortable="custom" label="总奖励(USDT)" align="center" width="120" key="7"> </el-table-column>
+      <el-table-column prop="totalBouns" sortable="custom" label="总送金(USDT)" align="center" width="120" key="7"> </el-table-column>
       <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(USDT)" align="center" width="120" key="8"> </el-table-column>
       <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
       <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
