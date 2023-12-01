@@ -56,7 +56,7 @@
       </div>
     </div>
     <el-table :data="tableData" style="width: 100%" @sort-change="sortChange" class="public-table" border>
-      <el-table-column prop="userId" sortable="custom" label="用户ID" align="center" key="1"> </el-table-column>
+      <el-table-column prop="userId" width="120"  label="用户ID" align="center" key="1"> </el-table-column>
       <el-table-column prop="userName" width="120" label="昵称" align="center" key="2">
         <template slot-scope="scope">
           <!-- <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
@@ -67,14 +67,16 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="sourceNum" width="120" sortable="custom" label="来源" align="center" key="3"> </el-table-column>
-      <el-table-column prop="email" width="120" sortable="custom" label="邮箱" align="center" key="4"> </el-table-column>
-      <el-table-column prop="upId" width="120" sortable="custom" label="上级ID" align="center" key="5"> </el-table-column>
-      <el-table-column prop="inviteCode" width="120" sortable="custom" label="邀请码" align="center" key="6"> </el-table-column>
-      <el-table-column prop="traPrice" width="120" sortable="custom" label="金额" align="center" key="7"> </el-table-column>
-      <el-table-column prop="flowId" width="120" sortable="custom" label="金流ID" align="center" key="8"> </el-table-column>
-      <el-table-column prop="consumption" width="120" sortable="custom" label="消费" align="center" key="9"> </el-table-column>
-      <el-table-column prop="createTime" width="140" sortable="custom" label="送金时间" align="center" key="10">
+      <el-table-column prop="sourceNum" width="120" label="来源" align="center" key="3"> </el-table-column>
+      <el-table-column prop="email" width="120" label="邮箱" align="center" key="4"> </el-table-column>
+      <el-table-column prop="upId" width="120" label="上级ID" align="center" key="5"> </el-table-column>
+      <el-table-column prop="inviteCode" width="120" label="邀请码" align="center" key="6"> </el-table-column>
+      <el-table-column prop="traPrice" width="120" label="金额" align="center" key="7"> </el-table-column>
+      <el-table-column prop="flowId" width="120" label="金流ID" align="center" key="8"> </el-table-column>
+      <el-table-column prop="recharge" width="120" label="充值" align="center" key="9"> </el-table-column>
+      <el-table-column prop="consumption" width="120" label="消费" align="center" key="9"> </el-table-column>
+      <el-table-column prop="drawing" width="120" label="提款" align="center" key="9"> </el-table-column>
+      <el-table-column prop="createTime" label="送金时间" align="center" key="10">
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
