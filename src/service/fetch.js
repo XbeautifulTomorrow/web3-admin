@@ -365,10 +365,11 @@ export const setLegalupdateStatus = (obj) => S.get("/legal-currency-recharge/upd
  * @description 兑换码管理
  */
 export const getRedeemPageList = (obj) => S.get("/redeem-code-info/pageList", obj); //兑换码管理列表
-export const getRredeemHeaderDataTotal = (obj) => S.get("/redeem-code-info/headerDataTotal", obj); //兑换码列表数据统计
-export const getRredeemHeaderAdd = (obj) => S.post("/redeem-code-info/add", obj); //创建兑换码
-export const getRredeemHeaderBatchInvalidation = (obj) => S.get("redeem-code-info/batchInvalidation", obj); //批量失效
-export const getFindRedeemTextSetting = (obj) => S.get("system-setting/findRedeemTextSetting", obj); //批量失效
-export const setRedeemTextSetting = (obj) => S.post("system-setting/redeemTextSetting", obj); //批量失效
+export const getRedeemHeaderDataTotal = (obj) => S.get("/redeem-code-info/headerDataTotal", obj); //兑换码列表数据统计
+export const redeemHeaderAdd = (obj) => S.post("/redeem-code-info/add", obj); //创建兑换码
+export const redeemBatchInvalidation = (obj) => S.get("redeem-code-info/batchInvalidation", obj); //批量失效
+export const redeeminvalid = (obj) => S.get("/redeem-code-info/invalid", obj); // 单个失效
+export const getFindRedeemTextSetting = (obj) => S.get("system-setting/findRedeemTextSetting", obj); // 获取渠道配置
+export const setRedeemTextSetting = (obj) => S.post("system-setting/redeemTextSetting", obj); // 配置渠道
 
 
