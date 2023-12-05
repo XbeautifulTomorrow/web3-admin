@@ -170,19 +170,10 @@ export default {
       const urlStr = config.api + "/bouns/exportExcel";
       const { coin, userType } = this;
       const data = {
-        ...{
-          startDate: search.startTime,
-          endDate: search.endTime,
-          userType: userType,
-        },
         ...search,
       };
-      if (search.startTime == null) {
-        alert("交易时间起始时间必填");
-        return;
-      }
 
-      exportExcel(urlStr, data, "每日数据统计");
+      exportExcel(urlStr, data, "注册送金统计");
     },
     // 加载列表
     async fetchOrderManagerList(isSearch = true) {

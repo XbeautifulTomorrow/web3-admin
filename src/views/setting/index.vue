@@ -481,7 +481,7 @@
     <div class="wallet-settings">
       <div class="operating-box">
         <span>归集钱包设置</span>
-        <el-button type="primary" style="width: 160px" @click="showDialog = true">新增钱包</el-button>
+        <!-- <el-button type="primary" style="width: 160px" @click="showDialog = true">新增钱包</el-button> -->
       </div>
       <el-table :data="tableData" style="width: 760px; min-width: 0" class="public-table" border>
         <el-table-column prop="type" width="320" label="钱包类型" align="center" key="1"> </el-table-column>
