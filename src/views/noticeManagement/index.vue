@@ -55,6 +55,11 @@
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
+      <el-table-column prop="webTime" label="发布时间">
+        <template slot-scope="scope">
+          {{ timeForStr(scope.row.webTime, "YYYY-MM-DD HH:mm:ss") }}
+        </template>
+      </el-table-column>
       <el-table-column prop="scope" label="操作" width="220" fixed="right">
         <template slot-scope="scope">
           <el-button size="mini" type="primary" @click="handleEditor(scope.row)">编辑</el-button>

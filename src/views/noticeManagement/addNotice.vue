@@ -8,6 +8,15 @@
           <el-form-item label="标题名称" prop="title">
             <el-input v-model="ruleForm.title" style="width: 300px" placeholder="请输入名称" />
           </el-form-item>
+          <el-form-item label="发布时间" prop="title">
+            <el-date-picker
+              v-model="ruleForm.webTime"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              type="datetime"
+              placeholder="选择日期时间"
+            >
+            </el-date-picker>
+          </el-form-item>
           <el-form-item label="封面" prop="imgUrl" :rules="rules.select">
             <el-upload
               :action="uploadUrl"
@@ -113,6 +122,7 @@ export default {
         language: "en_US",
         title: "",
         content: "",
+        webTime:"",
         contentHtml: "",
         forcedSwitch: 0,
         importantSwitch: 0,

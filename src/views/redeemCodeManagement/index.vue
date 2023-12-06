@@ -223,6 +223,8 @@
           </p>
         </template>
       </el-table-column>
+      <el-table-column prop="remark" label="备注" align="center" key="20" show-overflow-tooltip> 
+      </el-table-column>
       <el-table-column
         prop="createTime"
         width="140"
@@ -329,6 +331,13 @@
             <template slot="append">天</template>
           </el-input>
         </el-form-item>
+        <el-form-item label="备注">
+          <el-input
+            style="width: 300px"
+            v-model="ruleForm.remark"
+          >
+          </el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="handleClose()">取 消</el-button>
@@ -410,6 +419,7 @@ export default {
         number: null,
         cardType: null,
         validDate: 30,
+        remark:null
       },
       rules: {
         select: [
