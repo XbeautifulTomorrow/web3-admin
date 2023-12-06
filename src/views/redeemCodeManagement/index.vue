@@ -15,6 +15,13 @@
         v-model="userName"
         clearable
       />
+      <el-input
+        class="public-input"
+        style="width: 140px"
+        placeholder="输入备注"
+        v-model="remark"
+        clearable
+      />
       <el-select
         v-model="cardStatus"
         class="public-select-box"
@@ -396,6 +403,7 @@ export default {
       id: null,
       userName: null,
       inviteCode: null,
+      remark:null,
       createTime: null,
       failureTime: null,
       conversionTime: null,
@@ -466,6 +474,7 @@ export default {
       return {
         id: this.id,
         userName: this.userName,
+        remark:this.remark,
         cardStatus: this.cardStatus,
         cardType: this.cardType,
         amountStart: this.amountStart,
