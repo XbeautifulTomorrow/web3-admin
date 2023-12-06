@@ -1,8 +1,5 @@
-/**
- * Created by PanJiaChen on 16/11/18.
- */
-
 import axios from "axios";
+import bigNumber from "bignumber.js";
 
 export function openUrl(url) {
   if (typeof window !== "object") return;
@@ -676,29 +673,29 @@ export const accurateDecimal = (number, format, zeroFill) => {
   //判断非空
   if (!isEmpty(number)) {
     //正则匹配:正整数，负整数，正浮点数，负浮点数
-    if (!/^\d+(\.\d+)?$|^-\d+(\.\d+)?$/.test(number))
-      return number;
-    var n = 1;
-    for (var i = 0; i < format; i++) {
+    if (!/^\d+(\.\d+)?$|^-\d+(\.\d+)?$/.test(number)) return number;
+    let n = 1;
+    for (let i = 0; i < format; i++) {
       n = n * 10;
     }
 
-    //四舍五入
-    number = Math.round(number * n) / n;
-    var str = number.toString();
+    // 向下取整
+    number = Math.floor(Number(new bigNumber(number).multipliedBy(n)));
+    number = new bigNumber(number).div(n);
+    let str = number.toString();
 
     //是否补零
     if (zeroFill) {
-      var index;
+      let index;
       if (str.indexOf(".") == -1) {
         index = format;
-        str += '.';
+        str += ".";
       } else {
-        index = format - ((str.length - 1) - str.indexOf("."));
+        index = format - (str.length - 1 - str.indexOf("."));
       }
 
-      for (var i = 0; i < index; i++) {
-        str += '0';
+      for (let i = 0; i < index; i++) {
+        str += "0";
       }
     }
     return str;

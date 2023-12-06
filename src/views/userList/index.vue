@@ -1,9 +1,27 @@
 <template>
   <div class="page-wrapper">
     <div class="public-list-inputs">
-      <el-input class="public-input" style="width: 220px" placeholder="输入ID、昵称、邮箱、钱包地址" v-model="obscureField" clearable />
-      <el-input class="public-input" placeholder="上级ID" type="number" v-model.number="upId" clearable />
-      <el-select v-model="userStatus" class="public-select-box" popper-class="public-select-box" placeholder="全部状态" clearable>
+      <el-input
+        class="public-input"
+        style="width: 220px"
+        placeholder="输入ID、昵称、邮箱、钱包地址"
+        v-model="obscureField"
+        clearable
+      />
+      <el-input
+        class="public-input"
+        placeholder="上级ID"
+        type="number"
+        v-model.number="upId"
+        clearable
+      />
+      <el-select
+        v-model="userStatus"
+        class="public-select-box"
+        popper-class="public-select-box"
+        placeholder="全部状态"
+        clearable
+      >
         <el-option label="全部状态" value=""> </el-option>
         <el-option label="封停" value="DISABLE"> </el-option>
         <el-option label="限制提款" value="LIMIT_DRAW"> </el-option>
@@ -31,89 +49,164 @@
         >
         </el-date-picker>
       </div>
-      <el-button type="primary" icon="el-icon-search" class="public-search" @click="fetchUserlist(true)"> 查询 </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExport()"> 导出 </el-button>
-      <el-button type="primary" icon="el-icon-upload2" class="public-search" @click="showDialog = true"> 导入测试号 </el-button>
-      <el-link icon="el-icon-download" type="primary" @click="downloadExcel('SIGN_ACCOUNT')" class="download-module">下载模板</el-link>
-      <el-upload class="upload-demo" action="/" :on-change="importBatchUpAndDownFunc" :auto-upload="false" :show-file-list="false">
-        <el-button icon="el-icon-upload2" type="primary" class="public-search">批量上分</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        class="public-search"
+        @click="fetchUserlist(true)"
+      >
+        查询
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-download"
+        class="public-search"
+        @click="onExport()"
+      >
+        导出
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-upload2"
+        class="public-search"
+        @click="showDialog = true"
+      >
+        导入测试号
+      </el-button>
+      <el-link
+        icon="el-icon-download"
+        type="primary"
+        @click="downloadExcel('SIGN_ACCOUNT')"
+        class="download-module"
+        >下载模板</el-link
+      >
+      <el-upload
+        class="upload-demo"
+        action="/"
+        :on-change="importBatchUpAndDownFunc"
+        :auto-upload="false"
+        :show-file-list="false"
+      >
+        <el-button icon="el-icon-upload2" type="primary" class="public-search"
+          >批量上分</el-button
+        >
       </el-upload>
-      <el-link icon="el-icon-download" type="primary" @click="downloadExcel('BATCH_UP_AND_DOWN')" class="download-module">下载模板</el-link>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExportCountry()"> 导出国家数据 </el-button>
-      <el-button type="primary" icon="el-icon-download" class="public-search" @click="onExportUser()"> 导出用户充值数据 </el-button>
+      <el-link
+        icon="el-icon-download"
+        type="primary"
+        @click="downloadExcel('BATCH_UP_AND_DOWN')"
+        class="download-module"
+        >下载模板</el-link
+      >
+      <el-button
+        type="primary"
+        icon="el-icon-download"
+        class="public-search"
+        @click="onExportCountry()"
+      >
+        导出国家数据
+      </el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-download"
+        class="public-search"
+        @click="onExportUser()"
+      >
+        导出用户充值数据
+      </el-button>
     </div>
     <div class="remittance-box">
       <div class="remittance-amount remittance-more">
         <div class="remittance-item">
           <div class="title">总用户数</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.userNumberTotal }}
+            {{ aggregateQuery?.userNumberTotal }}
           </div>
         </div>
         <div class="remittance-item">
-          <div class="title">总购买数</div>
+          <div class="title">总充值</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.buyNumberTotal }}
-          </div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总消费金额</div>
-          <div class="val">
-            {{ aggregateQuery && aggregateQuery.consumeTotal }}
-          </div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总余额</div>
-          <div class="val">
-            {{ aggregateQuery && aggregateQuery.assetBalanceUTotal }}
-          </div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总资产</div>
-          <div class="val">
-            {{ aggregateQuery && aggregateQuery.estimateBanlanceTotal }}
-          </div>
-        </div>
-        <div class="remittance-item">
-          <div class="title">总收入金额</div>
-          <div class="val">
-            {{ aggregateQuery && aggregateQuery.revenueTotal }}
+            {{ accurateDecimal(aggregateQuery?.totalRecharges, 2) }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">总奖励</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.totalRewards }}
+            {{ accurateDecimal(aggregateQuery?.totalRewards, 2) }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">总送金</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.bounsTotal }}
+            {{ accurateDecimal(aggregateQuery?.bounsTotal, 2) }}
           </div>
         </div>
         <div class="remittance-item">
-          <div class="title">总扣款</div>
+          <div class="title">总收入金额</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.totalDeuctions }}
+            {{ accurateDecimal(aggregateQuery?.revenueTotal, 2) }}
           </div>
         </div>
         <div class="remittance-item">
-          <div class="title">总积分</div>
+          <div class="title">总消费金额</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.assetPointBalanceTotal }}
+            {{ accurateDecimal(aggregateQuery?.consumeTotal, 2) }}
           </div>
         </div>
         <div class="remittance-item">
           <div class="title">累计提款</div>
           <div class="val">
-            {{ aggregateQuery && aggregateQuery.estimateDrawBanlanceTotal }}
+            {{ accurateDecimal(aggregateQuery?.estimateDrawBanlanceTotal, 2) }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总扣款</div>
+          <div class="val">
+            {{ accurateDecimal(aggregateQuery?.totalDeuctions, 2) }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总余额</div>
+          <div class="val">
+            {{ accurateDecimal(aggregateQuery?.assetBalanceUTotal, 2) }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总积分</div>
+          <div class="val">
+            {{ aggregateQuery?.assetPointBalanceTotal }}
+          </div>
+        </div>
+
+        <div class="remittance-item">
+          <div class="title">总兑换码</div>
+          <div class="val">
+            {{ aggregateQuery?.totalRedeemCard }}
+          </div>
+        </div>
+        <div class="remittance-item">
+          <div class="title">总资产</div>
+          <div class="val">
+            {{ accurateDecimal(aggregateQuery?.estimateBanlanceTotal, 2) }}
           </div>
         </div>
       </div>
     </div>
-    <el-table :data="tableData" style="width: 100%" class="public-table" border @sort-change="sortChange">
-      <el-table-column prop="id" sortable="custom" label="用户ID/昵称" align="center" width="110" key="0">
+    <el-table
+      :data="tableData"
+      style="width: 100%"
+      class="public-table"
+      border
+      @sort-change="sortChange"
+    >
+      <el-table-column
+        prop="id"
+        sortable="custom"
+        label="用户ID/昵称"
+        align="center"
+        width="110"
+        key="0"
+      >
         <template slot-scope="scope">
           <p :style="{ color: scope.row.userType == 'INNER' ? 'red' : '#000' }">
             {{ scope.row.id || "--" }}
@@ -123,64 +216,241 @@
           </p>
         </template>
       </el-table-column>
-      <el-table-column prop="upId" label="上级ID" align="center" width="110" key="2"> </el-table-column>
-      <el-table-column prop="email" label="邮箱" align="center" width="200" key="3"> </el-table-column>
-      <el-table-column prop="totalRecharges" sortable="custom" label="总充值(USDT)" align="center" width="120" key="4"> </el-table-column>
-      <el-table-column prop="totalConsumps" sortable="custom" label="总消费(USDT)" align="center" width="120" key="5"> </el-table-column>
-      <el-table-column prop="totalRevenues" sortable="custom" label="总收入(USDT)" align="center" width="120" key="6"> </el-table-column>
-      <el-table-column prop="totalRewards" sortable="custom" label="总奖励(USDT)" align="center" width="120" key="7"> </el-table-column>
-      <el-table-column prop="totalBouns" sortable="custom" label="总送金(USDT)" align="center" width="120" key="7"> </el-table-column>
-      <el-table-column prop="totalDeuctions" sortable="custom" label="总扣款(USDT)" align="center" width="120" key="8"> </el-table-column>
-      <el-table-column prop="buyBoxNumbers" sortable="custom" label="购买盲盒个数" align="center" width="120" key="9"> </el-table-column>
-      <el-table-column prop="totalCollects" sortable="custom" label="获得藏品" align="center" width="110" key="10"> </el-table-column>
-      <el-table-column prop="remainderCollects" sortable="custom" label="剩余藏品" align="center" width="110" key="11"> </el-table-column>
-      <el-table-column prop="assetBalanceU" sortable="custom" label="余额(USDT)" align="center" width="110" key="12"> </el-table-column>
-      <el-table-column prop="estimateBanlanceTotal" sortable="custom" label="资产预估" align="center" width="110" key="21">
+      <el-table-column
+        prop="upId"
+        label="上级ID"
+        align="center"
+        width="110"
+        key="2"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="email"
+        label="邮箱"
+        align="center"
+        width="200"
+        key="3"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalRecharges"
+        sortable="custom"
+        label="总充值(USDT)"
+        align="center"
+        width="120"
+        key="4"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalConsumps"
+        sortable="custom"
+        label="总消费(USDT)"
+        align="center"
+        width="120"
+        key="5"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalRevenues"
+        sortable="custom"
+        label="总收入(USDT)"
+        align="center"
+        width="120"
+        key="6"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalRewards"
+        sortable="custom"
+        label="总奖励(USDT)"
+        align="center"
+        width="120"
+        key="7"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalBouns"
+        sortable="custom"
+        label="总送金(USDT)"
+        align="center"
+        width="120"
+        key="8"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalDeuctions"
+        sortable="custom"
+        label="总扣款(USDT)"
+        align="center"
+        width="120"
+        key="9"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="buyBoxNumbers"
+        sortable="custom"
+        label="购买盲盒个数"
+        align="center"
+        width="120"
+        key="10"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="totalCollects"
+        sortable="custom"
+        label="获得藏品"
+        align="center"
+        width="110"
+        key="11"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="remainderCollects"
+        sortable="custom"
+        label="剩余藏品"
+        align="center"
+        width="110"
+        key="12"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="assetBalanceU"
+        sortable="custom"
+        label="余额(USDT)"
+        align="center"
+        width="110"
+        key="13"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="estimateBanlanceTotal"
+        sortable="custom"
+        label="资产预估"
+        align="center"
+        width="110"
+        key="21"
+      >
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row)">
+          <span
+            class="blueColor publick-button cursor"
+            @click="assetBalanceDialogFunc(scope.row)"
+          >
             {{ scope.row.estimateBanlanceTotal }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="estimateDrawBanlanceTotal" sortable="custom" label="提款到账" align="center" width="110" key="14">
+      <el-table-column
+        prop="estimateDrawBanlanceTotal"
+        sortable="custom"
+        label="提款到账"
+        align="center"
+        width="110"
+        key="14"
+      >
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="assetBalanceDialogFunc(scope.row, 'withdraw')">
+          <span
+            class="blueColor publick-button cursor"
+            @click="assetBalanceDialogFunc(scope.row, 'withdraw')"
+          >
             {{ scope.row.estimateDrawBanlanceTotal }}
           </span>
         </template>
       </el-table-column>
-      <el-table-column prop="point" sortable="custom" label="总积分" align="center" width="110" key="15"> </el-table-column>
-      <el-table-column prop="createTime" sortable="custom" label="注册时间" align="center" width="140" key="16">
+      <el-table-column
+        prop="point"
+        sortable="custom"
+        label="总积分"
+        align="center"
+        width="110"
+        key="15"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="createTime"
+        sortable="custom"
+        label="注册时间"
+        align="center"
+        width="140"
+        key="16"
+      >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.createTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginTime" sortable="custom" label="最后登录时间" align="center" width="140" key="17">
+      <el-table-column
+        prop="lastLoginTime"
+        sortable="custom"
+        label="最后登录时间"
+        align="center"
+        width="140"
+        key="17"
+      >
         <template slot-scope="scope">
           {{ timeForStr(scope.row.lastLoginTime, "YYYY-MM-DD HH:mm:ss") }}
         </template>
       </el-table-column>
-      <el-table-column prop="lastLoginIp" label="最后登录IP" align="center" width="110" key="18"> </el-table-column>
-      <el-table-column prop="userStatus" label="状态" align="center" width="110" key="19">
+      <el-table-column
+        prop="lastLoginIp"
+        label="最后登录IP"
+        align="center"
+        width="110"
+        key="18"
+      >
+      </el-table-column>
+      <el-table-column
+        prop="userStatus"
+        label="状态"
+        align="center"
+        width="110"
+        key="19"
+      >
         <template slot-scope="scope">
-          <span style="color: red" v-if="scope.row.userStatus == 'DISABLE'">封停</span>
-          <span style="color: #e6a23c" v-if="scope.row.userStatus == 'LIMIT_DRAW'">限制提款</span>
+          <span style="color: red" v-if="scope.row.userStatus == 'DISABLE'"
+            >封停</span
+          >
+          <span
+            style="color: #e6a23c"
+            v-if="scope.row.userStatus == 'LIMIT_DRAW'"
+            >限制提款</span
+          >
           <span style="color: #21ae04" v-else>正常</span>
         </template>
       </el-table-column>
-      <el-table-column prop="id" label="操作" align="center" width="140" key="20" fixed="right">
+      <el-table-column
+        prop="id"
+        label="操作"
+        align="center"
+        width="140"
+        key="20"
+        fixed="right"
+      >
         <template slot-scope="scope">
-          <span class="blueColor publick-button cursor" @click="operatingScore(scope.row)"> 上下分 </span>
+          <span
+            class="blueColor publick-button cursor"
+            @click="operatingScore(scope.row)"
+          >
+            上下分
+          </span>
           <span class="blueColor publick-button cursor"> 详情 </span>
-          <span class="blueColor publick-button cursor" @click="operatingAccount(scope.row)">
+          <span
+            class="blueColor publick-button cursor"
+            @click="operatingAccount(scope.row)"
+          >
             {{ scope.row.userStatus == "DISABLE" ? "解禁" : "封停" }}
           </span>
-          <span class="blueColor publick-button cursor" @click="closeGoogle(scope.row)" v-if="scope.row.googleValidateStatus == 'TRUE'">
+          <span
+            class="blueColor publick-button cursor"
+            @click="closeGoogle(scope.row)"
+            v-if="scope.row.googleValidateStatus == 'TRUE'"
+          >
             关闭谷歌验证
           </span>
           <span
             class="blueColor publick-button cursor"
-            v-if="scope.row.checkStatus != 'TRUE' && scope.row.userStatus == 'LIMIT_DRAW'"
+            v-if="
+              scope.row.checkStatus != 'TRUE' &&
+              scope.row.userStatus == 'LIMIT_DRAW'
+            "
             @click="veriftyAccount(scope.row)"
           >
             验证账号
@@ -228,23 +498,62 @@
         </el-upload>
       </div>
       <el-table :data="testData" v-else style="width: auto" border>
-        <el-table-column prop="chainId" label="链ID" align="center" width="110" key="1"> </el-table-column>
-        <el-table-column prop="walletAddress" label="钱包地址" align="center" key="2"> </el-table-column>
-        <el-table-column prop="walletName" label="钱包名称" align="center" width="110" key="3"> </el-table-column>
-        <el-table-column prop="remark" label="备注" align="center" key="4"> </el-table-column>
+        <el-table-column
+          prop="chainId"
+          label="链ID"
+          align="center"
+          width="110"
+          key="1"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="walletAddress"
+          label="钱包地址"
+          align="center"
+          key="2"
+        >
+        </el-table-column>
+        <el-table-column
+          prop="walletName"
+          label="钱包名称"
+          align="center"
+          width="110"
+          key="3"
+        >
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" align="center" key="4">
+        </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog title="上下分" :visible.sync="showUpDownDialog" width="440px" :close-on-click-modal="false" :before-close="handleClose">
+    <el-dialog
+      title="上下分"
+      :visible.sync="showUpDownDialog"
+      width="440px"
+      :close-on-click-modal="false"
+      :before-close="handleClose"
+    >
       <div>
-        <el-form :model="ruleForm" ref="ruleForm" label-width="40px" class="demo-ruleForm">
+        <el-form
+          :model="ruleForm"
+          ref="ruleForm"
+          label-width="40px"
+          class="demo-ruleForm"
+        >
           <el-form-item label="币种" prop="coin">
-            <el-select v-model="ruleForm.coin" placeholder="请选择币种" style="width: 300px">
+            <el-select
+              v-model="ruleForm.coin"
+              placeholder="请选择币种"
+              style="width: 300px"
+            >
               <el-option label="USDT" value="USDT"> </el-option>
               <el-option label="ETH" value="ETH"> </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="上分" prop="score">
-            <el-input-number v-model="ruleForm.score" style="width: 300px"></el-input-number>
+            <el-input-number
+              v-model="ruleForm.score"
+              style="width: 300px"
+            ></el-input-number>
           </el-form-item>
         </el-form>
       </div>
@@ -253,20 +562,44 @@
         <el-button type="primary" @click="updateScore()">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="批量上分" :visible.sync="dialogVisible" width="440px" :close-on-click-modal="false">
+    <el-dialog
+      title="批量上分"
+      :visible.sync="dialogVisible"
+      width="440px"
+      :close-on-click-modal="false"
+    >
       <div>
         <div class="amount-input">
           <p>数量</p>
-          <el-input type="number" v-model="upscoreNum" style="width: 100%"></el-input>
+          <el-input
+            type="number"
+            v-model="upscoreNum"
+            style="width: 100%"
+          ></el-input>
         </div>
         <div class="total-box">
           <p>总人数：{{ upscoreList?.length }}</p>
           <p>总上分：{{ upscoreList?.length * upscoreNum }}</p>
         </div>
         <el-table :data="upscoreList" style="width: auto" border>
-          <el-table-column prop="id" label="ID" align="center" width="110" key="1"> </el-table-column>
-          <el-table-column prop="email" label="邮箱" align="center" key="2"> </el-table-column>
-          <el-table-column prop="balance" label="余额" align="center" width="110" key="3"> </el-table-column>
+          <el-table-column
+            prop="id"
+            label="ID"
+            align="center"
+            width="110"
+            key="1"
+          >
+          </el-table-column>
+          <el-table-column prop="email" label="邮箱" align="center" key="2">
+          </el-table-column>
+          <el-table-column
+            prop="balance"
+            label="余额"
+            align="center"
+            width="110"
+            key="3"
+          >
+          </el-table-column>
         </el-table>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -274,28 +607,62 @@
         <el-button type="primary" @click="batchUpAndDownSave">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog v-if="assetBalanceDialog" title="资产详情" :visible.sync="assetBalanceDialog" width="500px" :close-on-click-modal="false">
+    <el-dialog
+      v-if="assetBalanceDialog"
+      title="资产详情"
+      :visible.sync="assetBalanceDialog"
+      width="500px"
+      :close-on-click-modal="false"
+    >
       <el-table :data="assetBalanceList" style="width: 100%" border>
         <template v-if="assetDialogType == 'withdraw'">
-          <el-table-column prop="coin" label="币种" align="center" key="1"> </el-table-column>
-          <el-table-column prop="withdrawalPrice" label="金额" align="center" key="2"> </el-table-column>
-          <el-table-column prop="serviceFee" label="手续费" align="center" key="3"> </el-table-column>
+          <el-table-column prop="coin" label="币种" align="center" key="1">
+          </el-table-column>
+          <el-table-column
+            prop="withdrawalPrice"
+            label="金额"
+            align="center"
+            key="2"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="serviceFee"
+            label="手续费"
+            align="center"
+            key="3"
+          >
+          </el-table-column>
         </template>
         <template v-else>
-          <el-table-column prop="assetType" label="币种" align="center" key="4"> </el-table-column>
-          <el-table-column prop="assetBalance" label="数量" align="center" key="5"> </el-table-column>
-          <el-table-column prop="conversionUsdtBalance" label="U价" align="center" key="6"> </el-table-column>
+          <el-table-column prop="assetType" label="币种" align="center" key="4">
+          </el-table-column>
+          <el-table-column
+            prop="assetBalance"
+            label="数量"
+            align="center"
+            key="5"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="conversionUsdtBalance"
+            label="U价"
+            align="center"
+            key="6"
+          >
+          </el-table-column>
         </template>
       </el-table>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="assetBalanceDialog = false">关闭</el-button>
+        <el-button type="primary" @click="assetBalanceDialog = false"
+          >关闭</el-button
+        >
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { timeForStr, exportExcel } from "@/utils";
+import { timeForStr, exportExcel, accurateDecimal } from "@/utils";
 import pagination from "@/mixins/pagination";
 import config from "@/config/env";
 
@@ -351,6 +718,7 @@ export default {
   // 方法
   methods: {
     timeForStr: timeForStr,
+    accurateDecimal: accurateDecimal,
     searchFun() {
       let { registrationTime, loginedTime } = this;
       let regStartTime = null;
@@ -531,11 +899,17 @@ export default {
     },
     // 封停/解禁
     operatingAccount(row) {
-      this.$confirm(`确定要${row.userStatus == "DISABLE" ? "解禁" : "封停"}用户『${row.userName || row.id}』吗?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "info",
-      })
+      this.$confirm(
+        `确定要${row.userStatus == "DISABLE" ? "解禁" : "封停"}用户『${
+          row.userName || row.id
+        }』吗?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info",
+        }
+      )
         .then(async () => {
           let res = null;
           if (row.userStatus == "DISABLE") {
@@ -560,11 +934,15 @@ export default {
     },
     // 关闭谷歌验证
     closeGoogle(row) {
-      this.$confirm(`确定要关闭用户『${row.userName || row.id}』谷歌二级验证吗?`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "info",
-      })
+      this.$confirm(
+        `确定要关闭用户『${row.userName || row.id}』谷歌二级验证吗?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "info",
+        }
+      )
         .then(async () => {
           const res = await this.$http.closeGoogleValidate({
             id: row.id,
