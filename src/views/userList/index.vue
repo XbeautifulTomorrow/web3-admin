@@ -287,7 +287,7 @@
       >
       </el-table-column>
       <el-table-column
-        prop="totalRedeemCard"
+        prop="redeemCard"
         sortable="custom"
         label="总兑换"
         align="center"
