@@ -94,6 +94,7 @@
 <script>
 import quillEditor from "@/components/quillEditor";
 import config from "@/config/env";
+import { timeForStr } from "@/utils";
 export default {
   name: "AddNotice",
   props: {
@@ -175,6 +176,9 @@ export default {
       let res = await this.$http.getAnnouncementInfo({ annId: id });
       if (res) {
         this.ruleForm = res;
+        if(this.ruleForm.webTime){
+          this.ruleForm.webTime=timeForStr(this.ruleForm.webTime, "YYYY-MM-DD HH:mm:ss")
+        }
         this.fileImg = [{ url: this.ruleForm.imgUrl }];
         // res.forEach((element) => {
         //   if (element.language == "zh_CN") {
