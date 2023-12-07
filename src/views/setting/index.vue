@@ -129,6 +129,21 @@
         </div>
       </div>
       <div class="setting-item">
+        <div class="setting-title">自动审核流水阈值</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入自动审核流水阈值"
+            v-model="withdrawals.auditFlowThresholds"
+            clearable
+          >
+            <template slot="append">{{ "USDT" }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">激活返佣阈值</div>
         <div class="setting-val">
           <el-input
@@ -603,6 +618,7 @@ export default {
         downRate: null, // 闪兑下浮比率
         freeFeeCoinNumber: null, //提币免费次数
         minWithdrawal: null, //最低提款金额
+        auditFlowThresholds: null, //自动审核流水阈值
         activateRebateThreshold: null, //激活返佣阈值字段
       },
 
