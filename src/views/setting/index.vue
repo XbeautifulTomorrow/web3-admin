@@ -129,6 +129,21 @@
         </div>
       </div>
       <div class="setting-item">
+        <div class="setting-title">pvp充值限制</div>
+        <div class="setting-val">
+          <el-input
+            class="public-input"
+            type="number"
+            style="width: 300px"
+            placeholder="输入pvp充值限制"
+            v-model="withdrawals.pvpThresholds"
+            clearable
+          >
+            <template slot="append">{{ "USDT" }}</template>
+          </el-input>
+        </div>
+      </div>
+      <div class="setting-item">
         <div class="setting-title">自动审核流水阈值</div>
         <div class="setting-val">
           <el-input
@@ -618,6 +633,7 @@ export default {
         downRate: null, // 闪兑下浮比率
         freeFeeCoinNumber: null, //提币免费次数
         minWithdrawal: null, //最低提款金额
+        pvpThresholds:null,
         auditFlowThresholds: null, //自动审核流水阈值
         activateRebateThreshold: null, //激活返佣阈值字段
       },
