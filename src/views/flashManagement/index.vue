@@ -78,7 +78,7 @@
       <el-table-column prop="flashPlaform" label="状态" align="center" key="11">
         <template slot-scope="scope">
           <p v-if="scope.row.flashStatus == 'TRUE'" style="color: #67c23a">成功</p>
-          <p v-if="scope.row.flashStatus == 'FAIL'" style="color: #f56c6c">失败</p>
+          <p v-else-if="scope.row.flashStatus == 'FAIL'" style="color: #f56c6c">失败</p>
           <p v-else style="color: #e6a23c">挂起</p>
         </template>
       </el-table-column>
