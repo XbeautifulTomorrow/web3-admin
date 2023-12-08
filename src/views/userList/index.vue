@@ -166,6 +166,12 @@
           </div>
         </div>
         <div class="remittance-item">
+          <div class="title">总退款</div>
+          <div class="val">
+            {{ accurateDecimal(aggregateQuery?.totalRefund, 2) }}
+          </div>
+        </div>
+        <div class="remittance-item">
           <div class="title">总余额</div>
           <div class="val">
             {{ accurateDecimal(aggregateQuery?.assetBalanceUTotal, 2) }}
@@ -286,13 +292,23 @@
         key="9"
       >
       </el-table-column>
+
+      <el-table-column
+        prop="totalRefund"
+        sortable="custom"
+        label="总退款(USDT)"
+        align="center"
+        width="120"
+        key="10"
+      >
+      </el-table-column>
       <el-table-column
         prop="redeemCard"
         sortable="custom"
         label="总兑换"
         align="center"
         width="120"
-        key="10"
+        key="11"
       >
       </el-table-column>
       <el-table-column
@@ -301,7 +317,7 @@
         label="购买盲盒个数"
         align="center"
         width="120"
-        key="11"
+        key="12"
       >
       </el-table-column>
       <el-table-column
@@ -310,7 +326,7 @@
         label="获得藏品"
         align="center"
         width="110"
-        key="12"
+        key="13"
       >
       </el-table-column>
       <el-table-column
@@ -319,7 +335,7 @@
         label="剩余藏品"
         align="center"
         width="110"
-        key="13"
+        key="14"
       >
       </el-table-column>
       <el-table-column
@@ -328,7 +344,7 @@
         label="余额(USDT)"
         align="center"
         width="110"
-        key="14"
+        key="15"
       >
       </el-table-column>
       <el-table-column
